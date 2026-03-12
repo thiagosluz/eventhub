@@ -11,6 +11,9 @@ import { MinioService } from './storage/minio.service';
 import { SubmissionsController } from './submissions/submissions.controller';
 import { SubmissionsService } from './submissions/submissions.service';
 import { AssignReviewsProcessor } from './submissions/submissions.processor';
+import { CheckoutController } from './checkout/checkout.controller';
+import { CheckoutService } from './checkout/checkout.service';
+import { FreeTicketStrategy } from './checkout/free-ticket.strategy';
 
 @Module({
   imports: [
@@ -30,6 +33,7 @@ import { AssignReviewsProcessor } from './submissions/submissions.processor';
     EventsController,
     SubmissionsController,
     ActivitiesController,
+    CheckoutController,
   ],
   providers: [
     EventsService,
@@ -38,6 +42,8 @@ import { AssignReviewsProcessor } from './submissions/submissions.processor';
     MinioService,
     SubmissionsService,
     AssignReviewsProcessor,
+    CheckoutService,
+    FreeTicketStrategy,
   ],
 })
 export class AppModule {}
