@@ -16,6 +16,10 @@ import { CheckoutService } from './checkout/checkout.service';
 import { FreeTicketStrategy } from './checkout/free-ticket.strategy';
 import { CheckinController } from './checkin/checkin.controller';
 import { CheckinService } from './checkin/checkin.service';
+import { MailService } from './mail/mail.service';
+import { MailProcessor } from './mail/mail.processor';
+import { CertificatesController } from './certificates/certificates.controller';
+import { CertificatePdfService } from './certificates/certificate-pdf.service';
 
 @Module({
   imports: [
@@ -26,9 +30,10 @@ import { CheckinService } from './checkin/checkin.service';
         port: Number(process.env.REDIS_PORT ?? 6379),
       },
     }),
-    BullModule.registerQueue({
-      name: 'assign-reviews',
-    }),
+    BullModule.registerQueue(
+      { name: 'assign-reviews' },
+      { name: 'emails' },
+    ),
   ],
   controllers: [
     ProtectedExampleController,
@@ -37,6 +42,7 @@ import { CheckinService } from './checkin/checkin.service';
     ActivitiesController,
     CheckoutController,
     CheckinController,
+    CertificatesController,
   ],
   providers: [
     EventsService,
@@ -48,6 +54,9 @@ import { CheckinService } from './checkin/checkin.service';
     CheckoutService,
     FreeTicketStrategy,
     CheckinService,
+    MailService,
+    MailProcessor,
+    CertificatePdfService,
   ],
 })
 export class AppModule {}

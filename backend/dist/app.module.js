@@ -26,6 +26,10 @@ const checkout_service_1 = require("./checkout/checkout.service");
 const free_ticket_strategy_1 = require("./checkout/free-ticket.strategy");
 const checkin_controller_1 = require("./checkin/checkin.controller");
 const checkin_service_1 = require("./checkin/checkin.service");
+const mail_service_1 = require("./mail/mail.service");
+const mail_processor_1 = require("./mail/mail.processor");
+const certificates_controller_1 = require("./certificates/certificates.controller");
+const certificate_pdf_service_1 = require("./certificates/certificate-pdf.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -39,9 +43,7 @@ exports.AppModule = AppModule = __decorate([
                     port: Number((_b = process.env.REDIS_PORT) !== null && _b !== void 0 ? _b : 6379),
                 },
             }),
-            bullmq_1.BullModule.registerQueue({
-                name: 'assign-reviews',
-            }),
+            bullmq_1.BullModule.registerQueue({ name: 'assign-reviews' }, { name: 'emails' }),
         ],
         controllers: [
             protected_controller_1.ProtectedExampleController,
@@ -50,6 +52,7 @@ exports.AppModule = AppModule = __decorate([
             activities_controller_1.ActivitiesController,
             checkout_controller_1.CheckoutController,
             checkin_controller_1.CheckinController,
+            certificates_controller_1.CertificatesController,
         ],
         providers: [
             events_service_1.EventsService,
@@ -61,6 +64,9 @@ exports.AppModule = AppModule = __decorate([
             checkout_service_1.CheckoutService,
             free_ticket_strategy_1.FreeTicketStrategy,
             checkin_service_1.CheckinService,
+            mail_service_1.MailService,
+            mail_processor_1.MailProcessor,
+            certificate_pdf_service_1.CertificatePdfService,
         ],
     })
 ], AppModule);
