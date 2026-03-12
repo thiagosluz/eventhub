@@ -14,6 +14,8 @@ import { AssignReviewsProcessor } from './submissions/submissions.processor';
 import { CheckoutController } from './checkout/checkout.controller';
 import { CheckoutService } from './checkout/checkout.service';
 import { FreeTicketStrategy } from './checkout/free-ticket.strategy';
+import { CheckinController } from './checkin/checkin.controller';
+import { CheckinService } from './checkin/checkin.service';
 
 @Module({
   imports: [
@@ -34,6 +36,7 @@ import { FreeTicketStrategy } from './checkout/free-ticket.strategy';
     SubmissionsController,
     ActivitiesController,
     CheckoutController,
+    CheckinController,
   ],
   providers: [
     EventsService,
@@ -44,6 +47,7 @@ import { FreeTicketStrategy } from './checkout/free-ticket.strategy';
     AssignReviewsProcessor,
     CheckoutService,
     FreeTicketStrategy,
+    CheckinService,
   ],
 })
 export class AppModule {}

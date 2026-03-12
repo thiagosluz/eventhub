@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FreeTicketStrategy = void 0;
+const crypto_1 = require("crypto");
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 let FreeTicketStrategy = class FreeTicketStrategy {
@@ -25,6 +26,7 @@ let FreeTicketStrategy = class FreeTicketStrategy {
                 type: 'FREE',
                 status: 'COMPLETED',
                 price: 0,
+                qrCodeToken: (0, crypto_1.randomUUID)(),
             },
         });
         tickets.push(eventTicket);
@@ -37,6 +39,7 @@ let FreeTicketStrategy = class FreeTicketStrategy {
                         type: 'FREE',
                         status: 'COMPLETED',
                         price: 0,
+                        qrCodeToken: (0, crypto_1.randomUUID)(),
                     },
                 });
                 tickets.push(activityTicket);

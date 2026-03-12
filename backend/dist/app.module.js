@@ -24,6 +24,8 @@ const submissions_processor_1 = require("./submissions/submissions.processor");
 const checkout_controller_1 = require("./checkout/checkout.controller");
 const checkout_service_1 = require("./checkout/checkout.service");
 const free_ticket_strategy_1 = require("./checkout/free-ticket.strategy");
+const checkin_controller_1 = require("./checkin/checkin.controller");
+const checkin_service_1 = require("./checkin/checkin.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -47,6 +49,7 @@ exports.AppModule = AppModule = __decorate([
             submissions_controller_1.SubmissionsController,
             activities_controller_1.ActivitiesController,
             checkout_controller_1.CheckoutController,
+            checkin_controller_1.CheckinController,
         ],
         providers: [
             events_service_1.EventsService,
@@ -57,6 +60,7 @@ exports.AppModule = AppModule = __decorate([
             submissions_processor_1.AssignReviewsProcessor,
             checkout_service_1.CheckoutService,
             free_ticket_strategy_1.FreeTicketStrategy,
+            checkin_service_1.CheckinService,
         ],
     })
 ], AppModule);

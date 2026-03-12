@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { TicketStatus, TicketType } from '../generated/prisma/enums';
 import { PrismaService } from '../prisma/prisma.service';
@@ -18,6 +19,7 @@ export class FreeTicketStrategy implements PaymentStrategy {
         type: 'FREE',
         status: 'COMPLETED',
         price: 0,
+        qrCodeToken: randomUUID(),
       },
     });
 
@@ -33,6 +35,7 @@ export class FreeTicketStrategy implements PaymentStrategy {
             type: 'FREE',
             status: 'COMPLETED',
             price: 0,
+            qrCodeToken: randomUUID(),
           },
         });
         tickets.push(activityTicket);
