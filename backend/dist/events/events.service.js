@@ -17,6 +17,7 @@ let EventsService = class EventsService {
         this.prisma = prisma;
     }
     async createEvent(params) {
+        var _a;
         const { tenantId, data } = params;
         return this.prisma.event.create({
             data: {
@@ -30,6 +31,7 @@ let EventsService = class EventsService {
                 seoTitle: data.seoTitle,
                 seoDescription: data.seoDescription,
                 themeConfig: data.themeConfig,
+                status: (_a = data.status) !== null && _a !== void 0 ? _a : 'DRAFT',
             },
         });
     }
@@ -61,6 +63,7 @@ let EventsService = class EventsService {
                 themeConfig: data.themeConfig,
                 bannerUrl: data.bannerUrl,
                 logoUrl: data.logoUrl,
+                status: data.status,
             },
         });
     }
@@ -68,7 +71,13 @@ let EventsService = class EventsService {
         const event = await this.prisma.event.findFirst({
             where: { slug, status: 'PUBLISHED' },
             include: {
-                activities: true,
+                activities: { orderBy: { startAt: 'asc' } },
+                forms: {
+                    where: { type: 'REGISTRATION' },
+                    include: {
+                        fields: { orderBy: { order: 'asc' } },
+                    },
+                },
             },
         });
         if (!event) {

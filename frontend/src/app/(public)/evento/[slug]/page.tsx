@@ -37,13 +37,14 @@ async function fetchEvent(slug: string): Promise<Event> {
   return res.json();
 }
 
-type PageParams = { params: { slug: string } };
+type PageParams = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata(
   { params }: PageParams,
 ): Promise<Metadata> {
   try {
-    const event = await fetchEvent(params.slug);
+    const { slug } = await params;
+    const event = await fetchEvent(slug);
     return {
       title: event.seoTitle ?? event.name,
       description: event.seoDescription ?? event.description ?? undefined,
@@ -61,7 +62,8 @@ export async function generateMetadata(
 }
 
 export default async function EventPage({ params }: PageParams) {
-  const event = await fetchEvent(params.slug);
+  const { slug } = await params;
+  const event = await fetchEvent(slug);
 
   return (
     <div className="min-h-screen bg-background">
@@ -138,7 +140,7 @@ export default async function EventPage({ params }: PageParams) {
             className="space-y-3"
             aria-label="Formulário de inscrição"
           >
-            <input type="hidden" name="eventId" value={event.id} />
+            <input type="hidden" name="slug" value={event.slug} />
             <button
               type="submit"
               className="inline-flex h-11 w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"

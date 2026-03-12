@@ -16,6 +16,10 @@ exports.CheckoutController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const checkout_service_1 = require("./checkout.service");
+class FormAnswerDto {
+}
+class FormResponseDto {
+}
 class CheckoutDto {
 }
 let CheckoutController = class CheckoutController {
@@ -23,16 +27,21 @@ let CheckoutController = class CheckoutController {
         this.checkout = checkout;
     }
     async checkoutFree(body, req) {
-        var _a, _b;
+        var _a, _b, _c;
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
         if (!userId) {
             throw new Error('Missing user id on token payload.');
         }
         const activityIds = (_b = body.activityIds) !== null && _b !== void 0 ? _b : [];
+        const formResponses = (_c = body.formResponses) === null || _c === void 0 ? void 0 : _c.map((fr) => ({
+            formId: fr.formId,
+            answers: fr.answers.map((a) => ({ fieldId: a.fieldId, value: a.value })),
+        }));
         const result = await this.checkout.processCheckout({
             eventId: body.eventId,
             activityIds,
             userId,
+            formResponses,
         });
         return {
             registrationId: result.registrationId,

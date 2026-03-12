@@ -8,10 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubmissionsService = void 0;
 const common_1 = require("@nestjs/common");
-const bullmq_1 = require("bullmq");
+const bullmq_1 = require("@nestjs/bullmq");
+const bullmq_2 = require("bullmq");
 const prisma_service_1 = require("../prisma/prisma.service");
 const minio_service_1 = require("../storage/minio.service");
 let SubmissionsService = class SubmissionsService {
@@ -118,8 +122,9 @@ let SubmissionsService = class SubmissionsService {
 exports.SubmissionsService = SubmissionsService;
 exports.SubmissionsService = SubmissionsService = __decorate([
     (0, common_1.Injectable)(),
+    __param(2, (0, bullmq_1.InjectQueue)('assign-reviews')),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         minio_service_1.MinioService,
-        bullmq_1.Queue])
+        bullmq_2.Queue])
 ], SubmissionsService);
 //# sourceMappingURL=submissions.service.js.map

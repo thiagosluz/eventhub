@@ -1,4 +1,5 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { PrismaService } from '../prisma/prisma.service';
 import { MinioService } from '../storage/minio.service';
@@ -16,7 +17,7 @@ export class SubmissionsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly minio: MinioService,
-    private readonly assignReviewsQueue: Queue,
+    @InjectQueue('assign-reviews') private readonly assignReviewsQueue: Queue,
   ) {}
 
   async createSubmission(params: CreateSubmissionParams) {

@@ -12,9 +12,20 @@ interface AuthRequest extends Request {
   };
 }
 
+class FormAnswerDto {
+  fieldId!: string;
+  value!: string;
+}
+
+class FormResponseDto {
+  formId!: string;
+  answers!: FormAnswerDto[];
+}
+
 class CheckoutDto {
   eventId!: string;
   activityIds?: string[];
+  formResponses?: FormResponseDto[];
 }
 
 @Controller()
@@ -30,11 +41,16 @@ export class CheckoutController {
     }
 
     const activityIds = body.activityIds ?? [];
+    const formResponses = body.formResponses?.map((fr) => ({
+      formId: fr.formId,
+      answers: fr.answers.map((a) => ({ fieldId: a.fieldId, value: a.value })),
+    }));
 
     const result = await this.checkout.processCheckout({
       eventId: body.eventId,
       activityIds,
       userId,
+      formResponses,
     });
 
     return {

@@ -21,6 +21,7 @@ let CheckoutService = class CheckoutService {
         this.freeTicketStrategy = freeTicketStrategy;
     }
     async processCheckout(input) {
+        var _a;
         const { eventId, activityIds, userId } = input;
         const event = await this.prisma.event.findUnique({
             where: { id: eventId },
@@ -54,6 +55,25 @@ let CheckoutService = class CheckoutService {
             registrationId: registration.id,
             activityIds,
         });
+        if ((_a = input.formResponses) === null || _a === void 0 ? void 0 : _a.length) {
+            for (const fr of input.formResponses) {
+                const response = await this.prisma.customFormResponse.create({
+                    data: {
+                        formId: fr.formId,
+                        registrationId: registration.id,
+                    },
+                });
+                for (const a of fr.answers) {
+                    await this.prisma.customFormAnswer.create({
+                        data: {
+                            responseId: response.id,
+                            fieldId: a.fieldId,
+                            value: a.value,
+                        },
+                    });
+                }
+            }
+        }
         return {
             registrationId: registration.id,
             payment,

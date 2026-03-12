@@ -17,6 +17,7 @@ export class EventsService {
       seoTitle?: string;
       seoDescription?: string;
       themeConfig?: Record<string, unknown>;
+      status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
     };
   }) {
     const { tenantId, data } = params;
@@ -33,6 +34,7 @@ export class EventsService {
         seoTitle: data.seoTitle,
         seoDescription: data.seoDescription,
         themeConfig: data.themeConfig as unknown as object | undefined,
+        status: data.status ?? 'DRAFT',
       },
     });
   }
@@ -59,6 +61,7 @@ export class EventsService {
       themeConfig?: Record<string, unknown>;
       bannerUrl?: string;
       logoUrl?: string;
+      status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
     };
   }) {
     const { tenantId, eventId, data } = params;
@@ -85,6 +88,7 @@ export class EventsService {
         themeConfig: data.themeConfig as unknown as object | undefined,
         bannerUrl: data.bannerUrl,
         logoUrl: data.logoUrl,
+        status: data.status,
       },
     });
   }
@@ -93,7 +97,13 @@ export class EventsService {
     const event = await this.prisma.event.findFirst({
       where: { slug, status: 'PUBLISHED' },
       include: {
-        activities: true,
+        activities: { orderBy: { startAt: 'asc' } },
+        forms: {
+          where: { type: 'REGISTRATION' },
+          include: {
+            fields: { orderBy: { order: 'asc' } },
+          },
+        },
       },
     });
 

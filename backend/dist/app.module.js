@@ -30,6 +30,7 @@ const mail_service_1 = require("./mail/mail.service");
 const mail_processor_1 = require("./mail/mail.processor");
 const certificates_controller_1 = require("./certificates/certificates.controller");
 const certificate_pdf_service_1 = require("./certificates/certificate-pdf.service");
+const certificate_templates_service_1 = require("./certificates/certificate-templates.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -67,6 +68,7 @@ exports.AppModule = AppModule = __decorate([
             mail_service_1.MailService,
             mail_processor_1.MailProcessor,
             certificate_pdf_service_1.CertificatePdfService,
+            certificate_templates_service_1.CertificateTemplatesService,
         ],
     })
 ], AppModule);

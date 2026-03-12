@@ -8,5 +8,6 @@ export class CreateEventDto {
   seoTitle?: string;
   seoDescription?: string;
   themeConfig?: Record<string, unknown>;
+  status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
 }
 
