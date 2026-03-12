@@ -20,6 +20,7 @@ import { MailService } from './mail/mail.service';
 import { MailProcessor } from './mail/mail.processor';
 import { CertificatesController } from './certificates/certificates.controller';
 import { CertificatePdfService } from './certificates/certificate-pdf.service';
+import { CertificateTemplatesService } from './certificates/certificate-templates.service';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { CertificatePdfService } from './certificates/certificate-pdf.service';
     MailService,
     MailProcessor,
     CertificatePdfService,
+    CertificateTemplatesService,
   ],
 })
 export class AppModule {}
