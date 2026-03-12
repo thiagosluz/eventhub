@@ -1,0 +1,363 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ORGANIZER
+  REVIEWER
+  PARTICIPANT
+}
+
+enum TicketType {
+  FREE
+  PAID
+}
+
+enum TicketStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+enum SubmissionStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ACCEPTED
+  REJECTED
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ActivityStatus {
+  SCHEDULED
+  CANCELLED
+  COMPLETED
+}
+
+enum FormType {
+  REGISTRATION
+  SUBMISSION
+}
+
+enum FormFieldType {
+  TEXT
+  TEXTAREA
+  SELECT
+  MULTISELECT
+  CHECKBOX
+  DATE
+  NUMBER
+  EMAIL
+}
+
+enum ReviewRecommendation {
+  STRONG_ACCEPT
+  ACCEPT
+  WEAK_ACCEPT
+  BORDERLINE
+  WEAK_REJECT
+  REJECT
+  STRONG_REJECT
+}
+
+model Tenant {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users       User[]
+  events      Event[]
+  speakers    Speaker[]
+}
+
+model User {
+  id          String    @id @default(cuid())
+  email       String    @unique
+  password    String
+  name        String
+  role        UserRole
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tenantId    String
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+
+  registrations Registration[]
+  reviews        Review[]
+  submissions    Submission[] @relation("SubmissionAuthor")
+}
+
+model Event {
+  id            String       @id @default(cuid())
+  tenantId      String
+  tenant        Tenant       @relation(fields: [tenantId], references: [id])
+
+  name          String
+  slug          String
+  description   String?
+  location      String?
+  startDate     DateTime
+  endDate       DateTime
+  status        EventStatus  @default(DRAFT)
+
+  bannerUrl     String?
+  logoUrl       String?
+  themeConfig   Json?
+  seoTitle      String?
+  seoDescription String?
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  activities    Activity[]
+  registrations Registration[]
+  tickets       Ticket[]
+  forms         CustomForm[]
+  submissions   Submission[]
+  certificateTemplates CertificateTemplate[]
+
+  @@unique([tenantId, slug])
+}
+
+model Activity {
+  id          String        @id @default(cuid())
+  eventId     String
+  event       Event         @relation(fields: [eventId], references: [id])
+
+  title       String
+  description String?
+  location    String?
+  startAt     DateTime
+  endAt       DateTime
+  capacity    Int?
+  status      ActivityStatus @default(SCHEDULED)
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  speakers    ActivitySpeaker[]
+  enrollments ActivityEnrollment[]
+  attendances Attendance[]
+}
+
+model Speaker {
+  id          String   @id @default(cuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+
+  name        String
+  bio         String?
+  avatarUrl   String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  activities  ActivitySpeaker[]
+}
+
+model ActivitySpeaker {
+  activityId String
+  speakerId  String
+
+  activity   Activity @relation(fields: [activityId], references: [id])
+  speaker    Speaker  @relation(fields: [speakerId], references: [id])
+
+  @@id([activityId, speakerId])
+}
+
+model Registration {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id])
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime @default(now())
+
+  tickets     Ticket[]
+  enrollments ActivityEnrollment[]
+  formResponses CustomFormResponse[]
+  certificates IssuedCertificate[]
+}
+
+model ActivityEnrollment {
+  id             String      @id @default(cuid())
+  activityId     String
+  activity       Activity    @relation(fields: [activityId], references: [id])
+
+  registrationId String
+  registration   Registration @relation(fields: [registrationId], references: [id])
+
+  createdAt      DateTime    @default(now())
+}
+
+model Ticket {
+  id             String       @id @default(cuid())
+  eventId        String
+  event          Event        @relation(fields: [eventId], references: [id])
+
+  registrationId String
+  registration   Registration @relation(fields: [registrationId], references: [id])
+
+  type           TicketType   @default(FREE)
+  status         TicketStatus @default(PENDING)
+  price          Decimal      @default(0)
+
+  qrCodeToken    String?      @unique
+
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  attendances    Attendance[]
+}
+
+model CustomForm {
+  id          String      @id @default(cuid())
+  eventId     String
+  event       Event       @relation(fields: [eventId], references: [id])
+
+  name        String
+  type        FormType
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  fields      CustomFormField[]
+  responses   CustomFormResponse[]
+}
+
+model CustomFormField {
+  id          String        @id @default(cuid())
+  formId      String
+  form        CustomForm    @relation(fields: [formId], references: [id])
+
+  label       String
+  type        FormFieldType
+  required    Boolean       @default(false)
+  order       Int
+  options     Json?
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  answers     CustomFormAnswer[]
+}
+
+model CustomFormResponse {
+  id             String           @id @default(cuid())
+  formId         String
+  form           CustomForm       @relation(fields: [formId], references: [id])
+
+  registrationId String?
+  registration   Registration?    @relation(fields: [registrationId], references: [id])
+
+  submissionId   String?
+  submission     Submission?      @relation(fields: [submissionId], references: [id])
+
+  createdAt      DateTime         @default(now())
+
+  answers        CustomFormAnswer[]
+}
+
+model CustomFormAnswer {
+  id          String           @id @default(cuid())
+  responseId  String
+  response    CustomFormResponse @relation(fields: [responseId], references: [id])
+
+  fieldId     String
+  field       CustomFormField @relation(fields: [fieldId], references: [id])
+
+  value       String
+}
+
+model Submission {
+  id             String            @id @default(cuid())
+  eventId        String
+  event          Event             @relation(fields: [eventId], references: [id])
+
+  authorId       String
+  author         User              @relation("SubmissionAuthor", fields: [authorId], references: [id])
+
+  title          String
+  abstract       String?
+  fileUrl        String
+  status         SubmissionStatus  @default(SUBMITTED)
+
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  reviews        Review[]
+  formResponses  CustomFormResponse[]
+}
+
+model Review {
+  id             String              @id @default(cuid())
+  submissionId   String
+  submission     Submission          @relation(fields: [submissionId], references: [id])
+
+  reviewerId     String
+  reviewer       User                @relation(fields: [reviewerId], references: [id])
+
+  score          Int?
+  recommendation ReviewRecommendation?
+  comments       String?
+
+  createdAt      DateTime            @default(now())
+}
+
+model Attendance {
+  id          String   @id @default(cuid())
+
+  ticketId    String
+  ticket      Ticket   @relation(fields: [ticketId], references: [id])
+
+  activityId  String?
+  activity    Activity? @relation(fields: [activityId], references: [id])
+
+  checkedAt   DateTime @default(now())
+}
+
+model CertificateTemplate {
+  id              String   @id @default(cuid())
+  eventId         String
+  event           Event    @relation(fields: [eventId], references: [id])
+
+  name            String
+  backgroundUrl   String
+  layoutConfig    Json     // Coordenadas e estilos vindos do frontend
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  issuedCertificates IssuedCertificate[]
+}
+
+model IssuedCertificate {
+  id              String   @id @default(cuid())
+
+  templateId      String
+  template        CertificateTemplate @relation(fields: [templateId], references: [id])
+
+  registrationId  String
+  registration    Registration @relation(fields: [registrationId], references: [id])
+
+  fileUrl         String
+  issuedAt        DateTime @default(now())
+}
