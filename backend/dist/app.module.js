@@ -14,6 +14,8 @@ const auth_module_1 = require("./auth/auth.module");
 const protected_controller_1 = require("./example/protected.controller");
 const events_controller_1 = require("./events/events.controller");
 const events_service_1 = require("./events/events.service");
+const activities_controller_1 = require("./activities/activities.controller");
+const activities_service_1 = require("./activities/activities.service");
 const prisma_service_1 = require("./prisma/prisma.service");
 const minio_service_1 = require("./storage/minio.service");
 const submissions_controller_1 = require("./submissions/submissions.controller");
@@ -36,9 +38,15 @@ exports.AppModule = AppModule = __decorate([
                 name: 'assign-reviews',
             }),
         ],
-        controllers: [protected_controller_1.ProtectedExampleController, events_controller_1.EventsController, submissions_controller_1.SubmissionsController],
+        controllers: [
+            protected_controller_1.ProtectedExampleController,
+            events_controller_1.EventsController,
+            submissions_controller_1.SubmissionsController,
+            activities_controller_1.ActivitiesController,
+        ],
         providers: [
             events_service_1.EventsService,
+            activities_service_1.ActivitiesService,
             prisma_service_1.PrismaService,
             minio_service_1.MinioService,
             submissions_service_1.SubmissionsService,
