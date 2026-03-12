@@ -8,23 +8,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const core_1 = require("@nestjs/core");
 const auth_module_1 = require("./auth/auth.module");
-const roles_guard_1 = require("./auth/roles.guard");
 const protected_controller_1 = require("./example/protected.controller");
+const events_controller_1 = require("./events/events.controller");
+const events_service_1 = require("./events/events.service");
+const prisma_service_1 = require("./prisma/prisma.service");
+const minio_service_1 = require("./storage/minio.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [auth_module_1.AuthModule],
-        controllers: [protected_controller_1.ProtectedExampleController],
-        providers: [
-            {
-                provide: core_1.APP_GUARD,
-                useClass: roles_guard_1.RolesGuard,
-            },
-        ],
+        controllers: [protected_controller_1.ProtectedExampleController, events_controller_1.EventsController],
+        providers: [events_service_1.EventsService, prisma_service_1.PrismaService, minio_service_1.MinioService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

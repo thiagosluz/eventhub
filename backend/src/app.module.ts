@@ -1,17 +1,14 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
-import { RolesGuard } from './auth/roles.guard';
 import { ProtectedExampleController } from './example/protected.controller';
+import { EventsController } from './events/events.controller';
+import { EventsService } from './events/events.service';
+import { PrismaService } from './prisma/prisma.service';
+import { MinioService } from './storage/minio.service';
 
 @Module({
   imports: [AuthModule],
-  controllers: [ProtectedExampleController],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  controllers: [ProtectedExampleController, EventsController],
+  providers: [EventsService, PrismaService, MinioService],
 })
 export class AppModule {}
