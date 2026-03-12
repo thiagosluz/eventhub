@@ -16,6 +16,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@nestjs/bullmq": "^11.0.4",
     "@nestjs/common": "^11.1.16",
     "@nestjs/core": "^11.1.16",
     "@nestjs/jwt": "^11.0.2",
@@ -24,6 +25,7 @@
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.5.0",
     "argon2": "^0.44.0",
+    "bullmq": "^5.71.0",
     "minio": "^8.0.7",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
