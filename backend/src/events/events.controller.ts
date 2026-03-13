@@ -151,5 +151,15 @@ export class EventsController {
   async getPublicEvent(@Param('slug') slug: string) {
     return this.eventsService.findPublicBySlug(slug);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('my-tickets')
+  async getMyTickets(@Req() req: AuthRequest) {
+    const userId = req.user?.sub;
+    if (!userId) {
+      throw new Error('Missing user id on token payload.');
+    }
+    return this.eventsService.findMyTickets(userId);
+  }
 }
 

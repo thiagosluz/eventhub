@@ -1,20 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { Providers } from "@/components/providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
-  title: "EventHub",
-  description: "Plataforma de gestão de eventos",
+  title: "EventHub | Premium Event Management",
+  description: "A plataforma definitiva para gerenciar e descobrir eventos incríveis.",
 };
 
 export default function RootLayout({
@@ -23,14 +19,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md">
-          Pular para o conteúdo
-        </a>
-        {children}
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className={`${jakarta.variable} font-sans antialiased selection:bg-primary/30 selection:text-primary`}>
+        <Providers>
+          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md shadow-lg">
+            Pular para o conteúdo
+          </a>
+          <div className="relative flex min-h-screen flex-col bg-background text-foreground">
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );

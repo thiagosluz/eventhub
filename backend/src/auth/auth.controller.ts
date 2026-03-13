@@ -23,6 +23,11 @@ export class AuthController {
     return this.authService.registerOrganizer(body);
   }
 
+  @Post('register-participant')
+  registerParticipant(@Body() body: Omit<RegisterOrganizerDto, 'tenantName' | 'tenantSlug'>) {
+    return this.authService.registerParticipant(body);
+  }
+
   @Post('login')
   login(@Body() body: LoginDto) {
     return this.authService.login(body);

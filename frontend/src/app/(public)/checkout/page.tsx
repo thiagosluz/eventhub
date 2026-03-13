@@ -173,7 +173,18 @@ function CheckoutContent() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message ?? "Erro ao confirmar inscrição.");
+        const message = data.message ?? "Erro ao confirmar inscrição.";
+        if (
+          res.status === 403 &&
+          typeof message === "string" &&
+          message.includes("Capacidade máxima atingida")
+        ) {
+          setError(
+            "Algumas atividades selecionadas já atingiram a capacidade máxima. Remova-as da seleção ou tente novamente mais tarde."
+          );
+        } else {
+          setError(message);
+        }
         return;
       }
       setDone(true);
@@ -277,6 +288,9 @@ function CheckoutContent() {
         {event?.activities && event.activities.length > 0 && (
           <div>
             <h2 className="text-lg font-semibold text-foreground mb-4">Atividades (opcional)</h2>
+            <p className="text-sm text-muted-foreground mb-2">
+              Você pode escolher participar de atividades específicas. Algumas podem ficar lotadas; caso isso aconteça, remova-as da seleção.
+            </p>
             <ul className="space-y-2">
               {event.activities.map((act) => (
                 <li key={act.id} className="flex items-center gap-2">

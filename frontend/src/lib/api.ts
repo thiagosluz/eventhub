@@ -1,34 +1,17 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
+import axios from "axios"
+import { parseCookies } from "nookies"
 
-const TOKEN_KEY = "eventhub_token";
+export const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333", // Default NestJS port
+})
 
-export function getApiUrl(): string {
-  return API_URL;
-}
+api.interceptors.request.use((config) => {
+  const cookies = parseCookies()
+  const token = cookies["eventhub.token"]
 
-export function getToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(TOKEN_KEY);
-}
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
 
-export function setToken(token: string): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(TOKEN_KEY, token);
-}
-
-export function clearToken(): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(TOKEN_KEY);
-}
-
-export async function fetchWithAuth(
-  path: string,
-  options: RequestInit = {}
-): Promise<Response> {
-  const token = getToken();
-  const headers: HeadersInit = {
-    ...(options.headers as Record<string, string>),
-  };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
-  return fetch(`${API_URL}${path}`, { ...options, headers });
-}
+  return config
+})

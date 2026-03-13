@@ -113,5 +113,31 @@ export class EventsService {
 
     return event;
   }
+
+  async findMyTickets(userId: string) {
+    return this.prisma.ticket.findMany({
+      where: {
+        registration: {
+          userId,
+        },
+      },
+      include: {
+        event: {
+          select: {
+            name: true,
+            slug: true,
+            startDate: true,
+            endDate: true,
+            location: true,
+            bannerUrl: true,
+            logoUrl: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 }
 

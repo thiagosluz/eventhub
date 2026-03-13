@@ -208,6 +208,12 @@ export default function EditarEventoPage() {
         >
           Ver página pública
         </a>
+        <Link
+          href={`/admin/eventos/${event.id}/programacao`}
+          className="text-sm text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-ring rounded"
+        >
+          Ver programação
+        </Link>
       </div>
 
       <div className="mb-6 flex flex-wrap gap-6">
