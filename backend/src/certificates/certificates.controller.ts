@@ -26,7 +26,7 @@ interface AuthRequest extends Request {
   user?: { sub: string; email: string; tenantId: string; role: string };
 }
 
-@Controller()
+@Controller('certificates')
 export class CertificatesController {
   constructor(
     private readonly certificatePdf: CertificatePdfService,
@@ -37,7 +37,7 @@ export class CertificatesController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Get('events/:eventId/certificate-templates')
+  @Get('templates/event/:eventId')
   async listTemplates(@Param('eventId') eventId: string, @Req() req: AuthRequest) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) throw new Error('Missing tenantId on token payload.');
@@ -46,7 +46,7 @@ export class CertificatesController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Post('events/:eventId/certificate-templates')
+  @Post('templates/event/:eventId')
   async createTemplate(
     @Param('eventId') eventId: string,
     @Body() body: { name: string; backgroundUrl: string; layoutConfig?: object },
@@ -63,7 +63,7 @@ export class CertificatesController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Get('certificate-templates/:id')
+  @Get('templates/:id')
   async getTemplate(@Param('id') id: string, @Req() req: AuthRequest) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) throw new Error('Missing tenantId on token payload.');
@@ -72,7 +72,7 @@ export class CertificatesController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Patch('certificate-templates/:id')
+  @Patch('templates/:id')
   async updateTemplate(
     @Param('id') id: string,
     @Body() body: { name?: string; backgroundUrl?: string; layoutConfig?: object },
@@ -85,7 +85,7 @@ export class CertificatesController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Post('certificate-templates/:id/background')
+  @Post('templates/:id/background')
   @UseInterceptors(FileInterceptor('file'))
   async uploadTemplateBackground(
     @Param('id') id: string,
@@ -100,7 +100,7 @@ export class CertificatesController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Post('certificates/issue')
+  @Post('issue')
   async issueCertificate(
     @Body() body: { templateId: string; registrationId: string; sendEmail?: boolean },
   ) {
@@ -125,5 +125,32 @@ export class CertificatesController {
     }
 
     return { issuedId, fileUrl };
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @Get('my')
+  async listMyCertificates(@Req() req: AuthRequest) {
+    const userId = req.user?.sub;
+    if (!userId) throw new Error('Missing userId on token payload.');
+    
+    return this.prisma.issuedCertificate.findMany({
+      where: {
+        registration: { userId }
+      },
+      include: {
+        template: {
+          include: {
+            event: {
+              select: {
+                name: true,
+                slug: true,
+                startDate: true
+              }
+            }
+          }
+        }
+      },
+      orderBy: { issuedAt: 'desc' }
+    });
   }
 }

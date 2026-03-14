@@ -89,12 +89,37 @@ let CertificatesController = class CertificatesController {
         }
         return { issuedId, fileUrl };
     }
+    async listMyCertificates(req) {
+        var _a;
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
+        if (!userId)
+            throw new Error('Missing userId on token payload.');
+        return this.prisma.issuedCertificate.findMany({
+            where: {
+                registration: { userId }
+            },
+            include: {
+                template: {
+                    include: {
+                        event: {
+                            select: {
+                                name: true,
+                                slug: true,
+                                startDate: true
+                            }
+                        }
+                    }
+                }
+            },
+            orderBy: { issuedAt: 'desc' }
+        });
+    }
 };
 exports.CertificatesController = CertificatesController;
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('events/:eventId/certificate-templates'),
+    (0, common_1.Get)('templates/event/:eventId'),
     __param(0, (0, common_1.Param)('eventId')),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -104,7 +129,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('events/:eventId/certificate-templates'),
+    (0, common_1.Post)('templates/event/:eventId'),
     __param(0, (0, common_1.Param)('eventId')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
@@ -115,7 +140,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('certificate-templates/:id'),
+    (0, common_1.Get)('templates/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -125,7 +150,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Patch)('certificate-templates/:id'),
+    (0, common_1.Patch)('templates/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
@@ -136,7 +161,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('certificate-templates/:id/background'),
+    (0, common_1.Post)('templates/:id/background'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.UploadedFile)()),
@@ -148,14 +173,22 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('certificates/issue'),
+    (0, common_1.Post)('issue'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CertificatesController.prototype, "issueCertificate", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('my'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], CertificatesController.prototype, "listMyCertificates", null);
 exports.CertificatesController = CertificatesController = __decorate([
-    (0, common_1.Controller)(),
+    (0, common_1.Controller)('certificates'),
     __metadata("design:paramtypes", [certificate_pdf_service_1.CertificatePdfService,
         certificate_templates_service_1.CertificateTemplatesService,
         mail_service_1.MailService,

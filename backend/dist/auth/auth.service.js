@@ -75,13 +75,22 @@ let AuthService = class AuthService {
                 tenantId: tenant.id,
             },
         });
-        const token = await this.generateToken({
+        const access_token = await this.generateToken({
             userId: user.id,
             email: user.email,
             tenantId: tenant.id,
             role: user.role,
         });
-        return { token };
+        return {
+            access_token,
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                tenantId: user.tenantId,
+            }
+        };
     }
     async registerParticipant(input) {
         const existingUser = await this.prisma.user.findUnique({
@@ -106,13 +115,22 @@ let AuthService = class AuthService {
                 tenantId: tenant.id,
             },
         });
-        const token = await this.generateToken({
+        const access_token = await this.generateToken({
             userId: user.id,
             email: user.email,
             tenantId: tenant.id,
             role: user.role,
         });
-        return { token };
+        return {
+            access_token,
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                tenantId: user.tenantId,
+            }
+        };
     }
     async login(input) {
         const user = await this.prisma.user.findUnique({
@@ -122,13 +140,22 @@ let AuthService = class AuthService {
         if (!user || !(await argon2.verify(user.password, input.password))) {
             throw new common_1.UnauthorizedException('Credenciais inválidas.');
         }
-        const token = await this.generateToken({
+        const access_token = await this.generateToken({
             userId: user.id,
             email: user.email,
             tenantId: user.tenantId,
             role: user.role,
         });
-        return { token };
+        return {
+            access_token,
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                tenantId: user.tenantId,
+            }
+        };
     }
     async generateToken(params) {
         const payload = {

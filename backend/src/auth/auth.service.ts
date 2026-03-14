@@ -51,14 +51,23 @@ export class AuthService {
       },
     });
 
-    const token = await this.generateToken({
+    const access_token = await this.generateToken({
       userId: user.id,
       email: user.email,
       tenantId: tenant.id,
       role: user.role,
     });
 
-    return { token };
+    return { 
+      access_token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        tenantId: user.tenantId,
+      }
+    };
   }
 
   async registerParticipant(input: Omit<RegisterOrganizerInput, 'tenantName' | 'tenantSlug'>) {
@@ -89,14 +98,23 @@ export class AuthService {
       },
     });
 
-    const token = await this.generateToken({
+    const access_token = await this.generateToken({
       userId: user.id,
       email: user.email,
       tenantId: tenant.id,
       role: user.role,
     });
 
-    return { token };
+    return { 
+      access_token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        tenantId: user.tenantId,
+      }
+    };
   }
 
   async login(input: LoginInput) {
@@ -109,14 +127,23 @@ export class AuthService {
       throw new UnauthorizedException('Credenciais inválidas.');
     }
 
-    const token = await this.generateToken({
+    const access_token = await this.generateToken({
       userId: user.id,
       email: user.email,
       tenantId: user.tenantId,
       role: user.role,
     });
 
-    return { token };
+    return { 
+      access_token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        tenantId: user.tenantId,
+      }
+    };
   }
 
   private async generateToken(params: {

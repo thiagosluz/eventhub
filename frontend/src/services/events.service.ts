@@ -1,82 +1,44 @@
-import { apiClient } from '@/lib/api-client';
+import { api } from '../lib/api';
+import { Event, Ticket } from '../types/event';
 
-export interface EventModel {
-  id: string;
-  tenantId: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  location: string | null;
-  startDate: string;
-  endDate: string;
-  status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
-  bannerUrl: string | null;
-  logoUrl: string | null;
-  themeConfig: Record<string, unknown> | null;
-  seoTitle: string | null;
-  seoDescription: string | null;
-  createdAt: string;
-  updatedAt: string;
-  // Included in public event detail
-  activities?: Array<Record<string, unknown>>;
-  forms?: Array<Record<string, unknown>>;
-}
-
-export const EventsService = {
-  // ORGANIZER
-  async createEvent(data: Partial<EventModel>) {
-    const res = await apiClient.post<EventModel>('/events', data);
-    return res.data;
-  },
-  
-  async getTenantEvents() {
-    const res = await apiClient.get<EventModel[]>('/events');
-    return res.data;
+export const eventsService = {
+  getPublicEvents: async (): Promise<Event[]> => {
+    return api.get<Event[]>('/public/events');
   },
 
-  async getEventById(id: string) {
-    const res = await apiClient.get<EventModel>(`/events/${id}`);
-    return res.data;
+  getPublicEventBySlug: async (slug: string): Promise<Event> => {
+    return api.get<Event>(`/public/events/${slug}`);
   },
 
-  async updateEvent(id: string, data: Partial<EventModel>) {
-    const res = await apiClient.patch<EventModel>(`/events/${id}`, data);
-    return res.data;
+  getOrganizerEvents: async (): Promise<Event[]> => {
+    return api.get<Event[]>('/events');
   },
 
-  async uploadBanner(id: string, file: File) {
+  getOrganizerEventById: async (id: string): Promise<Event> => {
+    return api.get<Event>(`/events/${id}`);
+  },
+
+  createEvent: async (data: any): Promise<Event> => {
+    return api.post<Event>('/events', data);
+  },
+
+  updateEvent: async (id: string, data: any): Promise<Event> => {
+    return api.patch<Event>(`/events/${id}`, data);
+  },
+
+  uploadBanner: async (id: string, file: File): Promise<Event> => {
     const formData = new FormData();
     formData.append('file', file);
-    const res = await apiClient.post<EventModel>(`/events/${id}/banner`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    return res.data;
+    return api.post<Event>(`/events/${id}/banner`, formData);
   },
 
-  async uploadLogo(id: string, file: File) {
+  uploadLogo: async (id: string, file: File): Promise<Event> => {
     const formData = new FormData();
     formData.append('file', file);
-    const res = await apiClient.post<EventModel>(`/events/${id}/logo`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    return res.data;
+    return api.post<Event>(`/events/${id}/logo`, formData);
   },
 
-  // PUBLIC
-  async getPublicEvents() {
-    const res = await apiClient.get<EventModel[]>('/public/events');
-    return res.data;
+  getMyTickets: async (): Promise<Ticket[]> => {
+    return api.get<Ticket[]>('/my-tickets');
   },
-
-  async getPublicEventBySlug(slug: string) {
-    const res = await apiClient.get<EventModel>(`/public/events/${slug}`);
-    return res.data;
-  },
-
-  // PARTICIPANT
-  async getMyTickets() {
-    // Ticket model depends on backend PR, using unknown for now
-    const res = await apiClient.get<Record<string, unknown>[]>('/my-tickets');
-    return res.data;
-  }
 };
