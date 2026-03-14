@@ -41,6 +41,18 @@ let EventsService = class EventsService {
             orderBy: { createdAt: 'desc' },
         });
     }
+    async findEventById(tenantId, eventId) {
+        const event = await this.prisma.event.findFirst({
+            where: { id: eventId, tenantId },
+            include: {
+                activities: { orderBy: { startAt: 'asc' } },
+            },
+        });
+        if (!event) {
+            throw new common_1.NotFoundException('Evento não encontrado para este tenant.');
+        }
+        return event;
+    }
     async updateEvent(params) {
         const { tenantId, eventId, data } = params;
         const existing = await this.prisma.event.findFirst({
@@ -67,6 +79,23 @@ let EventsService = class EventsService {
             },
         });
     }
+    async findAllPublic() {
+        return this.prisma.event.findMany({
+            where: { status: 'PUBLISHED' },
+            orderBy: { startDate: 'asc' },
+            select: {
+                id: true,
+                name: true,
+                slug: true,
+                description: true,
+                location: true,
+                startDate: true,
+                endDate: true,
+                bannerUrl: true,
+                logoUrl: true,
+            },
+        });
+    }
     async findPublicBySlug(slug) {
         const event = await this.prisma.event.findFirst({
             where: { slug, status: 'PUBLISHED' },
@@ -84,6 +113,31 @@ let EventsService = class EventsService {
             throw new common_1.NotFoundException('Evento não encontrado.');
         }
         return event;
+    }
+    async findMyTickets(userId) {
+        return this.prisma.ticket.findMany({
+            where: {
+                registration: {
+                    userId,
+                },
+            },
+            include: {
+                event: {
+                    select: {
+                        name: true,
+                        slug: true,
+                        startDate: true,
+                        endDate: true,
+                        location: true,
+                        bannerUrl: true,
+                        logoUrl: true,
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
     }
 };
 exports.EventsService = EventsService;

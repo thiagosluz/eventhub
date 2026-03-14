@@ -26,6 +26,9 @@ let AuthController = class AuthController {
     registerOrganizer(body) {
         return this.authService.registerOrganizer(body);
     }
+    registerParticipant(body) {
+        return this.authService.registerParticipant(body);
+    }
     login(body) {
         return this.authService.login(body);
     }
@@ -38,6 +41,13 @@ __decorate([
     __metadata("design:paramtypes", [RegisterOrganizerDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "registerOrganizer", null);
+__decorate([
+    (0, common_1.Post)('register-participant'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "registerParticipant", null);
 __decorate([
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),

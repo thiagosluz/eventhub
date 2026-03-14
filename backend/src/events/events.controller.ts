@@ -68,6 +68,17 @@ export class EventsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
+  @Get('events/:id')
+  async getEvent(@Param('id') id: string, @Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) {
+      throw new Error('Missing tenantId on token payload.');
+    }
+    return this.eventsService.findEventById(tenantId, id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
   @Patch('events/:id')
   async updateEvent(
     @Param('id') id: string,
@@ -145,6 +156,11 @@ export class EventsController {
       eventId: id,
       data: { logoUrl: url },
     });
+  }
+
+  @Get('public/events')
+  async listPublicEvents() {
+    return this.eventsService.findAllPublic();
   }
 
   @Get('public/events/:slug')

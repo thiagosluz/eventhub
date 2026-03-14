@@ -46,6 +46,19 @@ export class EventsService {
     });
   }
 
+  async findEventById(tenantId: string, eventId: string) {
+    const event = await this.prisma.event.findFirst({
+      where: { id: eventId, tenantId },
+      include: {
+        activities: { orderBy: { startAt: 'asc' } },
+      },
+    });
+    if (!event) {
+      throw new NotFoundException('Evento não encontrado para este tenant.');
+    }
+    return event;
+  }
+
   async updateEvent(params: {
     tenantId: string;
     eventId: string;
@@ -89,6 +102,24 @@ export class EventsService {
         bannerUrl: data.bannerUrl,
         logoUrl: data.logoUrl,
         status: data.status,
+      },
+    });
+  }
+
+  async findAllPublic() {
+    return this.prisma.event.findMany({
+      where: { status: 'PUBLISHED' },
+      orderBy: { startDate: 'asc' },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        description: true,
+        location: true,
+        startDate: true,
+        endDate: true,
+        bannerUrl: true,
+        logoUrl: true,
       },
     });
   }

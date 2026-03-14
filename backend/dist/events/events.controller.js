@@ -47,6 +47,14 @@ let EventsController = class EventsController {
         }
         return this.eventsService.listEventsForTenant(tenantId);
     }
+    async getEvent(id, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId) {
+            throw new Error('Missing tenantId on token payload.');
+        }
+        return this.eventsService.findEventById(tenantId, id);
+    }
     async updateEvent(id, body, req) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
@@ -97,8 +105,19 @@ let EventsController = class EventsController {
             data: { logoUrl: url },
         });
     }
+    async listPublicEvents() {
+        return this.eventsService.findAllPublic();
+    }
     async getPublicEvent(slug) {
         return this.eventsService.findPublicBySlug(slug);
+    }
+    async getMyTickets(req) {
+        var _a;
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
+        if (!userId) {
+            throw new Error('Missing user id on token payload.');
+        }
+        return this.eventsService.findMyTickets(userId);
     }
 };
 exports.EventsController = EventsController;
@@ -121,6 +140,16 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "listEvents", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Get)('events/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], EventsController.prototype, "getEvent", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
@@ -157,12 +186,26 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "uploadLogo", null);
 __decorate([
+    (0, common_1.Get)('public/events'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], EventsController.prototype, "listPublicEvents", null);
+__decorate([
     (0, common_1.Get)('public/events/:slug'),
     __param(0, (0, common_1.Param)('slug')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "getPublicEvent", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('my-tickets'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], EventsController.prototype, "getMyTickets", null);
 exports.EventsController = EventsController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [events_service_1.EventsService,

@@ -83,6 +83,37 @@ let AuthService = class AuthService {
         });
         return { token };
     }
+    async registerParticipant(input) {
+        const existingUser = await this.prisma.user.findUnique({
+            where: { email: input.email },
+        });
+        if (existingUser) {
+            throw new common_1.UnauthorizedException('Email já está em uso.');
+        }
+        const passwordHash = await argon2.hash(input.password);
+        const tenant = await this.prisma.tenant.create({
+            data: {
+                name: `Participant ${input.name}`,
+                slug: `participant-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+            },
+        });
+        const user = await this.prisma.user.create({
+            data: {
+                email: input.email,
+                name: input.name,
+                password: passwordHash,
+                role: 'PARTICIPANT',
+                tenantId: tenant.id,
+            },
+        });
+        const token = await this.generateToken({
+            userId: user.id,
+            email: user.email,
+            tenantId: tenant.id,
+            role: user.role,
+        });
+        return { token };
+    }
     async login(input) {
         const user = await this.prisma.user.findUnique({
             where: { email: input.email },

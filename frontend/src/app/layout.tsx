@@ -1,16 +1,22 @@
-import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
-import "./globals.css";
-import { Providers } from "@/components/providers";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { Providers } from '@/components/providers/query-provider';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+});
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "EventHub | Premium Event Management",
-  description: "A plataforma definitiva para gerenciar e descobrir eventos incríveis.",
+  title: 'EventHub',
+  description: 'Gerenciamento Completo de Eventos',
 };
 
 export default function RootLayout({
@@ -20,15 +26,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={`${jakarta.variable} font-sans antialiased selection:bg-primary/30 selection:text-primary`}>
-        <Providers>
-          <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md shadow-lg">
-            Pular para o conteúdo
-          </a>
-          <div className="relative flex min-h-screen flex-col bg-background text-foreground">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Providers>
             {children}
-          </div>
-        </Providers>
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );
