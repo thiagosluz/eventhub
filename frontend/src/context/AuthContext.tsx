@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User, AuthResponse } from "../types/auth";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 interface AuthContextType {
   user: User | null;
@@ -27,6 +28,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (storedUser && storedToken) {
       try {
         setUser(JSON.parse(storedUser));
+        // Ensure cookie matches for SSR
+        if (!Cookies.get("eventhub_token")) {
+          Cookies.set("eventhub_token", storedToken, { expires: 7 });
+        }
       } catch (e) {
         localStorage.removeItem("eventhub_user");
         localStorage.removeItem("eventhub_token");
@@ -39,12 +44,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(authData.user);
     localStorage.setItem("eventhub_user", JSON.stringify(authData.user));
     localStorage.setItem("eventhub_token", authData.access_token);
+    // Sync with cookie for server-side auth
+    Cookies.set("eventhub_token", authData.access_token, { expires: 7 });
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("eventhub_user");
     localStorage.removeItem("eventhub_token");
+    Cookies.remove("eventhub_token");
     router.push("/");
   };
 

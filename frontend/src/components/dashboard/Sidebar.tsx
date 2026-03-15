@@ -10,12 +10,16 @@ import {
   Cog6ToothIcon,
   AcademicCapIcon,
   ChevronLeftIcon,
-  PlusIcon
+  PlusIcon,
+  UserIcon, // Added UserIcon
+  ChartBarIcon // Added ChartBarIcon
 } from "@heroicons/react/24/outline";
 
 const navigation = [
   { name: "Visão Geral", href: "/dashboard", icon: HomeIcon },
   { name: "Meus Eventos", href: "/dashboard/events", icon: CalendarIcon },
+  { name: "Palestrantes", href: "/dashboard/speakers", icon: UserIcon }, // Changed to UserIcon
+  { name: "Branding", href: "/dashboard/settings/branding", icon: ChartBarIcon }, // Added new item
   { name: "Inscritos", href: "/dashboard/participants", icon: UsersIcon },
   { name: "Revisões", href: "/dashboard/reviews", icon: AcademicCapIcon },
   { name: "Financeiro", href: "/dashboard/finance", icon: CreditCardIcon },

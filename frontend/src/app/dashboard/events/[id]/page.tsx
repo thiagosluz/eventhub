@@ -13,7 +13,9 @@ import {
   CalendarIcon,
   MapPinIcon,
   InformationCircleIcon,
-  AcademicCapIcon
+  AcademicCapIcon,
+  QrCodeIcon,
+  SparklesIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -300,6 +302,53 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
               <AcademicCapIcon className="w-4 h-4" />
               GERENCIAR CERTIFICADOS
             </Link>
+          </div>
+
+          <div className="premium-card p-6 bg-indigo-500/5 border-indigo-500/10 space-y-4">
+            <h3 className="text-sm font-black uppercase tracking-tight text-indigo-600">Programação (Grade)</h3>
+            <p className="text-xs text-muted-foreground font-medium">Crie palestras, oficinas e painéis para o seu evento.</p>
+            <Link 
+              href={`/dashboard/events/${id}/activities`} 
+              className="premium-button !bg-indigo-600 hover:!bg-indigo-700 !shadow-indigo-200 !py-2.5 !text-[10px] !font-black flex items-center justify-center gap-2"
+            >
+              <CalendarIcon className="w-4 h-4" />
+              MONTAR GRADE / HORÁRIOS
+            </Link>
+          </div>
+
+          <div className="premium-card p-6 bg-primary/5 border-primary/10 space-y-6">
+            <div className="space-y-1">
+              <h3 className="text-sm font-black uppercase tracking-tight text-primary">Operações ao Vivo</h3>
+              <p className="text-[10px] text-muted-foreground font-bold">Ferramentas para o dia do evento.</p>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-3">
+              <Link 
+                href={`/dashboard/events/${id}/operations/checkin`}
+                className="flex items-center gap-3 p-3 rounded-xl bg-white border border-border hover:border-primary hover:shadow-lg hover:shadow-primary/5 transition-all group"
+              >
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                  <QrCodeIcon className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-black text-foreground">Scanner Check-in</p>
+                  <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest leading-none">Validar Ingressos</p>
+                </div>
+              </Link>
+
+              <Link 
+                href={`/dashboard/events/${id}/operations/raffle`}
+                className="flex items-center gap-3 p-3 rounded-xl bg-white border border-border hover:border-primary hover:shadow-lg hover:shadow-primary/5 transition-all group"
+              >
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                  <SparklesIcon className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-black text-foreground">Sorteador</p>
+                  <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest leading-none">Ganhadores ao Vivo</p>
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

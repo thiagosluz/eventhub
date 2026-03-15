@@ -46,9 +46,11 @@ exports.CheckinService = void 0;
 const common_1 = require("@nestjs/common");
 const QRCode = __importStar(require("qrcode"));
 const prisma_service_1 = require("../prisma/prisma.service");
+const mail_service_1 = require("../mail/mail.service");
 let CheckinService = class CheckinService {
-    constructor(prisma) {
+    constructor(prisma, mailService) {
         this.prisma = prisma;
+        this.mailService = mailService;
     }
     async getQrCodePng(ticketId, userId) {
         const ticket = await this.prisma.ticket.findFirst({
@@ -93,7 +95,36 @@ let CheckinService = class CheckinService {
                 ticketId: ticket.id,
                 activityId: activityId !== null && activityId !== void 0 ? activityId : undefined,
             },
+            include: {
+                ticket: {
+                    include: {
+                        registration: {
+                            include: { user: true, event: true }
+                        }
+                    }
+                }
+            }
         });
+        const user = attendance.ticket.registration.user;
+        const event = attendance.ticket.registration.event;
+        if (user.email) {
+            await this.mailService.enqueue({
+                to: user.email,
+                subject: `Check-in Realizado: ${event.name}`,
+                text: `Olá ${user.name},\n\nSeu check-in no evento "${event.name}" foi realizado com sucesso!\n\nAproveite o evento!`,
+                html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #10b981; border-radius: 12px;">
+            <h1 style="color: #10b981;">Check-in Confirmado! ✅</h1>
+            <p>Olá <strong>${user.name}</strong>,</p>
+            <p>Seu check-in no evento <strong>${event.name}</strong> acaba de ser realizado.</p>
+            <div style="background: #ecfdf5; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #10b981;">
+              <p style="margin: 0; color: #065f46;"><strong>Presença confirmada em:</strong> ${new Date().toLocaleString('pt-BR')}</p>
+            </div>
+            <p>Desejamos que você tenha uma excelente experiência!</p>
+          </div>
+        `,
+            });
+        }
         return { alreadyCheckedIn: false, attendanceId: attendance.id };
     }
     async drawRaffle(params) {
@@ -140,6 +171,7 @@ let CheckinService = class CheckinService {
 exports.CheckinService = CheckinService;
 exports.CheckinService = CheckinService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        mail_service_1.MailService])
 ], CheckinService);
 //# sourceMappingURL=checkin.service.js.map

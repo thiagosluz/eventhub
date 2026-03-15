@@ -4,8 +4,20 @@ class ApiClient {
   private async request<T>(path: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE_URL}${path}`;
     
-    // Get token from localStorage
-    const token = typeof window !== 'undefined' ? localStorage.getItem('eventhub_token') : null;
+    let token = null;
+
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('eventhub_token');
+    } else {
+      // Server-side: Try to get from next/headers
+      try {
+        const { cookies } = await import('next/headers');
+        const cookieStore = await cookies();
+        token = cookieStore.get('eventhub_token')?.value;
+      } catch (e) {
+        // Fallback or silence if not in a request context
+      }
+    }
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',

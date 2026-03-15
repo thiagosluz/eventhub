@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -100,6 +101,21 @@ export class ActivitiesController {
       userId,
       activityId,
     });
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Delete('activities/:activityId')
+  async deleteActivity(
+    @Param('activityId') activityId: string,
+    @Req() req: AuthRequest,
+  ) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) {
+      throw new Error('Missing tenantId on token payload.');
+    }
+
+    return this.activities.deleteActivity(tenantId, activityId);
   }
 }
 

@@ -269,5 +269,27 @@ export class ActivitiesService {
       include: { enrollments: true },
     });
   }
+
+  async deleteActivity(tenantId: string, activityId: string) {
+    const activity = await this.prisma.activity.findFirst({
+      where: {
+        id: activityId,
+        event: { tenantId },
+      },
+    });
+
+    if (!activity) {
+      throw new NotFoundException('Atividade não encontrada para este tenant.');
+    }
+
+    // ActivitySpeakers and ActivityEnrollments and Attendances should be deleted
+    await this.prisma.activitySpeaker.deleteMany({ where: { activityId } });
+    await this.prisma.activityEnrollment.deleteMany({ where: { activityId } });
+    await this.prisma.attendance.deleteMany({ where: { activityId } });
+
+    return this.prisma.activity.delete({
+      where: { id: activityId },
+    });
+  }
 }
 

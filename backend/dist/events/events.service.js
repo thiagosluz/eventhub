@@ -19,6 +19,17 @@ let EventsService = class EventsService {
     async createEvent(params) {
         var _a;
         const { tenantId, data } = params;
+        const existing = await this.prisma.event.findFirst({
+            where: { tenantId, slug: data.slug },
+        });
+        if (existing) {
+            throw new Error('Já existe um evento com este slug para a sua organização.');
+        }
+        const start = new Date(data.startDate);
+        const end = new Date(data.endDate);
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+            throw new Error('As datas de início e término devem ser válidas.');
+        }
         return this.prisma.event.create({
             data: {
                 tenantId,
@@ -26,8 +37,8 @@ let EventsService = class EventsService {
                 slug: data.slug,
                 description: data.description,
                 location: data.location,
-                startDate: new Date(data.startDate),
-                endDate: new Date(data.endDate),
+                startDate: start,
+                endDate: end,
                 seoTitle: data.seoTitle,
                 seoDescription: data.seoDescription,
                 themeConfig: data.themeConfig,
@@ -68,8 +79,8 @@ let EventsService = class EventsService {
                 slug: data.slug,
                 description: data.description,
                 location: data.location,
-                startDate: data.startDate ? new Date(data.startDate) : undefined,
-                endDate: data.endDate ? new Date(data.endDate) : undefined,
+                startDate: data.startDate ? (isNaN(new Date(data.startDate).getTime()) ? (() => { throw new Error('Data de início inválida'); })() : new Date(data.startDate)) : undefined,
+                endDate: data.endDate ? (isNaN(new Date(data.endDate).getTime()) ? (() => { throw new Error('Data de término inválida'); })() : new Date(data.endDate)) : undefined,
                 seoTitle: data.seoTitle,
                 seoDescription: data.seoDescription,
                 themeConfig: data.themeConfig,
@@ -96,11 +107,25 @@ let EventsService = class EventsService {
             },
         });
     }
-    async findPublicBySlug(slug) {
+    async findPublicBySlug(slug, organizerTenantId) {
         const event = await this.prisma.event.findFirst({
-            where: { slug, status: 'PUBLISHED' },
+            where: {
+                slug,
+                OR: [
+                    { status: 'PUBLISHED' },
+                    ...(organizerTenantId ? [{ tenantId: organizerTenantId }] : []),
+                ],
+            },
             include: {
                 activities: { orderBy: { startAt: 'asc' } },
+                tenant: {
+                    select: {
+                        id: true,
+                        name: true,
+                        logoUrl: true,
+                        themeConfig: true,
+                    }
+                },
                 forms: {
                     where: { type: 'REGISTRATION' },
                     include: {
@@ -113,6 +138,32 @@ let EventsService = class EventsService {
             throw new common_1.NotFoundException('Evento não encontrado.');
         }
         return event;
+    }
+    async listParticipants(tenantId, filters) {
+        const { eventId, search, status } = filters;
+        return this.prisma.registration.findMany({
+            where: {
+                event: {
+                    tenantId,
+                    ...(eventId ? { id: eventId } : {}),
+                },
+                ...(status ? { status } : {}),
+                ...(search ? {
+                    user: {
+                        OR: [
+                            { name: { contains: search, mode: 'insensitive' } },
+                            { email: { contains: search, mode: 'insensitive' } },
+                        ],
+                    },
+                } : {}),
+            },
+            include: {
+                user: { select: { id: true, name: true, email: true } },
+                event: { select: { name: true } },
+                tickets: { select: { type: true, status: true } },
+            },
+            orderBy: { createdAt: 'desc' },
+        });
     }
     async findMyTickets(userId) {
         return this.prisma.ticket.findMany({

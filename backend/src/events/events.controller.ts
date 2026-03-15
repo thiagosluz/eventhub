@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -19,6 +20,7 @@ import { UserRole } from '../auth/roles.types';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { JwtService } from '@nestjs/jwt';
 import { MinioService } from '../storage/minio.service';
 
 interface AuthRequest extends Request {
@@ -35,6 +37,7 @@ export class EventsController {
   constructor(
     private readonly eventsService: EventsService,
     private readonly minioService: MinioService,
+    private readonly jwtService: JwtService,
   ) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -47,10 +50,17 @@ export class EventsController {
       throw new Error('Missing tenantId on token payload.');
     }
 
-    return this.eventsService.createEvent({
-      tenantId,
-      data: body,
-    });
+    try {
+      return await this.eventsService.createEvent({
+        tenantId,
+        data: body,
+      });
+    } catch (error: any) {
+      if (error.message?.includes('slug')) {
+        throw new BadRequestException(error.message);
+      }
+      throw error;
+    }
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -96,6 +106,17 @@ export class EventsController {
       eventId: id,
       data: body,
     });
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get('participants')
+  async listParticipants(@Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) {
+      throw new Error('Tenant missing');
+    }
+    return this.eventsService.listParticipants(tenantId, {});
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -164,8 +185,24 @@ export class EventsController {
   }
 
   @Get('public/events/:slug')
-  async getPublicEvent(@Param('slug') slug: string) {
-    return this.eventsService.findPublicBySlug(slug);
+  async getPublicEvent(@Param('slug') slug: string, @Req() req: Request) {
+    // Optional auth extraction for preview mode
+    let organizerTenantId: string | undefined;
+    const authHeader = req.headers['authorization'];
+    
+    if (authHeader && typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
+      try {
+        const token = authHeader.split(' ')[1];
+        const decoded = this.jwtService.decode(token) as any;
+        if (decoded && decoded.tenantId) {
+          organizerTenantId = decoded.tenantId;
+        }
+      } catch (e) {
+        // Ignore invalid tokens for public route
+      }
+    }
+
+    return this.eventsService.findPublicBySlug(slug, organizerTenantId);
   }
 
   @UseGuards(JwtAuthGuard)

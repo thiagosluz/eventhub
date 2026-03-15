@@ -16,12 +16,15 @@ interface CheckoutInput {
   formResponses?: FormResponseInput[];
 }
 
+import { MailService } from '../mail/mail.service';
+
 @Injectable()
 export class CheckoutService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly activitiesService: ActivitiesService,
     private readonly freeTicketStrategy: FreeTicketStrategy,
+    private readonly mailService: MailService,
   ) {}
 
   async processCheckout(input: CheckoutInput): Promise<{
@@ -86,6 +89,31 @@ export class CheckoutService {
           });
         }
       }
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (user?.email) {
+      await this.mailService.enqueue({
+        to: user.email,
+        subject: `Inscrição Confirmada: ${event.name}`,
+        text: `Olá ${user.name || 'Participante'},\n\nSua inscrição no evento "${event.name}" foi confirmada com sucesso!\n\nVocê pode acessar seus ingressos no dashboard do EventHub.`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; rounded: 12px;">
+            <h1 style="color: #10b981;">Inscrição Confirmada!</h1>
+            <p>Olá <strong>${user.name || 'Participante'}</strong>,</p>
+            <p>Sua inscrição no evento <strong>${event.name}</strong> foi realizada com sucesso.</p>
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin: 20px 0;">
+              <p style="margin: 0;"><strong>Evento:</strong> ${event.name}</p>
+              <p style="margin: 5px 0 0 0;"><strong>Local:</strong> ${event.location || 'A definir'}</p>
+            </div>
+            <p>Acesse seu painel para visualizar seus ingressos e QR Codes.</p>
+            <a href="${process.env.FRONTEND_URL || 'http://localhost:3001'}/dashboard/my-tickets" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px;">Ver Meus Ingressos</a>
+          </div>
+        `,
+      });
     }
 
     return {

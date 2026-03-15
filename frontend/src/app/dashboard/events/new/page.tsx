@@ -38,7 +38,11 @@ export default function NewEventPage() {
       const newData = { ...prev, [name]: value };
       // Auto-generate slug from name if step 1
       if (name === "name" && step === 1) {
-        newData.slug = value.toLowerCase().replace(/ /g, "-").replace(/[^\w-]/g, "");
+        newData.slug = value.toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/ /g, "-")
+          .replace(/[^\w-]/g, "");
       }
       return newData;
     });
@@ -52,11 +56,33 @@ export default function NewEventPage() {
     setIsLoading(true);
     setError("");
 
+    const { startDate, endDate } = formData;
+    if (!startDate || !endDate) {
+      setError("As datas de início e término são obrigatórias.");
+      setIsLoading(false);
+      return;
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      setError("As datas fornecidas são inválidas.");
+      setIsLoading(false);
+      return;
+    }
+
+    if (start >= end) {
+      setError("A data de término deve ser posterior à data de início.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const createdEvent = await eventsService.createEvent(formData);
-      router.push(`/dashboard/events/${createdEvent.id}/edit?success=true`);
+      router.push(`/dashboard/events/${createdEvent.id}?success=true`);
     } catch (err: any) {
-      setError(err.message || "Erro ao criar evento. Verifique os dados e tente novamente.");
+      setError(err.response?.data?.message || err.message || "Erro ao criar evento. Verifique os dados e tente novamente.");
     } finally {
       setIsLoading(false);
     }

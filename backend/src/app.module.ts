@@ -6,7 +6,6 @@ import { EventsController } from './events/events.controller';
 import { EventsService } from './events/events.service';
 import { ActivitiesController } from './activities/activities.controller';
 import { ActivitiesService } from './activities/activities.service';
-import { PrismaService } from './prisma/prisma.service';
 import { MinioService } from './storage/minio.service';
 import { SubmissionsController } from './submissions/submissions.controller';
 import { SubmissionsService } from './submissions/submissions.service';
@@ -21,10 +20,18 @@ import { MailProcessor } from './mail/mail.processor';
 import { CertificatesController } from './certificates/certificates.controller';
 import { CertificatePdfService } from './certificates/certificate-pdf.service';
 import { CertificateTemplatesService } from './certificates/certificate-templates.service';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { SpeakersModule } from './speakers/speakers.module';
+import { TenantsModule } from './tenants/tenants.module';
 
 @Module({
   imports: [
     AuthModule,
+    DashboardModule,
+    PrismaModule,
+    SpeakersModule,
+    TenantsModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST ?? 'localhost',
@@ -48,7 +55,6 @@ import { CertificateTemplatesService } from './certificates/certificate-template
   providers: [
     EventsService,
     ActivitiesService,
-    PrismaService,
     MinioService,
     SubmissionsService,
     AssignReviewsProcessor,

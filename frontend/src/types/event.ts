@@ -1,5 +1,14 @@
 export type EventStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
 
+export interface Speaker {
+  id: string;
+  name: string;
+  bio?: string;
+  avatarUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Tenant {
   id: string;
   name: string;

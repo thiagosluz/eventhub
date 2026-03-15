@@ -14,11 +14,13 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const activities_service_1 = require("../activities/activities.service");
 const free_ticket_strategy_1 = require("./free-ticket.strategy");
+const mail_service_1 = require("../mail/mail.service");
 let CheckoutService = class CheckoutService {
-    constructor(prisma, activitiesService, freeTicketStrategy) {
+    constructor(prisma, activitiesService, freeTicketStrategy, mailService) {
         this.prisma = prisma;
         this.activitiesService = activitiesService;
         this.freeTicketStrategy = freeTicketStrategy;
+        this.mailService = mailService;
     }
     async processCheckout(input) {
         var _a;
@@ -74,6 +76,29 @@ let CheckoutService = class CheckoutService {
                 }
             }
         }
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+        });
+        if (user === null || user === void 0 ? void 0 : user.email) {
+            await this.mailService.enqueue({
+                to: user.email,
+                subject: `Inscrição Confirmada: ${event.name}`,
+                text: `Olá ${user.name || 'Participante'},\n\nSua inscrição no evento "${event.name}" foi confirmada com sucesso!\n\nVocê pode acessar seus ingressos no dashboard do EventHub.`,
+                html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; rounded: 12px;">
+            <h1 style="color: #10b981;">Inscrição Confirmada!</h1>
+            <p>Olá <strong>${user.name || 'Participante'}</strong>,</p>
+            <p>Sua inscrição no evento <strong>${event.name}</strong> foi realizada com sucesso.</p>
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin: 20px 0;">
+              <p style="margin: 0;"><strong>Evento:</strong> ${event.name}</p>
+              <p style="margin: 5px 0 0 0;"><strong>Local:</strong> ${event.location || 'A definir'}</p>
+            </div>
+            <p>Acesse seu painel para visualizar seus ingressos e QR Codes.</p>
+            <a href="${process.env.FRONTEND_URL || 'http://localhost:3001'}/dashboard/my-tickets" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px;">Ver Meus Ingressos</a>
+          </div>
+        `,
+            });
+        }
         return {
             registrationId: registration.id,
             payment,
@@ -85,6 +110,7 @@ exports.CheckoutService = CheckoutService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         activities_service_1.ActivitiesService,
-        free_ticket_strategy_1.FreeTicketStrategy])
+        free_ticket_strategy_1.FreeTicketStrategy,
+        mail_service_1.MailService])
 ], CheckoutService);
 //# sourceMappingURL=checkout.service.js.map

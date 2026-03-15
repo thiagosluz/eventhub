@@ -22,22 +22,32 @@ const roles_types_1 = require("../auth/roles.types");
 const events_service_1 = require("./events.service");
 const create_event_dto_1 = require("./dto/create-event.dto");
 const update_event_dto_1 = require("./dto/update-event.dto");
+const jwt_1 = require("@nestjs/jwt");
 const minio_service_1 = require("../storage/minio.service");
 let EventsController = class EventsController {
-    constructor(eventsService, minioService) {
+    constructor(eventsService, minioService, jwtService) {
         this.eventsService = eventsService;
         this.minioService = minioService;
+        this.jwtService = jwtService;
     }
     async createEvent(body, req) {
-        var _a;
+        var _a, _b;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
             throw new Error('Missing tenantId on token payload.');
         }
-        return this.eventsService.createEvent({
-            tenantId,
-            data: body,
-        });
+        try {
+            return await this.eventsService.createEvent({
+                tenantId,
+                data: body,
+            });
+        }
+        catch (error) {
+            if ((_b = error.message) === null || _b === void 0 ? void 0 : _b.includes('slug')) {
+                throw new common_1.BadRequestException(error.message);
+            }
+            throw error;
+        }
     }
     async listEvents(req) {
         var _a;
@@ -66,6 +76,14 @@ let EventsController = class EventsController {
             eventId: id,
             data: body,
         });
+    }
+    async listParticipants(req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId) {
+            throw new Error('Tenant missing');
+        }
+        return this.eventsService.listParticipants(tenantId, {});
     }
     async uploadBanner(id, file, req) {
         var _a;
@@ -108,8 +126,21 @@ let EventsController = class EventsController {
     async listPublicEvents() {
         return this.eventsService.findAllPublic();
     }
-    async getPublicEvent(slug) {
-        return this.eventsService.findPublicBySlug(slug);
+    async getPublicEvent(slug, req) {
+        let organizerTenantId;
+        const authHeader = req.headers['authorization'];
+        if (authHeader && typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
+            try {
+                const token = authHeader.split(' ')[1];
+                const decoded = this.jwtService.decode(token);
+                if (decoded && decoded.tenantId) {
+                    organizerTenantId = decoded.tenantId;
+                }
+            }
+            catch (e) {
+            }
+        }
+        return this.eventsService.findPublicBySlug(slug, organizerTenantId);
     }
     async getMyTickets(req) {
         var _a;
@@ -164,6 +195,15 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Get)('participants'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], EventsController.prototype, "listParticipants", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     (0, common_1.Post)('events/:id/banner'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.Param)('id')),
@@ -194,8 +234,9 @@ __decorate([
 __decorate([
     (0, common_1.Get)('public/events/:slug'),
     __param(0, (0, common_1.Param)('slug')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "getPublicEvent", null);
 __decorate([
@@ -209,6 +250,7 @@ __decorate([
 exports.EventsController = EventsController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [events_service_1.EventsService,
-        minio_service_1.MinioService])
+        minio_service_1.MinioService,
+        jwt_1.JwtService])
 ], EventsController);
 //# sourceMappingURL=events.controller.js.map
