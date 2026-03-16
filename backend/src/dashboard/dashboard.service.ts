@@ -108,6 +108,47 @@ export class DashboardService {
       ticketsSold: ticketsSoldCount,
       recentActivities,
       eventSales,
+      timeSeriesData: await this.getTimeSeriesData(tenantId),
     };
+  }
+
+  private async getTimeSeriesData(tenantId: string) {
+    const days = 30;
+    const timeSeriesData = [];
+    const now = new Date();
+
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date(now);
+      date.setDate(date.getDate() - i);
+      date.setHours(0, 0, 0, 0);
+
+      const nextDay = new Date(date);
+      nextDay.setDate(nextDay.getDate() + 1);
+
+      const [revenueData, salesCount] = await Promise.all([
+        this.prisma.ticket.aggregate({
+          _sum: { price: true },
+          where: {
+            event: { tenantId },
+            status: 'COMPLETED',
+            createdAt: { gte: date, lt: nextDay },
+          },
+        }),
+        this.prisma.registration.count({
+          where: {
+            event: { tenantId },
+            createdAt: { gte: date, lt: nextDay },
+          },
+        }),
+      ]);
+
+      timeSeriesData.push({
+        date: date.toISOString().split('T')[0],
+        revenue: Number(revenueData._sum.price || 0),
+        sales: salesCount,
+      });
+    }
+
+    return timeSeriesData;
   }
 }

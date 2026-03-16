@@ -192,8 +192,11 @@ exports.Prisma.SpeakerScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
+  email: 'email',
   bio: 'bio',
   avatarUrl: 'avatarUrl',
+  linkedinUrl: 'linkedinUrl',
+  websiteUrl: 'websiteUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

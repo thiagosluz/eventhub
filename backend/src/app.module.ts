@@ -6,7 +6,6 @@ import { EventsController } from './events/events.controller';
 import { EventsService } from './events/events.service';
 import { ActivitiesController } from './activities/activities.controller';
 import { ActivitiesService } from './activities/activities.service';
-import { MinioService } from './storage/minio.service';
 import { SubmissionsController } from './submissions/submissions.controller';
 import { SubmissionsService } from './submissions/submissions.service';
 import { AssignReviewsProcessor } from './submissions/submissions.processor';
@@ -25,6 +24,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { SpeakersModule } from './speakers/speakers.module';
 import { TenantsModule } from './tenants/tenants.module';
 import { FormsModule } from './forms/forms.module';
+import { StorageModule } from './storage/storage.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -34,6 +35,8 @@ import { FormsModule } from './forms/forms.module';
     SpeakersModule,
     TenantsModule,
     FormsModule,
+    StorageModule,
+    AnalyticsModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST ?? 'localhost',
@@ -57,7 +60,6 @@ import { FormsModule } from './forms/forms.module';
   providers: [
     EventsService,
     ActivitiesService,
-    MinioService,
     SubmissionsService,
     AssignReviewsProcessor,
     CheckoutService,

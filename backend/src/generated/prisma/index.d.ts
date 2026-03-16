@@ -10551,8 +10551,11 @@ export namespace Prisma {
     id: string | null
     tenantId: string | null
     name: string | null
+    email: string | null
     bio: string | null
     avatarUrl: string | null
+    linkedinUrl: string | null
+    websiteUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10561,8 +10564,11 @@ export namespace Prisma {
     id: string | null
     tenantId: string | null
     name: string | null
+    email: string | null
     bio: string | null
     avatarUrl: string | null
+    linkedinUrl: string | null
+    websiteUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10571,8 +10577,11 @@ export namespace Prisma {
     id: number
     tenantId: number
     name: number
+    email: number
     bio: number
     avatarUrl: number
+    linkedinUrl: number
+    websiteUrl: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -10583,8 +10592,11 @@ export namespace Prisma {
     id?: true
     tenantId?: true
     name?: true
+    email?: true
     bio?: true
     avatarUrl?: true
+    linkedinUrl?: true
+    websiteUrl?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10593,8 +10605,11 @@ export namespace Prisma {
     id?: true
     tenantId?: true
     name?: true
+    email?: true
     bio?: true
     avatarUrl?: true
+    linkedinUrl?: true
+    websiteUrl?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10603,8 +10618,11 @@ export namespace Prisma {
     id?: true
     tenantId?: true
     name?: true
+    email?: true
     bio?: true
     avatarUrl?: true
+    linkedinUrl?: true
+    websiteUrl?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -10686,8 +10704,11 @@ export namespace Prisma {
     id: string
     tenantId: string
     name: string
+    email: string | null
     bio: string | null
     avatarUrl: string | null
+    linkedinUrl: string | null
+    websiteUrl: string | null
     createdAt: Date
     updatedAt: Date
     _count: SpeakerCountAggregateOutputType | null
@@ -10713,8 +10734,11 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     name?: boolean
+    email?: boolean
     bio?: boolean
     avatarUrl?: boolean
+    linkedinUrl?: boolean
+    websiteUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
@@ -10726,8 +10750,11 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     name?: boolean
+    email?: boolean
     bio?: boolean
     avatarUrl?: boolean
+    linkedinUrl?: boolean
+    websiteUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
@@ -10737,8 +10764,11 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     name?: boolean
+    email?: boolean
     bio?: boolean
     avatarUrl?: boolean
+    linkedinUrl?: boolean
+    websiteUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
@@ -10748,13 +10778,16 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     name?: boolean
+    email?: boolean
     bio?: boolean
     avatarUrl?: boolean
+    linkedinUrl?: boolean
+    websiteUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SpeakerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "name" | "bio" | "avatarUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["speaker"]>
+  export type SpeakerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "name" | "email" | "bio" | "avatarUrl" | "linkedinUrl" | "websiteUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["speaker"]>
   export type SpeakerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     activities?: boolean | Speaker$activitiesArgs<ExtArgs>
@@ -10777,8 +10810,11 @@ export namespace Prisma {
       id: string
       tenantId: string
       name: string
+      email: string | null
       bio: string | null
       avatarUrl: string | null
+      linkedinUrl: string | null
+      websiteUrl: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["speaker"]>
@@ -11209,8 +11245,11 @@ export namespace Prisma {
     readonly id: FieldRef<"Speaker", 'String'>
     readonly tenantId: FieldRef<"Speaker", 'String'>
     readonly name: FieldRef<"Speaker", 'String'>
+    readonly email: FieldRef<"Speaker", 'String'>
     readonly bio: FieldRef<"Speaker", 'String'>
     readonly avatarUrl: FieldRef<"Speaker", 'String'>
+    readonly linkedinUrl: FieldRef<"Speaker", 'String'>
+    readonly websiteUrl: FieldRef<"Speaker", 'String'>
     readonly createdAt: FieldRef<"Speaker", 'DateTime'>
     readonly updatedAt: FieldRef<"Speaker", 'DateTime'>
   }
@@ -26338,8 +26377,11 @@ export namespace Prisma {
     id: 'id',
     tenantId: 'tenantId',
     name: 'name',
+    email: 'email',
     bio: 'bio',
     avatarUrl: 'avatarUrl',
+    linkedinUrl: 'linkedinUrl',
+    websiteUrl: 'websiteUrl',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -27273,8 +27315,11 @@ export namespace Prisma {
     id?: StringFilter<"Speaker"> | string
     tenantId?: StringFilter<"Speaker"> | string
     name?: StringFilter<"Speaker"> | string
+    email?: StringNullableFilter<"Speaker"> | string | null
     bio?: StringNullableFilter<"Speaker"> | string | null
     avatarUrl?: StringNullableFilter<"Speaker"> | string | null
+    linkedinUrl?: StringNullableFilter<"Speaker"> | string | null
+    websiteUrl?: StringNullableFilter<"Speaker"> | string | null
     createdAt?: DateTimeFilter<"Speaker"> | Date | string
     updatedAt?: DateTimeFilter<"Speaker"> | Date | string
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
@@ -27285,8 +27330,11 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     name?: SortOrder
+    email?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
     avatarUrl?: SortOrderInput | SortOrder
+    linkedinUrl?: SortOrderInput | SortOrder
+    websiteUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tenant?: TenantOrderByWithRelationInput
@@ -27300,8 +27348,11 @@ export namespace Prisma {
     NOT?: SpeakerWhereInput | SpeakerWhereInput[]
     tenantId?: StringFilter<"Speaker"> | string
     name?: StringFilter<"Speaker"> | string
+    email?: StringNullableFilter<"Speaker"> | string | null
     bio?: StringNullableFilter<"Speaker"> | string | null
     avatarUrl?: StringNullableFilter<"Speaker"> | string | null
+    linkedinUrl?: StringNullableFilter<"Speaker"> | string | null
+    websiteUrl?: StringNullableFilter<"Speaker"> | string | null
     createdAt?: DateTimeFilter<"Speaker"> | Date | string
     updatedAt?: DateTimeFilter<"Speaker"> | Date | string
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
@@ -27312,8 +27363,11 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     name?: SortOrder
+    email?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
     avatarUrl?: SortOrderInput | SortOrder
+    linkedinUrl?: SortOrderInput | SortOrder
+    websiteUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SpeakerCountOrderByAggregateInput
@@ -27328,8 +27382,11 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Speaker"> | string
     tenantId?: StringWithAggregatesFilter<"Speaker"> | string
     name?: StringWithAggregatesFilter<"Speaker"> | string
+    email?: StringNullableWithAggregatesFilter<"Speaker"> | string | null
     bio?: StringNullableWithAggregatesFilter<"Speaker"> | string | null
     avatarUrl?: StringNullableWithAggregatesFilter<"Speaker"> | string | null
+    linkedinUrl?: StringNullableWithAggregatesFilter<"Speaker"> | string | null
+    websiteUrl?: StringNullableWithAggregatesFilter<"Speaker"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Speaker"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Speaker"> | Date | string
   }
@@ -28732,8 +28789,11 @@ export namespace Prisma {
   export type SpeakerCreateInput = {
     id?: string
     name: string
+    email?: string | null
     bio?: string | null
     avatarUrl?: string | null
+    linkedinUrl?: string | null
+    websiteUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutSpeakersInput
@@ -28744,8 +28804,11 @@ export namespace Prisma {
     id?: string
     tenantId: string
     name: string
+    email?: string | null
     bio?: string | null
     avatarUrl?: string | null
+    linkedinUrl?: string | null
+    websiteUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivitySpeakerUncheckedCreateNestedManyWithoutSpeakerInput
@@ -28754,8 +28817,11 @@ export namespace Prisma {
   export type SpeakerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutSpeakersNestedInput
@@ -28766,8 +28832,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivitySpeakerUncheckedUpdateManyWithoutSpeakerNestedInput
@@ -28777,8 +28846,11 @@ export namespace Prisma {
     id?: string
     tenantId: string
     name: string
+    email?: string | null
     bio?: string | null
     avatarUrl?: string | null
+    linkedinUrl?: string | null
+    websiteUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28786,8 +28858,11 @@ export namespace Prisma {
   export type SpeakerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28796,8 +28871,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30259,8 +30337,11 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     name?: SortOrder
+    email?: SortOrder
     bio?: SortOrder
     avatarUrl?: SortOrder
+    linkedinUrl?: SortOrder
+    websiteUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30269,8 +30350,11 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     name?: SortOrder
+    email?: SortOrder
     bio?: SortOrder
     avatarUrl?: SortOrder
+    linkedinUrl?: SortOrder
+    websiteUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30279,8 +30363,11 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     name?: SortOrder
+    email?: SortOrder
     bio?: SortOrder
     avatarUrl?: SortOrder
+    linkedinUrl?: SortOrder
+    websiteUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -33347,8 +33434,11 @@ export namespace Prisma {
   export type SpeakerCreateWithoutTenantInput = {
     id?: string
     name: string
+    email?: string | null
     bio?: string | null
     avatarUrl?: string | null
+    linkedinUrl?: string | null
+    websiteUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivitySpeakerCreateNestedManyWithoutSpeakerInput
@@ -33357,8 +33447,11 @@ export namespace Prisma {
   export type SpeakerUncheckedCreateWithoutTenantInput = {
     id?: string
     name: string
+    email?: string | null
     bio?: string | null
     avatarUrl?: string | null
+    linkedinUrl?: string | null
+    websiteUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivitySpeakerUncheckedCreateNestedManyWithoutSpeakerInput
@@ -33509,8 +33602,11 @@ export namespace Prisma {
     id?: StringFilter<"Speaker"> | string
     tenantId?: StringFilter<"Speaker"> | string
     name?: StringFilter<"Speaker"> | string
+    email?: StringNullableFilter<"Speaker"> | string | null
     bio?: StringNullableFilter<"Speaker"> | string | null
     avatarUrl?: StringNullableFilter<"Speaker"> | string | null
+    linkedinUrl?: StringNullableFilter<"Speaker"> | string | null
+    websiteUrl?: StringNullableFilter<"Speaker"> | string | null
     createdAt?: DateTimeFilter<"Speaker"> | Date | string
     updatedAt?: DateTimeFilter<"Speaker"> | Date | string
   }
@@ -34937,8 +35033,11 @@ export namespace Prisma {
   export type SpeakerCreateWithoutActivitiesInput = {
     id?: string
     name: string
+    email?: string | null
     bio?: string | null
     avatarUrl?: string | null
+    linkedinUrl?: string | null
+    websiteUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutSpeakersInput
@@ -34948,8 +35047,11 @@ export namespace Prisma {
     id?: string
     tenantId: string
     name: string
+    email?: string | null
     bio?: string | null
     avatarUrl?: string | null
+    linkedinUrl?: string | null
+    websiteUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -35037,8 +35139,11 @@ export namespace Prisma {
   export type SpeakerUpdateWithoutActivitiesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutSpeakersNestedInput
@@ -35048,8 +35153,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -37301,8 +37409,11 @@ export namespace Prisma {
   export type SpeakerCreateManyTenantInput = {
     id?: string
     name: string
+    email?: string | null
     bio?: string | null
     avatarUrl?: string | null
+    linkedinUrl?: string | null
+    websiteUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -37422,8 +37533,11 @@ export namespace Prisma {
   export type SpeakerUpdateWithoutTenantInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivitySpeakerUpdateManyWithoutSpeakerNestedInput
@@ -37432,8 +37546,11 @@ export namespace Prisma {
   export type SpeakerUncheckedUpdateWithoutTenantInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivitySpeakerUncheckedUpdateManyWithoutSpeakerNestedInput
@@ -37442,8 +37559,11 @@ export namespace Prisma {
   export type SpeakerUncheckedUpdateManyWithoutTenantInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

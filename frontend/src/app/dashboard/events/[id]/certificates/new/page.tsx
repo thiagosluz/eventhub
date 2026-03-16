@@ -20,10 +20,11 @@ export default function NewCertificateTemplatePage({ params }: { params: Promise
   const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [placeholders, setPlaceholders] = useState([
-    { key: "participantName", label: "Nome do Participante", x: 100, y: 280, fontSize: 24 },
-    { key: "eventName", label: "Nome do Evento", x: 100, y: 340, fontSize: 14 },
-    { key: "workload", label: "Carga Horária", x: 100, y: 380, fontSize: 12 },
+    { key: "participantName", label: "Nome do Participante", x: 100, y: 150, fontSize: 24 },
+    { key: "eventName", label: "Nome do Evento", x: 100, y: 300, fontSize: 14 },
+    { key: "workload", label: "Carga Horária", x: 100, y: 400, fontSize: 12 },
   ]);
+  const [activePlaceholder, setActivePlaceholder] = useState<number | null>(null);
 
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
@@ -105,33 +106,74 @@ export default function NewCertificateTemplatePage({ params }: { params: Promise
 
             <div className="space-y-4">
               <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Imagem de Fundo (A4 Horizontal)</label>
-              <div className="relative aspect-video rounded-2xl bg-muted border-2 border-dashed border-border overflow-hidden group cursor-pointer">
+              <div 
+                id="certificate-preview-container"
+                className="relative aspect-[1.414/1] rounded-2xl bg-muted border-2 border-dashed border-border overflow-hidden select-none"
+                onMouseMove={(e) => {
+                  if (activePlaceholder !== null) {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 841.89;
+                    const y = ((e.clientY - rect.top) / rect.height) * 595.28;
+                    handlePlaceholderChange(activePlaceholder, 'x', Math.round(x));
+                    handlePlaceholderChange(activePlaceholder, 'y', Math.round(y));
+                  }
+                }}
+                onMouseUp={() => setActivePlaceholder(null)}
+                onMouseLeave={() => setActivePlaceholder(null)}
+              >
                 {previewUrl ? (
                   <div className="relative w-full h-full">
-                    <img src={previewUrl} alt="Preview" className="w-full h-full object-contain" />
+                    <img src={previewUrl} alt="Preview" className="w-full h-full object-contain pointer-events-none" />
                     {/* Visual Overlay of Placeholders */}
-                    {placeholders.map((p) => (
+                    {placeholders.map((p, index) => (
                       <div 
                         key={p.key}
-                        className="absolute border border-primary bg-primary/20 text-[8px] font-bold px-1 whitespace-nowrap pointer-events-none"
+                        onMouseDown={(e) => {
+                          e.stopPropagation();
+                          setActivePlaceholder(index);
+                        }}
+                        className={`absolute border-2 px-3 py-1.5 whitespace-nowrap cursor-move transition-colors z-10 rounded-lg font-bold text-[10px] shadow-lg ${
+                          activePlaceholder === index 
+                            ? 'border-primary bg-primary text-white scale-105 ring-4 ring-primary/20' 
+                            : 'border-primary/50 bg-primary/10 text-primary hover:bg-primary/20 hover:border-primary'
+                        }`}
                         style={{ 
-                          left: `${(p.x / 595.28) * 100}%`, 
-                          top: `${(p.y / 841.89) * 100}%`,
+                          left: `${(p.x / 841.89) * 100}%`, 
+                          top: `${(p.y / 595.28) * 100}%`,
                         }}
                       >
-                         {p.label}
+                         <div className="flex flex-col items-center">
+                           <span>{p.label}</span>
+                           <span className="text-[8px] opacity-70">X: {p.x} Y: {p.y}</span>
+                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground">
                     <PhotoIcon className="w-12 h-12 opacity-20 mb-2" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Clique para subir imagem</span>
-                    <span className="text-[10px] opacity-50">PNG ou JPG (Sugerido: 3508x2480px)</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-center px-4">Suba uma imagem para habilitar o editor visual</span>
+                    <span className="text-[10px] opacity-50 mt-1">PNG ou JPG (3508x2480px recomendado)</span>
                   </div>
                 )}
-                <input type="file" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+                <input 
+                  type="file" 
+                  onChange={handleFileChange} 
+                  className={`absolute inset-0 opacity-0 cursor-pointer ${previewUrl ? 'hidden' : ''}`} 
+                />
               </div>
+              {previewUrl && (
+                <div className="flex justify-between items-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2">
+                  <span>Dica: Arraste os campos sobre o certificado</span>
+                  <button 
+                    type="button"
+                    onClick={() => setPreviewUrl(null)}
+                    className="text-destructive hover:underline"
+                  >
+                    Trocar Fundo
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="pt-6 border-t border-border flex justify-end gap-3">

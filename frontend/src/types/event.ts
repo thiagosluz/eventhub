@@ -3,8 +3,11 @@ export type EventStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
 export interface Speaker {
   id: string;
   name: string;
+  email?: string;
   bio?: string;
   avatarUrl?: string;
+  linkedinUrl?: string;
+  websiteUrl?: string;
   createdAt: string;
   updatedAt: string;
 }

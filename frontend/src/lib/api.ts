@@ -19,8 +19,10 @@ class ApiClient {
       }
     }
 
+    const isFormData = options.body instanceof FormData;
+
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...((options.headers as Record<string, string>) || {}),
     };
 
@@ -49,7 +51,7 @@ class ApiClient {
     return this.request<T>(path, {
       ...options,
       method: 'POST',
-      body: JSON.stringify(body),
+      body: body instanceof FormData ? body : JSON.stringify(body),
     });
   }
 
@@ -57,7 +59,7 @@ class ApiClient {
     return this.request<T>(path, {
       ...options,
       method: 'PATCH',
-      body: JSON.stringify(body),
+      body: body instanceof FormData ? body : JSON.stringify(body),
     });
   }
 

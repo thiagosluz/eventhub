@@ -85,6 +85,7 @@ export class CertificatePdfService {
     return new Promise((resolve, reject) => {
       const doc = new PDFDocument({
         size: 'A4',
+        layout: 'landscape',
         margin: 0,
         bufferPages: true,
       });
@@ -93,12 +94,23 @@ export class CertificatePdfService {
       doc.on('end', () => resolve(Buffer.concat(chunks)));
       doc.on('error', reject);
 
-      doc.image(imageBuffer, 0, 0, { width: doc.page.width, height: doc.page.height });
-      doc.fontSize(12);
+      // A4 Landscape is 841.89 x 595.28 points
+      doc.image(imageBuffer, 0, 0, { width: 841.89, height: 595.28 });
+      
+      doc.fillColor('#000000'); // Default color
 
       for (const p of placeholders) {
         const value = data[p.key] ?? '';
-        if (p.fontSize) doc.fontSize(p.fontSize);
+        const fontSize = p.fontSize || 16;
+        
+        doc.fontSize(fontSize);
+        // We use 'Helvetica-Bold' for a more premium look on the participant name
+        if (p.key === 'participantName') {
+          doc.font('Helvetica-Bold');
+        } else {
+          doc.font('Helvetica');
+        }
+        
         doc.text(value, p.x, p.y);
       }
 

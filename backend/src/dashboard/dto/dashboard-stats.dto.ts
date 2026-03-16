@@ -15,4 +15,9 @@ export class DashboardStatsDto {
     sales: number;
     revenue: number;
   }[];
+  timeSeriesData!: {
+    date: string;
+    revenue: number;
+    sales: number;
+  }[];
 }

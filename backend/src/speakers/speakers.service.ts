@@ -2,10 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateSpeakerDto } from './dto/create-speaker.dto';
 import { UpdateSpeakerDto } from './dto/update-speaker.dto';
+import { MinioService } from '../storage/minio.service';
 
 @Injectable()
 export class SpeakersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly minio: MinioService,
+  ) {}
 
   async create(tenantId: string, data: CreateSpeakerDto) {
     return this.prisma.speaker.create({
@@ -50,6 +54,23 @@ export class SpeakersService {
     return this.prisma.speaker.delete({
       where: { id },
     });
+  }
+
+  async uploadAvatar(
+    tenantId: string,
+    file: { buffer: Buffer; mimetype: string; originalname: string },
+  ) {
+    const fileExt = file.originalname.split('.').pop();
+    const fileName = `speakers/${tenantId}/${Date.now()}.${fileExt}`;
+
+    const url = await this.minio.uploadObject({
+      bucket: 'eventhub',
+      objectName: fileName,
+      data: file.buffer,
+      contentType: file.mimetype,
+    });
+
+    return { url };
   }
 
   // Speaker Roles

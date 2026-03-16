@@ -9,6 +9,16 @@ import {
   ArrowUpIcon,
   PlusIcon
 } from "@heroicons/react/24/outline";
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer 
+} from 'recharts';
+import { motion } from 'framer-motion';
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { dashboardService, DashboardStats } from "@/services/dashboard.service";
@@ -98,8 +108,14 @@ export default function DashboardPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((item) => (
-          <div key={item.name} className="premium-card p-6 bg-card border-border shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all group">
+        {statCards.map((item, index) => (
+          <motion.div 
+            key={item.name} 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="premium-card p-6 bg-card border-border shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all group"
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
                 <item.icon className="w-6 h-6" />
@@ -113,9 +129,87 @@ export default function DashboardPage() {
               <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">{item.name}</p>
               <h3 className="text-2xl font-black text-foreground">{item.value}</h3>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
+
+      {/* Analytics Chart */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.4 }}
+        className="premium-card p-8 bg-card border-border"
+      >
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div>
+            <h2 className="text-xl font-black text-foreground uppercase tracking-tight">Crescimento de Vendas</h2>
+            <p className="text-xs text-muted-foreground font-medium mt-1">Volume de inscrições e receita nos últimos 30 dias.</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-primary" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Receita</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-primary/30" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Inscrições</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="h-[350px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={stats?.timeSeriesData ?? []}>
+              <defs>
+                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="var(--primary)" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.5} />
+              <XAxis 
+                dataKey="date" 
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 10, fontWeight: 700, fill: 'var(--muted-foreground)' }}
+                dy={10}
+                tickFormatter={(value) => new Date(value).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
+              />
+              <YAxis 
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 10, fontWeight: 700, fill: 'var(--muted-foreground)' }}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: 'var(--card)', 
+                  border: '1px solid var(--border)',
+                  borderRadius: '12px',
+                  boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)',
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}
+              />
+              <Area 
+                type="monotone" 
+                dataKey="revenue" 
+                stroke="var(--primary)" 
+                strokeWidth={3}
+                fillOpacity={1} 
+                fill="url(#colorRevenue)" 
+              />
+              <Area 
+                type="monotone" 
+                dataKey="sales" 
+                stroke="var(--primary)" 
+                strokeWidth={2}
+                strokeDasharray="5 5"
+                fill="transparent"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </motion.div>
 
       {/* Recent Events Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">

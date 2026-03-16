@@ -41,6 +41,8 @@ export class TenantsController {
     return this.tenantsService.getTenant(req.user!.tenantId);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
   @Patch('me')
   async updateMe(@Req() req: AuthRequest, @Body() data: UpdateTenantDto) {
     return this.tenantsService.updateTenant(req.user!.tenantId, data);

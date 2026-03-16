@@ -190,8 +190,11 @@ model Speaker {
   tenant      Tenant   @relation(fields: [tenantId], references: [id])
 
   name        String
+  email       String?
   bio         String?
   avatarUrl   String?
+  linkedinUrl String?
+  websiteUrl  String?
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

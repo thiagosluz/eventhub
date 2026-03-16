@@ -37,18 +37,16 @@ export default function EventCertificatesPage({ params }: { params: Promise<{ id
   }, [eventId]);
 
   const handleIssueAll = async (templateId: string) => {
-    // In a real app, this would be a bulk operation on the backend.
-    // Here we'll simulate or just show the UI for it.
     setIsIssuing(templateId);
     setFeedback(null);
     try {
-      // Logic for issuing to all participants
-      // Since we don't have a bulk endpoint, we'd need to fetch registrations and loop, 
-      // but for this MVP we'll just show a success message.
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setFeedback({ type: 'success', message: "Certificados enfileirados para emissão com sucesso!" });
-    } catch (error) {
-      setFeedback({ type: 'error', message: "Erro ao iniciar emissão em massa." });
+      const result = await certificatesService.issueBulkTemplate(templateId);
+      setFeedback({ 
+        type: 'success', 
+        message: `Emissão concluída! ${result.processed} certificados gerados com sucesso.` 
+      });
+    } catch (error: any) {
+      setFeedback({ type: 'error', message: error.message || "Erro ao iniciar emissão em massa." });
     } finally {
       setIsIssuing(null);
     }

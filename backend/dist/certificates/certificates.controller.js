@@ -71,6 +71,36 @@ let CertificatesController = class CertificatesController {
             throw new common_1.BadRequestException('Arquivo de imagem é obrigatório.');
         return this.certificateTemplates.uploadBackground(tenantId, id, { buffer: file.buffer, mimetype: file.mimetype });
     }
+    async issueBulk(templateId, body, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId)
+            throw new Error('Missing tenantId on token payload.');
+        const template = await this.certificateTemplates.findOne(tenantId, templateId);
+        const registrations = await this.prisma.registration.findMany({
+            where: { eventId: template.eventId },
+            include: { user: true }
+        });
+        const results = [];
+        for (const reg of registrations) {
+            try {
+                const { fileUrl } = await this.certificatePdf.generateAndStore(templateId, reg.id);
+                if (body.sendEmail && reg.user.email) {
+                    await this.mail.enqueue({
+                        to: reg.user.email,
+                        subject: 'Seu certificado está pronto',
+                        text: `Acesse seu certificado em: ${fileUrl}`,
+                        html: `<p>Acesse seu certificado em: <a href="${fileUrl}">${fileUrl}</a></p>`,
+                    });
+                }
+                results.push({ registrationId: reg.id, status: 'success', fileUrl });
+            }
+            catch (error) {
+                results.push({ registrationId: reg.id, status: 'error', error: error.message });
+            }
+        }
+        return { total: registrations.length, processed: results.length, details: results };
+    }
     async issueCertificate(body) {
         const { fileUrl, issuedId } = await this.certificatePdf.generateAndStore(body.templateId, body.registrationId);
         if (body.sendEmail) {
@@ -170,6 +200,17 @@ __decorate([
     __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", Promise)
 ], CertificatesController.prototype, "uploadTemplateBackground", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Post)('templates/:templateId/issue-bulk'),
+    __param(0, (0, common_1.Param)('templateId')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], CertificatesController.prototype, "issueBulk", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),

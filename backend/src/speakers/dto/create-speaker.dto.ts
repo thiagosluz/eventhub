@@ -7,9 +7,21 @@ export class CreateSpeakerDto {
 
   @IsString()
   @IsOptional()
+  email?: string;
+
+  @IsString()
+  @IsOptional()
   bio?: string;
 
   @IsUrl()
   @IsOptional()
   avatarUrl?: string;
+
+  @IsUrl()
+  @IsOptional()
+  linkedinUrl?: string;
+
+  @IsUrl()
+  @IsOptional()
+  websiteUrl?: string;
 }

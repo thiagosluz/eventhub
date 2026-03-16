@@ -100,6 +100,50 @@ export class CertificatesController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
+  @Post('templates/:templateId/issue-bulk')
+  async issueBulk(
+    @Param('templateId') templateId: string,
+    @Body() body: { sendEmail?: boolean },
+    @Req() req: AuthRequest
+  ) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error('Missing tenantId on token payload.');
+
+    const template = await this.certificateTemplates.findOne(tenantId, templateId);
+    
+    // Find all registrations for this event
+    const registrations = await this.prisma.registration.findMany({
+      where: { eventId: template.eventId },
+      include: { user: true }
+    });
+
+    const results = [];
+    for (const reg of registrations) {
+      try {
+        const { fileUrl } = await this.certificatePdf.generateAndStore(
+          templateId,
+          reg.id,
+        );
+
+        if (body.sendEmail && reg.user.email) {
+          await this.mail.enqueue({
+            to: reg.user.email,
+            subject: 'Seu certificado está pronto',
+            text: `Acesse seu certificado em: ${fileUrl}`,
+            html: `<p>Acesse seu certificado em: <a href="${fileUrl}">${fileUrl}</a></p>`,
+          });
+        }
+        results.push({ registrationId: reg.id, status: 'success', fileUrl });
+      } catch (error: any) {
+        results.push({ registrationId: reg.id, status: 'error', error: error.message });
+      }
+    }
+
+    return { total: registrations.length, processed: results.length, details: results };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
   @Post('issue')
   async issueCertificate(
     @Body() body: { templateId: string; registrationId: string; sendEmail?: boolean },

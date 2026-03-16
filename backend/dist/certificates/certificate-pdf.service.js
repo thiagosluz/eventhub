@@ -72,6 +72,7 @@ let CertificatePdfService = class CertificatePdfService {
             var _a;
             const doc = new pdfkit_1.default({
                 size: 'A4',
+                layout: 'landscape',
                 margin: 0,
                 bufferPages: true,
             });
@@ -79,12 +80,18 @@ let CertificatePdfService = class CertificatePdfService {
             doc.on('data', (chunk) => chunks.push(chunk));
             doc.on('end', () => resolve(Buffer.concat(chunks)));
             doc.on('error', reject);
-            doc.image(imageBuffer, 0, 0, { width: doc.page.width, height: doc.page.height });
-            doc.fontSize(12);
+            doc.image(imageBuffer, 0, 0, { width: 841.89, height: 595.28 });
+            doc.fillColor('#000000');
             for (const p of placeholders) {
                 const value = (_a = data[p.key]) !== null && _a !== void 0 ? _a : '';
-                if (p.fontSize)
-                    doc.fontSize(p.fontSize);
+                const fontSize = p.fontSize || 16;
+                doc.fontSize(fontSize);
+                if (p.key === 'participantName') {
+                    doc.font('Helvetica-Bold');
+                }
+                else {
+                    doc.font('Helvetica');
+                }
                 doc.text(value, p.x, p.y);
             }
             doc.end();

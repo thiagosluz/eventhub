@@ -185,9 +185,13 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
                     {activity.speakers && activity.speakers.length > 0 && (
                       <div className="flex flex-wrap gap-2 pt-1">
                         {activity.speakers.map((as: any) => (
-                          <div key={as.speaker.id} className="flex items-center gap-2 bg-muted/40 px-3 py-1.5 rounded-xl border border-border/50">
-                            <div className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center">
-                              <UserIcon className="w-2.5 h-2.5 text-primary" />
+                          <div key={as.speaker.id} className="flex items-center gap-2 bg-muted/40 px-2 py-1 rounded-xl border border-border/50">
+                            <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20">
+                              {as.speaker.avatarUrl ? (
+                                <img src={as.speaker.avatarUrl} alt={as.speaker.name} className="w-full h-full object-cover" />
+                              ) : (
+                                <UserIcon className="w-3 h-3 text-primary" />
+                              )}
                             </div>
                             <span className="text-[11px] font-bold">{as.speaker.name}</span>
                             {as.role && (

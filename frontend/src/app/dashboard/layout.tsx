@@ -17,15 +17,22 @@ export default function DashboardLayout({
   const [tenant, setTenant] = useState<any>(null);
   const router = useRouter();
 
+  const fetchTenant = () => {
+    if (isAuthenticated && (user?.role === 'ORGANIZER' || user?.role === 'REVIEWER')) {
+      tenantsService.getMe().then(setTenant).catch(console.error);
+    }
+  };
+
   useEffect(() => {
     const allowedRoles = ["ORGANIZER", "REVIEWER"];
     if (!isLoading && (!isAuthenticated || !user || !allowedRoles.includes(user.role))) {
       router.push("/auth/login");
     }
 
-    if (isAuthenticated && (user?.role === 'ORGANIZER' || user?.role === 'REVIEWER')) {
-      tenantsService.getMe().then(setTenant).catch(console.error);
-    }
+    fetchTenant();
+
+    window.addEventListener('tenant-updated', fetchTenant);
+    return () => window.removeEventListener('tenant-updated', fetchTenant);
   }, [isLoading, isAuthenticated, user, router]);
 
   if (isLoading) {

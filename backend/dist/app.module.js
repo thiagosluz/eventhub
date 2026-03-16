@@ -16,7 +16,6 @@ const events_controller_1 = require("./events/events.controller");
 const events_service_1 = require("./events/events.service");
 const activities_controller_1 = require("./activities/activities.controller");
 const activities_service_1 = require("./activities/activities.service");
-const minio_service_1 = require("./storage/minio.service");
 const submissions_controller_1 = require("./submissions/submissions.controller");
 const submissions_service_1 = require("./submissions/submissions.service");
 const submissions_processor_1 = require("./submissions/submissions.processor");
@@ -35,6 +34,8 @@ const prisma_module_1 = require("./prisma/prisma.module");
 const speakers_module_1 = require("./speakers/speakers.module");
 const tenants_module_1 = require("./tenants/tenants.module");
 const forms_module_1 = require("./forms/forms.module");
+const storage_module_1 = require("./storage/storage.module");
+const analytics_module_1 = require("./analytics/analytics.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -47,6 +48,8 @@ exports.AppModule = AppModule = __decorate([
             speakers_module_1.SpeakersModule,
             tenants_module_1.TenantsModule,
             forms_module_1.FormsModule,
+            storage_module_1.StorageModule,
+            analytics_module_1.AnalyticsModule,
             bullmq_1.BullModule.forRoot({
                 connection: {
                     host: (_a = process.env.REDIS_HOST) !== null && _a !== void 0 ? _a : 'localhost',
@@ -67,7 +70,6 @@ exports.AppModule = AppModule = __decorate([
         providers: [
             events_service_1.EventsService,
             activities_service_1.ActivitiesService,
-            minio_service_1.MinioService,
             submissions_service_1.SubmissionsService,
             submissions_processor_1.AssignReviewsProcessor,
             checkout_service_1.CheckoutService,

@@ -78,6 +78,19 @@ export const certificatesService = {
     return res.json();
   },
 
+  async issueBulkTemplate(templateId: string, sendEmail = true): Promise<{ total: number; processed: number }> {
+    const res = await fetch(`${API_BASE_URL}/certificates/templates/${templateId}/issue-bulk`, {
+      method: "POST",
+      headers: {
+        ...getAuthHeader(),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ sendEmail }),
+    });
+    if (!res.ok) throw new Error("Falha ao emitir certificados em massa.");
+    return res.json();
+  },
+
   async listMyCertificates(): Promise<IssuedCertificate[]> {
     const res = await fetch(`${API_BASE_URL}/certificates/my`, {
       headers: getAuthHeader(),

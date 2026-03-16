@@ -12,9 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SpeakersService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const minio_service_1 = require("../storage/minio.service");
 let SpeakersService = class SpeakersService {
-    constructor(prisma) {
+    constructor(prisma, minio) {
         this.prisma = prisma;
+        this.minio = minio;
     }
     async create(tenantId, data) {
         return this.prisma.speaker.create({
@@ -52,6 +54,17 @@ let SpeakersService = class SpeakersService {
             where: { id },
         });
     }
+    async uploadAvatar(tenantId, file) {
+        const fileExt = file.originalname.split('.').pop();
+        const fileName = `speakers/${tenantId}/${Date.now()}.${fileExt}`;
+        const url = await this.minio.uploadObject({
+            bucket: 'eventhub',
+            objectName: fileName,
+            data: file.buffer,
+            contentType: file.mimetype,
+        });
+        return { url };
+    }
     async createRole(tenantId, name) {
         return this.prisma.speakerRole.create({
             data: { tenantId, name },
@@ -75,6 +88,7 @@ let SpeakersService = class SpeakersService {
 exports.SpeakersService = SpeakersService;
 exports.SpeakersService = SpeakersService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        minio_service_1.MinioService])
 ], SpeakersService);
 //# sourceMappingURL=speakers.service.js.map

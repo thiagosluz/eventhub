@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SpeakersController = void 0;
 const common_1 = require("@nestjs/common");
+const platform_express_1 = require("@nestjs/platform-express");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const roles_decorator_1 = require("../auth/roles.decorator");
 const roles_guard_1 = require("../auth/roles.guard");
@@ -30,6 +31,9 @@ let SpeakersController = class SpeakersController {
     }
     async findAll(req) {
         return this.speakersService.findAll(req.user.tenantId);
+    }
+    async uploadFile(req, file) {
+        return this.speakersService.uploadAvatar(req.user.tenantId, file);
     }
     async createRole(req, name) {
         return this.speakersService.createRole(req.user.tenantId, name);
@@ -66,6 +70,15 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], SpeakersController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Post)('upload'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], SpeakersController.prototype, "uploadFile", null);
 __decorate([
     (0, common_1.Post)('roles'),
     __param(0, (0, common_1.Req)()),

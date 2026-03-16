@@ -20,19 +20,12 @@ const roles_guard_1 = require("../auth/roles.guard");
 const roles_types_1 = require("../auth/roles.types");
 const tenants_service_1 = require("./tenants.service");
 const update_tenant_dto_1 = require("./dto/update-tenant.dto");
-const prisma_service_1 = require("../prisma/prisma.service");
 let TenantsController = class TenantsController {
-    constructor(tenantsService, prisma) {
+    constructor(tenantsService) {
         this.tenantsService = tenantsService;
-        this.prisma = prisma;
     }
     async getPublicTenant() {
-        const tenant = await this.prisma.tenant.findFirst();
-        return {
-            name: tenant === null || tenant === void 0 ? void 0 : tenant.name,
-            logoUrl: tenant === null || tenant === void 0 ? void 0 : tenant.logoUrl,
-            themeConfig: tenant === null || tenant === void 0 ? void 0 : tenant.themeConfig,
-        };
+        return this.tenantsService.getPublicTenant();
     }
     async getMe(req) {
         return this.tenantsService.getTenant(req.user.tenantId);
@@ -58,6 +51,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TenantsController.prototype, "getMe", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     (0, common_1.Patch)('me'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
@@ -67,7 +62,6 @@ __decorate([
 ], TenantsController.prototype, "updateMe", null);
 exports.TenantsController = TenantsController = __decorate([
     (0, common_1.Controller)('tenants'),
-    __metadata("design:paramtypes", [tenants_service_1.TenantsService,
-        prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [tenants_service_1.TenantsService])
 ], TenantsController);
 //# sourceMappingURL=tenants.controller.js.map

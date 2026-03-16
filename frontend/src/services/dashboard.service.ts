@@ -17,6 +17,11 @@ export interface DashboardStats {
     sales: number;
     revenue: number;
   }[];
+  timeSeriesData: {
+    date: string;
+    revenue: number;
+    sales: number;
+  }[];
 }
 
 export const dashboardService = {

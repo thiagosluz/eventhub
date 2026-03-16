@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import { Injectable } from '@nestjs/common';
-import { TicketStatus, TicketType } from '../generated/prisma/enums';
+import { TicketStatus, TicketType } from '../generated/prisma';
 import { PrismaService } from '../prisma/prisma.service';
 import { PaymentContext, PaymentResult, PaymentStrategy } from './payment-strategy.interface';
 

@@ -15,7 +15,8 @@ import {
   InformationCircleIcon,
   AcademicCapIcon,
   QrCodeIcon,
-  SparklesIcon
+  SparklesIcon,
+  ChartBarIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -119,6 +120,19 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
     }
   };
 
+  const handleDeleteFile = async (type: 'banner' | 'logo') => {
+    try {
+      setLoading(true);
+      const updateData = type === 'banner' ? { bannerUrl: null as any } : { logoUrl: null as any };
+      const updated = await eventsService.updateEvent(id, updateData);
+      setEvent(updated);
+    } catch (err) {
+      setError(`Erro ao apagar o ${type}.`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading && !event) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
@@ -154,6 +168,10 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
         <div className="flex items-center gap-3">
           <Link href={`/events/${event?.slug}`} target="_blank" className="px-6 py-3 rounded-xl border-2 border-border font-black text-xs uppercase tracking-widest text-muted-foreground hover:bg-muted transition-all">
             Ver página pública
+          </Link>
+          <Link href={`/dashboard/events/${id}/analytics`} className="px-6 py-3 rounded-xl bg-primary text-white font-black text-xs uppercase tracking-widest hover:brightness-110 shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+            <ChartBarIcon className="w-4 h-4" />
+            Estatísticas
           </Link>
           <Link href="/dashboard/events" className="text-sm font-black text-muted-foreground hover:text-foreground transition-colors uppercase tracking-widest flex items-center gap-2 px-2">
             <ChevronLeftIcon className="w-4 h-4" />
@@ -286,7 +304,7 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
               {/* Banner Upload */}
               <div className="space-y-3">
                 <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Banner Principal</p>
-                <div className="relative aspect-video rounded-xl bg-muted border-2 border-dashed border-border overflow-hidden group cursor-pointer">
+                <div className="relative aspect-video rounded-xl bg-muted border-2 border-dashed border-border overflow-hidden group">
                   {event?.bannerUrl ? (
                     <img src={event.bannerUrl} alt="Banner" className="w-full h-full object-cover" />
                   ) : (
@@ -295,10 +313,30 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
                       <span className="text-[10px] font-bold uppercase mt-2">Clique para enviar</span>
                     </div>
                   )}
-                  <input type="file" onChange={(e) => handleFileUpload(e, 'banner')} className="absolute inset-0 opacity-0 cursor-pointer" />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <ArrowUpTrayIcon className="w-8 h-8 text-white" />
-                  </div>
+                  
+                  {/* Upload Label (Trigger) */}
+                  <label className="absolute inset-0 cursor-pointer z-10">
+                    <input 
+                      type="file" 
+                      onChange={(e) => handleFileUpload(e, 'banner')} 
+                      className="hidden" 
+                      accept="image/*"
+                    />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <ArrowUpTrayIcon className="w-8 h-8 text-white" />
+                    </div>
+                  </label>
+
+                  {/* Delete Button */}
+                  {event?.bannerUrl && (
+                    <button 
+                      type="button"
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDeleteFile('banner'); }}
+                      className="absolute top-2 right-2 p-2 rounded-lg bg-destructive text-white opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:scale-110 shadow-lg"
+                    >
+                      <TrashIcon className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -313,10 +351,30 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
                       <GlobeAltIcon className="w-6 h-6 opacity-20" />
                     </div>
                   )}
-                  <input type="file" onChange={(e) => handleFileUpload(e, 'logo')} className="absolute inset-0 opacity-0 cursor-pointer" />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                    <ArrowUpTrayIcon className="w-6 h-6 text-white" />
-                  </div>
+
+                  {/* Upload Label (Trigger) */}
+                  <label className="absolute inset-0 cursor-pointer z-10">
+                    <input 
+                      type="file" 
+                      onChange={(e) => handleFileUpload(e, 'logo')} 
+                      className="hidden" 
+                      accept="image/*"
+                    />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <ArrowUpTrayIcon className="w-6 h-6 text-white" />
+                    </div>
+                  </label>
+
+                  {/* Delete Button */}
+                  {event?.logoUrl && (
+                    <button 
+                      type="button"
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDeleteFile('logo'); }}
+                      className="absolute top-1 right-1 p-1.5 rounded-lg bg-destructive text-white opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:scale-110 shadow-lg"
+                    >
+                      <TrashIcon className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

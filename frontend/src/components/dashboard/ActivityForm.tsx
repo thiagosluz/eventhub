@@ -201,14 +201,30 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
               <div key={index} className="flex gap-4 items-end bg-muted/20 p-4 rounded-2xl border border-border/50">
                 <div className="flex-1 space-y-2">
                   <label className="text-[10px] font-black uppercase text-muted-foreground">Palestrante</label>
-                  <select
-                    value={s.speakerId}
-                    onChange={(e) => updateSpeaker(index, 'speakerId', e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg border border-border bg-card outline-none text-xs font-bold"
-                  >
-                    <option value="">Selecione...</option>
-                    {availableSpeakers.map(sp => <option key={sp.id} value={sp.id}>{sp.name}</option>)}
-                  </select>
+                  <div className="relative">
+                    <select
+                      value={s.speakerId}
+                      onChange={(e) => updateSpeaker(index, 'speakerId', e.target.value)}
+                      className="w-full h-11 pl-11 pr-3 rounded-lg border border-border bg-card outline-none text-xs font-bold appearance-none transition-all focus:border-primary"
+                    >
+                      <option value="">Selecione...</option>
+                      {availableSpeakers.map(sp => <option key={sp.id} value={sp.id}>{sp.name}</option>)}
+                    </select>
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-border/50">
+                      {(() => {
+                        const selectedSpeaker = availableSpeakers.find(sp => sp.id === s.speakerId);
+                        return selectedSpeaker?.avatarUrl ? (
+                          <img 
+                            src={selectedSpeaker.avatarUrl} 
+                            alt="Avatar" 
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <UserIcon className="w-3 h-3 text-muted-foreground" />
+                        );
+                      })()}
+                    </div>
+                  </div>
                 </div>
                 <div className="flex-1 space-y-2">
                   <label className="text-[10px] font-black uppercase text-muted-foreground">Papel</label>

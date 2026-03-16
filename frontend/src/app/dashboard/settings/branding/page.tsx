@@ -41,6 +41,7 @@ export default function BrandingPage() {
     setSaving(true);
     try {
       await tenantsService.updateMe(formData);
+      window.dispatchEvent(new CustomEvent('tenant-updated'));
       toast.success('Branding atualizado com sucesso!');
     } catch (error) {
       toast.error('Erro ao salvar branding.');

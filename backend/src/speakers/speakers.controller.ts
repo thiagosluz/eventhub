@@ -7,8 +7,11 @@ import {
   Patch,
   Post,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
@@ -41,6 +44,15 @@ export class SpeakersController {
   @Get()
   async findAll(@Req() req: AuthRequest) {
     return this.speakersService.findAll(req.user!.tenantId);
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(
+    @Req() req: AuthRequest,
+    @UploadedFile() file: any,
+  ) {
+    return this.speakersService.uploadAvatar(req.user!.tenantId, file);
   }
 
   // Speaker Roles

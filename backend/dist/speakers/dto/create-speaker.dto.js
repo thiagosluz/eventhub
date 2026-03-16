@@ -23,10 +23,25 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
+], CreateSpeakerDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
 ], CreateSpeakerDto.prototype, "bio", void 0);
 __decorate([
     (0, class_validator_1.IsUrl)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateSpeakerDto.prototype, "avatarUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsUrl)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateSpeakerDto.prototype, "linkedinUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsUrl)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateSpeakerDto.prototype, "websiteUrl", void 0);
 //# sourceMappingURL=create-speaker.dto.js.map

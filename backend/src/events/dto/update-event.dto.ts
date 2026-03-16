@@ -8,6 +8,8 @@ export class UpdateEventDto {
   seoTitle?: string;
   seoDescription?: string;
   themeConfig?: Record<string, unknown>;
-   status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+  bannerUrl?: string;
+  logoUrl?: string;
+  status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
 }
 
