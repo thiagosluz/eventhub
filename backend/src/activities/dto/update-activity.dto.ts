@@ -5,6 +5,8 @@ export class UpdateActivityDto {
   startAt?: string;
   endAt?: string;
   capacity?: number;
-  speakerIds?: string[];
+  typeId?: string;
+  requiresEnrollment?: boolean;
+  speakers?: { speakerId: string; roleId?: string }[];
 }
 

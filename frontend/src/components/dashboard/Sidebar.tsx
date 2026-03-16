@@ -14,38 +14,53 @@ import {
   UserIcon, // Added UserIcon
   ChartBarIcon // Added ChartBarIcon
 } from "@heroicons/react/24/outline";
+import { useAuth } from "@/context/AuthContext";
 
 const navigation = [
   { name: "Visão Geral", href: "/dashboard", icon: HomeIcon },
   { name: "Meus Eventos", href: "/dashboard/events", icon: CalendarIcon },
   { name: "Palestrantes", href: "/dashboard/speakers", icon: UserIcon }, // Changed to UserIcon
   { name: "Branding", href: "/dashboard/settings/branding", icon: ChartBarIcon }, // Added new item
+  { name: "Categorias", href: "/dashboard/categories", icon: Cog6ToothIcon },
   { name: "Inscritos", href: "/dashboard/participants", icon: UsersIcon },
   { name: "Revisões", href: "/dashboard/reviews", icon: AcademicCapIcon },
   { name: "Financeiro", href: "/dashboard/finance", icon: CreditCardIcon },
   { name: "Configurações", href: "/dashboard/settings", icon: Cog6ToothIcon },
 ];
 
-export function Sidebar() {
+export function Sidebar({ tenant }: { tenant?: any }) {
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const filteredNavigation = navigation.filter((item) => {
+    if (user?.role === "REVIEWER") {
+      return ["Visão Geral", "Revisões"].includes(item.name);
+    }
+    // Para ORGANIZER ou ADMIN, mostra tudo (por enquanto)
+    return true;
+  });
 
   return (
     <div className="flex flex-col w-64 border-r border-border bg-card h-screen sticky top-0 overflow-y-auto">
       <div className="p-6">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <span className="text-xl font-bold tracking-tight text-foreground">
-            Event<span className="text-primary">Hub</span>
+          {tenant?.logoUrl ? (
+            <img src={tenant.logoUrl} alt={tenant.name} className="w-8 h-8 rounded-lg object-contain bg-muted p-1 shadow-md" />
+          ) : (
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+          )}
+          <span className="text-xl font-bold tracking-tight text-foreground truncate">
+            {tenant?.name || <>Event<span className="text-primary">Hub</span></>}
           </span>
         </Link>
       </div>
 
       <nav className="flex-1 px-4 space-y-1">
-        {navigation.map((item) => {
+        {filteredNavigation.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
@@ -64,15 +79,17 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-border mt-auto">
-        <Link 
-          href="/dashboard/events/new"
-          className="premium-button w-full !py-3 !text-xs !font-black flex items-center justify-center gap-2"
-        >
-          <PlusIcon className="w-4 h-4" />
-          Criar Novo Evento
-        </Link>
-      </div>
+      {user?.role === "ORGANIZER" && (
+        <div className="p-4 border-t border-border mt-auto">
+          <Link 
+            href="/dashboard/events/new"
+            className="premium-button w-full !py-3 !text-xs !font-black flex items-center justify-center gap-2"
+          >
+            <PlusIcon className="w-4 h-4" />
+            Criar Novo Evento
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,3 +1,8 @@
+export class SpeakerAssociationDto {
+  speakerId!: string;
+  roleId?: string;
+}
+
 export class CreateActivityDto {
   title!: string;
   description?: string;
@@ -5,6 +10,8 @@ export class CreateActivityDto {
   startAt!: string;
   endAt!: string;
   capacity?: number;
-  speakerIds?: string[];
+  typeId?: string;
+  requiresEnrollment?: boolean;
+  speakers?: SpeakerAssociationDto[];
 }
 

@@ -160,6 +160,18 @@ exports.Prisma.EventScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ActivityTypeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name'
+};
+
+exports.Prisma.SpeakerRoleScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name'
+};
+
 exports.Prisma.ActivityScalarFieldEnum = {
   id: 'id',
   eventId: 'eventId',
@@ -170,6 +182,8 @@ exports.Prisma.ActivityScalarFieldEnum = {
   endAt: 'endAt',
   capacity: 'capacity',
   status: 'status',
+  typeId: 'typeId',
+  requiresEnrollment: 'requiresEnrollment',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -186,7 +200,8 @@ exports.Prisma.SpeakerScalarFieldEnum = {
 
 exports.Prisma.ActivitySpeakerScalarFieldEnum = {
   activityId: 'activityId',
-  speakerId: 'speakerId'
+  speakerId: 'speakerId',
+  roleId: 'roleId'
 };
 
 exports.Prisma.RegistrationScalarFieldEnum = {
@@ -393,6 +408,8 @@ exports.Prisma.ModelName = {
   Tenant: 'Tenant',
   User: 'User',
   Event: 'Event',
+  ActivityType: 'ActivityType',
+  SpeakerRole: 'SpeakerRole',
   Activity: 'Activity',
   Speaker: 'Speaker',
   ActivitySpeaker: 'ActivitySpeaker',

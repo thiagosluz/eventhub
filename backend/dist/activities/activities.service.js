@@ -97,8 +97,10 @@ let ActivitiesService = class ActivitiesService {
                 speakers: {
                     include: {
                         speaker: true,
+                        role: true,
                     },
                 },
+                type: true,
                 enrollments: true,
             },
         });
@@ -121,48 +123,39 @@ let ActivitiesService = class ActivitiesService {
                 name: as.speaker.name,
                 bio: as.speaker.bio,
                 avatarUrl: as.speaker.avatarUrl,
+                role: as.role ? { id: as.role.id, name: as.role.name } : null,
             })),
+            type: activity.type ? { id: activity.type.id, name: activity.type.name } : null,
+            requiresEnrollment: activity.requiresEnrollment,
         };
     }
     async updateActivity(params) {
         const { tenantId, activityId, data } = params;
-        const existing = await this.prisma.activity.findFirst({
-            where: {
-                id: activityId,
-                event: { tenantId },
-            },
-        });
-        if (!existing) {
-            throw new common_1.NotFoundException('Atividade não encontrada para este tenant.');
-        }
+        await this.getActivityForTenant(tenantId, activityId);
+        const updateData = {
+            title: data.title,
+            description: data.description,
+            location: data.location,
+            startAt: data.startAt ? new Date(data.startAt) : undefined,
+            endAt: data.endAt ? new Date(data.endAt) : undefined,
+            capacity: data.capacity,
+            typeId: data.typeId,
+            requiresEnrollment: data.requiresEnrollment,
+        };
         await this.prisma.activity.update({
             where: { id: activityId },
-            data: {
-                title: data.title,
-                description: data.description,
-                location: data.location,
-                startAt: data.startAt ? new Date(data.startAt) : undefined,
-                endAt: data.endAt ? new Date(data.endAt) : undefined,
-                capacity: data.capacity,
-            },
+            data: updateData,
         });
-        if (data.speakerIds) {
-            await this.prisma.activitySpeaker.deleteMany({
-                where: { activityId },
-            });
-            if (data.speakerIds.length > 0) {
-                const speakers = await this.prisma.speaker.findMany({
-                    where: { id: { in: data.speakerIds }, tenantId },
+        if (data.speakers) {
+            await this.prisma.activitySpeaker.deleteMany({ where: { activityId } });
+            if (data.speakers.length > 0) {
+                await this.prisma.activitySpeaker.createMany({
+                    data: data.speakers.map((s) => ({
+                        activityId,
+                        speakerId: s.speakerId,
+                        roleId: s.roleId,
+                    })),
                 });
-                if (speakers.length > 0) {
-                    await this.prisma.activitySpeaker.createMany({
-                        data: speakers.map((speaker) => ({
-                            activityId,
-                            speakerId: speaker.id,
-                        })),
-                        skipDuplicates: true,
-                    });
-                }
             }
         }
         return this.getActivityForTenant(tenantId, activityId);
@@ -185,6 +178,9 @@ let ActivitiesService = class ActivitiesService {
                 userId,
             },
         });
+        if (activity.requiresEnrollment && !registration) {
+            throw new common_1.ForbiddenException('Você precisa estar inscrito no evento para se inscrever nesta atividade.');
+        }
         let effectiveRegistration = registration;
         if (!effectiveRegistration) {
             effectiveRegistration = await this.prisma.registration.create({
@@ -217,6 +213,42 @@ let ActivitiesService = class ActivitiesService {
             where: { id: activityId },
             include: { enrollments: true },
         });
+    }
+    async deleteActivity(tenantId, activityId) {
+        const activity = await this.prisma.activity.findFirst({
+            where: {
+                id: activityId,
+                event: { tenantId },
+            },
+        });
+        if (!activity) {
+            throw new common_1.NotFoundException('Atividade não encontrada para este tenant.');
+        }
+        await this.prisma.activitySpeaker.deleteMany({ where: { activityId } });
+        await this.prisma.activityEnrollment.deleteMany({ where: { activityId } });
+        await this.prisma.attendance.deleteMany({ where: { activityId } });
+        return this.prisma.activity.delete({
+            where: { id: activityId },
+        });
+    }
+    async createType(tenantId, name) {
+        return this.prisma.activityType.create({
+            data: { tenantId, name },
+        });
+    }
+    async findAllTypes(tenantId) {
+        return this.prisma.activityType.findMany({
+            where: { tenantId },
+            orderBy: { name: 'asc' },
+        });
+    }
+    async removeType(tenantId, id) {
+        const type = await this.prisma.activityType.findFirst({
+            where: { id, tenantId },
+        });
+        if (!type)
+            throw new common_1.NotFoundException('Type not found');
+        return this.prisma.activityType.delete({ where: { id } });
     }
 };
 exports.ActivitiesService = ActivitiesService;

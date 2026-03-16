@@ -51,4 +51,26 @@ export class SpeakersService {
       where: { id },
     });
   }
+
+  // Speaker Roles
+  async createRole(tenantId: string, name: string) {
+    return this.prisma.speakerRole.create({
+      data: { tenantId, name },
+    });
+  }
+
+  async findAllRoles(tenantId: string) {
+    return this.prisma.speakerRole.findMany({
+      where: { tenantId },
+      orderBy: { name: 'asc' },
+    });
+  }
+
+  async removeRole(tenantId: string, id: string) {
+    const role = await this.prisma.speakerRole.findFirst({
+      where: { id, tenantId },
+    });
+    if (!role) throw new NotFoundException('Role not found');
+    return this.prisma.speakerRole.delete({ where: { id } });
+  }
 }

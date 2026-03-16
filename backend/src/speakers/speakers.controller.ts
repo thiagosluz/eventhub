@@ -43,6 +43,22 @@ export class SpeakersController {
     return this.speakersService.findAll(req.user!.tenantId);
   }
 
+  // Speaker Roles
+  @Post('roles')
+  async createRole(@Req() req: AuthRequest, @Body('name') name: string) {
+    return this.speakersService.createRole(req.user!.tenantId, name);
+  }
+
+  @Get('roles')
+  async findAllRoles(@Req() req: AuthRequest) {
+    return this.speakersService.findAllRoles(req.user!.tenantId);
+  }
+
+  @Delete('roles/:id')
+  async removeRole(@Req() req: AuthRequest, @Param('id') id: string) {
+    return this.speakersService.removeRole(req.user!.tenantId, id);
+  }
+
   @Get(':id')
   async findOne(@Req() req: AuthRequest, @Param('id') id: string) {
     return this.speakersService.findOne(req.user!.tenantId, id);

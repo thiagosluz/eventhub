@@ -24,4 +24,14 @@ export class TenantsService {
       } as any,
     });
   }
+
+  async getPublicTenant() {
+    const tenant = await this.prisma.tenant.findFirst();
+    if (!tenant) return null;
+    return {
+      name: tenant.name,
+      logoUrl: tenant.logoUrl,
+      themeConfig: tenant.themeConfig,
+    };
+  }
 }

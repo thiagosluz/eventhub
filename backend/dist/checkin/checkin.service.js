@@ -81,10 +81,26 @@ let CheckinService = class CheckinService {
         if (!ticket) {
             throw new common_1.NotFoundException('Ingresso inválido ou não aprovado.');
         }
+        if (activityId) {
+            const activity = await this.prisma.activity.findUnique({
+                where: { id: activityId },
+            });
+            if (!activity || activity.eventId !== ticket.eventId) {
+                throw new common_1.NotFoundException('Atividade não pertence a este evento.');
+            }
+            if (activity.requiresEnrollment) {
+                const enrollment = await this.prisma.activityEnrollment.findFirst({
+                    where: { activityId, registrationId: ticket.registrationId },
+                });
+                if (!enrollment) {
+                    throw new common_1.ForbiddenException('Participante não está inscrito nesta atividade.');
+                }
+            }
+        }
         const existing = await this.prisma.attendance.findFirst({
             where: {
                 ticketId: ticket.id,
-                ...(activityId ? { activityId } : { activityId: null }),
+                activityId: activityId || null,
             },
         });
         if (existing) {

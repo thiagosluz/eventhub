@@ -83,9 +83,11 @@ model Tenant {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  users    User[]
-  events   Event[]
-  speakers Speaker[]
+  users         User[]
+  events        Event[]
+  speakers      Speaker[]
+  activityTypes ActivityType[]
+  speakerRoles  SpeakerRole[]
 }
 
 model User {
@@ -137,6 +139,26 @@ model Event {
   @@unique([tenantId, slug])
 }
 
+model ActivityType {
+  id         String     @id @default(cuid())
+  tenantId   String
+  tenant     Tenant     @relation(fields: [tenantId], references: [id])
+  name       String
+  activities Activity[]
+
+  @@unique([tenantId, name])
+}
+
+model SpeakerRole {
+  id               String            @id @default(cuid())
+  tenantId         String
+  tenant           Tenant            @relation(fields: [tenantId], references: [id])
+  name             String
+  activitySpeakers ActivitySpeaker[]
+
+  @@unique([tenantId, name])
+}
+
 model Activity {
   id      String @id @default(cuid())
   eventId String
@@ -149,6 +171,10 @@ model Activity {
   endAt       DateTime
   capacity    Int?
   status      ActivityStatus @default(SCHEDULED)
+
+  typeId             String?
+  type               ActivityType? @relation(fields: [typeId], references: [id])
+  requiresEnrollment Boolean       @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -176,9 +202,11 @@ model Speaker {
 model ActivitySpeaker {
   activityId String
   speakerId  String
+  roleId     String?
 
-  activity Activity @relation(fields: [activityId], references: [id])
-  speaker  Speaker  @relation(fields: [speakerId], references: [id])
+  activity Activity     @relation(fields: [activityId], references: [id])
+  speaker  Speaker      @relation(fields: [speakerId], references: [id])
+  role     SpeakerRole? @relation(fields: [roleId], references: [id])
 
   @@id([activityId, speakerId])
 }

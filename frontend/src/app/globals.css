@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand Colors - Professional Emerald & Forest */
-  --color-primary: oklch(0.6 0.18 160);       /* Emerald 600 */
-  --color-primary-dark: oklch(0.45 0.15 160);  /* Emerald 800 */
+  /* Brand Colors - Professional Emerald & Forest (Dynamic support) */
+  --primary: 160 84% 39%; /* Fallback Emerald 600 */
+  --color-primary: hsl(var(--primary));
+  --color-primary-dark: hsl(var(--primary) / 0.8);
   --color-accent: oklch(0.7 0.12 170);        /* Teal/Mint tint */
+  --color-destructive: oklch(0.6 0.2 25);    /* Professional Red */
+  --color-destructive-dark: oklch(0.45 0.15 25);
 
   /* Neutral/Light Palette */
   --color-background: oklch(0.99 0.005 250);   /* Gray 50 */

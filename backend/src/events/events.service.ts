@@ -125,17 +125,16 @@ export class EventsService {
     return this.prisma.event.findMany({
       where: { status: 'PUBLISHED' },
       orderBy: { startDate: 'asc' },
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        description: true,
-        location: true,
-        startDate: true,
-        endDate: true,
-        bannerUrl: true,
-        logoUrl: true,
-      },
+      include: {
+        tenant: {
+          select: {
+            id: true,
+            name: true,
+            logoUrl: true,
+            themeConfig: true,
+          }
+        }
+      }
     });
   }
 
@@ -226,6 +225,61 @@ export class EventsService {
         createdAt: 'desc',
       },
     });
+  }
+
+  async findParticipantDetail(tenantId: string, registrationId: string) {
+    const reg = await this.prisma.registration.findUnique({
+      where: { id: registrationId },
+      include: {
+        user: { select: { id: true, name: true, email: true } },
+        event: { select: { id: true, name: true, tenantId: true } },
+        tickets: true,
+        enrollments: {
+          include: {
+            activity: {
+              include: { type: true }
+            }
+          }
+        },
+        formResponses: {
+          include: {
+            form: { select: { name: true } },
+            answers: {
+              include: { field: true }
+            }
+          }
+        },
+        certificates: {
+          include: {
+            template: { select: { name: true } }
+          }
+        },
+      }
+    });
+
+    if (!reg || reg.event.tenantId !== tenantId) {
+      throw new NotFoundException('Inscrição não encontrada.');
+    }
+
+    // Get history for the same user in the same tenant
+    const history = await this.prisma.registration.findMany({
+      where: {
+        userId: reg.userId,
+        event: { tenantId },
+        id: { not: registrationId }
+      },
+      include: {
+        event: { select: { name: true, startDate: true } },
+        tickets: { select: { type: true, status: true } },
+        certificates: { select: { id: true, issuedAt: true } }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    return {
+      ...reg,
+      history
+    };
   }
 }
 

@@ -3,8 +3,10 @@
 import { useAuth } from "@/context/AuthContext";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BellIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { tenantsService } from "@/services/tenants.service";
 
 export default function DashboardLayout({
   children,
@@ -12,12 +14,17 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { user, isAuthenticated, isLoading } = useAuth();
+  const [tenant, setTenant] = useState<any>(null);
   const router = useRouter();
 
   useEffect(() => {
     const allowedRoles = ["ORGANIZER", "REVIEWER"];
     if (!isLoading && (!isAuthenticated || !user || !allowedRoles.includes(user.role))) {
       router.push("/auth/login");
+    }
+
+    if (isAuthenticated && (user?.role === 'ORGANIZER' || user?.role === 'REVIEWER')) {
+      tenantsService.getMe().then(setTenant).catch(console.error);
     }
   }, [isLoading, isAuthenticated, user, router]);
 
@@ -35,14 +42,15 @@ export default function DashboardLayout({
   }
 
   return (
+    <ThemeProvider themeConfig={tenant?.themeConfig}>
     <div className="flex min-h-screen bg-background text-foreground">
-      <Sidebar />
+      <Sidebar tenant={tenant} />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Header */}
         <header className="h-16 border-b border-border bg-card/50 backdrop-blur-md flex items-center justify-between px-8">
           <div>
             <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground">
-              Dashboard <span className="text-border mx-2">/</span> <span className="text-foreground">Visão Geral</span>
+              {tenant?.name || 'Dashboard'} <span className="text-border mx-2">/</span> <span className="text-foreground">Visão Geral</span>
             </h2>
           </div>
           <div className="flex items-center gap-4">
@@ -73,5 +81,6 @@ export default function DashboardLayout({
         </main>
       </div>
     </div>
+    </ThemeProvider>
   );
 }

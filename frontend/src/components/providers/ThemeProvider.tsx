@@ -23,17 +23,20 @@ export function ThemeProvider({
   tenantThemeConfig?: any;
 }) {
   const primaryColor = themeConfig?.primaryColor || tenantThemeConfig?.primaryColor || '#10b981';
-
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.documentElement.style.setProperty('--primary', hexToHsl(primaryColor));
-      // You can add more variables here
-    }
-  }, [primaryColor]);
+  const hslValue = hexToHsl(primaryColor);
 
   return (
     <ThemeContext.Provider value={{ primaryColor }}>
-      {children}
+      <div 
+        style={{ 
+          '--primary': hslValue,
+          '--color-primary': `hsl(${hslValue})`,
+          '--color-primary-dark': `hsl(${hslValue} / 0.8)`
+        } as React.CSSProperties}
+        className="contents"
+      >
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 }

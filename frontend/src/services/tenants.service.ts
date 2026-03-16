@@ -19,4 +19,8 @@ export const tenantsService = {
   updateMe: async (data: UpdateTenantDto): Promise<Tenant> => {
     return api.patch<Tenant>('/tenants/me', data);
   },
+
+  getPublicTenant: async (): Promise<Partial<Tenant>> => {
+    return api.get<Partial<Tenant>>('/tenants/public/tenant');
+  },
 };

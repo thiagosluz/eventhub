@@ -10,15 +10,22 @@ import {
   PlusIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { dashboardService, DashboardStats } from "@/services/dashboard.service";
 import { useAuth } from "@/context/AuthContext";
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (user?.role === "REVIEWER") {
+      router.push("/dashboard/reviews");
+      return;
+    }
+
     const fetchStats = async () => {
       try {
         const data = await dashboardService.getStats();
@@ -30,7 +37,7 @@ export default function DashboardPage() {
       }
     };
     fetchStats();
-  }, []);
+  }, [user, router]);
 
   const statCards = [
     { 

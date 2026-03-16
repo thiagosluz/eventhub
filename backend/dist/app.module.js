@@ -34,6 +34,7 @@ const dashboard_module_1 = require("./dashboard/dashboard.module");
 const prisma_module_1 = require("./prisma/prisma.module");
 const speakers_module_1 = require("./speakers/speakers.module");
 const tenants_module_1 = require("./tenants/tenants.module");
+const forms_module_1 = require("./forms/forms.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -45,6 +46,7 @@ exports.AppModule = AppModule = __decorate([
             prisma_module_1.PrismaModule,
             speakers_module_1.SpeakersModule,
             tenants_module_1.TenantsModule,
+            forms_module_1.FormsModule,
             bullmq_1.BullModule.forRoot({
                 connection: {
                     host: (_a = process.env.REDIS_HOST) !== null && _a !== void 0 ? _a : 'localhost',

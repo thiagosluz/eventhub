@@ -31,6 +31,15 @@ let SpeakersController = class SpeakersController {
     async findAll(req) {
         return this.speakersService.findAll(req.user.tenantId);
     }
+    async createRole(req, name) {
+        return this.speakersService.createRole(req.user.tenantId, name);
+    }
+    async findAllRoles(req) {
+        return this.speakersService.findAllRoles(req.user.tenantId);
+    }
+    async removeRole(req, id) {
+        return this.speakersService.removeRole(req.user.tenantId, id);
+    }
     async findOne(req, id) {
         return this.speakersService.findOne(req.user.tenantId, id);
     }
@@ -57,6 +66,29 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], SpeakersController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Post)('roles'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)('name')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], SpeakersController.prototype, "createRole", null);
+__decorate([
+    (0, common_1.Get)('roles'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], SpeakersController.prototype, "findAllRoles", null);
+__decorate([
+    (0, common_1.Delete)('roles/:id'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], SpeakersController.prototype, "removeRole", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Req)()),

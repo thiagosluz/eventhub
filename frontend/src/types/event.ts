@@ -9,10 +9,29 @@ export interface Speaker {
   updatedAt: string;
 }
 
+export interface ActivityType {
+  id: string;
+  name: string;
+}
+
+export interface SpeakerRole {
+  id: string;
+  name: string;
+}
+
+export interface SpeakerAssociation {
+  speakerId: string;
+  speaker: Speaker;
+  roleId?: string;
+  role?: SpeakerRole;
+}
+
 export interface Tenant {
   id: string;
   name: string;
   slug: string;
+  logoUrl?: string;
+  themeConfig?: any;
 }
 
 export interface Activity {
@@ -24,6 +43,10 @@ export interface Activity {
   endAt: string;
   capacity?: number;
   status: 'SCHEDULED' | 'CANCELLED' | 'COMPLETED';
+  typeId?: string;
+  type?: ActivityType;
+  requiresEnrollment: boolean;
+  speakers?: SpeakerAssociation[];
 }
 
 export interface Ticket {
@@ -88,6 +111,7 @@ export interface Event {
   status: EventStatus;
   bannerUrl?: string;
   logoUrl?: string;
+  themeConfig?: any;
   activities?: Activity[];
   tickets?: Ticket[];
   forms?: Form[];

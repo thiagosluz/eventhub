@@ -39,7 +39,8 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
     endDate: "",
     seoTitle: "",
     seoDescription: "",
-    status: "DRAFT" as "DRAFT" | "PUBLISHED" | "ARCHIVED"
+    status: "DRAFT" as "DRAFT" | "PUBLISHED" | "ARCHIVED",
+    primaryColor: "#6366f1"
   });
 
   useEffect(() => {
@@ -56,7 +57,8 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
           endDate: data.endDate ? new Date(data.endDate).toISOString().slice(0, 16) : "",
           seoTitle: (data as any).seoTitle || "",
           seoDescription: (data as any).seoDescription || "",
-          status: data.status
+          status: data.status,
+          primaryColor: data.themeConfig?.primaryColor || "#6366f1"
         });
       } catch (err) {
         setError("Não foi possível carregar os dados do evento.");
@@ -80,7 +82,14 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
     setSaveSuccess(false);
 
     try {
-      await eventsService.updateEvent(id, formData);
+      const updateData = {
+        ...formData,
+        themeConfig: {
+          ...event?.themeConfig,
+          primaryColor: formData.primaryColor
+        }
+      };
+      await eventsService.updateEvent(id, updateData);
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (err: any) {
@@ -191,7 +200,7 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
                 <textarea name="description" value={formData.description} onChange={handleChange} rows={5} className="w-full p-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm" />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-border">
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Localização</label>
                   <div className="relative">
@@ -206,6 +215,27 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
                     <option value="PUBLISHED">Publicado</option>
                     <option value="ARCHIVED">Arquivado</option>
                   </select>
+                </div>
+
+                <div className="space-y-2 md:col-span-2 bg-muted/20 p-6 rounded-2xl border border-dashed border-border">
+                  <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Cor Primária do Evento</label>
+                  <div className="flex items-center gap-4">
+                    <input 
+                      name="primaryColor" 
+                      value={formData.primaryColor} 
+                      onChange={handleChange} 
+                      type="color" 
+                      className="w-16 h-12 p-1 rounded-xl border border-border bg-card cursor-pointer" 
+                    />
+                    <input 
+                      name="primaryColor" 
+                      value={formData.primaryColor} 
+                      onChange={handleChange} 
+                      type="text" 
+                      className="flex-1 h-12 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-mono font-bold text-sm uppercase" 
+                    />
+                  </div>
+                  <p className="text-[10px] text-muted-foreground font-bold px-1 italic">Essa cor será a base da identidade visual nas páginas públicas.</p>
                 </div>
               </div>
 
@@ -313,6 +343,18 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
             >
               <CalendarIcon className="w-4 h-4" />
               MONTAR GRADE / HORÁRIOS
+            </Link>
+          </div>
+
+          <div className="premium-card p-6 bg-amber-500/5 border-amber-500/10 space-y-4">
+            <h3 className="text-sm font-black uppercase tracking-tight text-amber-600">Formulário de Inscrição</h3>
+            <p className="text-xs text-muted-foreground font-medium">Personalize as perguntas que os participantes devem responder.</p>
+            <Link 
+              href={`/dashboard/events/${id}/forms`} 
+              className="premium-button !bg-amber-600 hover:!bg-amber-700 !shadow-amber-200 !py-2.5 !text-[10px] !font-black flex items-center justify-center gap-2"
+            >
+              <InformationCircleIcon className="w-4 h-4" />
+              GERENCIAR PERGUNTAS
             </Link>
           </div>
 

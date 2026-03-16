@@ -77,6 +77,35 @@ let EventsController = class EventsController {
             data: body,
         });
     }
+    async exportParticipants(req, res) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId) {
+            throw new Error('Tenant missing');
+        }
+        const participants = await this.eventsService.listParticipants(tenantId, {});
+        const header = 'Nome,Email,Evento,Ticket,Data de Inscrição\n';
+        const rows = participants.map(p => {
+            var _a;
+            const name = p.user.name.replace(/,/g, '');
+            const email = p.user.email;
+            const eventName = p.event.name.replace(/,/g, '');
+            const ticketType = ((_a = p.tickets[0]) === null || _a === void 0 ? void 0 : _a.type) || 'N/A';
+            const date = new Date(p.createdAt).toLocaleDateString('pt-BR');
+            return `${name},${email},${eventName},${ticketType},${date}`;
+        }).join('\n');
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename=participantes.csv');
+        res.status(200).send(header + rows);
+    }
+    async getParticipantDetail(req, id) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId) {
+            throw new Error('Tenant missing');
+        }
+        return this.eventsService.findParticipantDetail(tenantId, id);
+    }
     async listParticipants(req) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
@@ -192,6 +221,26 @@ __decorate([
     __metadata("design:paramtypes", [String, update_event_dto_1.UpdateEventDto, Object]),
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "updateEvent", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Get)('participants/export'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], EventsController.prototype, "exportParticipants", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Get)('participants/:id'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], EventsController.prototype, "getParticipantDetail", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),

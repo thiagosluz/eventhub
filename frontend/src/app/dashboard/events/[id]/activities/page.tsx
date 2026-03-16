@@ -11,10 +11,13 @@ import {
   PencilIcon, 
   TrashIcon, 
   ChevronLeftIcon,
-  ClockIcon
+  ClockIcon,
+  UsersIcon,
+  UserIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { ActivityForm } from '@/components/dashboard/ActivityForm';
+import { DeleteConfirmationModal } from '@/components/dashboard/DeleteConfirmationModal';
 import { toast } from 'react-hot-toast';
 
 export default function ActivitiesPage({ params }: { params: Promise<{ id: string }> }) {
@@ -25,6 +28,11 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Deletion Modal state
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [activityToDelete, setActivityToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -65,14 +73,19 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
     }
   };
 
-  const handleDelete = async (activityId: string) => {
-    if (!confirm('Tem certeza que deseja excluir esta atividade?')) return;
+  const handleDelete = async () => {
+    if (!activityToDelete) return;
+    setIsDeleting(true);
     try {
-      await activitiesService.deleteActivity(activityId);
+      await activitiesService.deleteActivity(activityToDelete);
       toast.success('Atividade excluída!');
+      setIsDeleteModalOpen(false);
+      setActivityToDelete(null);
       loadData();
     } catch (error) {
       toast.error('Erro ao excluir atividade.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -86,7 +99,7 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
     });
   };
 
-  if (loading) return <div className="p-8">Carregando...</div>;
+  if (loading) return <div className="p-8 font-black uppercase tracking-widest animate-pulse">Carregando...</div>;
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -127,43 +140,83 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
         ) : (
           activities.map((activity) => (
             <div key={activity.id} className="premium-card p-6 bg-card border-border hover:shadow-xl hover:shadow-primary/5 transition-all group">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                 <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex flex-col items-center justify-center text-primary shrink-0">
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex flex-col items-center justify-center text-primary shrink-0 border border-primary/20">
                     <ClockIcon className="w-6 h-6" />
                     <span className="text-[10px] font-black uppercase tracking-tighter mt-1">
                       {new Date(activity.startAt).getHours()}:{new Date(activity.startAt).getMinutes().toString().padStart(2, '0')}
                     </span>
                   </div>
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold group-hover:text-primary transition-colors">{activity.title}</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-xl font-bold group-hover:text-primary transition-colors">{activity.title}</h3>
+                      {activity.type && (
+                        <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">
+                          {activity.type.name}
+                        </span>
+                      )}
+                      {activity.requiresEnrollment && (
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">
+                          Requer Inscrição
+                        </span>
+                      )}
+                    </div>
+                    
                     <div className="flex flex-wrap gap-4 text-xs font-bold text-muted-foreground">
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5">
                         <CalendarIcon className="w-3.5 h-3.5" />
                         {formatDateTime(activity.startAt)} - {formatDateTime(activity.endAt)}
                       </div>
                       {activity.location && (
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1.5">
                           <MapPinIcon className="w-3.5 h-3.5 text-emerald-500" />
                           {activity.location}
                         </div>
                       )}
+                      {activity.capacity && (
+                        <div className="flex items-center gap-1.5">
+                          <UsersIcon className="w-3.5 h-3.5" />
+                          {activity.capacity} Vagas
+                        </div>
+                      )}
                     </div>
+
+                    {activity.speakers && activity.speakers.length > 0 && (
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {activity.speakers.map((as: any) => (
+                          <div key={as.speaker.id} className="flex items-center gap-2 bg-muted/40 px-3 py-1.5 rounded-xl border border-border/50">
+                            <div className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center">
+                              <UserIcon className="w-2.5 h-2.5 text-primary" />
+                            </div>
+                            <span className="text-[11px] font-bold">{as.speaker.name}</span>
+                            {as.role && (
+                              <span className="text-[9px] font-black uppercase tracking-tighter text-muted-foreground/70 bg-muted px-1.5 rounded-md">
+                                {as.role.name}
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="flex items-center gap-2 self-end md:self-center">
+                <div className="flex items-center gap-2 self-end md:self-start pt-2">
                   <button
                     onClick={() => {
                       setEditingActivity(activity);
                       setIsModalOpen(true);
                     }}
-                    className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all"
+                    className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all border border-transparent hover:border-primary/20 shadow-sm"
                   >
                     <PencilIcon className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => handleDelete(activity.id)}
-                    className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all"
+                    onClick={() => {
+                      setActivityToDelete(activity.id);
+                      setIsDeleteModalOpen(true);
+                    }}
+                    className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all border border-transparent hover:border-destructive/20 shadow-sm"
                   >
                     <TrashIcon className="w-4 h-4" />
                   </button>
@@ -174,9 +227,10 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
         )}
       </div>
 
+      {/* Activity Edit/Create Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-card w-full max-w-2xl rounded-3xl shadow-2xl border border-border p-8 animate-in zoom-in-95 duration-300">
+          <div className="bg-card w-full max-w-2xl rounded-3xl shadow-2xl border border-border p-8 animate-in zoom-in-95 duration-300 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-black tracking-tight">
                 {editingActivity ? 'Editar Atividade' : 'Nova Atividade'}
@@ -194,6 +248,19 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setActivityToDelete(null);
+        }}
+        onConfirm={handleDelete}
+        title="Excluir Atividade?"
+        description="Esta ação não pode ser desfeita. Todos os dados de inscrições e presenças desta atividade serão permanentemente removidos."
+        isLoading={isDeleting}
+      />
     </div>
   );
 }

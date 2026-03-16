@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
-export function Navbar() {
+export function Navbar({ tenant }: { tenant?: any }) {
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuth();
 
@@ -12,13 +12,17 @@ export function Navbar() {
     <nav className="fixed top-0 w-full z-10 px-6 py-6 border-b border-border/50 bg-background/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <span className="text-2xl font-bold tracking-tight text-foreground">
-            Event<span className="text-primary">Hub</span>
+          {tenant?.logoUrl ? (
+            <img src={tenant.logoUrl} alt={tenant.name || 'EventHub'} className="w-9 h-9 rounded-xl object-contain bg-primary shadow-lg p-1" />
+          ) : (
+            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+          )}
+          <span className="text-2xl font-bold tracking-tight text-foreground truncate max-w-[200px]">
+            {tenant?.name?.split(' ')[0] || 'Event'}<span className="text-primary">{tenant?.name?.split(' ').slice(1).join(' ') || 'Hub'}</span>
           </span>
         </Link>
         

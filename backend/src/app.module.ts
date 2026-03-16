@@ -24,6 +24,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SpeakersModule } from './speakers/speakers.module';
 import { TenantsModule } from './tenants/tenants.module';
+import { FormsModule } from './forms/forms.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { TenantsModule } from './tenants/tenants.module';
     PrismaModule,
     SpeakersModule,
     TenantsModule,
+    FormsModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST ?? 'localhost',

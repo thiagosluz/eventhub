@@ -7,12 +7,13 @@ import {
   Patch,
   Post,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
@@ -106,6 +107,43 @@ export class EventsController {
       eventId: id,
       data: body,
     });
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get('participants/export')
+  async exportParticipants(@Req() req: AuthRequest, @Res() res: Response) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) {
+      throw new Error('Tenant missing');
+    }
+    
+    const participants = await this.eventsService.listParticipants(tenantId, {});
+    
+    const header = 'Nome,Email,Evento,Ticket,Data de Inscrição\n';
+    const rows = participants.map(p => {
+      const name = p.user.name.replace(/,/g, '');
+      const email = p.user.email;
+      const eventName = p.event.name.replace(/,/g, '');
+      const ticketType = p.tickets[0]?.type || 'N/A';
+      const date = new Date(p.createdAt).toLocaleDateString('pt-BR');
+      return `${name},${email},${eventName},${ticketType},${date}`;
+    }).join('\n');
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=participantes.csv');
+    res.status(200).send(header + rows);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get('participants/:id')
+  async getParticipantDetail(@Req() req: AuthRequest, @Param('id') id: string) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) {
+      throw new Error('Tenant missing');
+    }
+    return this.eventsService.findParticipantDetail(tenantId, id);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

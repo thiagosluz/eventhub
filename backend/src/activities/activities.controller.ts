@@ -117,5 +117,33 @@ export class ActivitiesController {
 
     return this.activities.deleteActivity(tenantId, activityId);
   }
+
+  // Activity Types
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post('activities/types')
+  async createType(@Req() req: AuthRequest, @Body('name') name: string) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error('Missing tenantId');
+    return this.activities.createType(tenantId, name);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get('activities/types')
+  async findAllTypes(@Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error('Missing tenantId');
+    return this.activities.findAllTypes(tenantId);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Delete('activities/types/:id')
+  async removeType(@Req() req: AuthRequest, @Param('id') id: string) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error('Missing tenantId');
+    return this.activities.removeType(tenantId, id);
+  }
 }
 

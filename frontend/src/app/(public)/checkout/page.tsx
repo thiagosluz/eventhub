@@ -15,6 +15,7 @@ import {
   ClipboardDocumentCheckIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -109,7 +110,8 @@ function CheckoutContent() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 space-y-12">
+    <ThemeProvider themeConfig={event.themeConfig} tenantThemeConfig={(event as any).tenant?.themeConfig}>
+      <div className="max-w-4xl mx-auto px-6 py-12 space-y-12">
       {/* Stepper */}
       <div className="relative">
         <div className="absolute top-1/2 left-0 w-full h-0.5 bg-border -translate-y-1/2" />
@@ -297,6 +299,7 @@ function CheckoutContent() {
         </div>
       </div>
     </div>
+    </ThemeProvider>
   );
 }
 

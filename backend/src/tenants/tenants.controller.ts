@@ -24,11 +24,18 @@ interface AuthRequest extends Request {
 }
 
 @Controller('tenants')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.ORGANIZER)
 export class TenantsController {
-  constructor(private readonly tenantsService: TenantsService) {}
+  constructor(
+    private readonly tenantsService: TenantsService,
+  ) {}
 
+  @Get('public/tenant')
+  async getPublicTenant() {
+    return this.tenantsService.getPublicTenant();
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
   @Get('me')
   async getMe(@Req() req: AuthRequest) {
     return this.tenantsService.getTenant(req.user!.tenantId);

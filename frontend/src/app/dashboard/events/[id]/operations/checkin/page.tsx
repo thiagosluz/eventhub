@@ -16,40 +16,46 @@ import Link from "next/link";
 import { eventsService } from "@/services/events.service";
 import { Event } from "@/types/event";
 
+import { activitiesService } from "@/services/activities.service";
+import { Activity } from "@/types/event";
+
 export default function CheckinScannerPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [event, setEvent] = useState<Event | null>(null);
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [selectedActivityId, setSelectedActivityId] = useState<string>("");
   const [lastResult, setLastResult] = useState<{ success: boolean; message: string; submessage?: string } | null>(null);
   const [isScanning, setIsScanning] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const scannerRef = useRef<Html5QrcodeScanner | null>(null);
 
+  // Use a ref for selectedActivityId to access current value in scanner callback
+  const selectedActivityIdRef = useRef(selectedActivityId);
   useEffect(() => {
-    const fetchEvent = async () => {
+    selectedActivityIdRef.current = selectedActivityId;
+  }, [selectedActivityId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const data = await eventsService.getOrganizerEventById(id);
-        setEvent(data);
+        const [eventData, activitiesData] = await Promise.all([
+          eventsService.getOrganizerEventById(id),
+          activitiesService.getActivitiesForEvent(id)
+        ]);
+        setEvent(eventData);
+        setActivities(activitiesData);
       } catch (err) {
         console.error(err);
       }
     };
-    fetchEvent();
-
-    // Sound effects (optional/placeholder for premium feel)
-    const playSound = (type: 'success' | 'error') => {
-      try {
-        const audio = new Audio(type === 'success' ? '/sounds/success.mp3' : '/sounds/error.mp3');
-        // audio.play(); // Browsers block auto-play, usually needs user interaction first
-      } catch (e) {}
-    };
+    fetchData();
 
     const onScanSuccess = async (decodedText: string) => {
       if (isLoading) return;
       
       setIsLoading(true);
-      // Pause scanner if possible or just ignore multiple hits
       try {
-        const result = await operationsService.checkin(decodedText);
+        const result = await operationsService.checkin(decodedText, selectedActivityIdRef.current || undefined);
         if (result.alreadyCheckedIn) {
           setLastResult({ 
             success: false, 
@@ -60,7 +66,7 @@ export default function CheckinScannerPage({ params }: { params: Promise<{ id: s
           setLastResult({ 
             success: true, 
             message: "Check-in Sucesso!", 
-            submessage: "Bem-vindo ao evento!" 
+            submessage: selectedActivityIdRef.current ? "Presença confirmada na atividade." : "Bem-vindo ao evento!" 
           });
         }
       } catch (error: any) {
@@ -71,19 +77,16 @@ export default function CheckinScannerPage({ params }: { params: Promise<{ id: s
         });
       } finally {
         setIsLoading(false);
-        // Clear result after 3 seconds
         setTimeout(() => setLastResult(null), 3000);
       }
     };
 
-    const onScanFailure = (error: any) => {
-      // Too frequent to log, but could be used for debugging
-    };
+    const onScanFailure = (error: any) => {};
 
     scannerRef.current = new Html5QrcodeScanner(
       "reader",
       { fps: 10, qrbox: { width: 250, height: 250 } },
-      /* verbose= */ false
+      false
     );
     scannerRef.current.render(onScanSuccess, onScanFailure);
 
@@ -97,21 +100,40 @@ export default function CheckinScannerPage({ params }: { params: Promise<{ id: s
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center p-6 space-y-8 animate-in fade-in duration-700">
       {/* Header */}
-      <div className="w-full max-w-lg flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link 
-            href={`/dashboard/events/${id}`}
-            className="p-2 rounded-xl border border-border bg-white text-muted-foreground hover:bg-muted transition-colors"
-          >
-            <ChevronLeftIcon className="w-5 h-5" />
-          </Link>
-          <div>
-            <h1 className="text-xl font-black text-foreground">Scanner de Check-in</h1>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-primary italic leading-none">{event?.name}</p>
+      <div className="w-full max-w-lg flex flex-col gap-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link 
+              href={`/dashboard/events/${id}`}
+              className="p-2 rounded-xl border border-border bg-white text-muted-foreground hover:bg-muted transition-colors"
+            >
+              <ChevronLeftIcon className="w-5 h-5" />
+            </Link>
+            <div>
+              <h1 className="text-xl font-black text-foreground">Scanner de Check-in</h1>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary italic leading-none">{event?.name}</p>
+            </div>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+            <QrCodeIcon className="w-6 h-6 text-primary" />
           </div>
         </div>
-        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
-          <QrCodeIcon className="w-6 h-6 text-primary" />
+
+        {/* Activity Selector */}
+        <div className="bg-white border border-border rounded-2xl p-4 shadow-sm">
+          <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground px-1 block mb-2">Modo de Check-in</label>
+          <select
+            value={selectedActivityId}
+            onChange={(e) => setSelectedActivityId(e.target.value)}
+            className="w-full h-11 px-4 rounded-xl border border-border bg-slate-50 focus:border-primary outline-none font-bold text-sm appearance-none cursor-pointer hover:bg-slate-100 transition-colors"
+          >
+            <option value="">Check-in Geral do Evento</option>
+            {activities.map(activity => (
+              <option key={activity.id} value={activity.id}>
+                {activity.title}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

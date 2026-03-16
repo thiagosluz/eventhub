@@ -64,7 +64,7 @@ export default function BrandingPage() {
             <label className="block text-sm font-semibold text-gray-700">Nome da Organização</label>
             <input
               type="text"
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Ex: Minha Empresa"
@@ -100,7 +100,7 @@ export default function BrandingPage() {
             <label className="block text-sm font-semibold text-gray-700">Logo URL</label>
             <input
               type="url"
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               value={formData.logoUrl}
               onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
               placeholder="https://exemplo.com/logo.png"
@@ -117,22 +117,22 @@ export default function BrandingPage() {
           <button
             type="submit"
             disabled={saving}
-            className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all disabled:opacity-50"
+            className="px-8 py-3 bg-primary hover:brightness-110 text-white rounded-xl font-bold shadow-lg shadow-primary/20 transition-all disabled:opacity-50"
           >
             {saving ? 'Salvando...' : 'Salvar Alterações'}
           </button>
         </div>
       </form>
 
-      <div className="mt-12 p-8 bg-emerald-50 rounded-2xl border border-emerald-100 flex items-start gap-4">
+      <div className="mt-12 p-8 bg-primary/5 rounded-2xl border border-primary/10 flex items-start gap-4">
         <div className="p-3 bg-white rounded-xl shadow-sm">
-          <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
         <div>
-          <h3 className="font-bold text-emerald-900">Dica de Design</h3>
-          <p className="text-emerald-800/80 text-sm mt-1">
+          <h3 className="font-bold text-foreground">Dica de Design</h3>
+          <p className="text-muted-foreground text-sm mt-1">
             Escolha uma cor primária que tenha bom contraste com branco para garantir que os botões sejam legíveis.
             Cores muito claras podem dificultar a leitura.
           </p>

@@ -68,6 +68,35 @@ let ActivitiesController = class ActivitiesController {
             activityId,
         });
     }
+    async deleteActivity(activityId, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId) {
+            throw new Error('Missing tenantId on token payload.');
+        }
+        return this.activities.deleteActivity(tenantId, activityId);
+    }
+    async createType(req, name) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId)
+            throw new Error('Missing tenantId');
+        return this.activities.createType(tenantId, name);
+    }
+    async findAllTypes(req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId)
+            throw new Error('Missing tenantId');
+        return this.activities.findAllTypes(tenantId);
+    }
+    async removeType(req, id) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId)
+            throw new Error('Missing tenantId');
+        return this.activities.removeType(tenantId, id);
+    }
 };
 exports.ActivitiesController = ActivitiesController;
 __decorate([
@@ -111,6 +140,45 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ActivitiesController.prototype, "enrollInActivity", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Delete)('activities/:activityId'),
+    __param(0, (0, common_1.Param)('activityId')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], ActivitiesController.prototype, "deleteActivity", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Post)('activities/types'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)('name')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], ActivitiesController.prototype, "createType", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Get)('activities/types'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ActivitiesController.prototype, "findAllTypes", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Delete)('activities/types/:id'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], ActivitiesController.prototype, "removeType", null);
 exports.ActivitiesController = ActivitiesController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [activities_service_1.ActivitiesService])

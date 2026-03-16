@@ -3,44 +3,72 @@
 import { useEffect, useState } from "react";
 import { 
   UsersIcon, 
-  FunnelIcon, 
   ArrowDownTrayIcon,
   MagnifyingGlassIcon,
-  EnvelopeIcon
+  EnvelopeIcon,
+  EyeIcon
 } from "@heroicons/react/24/outline";
-import api from "@/services/api";
-
-interface Participant {
-  id: string;
-  user: { name: string; email: string };
-  event: { name: string };
-  tickets: { type: string; status: string }[];
-  createdAt: string;
-}
+import { Participant, ParticipantDetail, participantsService } from "@/services/participants.service";
+import { ParticipantDetailDrawer } from "@/components/dashboard/ParticipantDetailDrawer";
+import { toast } from "react-hot-toast";
 
 export default function ParticipantsPage() {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [selectedParticipant, setSelectedParticipant] = useState<ParticipantDetail | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDetailLoading, setIsDetailLoading] = useState(false);
+
+  const fetchParticipants = async () => {
+    try {
+      const data = await participantsService.list();
+      setParticipants(data);
+    } catch (error) {
+      console.error("Error fetching participants:", error);
+      toast.error("Erro ao carregar participantes.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchParticipants = async () => {
-      try {
-        const response = await api.get("/participants");
-        setParticipants(response.data);
-      } catch (error) {
-        console.error("Error fetching participants:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchParticipants();
   }, []);
+
+  const handleViewDetails = async (id: string) => {
+    setIsDetailLoading(true);
+    try {
+      const detail = await participantsService.getDetail(id);
+      setSelectedParticipant(detail);
+      setIsDrawerOpen(true);
+    } catch (error) {
+      toast.error("Erro ao carregar detalhes do participante.");
+    } finally {
+      setIsDetailLoading(false);
+    }
+  };
 
   const filteredParticipants = participants.filter(p => 
     p.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     p.user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleExportCSV = async () => {
+    try {
+      const response = await participantsService.exportCSV();
+      const url = window.URL.createObjectURL(new Blob([response]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'participantes.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      toast.error("Erro ao exportar participantes.");
+    }
+  };
 
   if (loading) {
     return (
@@ -60,7 +88,11 @@ export default function ParticipantsPage() {
           <p className="text-muted-foreground font-medium">Visualize e gerencie todos os inscritos nos seus eventos.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="premium-button !bg-muted !text-muted-foreground hover:!text-foreground !border-border !px-4 !py-3">
+          <button 
+            onClick={handleExportCSV}
+            className="premium-button !bg-muted !text-muted-foreground hover:!text-foreground !border-border !px-4 !py-3"
+            title="Exportar CSV"
+          >
              <ArrowDownTrayIcon className="w-5 h-5" />
           </button>
           <div className="relative group">
@@ -128,9 +160,24 @@ export default function ParticipantsPage() {
                     {new Date(p.createdAt).toLocaleDateString("pt-BR")}
                   </td>
                   <td className="px-6 py-5 text-right">
-                    <button className="p-2 hover:bg-primary/10 rounded-xl text-primary transition-all">
-                      <EnvelopeIcon className="w-5 h-5" />
-                    </button>
+                    <div className="flex items-center justify-end gap-2">
+                      <button 
+                        onClick={() => handleViewDetails(p.id)}
+                        disabled={isDetailLoading}
+                        className="p-2 hover:bg-primary/10 rounded-xl text-primary transition-all group/btn relative"
+                        title="Ver Detalhes"
+                      >
+                        <EyeIcon className="w-5 h-5" />
+                        {isDetailLoading && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-background/50 rounded-xl">
+                            <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                          </div>
+                        )}
+                      </button>
+                      <button className="p-2 hover:bg-muted rounded-xl text-muted-foreground hover:text-foreground transition-all">
+                        <EnvelopeIcon className="w-5 h-5" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -148,6 +195,12 @@ export default function ParticipantsPage() {
           </table>
         </div>
       </div>
+
+      <ParticipantDetailDrawer 
+        participant={selectedParticipant}
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
     </div>
   );
 }

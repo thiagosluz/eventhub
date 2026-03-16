@@ -52,6 +52,25 @@ let SpeakersService = class SpeakersService {
             where: { id },
         });
     }
+    async createRole(tenantId, name) {
+        return this.prisma.speakerRole.create({
+            data: { tenantId, name },
+        });
+    }
+    async findAllRoles(tenantId) {
+        return this.prisma.speakerRole.findMany({
+            where: { tenantId },
+            orderBy: { name: 'asc' },
+        });
+    }
+    async removeRole(tenantId, id) {
+        const role = await this.prisma.speakerRole.findFirst({
+            where: { id, tenantId },
+        });
+        if (!role)
+            throw new common_1.NotFoundException('Role not found');
+        return this.prisma.speakerRole.delete({ where: { id } });
+    }
 };
 exports.SpeakersService = SpeakersService;
 exports.SpeakersService = SpeakersService = __decorate([

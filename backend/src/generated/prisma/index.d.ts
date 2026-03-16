@@ -29,6 +29,16 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type Event = $Result.DefaultSelection<Prisma.$EventPayload>
 /**
+ * Model ActivityType
+ * 
+ */
+export type ActivityType = $Result.DefaultSelection<Prisma.$ActivityTypePayload>
+/**
+ * Model SpeakerRole
+ * 
+ */
+export type SpeakerRole = $Result.DefaultSelection<Prisma.$SpeakerRolePayload>
+/**
  * Model Activity
  * 
  */
@@ -384,6 +394,26 @@ export class PrismaClient<
     * ```
     */
   get event(): Prisma.EventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.activityType`: Exposes CRUD operations for the **ActivityType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ActivityTypes
+    * const activityTypes = await prisma.activityType.findMany()
+    * ```
+    */
+  get activityType(): Prisma.ActivityTypeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.speakerRole`: Exposes CRUD operations for the **SpeakerRole** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SpeakerRoles
+    * const speakerRoles = await prisma.speakerRole.findMany()
+    * ```
+    */
+  get speakerRole(): Prisma.SpeakerRoleDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.activity`: Exposes CRUD operations for the **Activity** model.
@@ -971,6 +1001,8 @@ export namespace Prisma {
     Tenant: 'Tenant',
     User: 'User',
     Event: 'Event',
+    ActivityType: 'ActivityType',
+    SpeakerRole: 'SpeakerRole',
     Activity: 'Activity',
     Speaker: 'Speaker',
     ActivitySpeaker: 'ActivitySpeaker',
@@ -1001,7 +1033,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "user" | "event" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "attendance" | "certificateTemplate" | "issuedCertificate"
+      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "attendance" | "certificateTemplate" | "issuedCertificate"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1224,6 +1256,154 @@ export namespace Prisma {
           count: {
             args: Prisma.EventCountArgs<ExtArgs>
             result: $Utils.Optional<EventCountAggregateOutputType> | number
+          }
+        }
+      }
+      ActivityType: {
+        payload: Prisma.$ActivityTypePayload<ExtArgs>
+        fields: Prisma.ActivityTypeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ActivityTypeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ActivityTypeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload>
+          }
+          findFirst: {
+            args: Prisma.ActivityTypeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ActivityTypeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload>
+          }
+          findMany: {
+            args: Prisma.ActivityTypeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload>[]
+          }
+          create: {
+            args: Prisma.ActivityTypeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload>
+          }
+          createMany: {
+            args: Prisma.ActivityTypeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ActivityTypeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload>[]
+          }
+          delete: {
+            args: Prisma.ActivityTypeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload>
+          }
+          update: {
+            args: Prisma.ActivityTypeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload>
+          }
+          deleteMany: {
+            args: Prisma.ActivityTypeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ActivityTypeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ActivityTypeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload>[]
+          }
+          upsert: {
+            args: Prisma.ActivityTypeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActivityTypePayload>
+          }
+          aggregate: {
+            args: Prisma.ActivityTypeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateActivityType>
+          }
+          groupBy: {
+            args: Prisma.ActivityTypeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ActivityTypeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ActivityTypeCountArgs<ExtArgs>
+            result: $Utils.Optional<ActivityTypeCountAggregateOutputType> | number
+          }
+        }
+      }
+      SpeakerRole: {
+        payload: Prisma.$SpeakerRolePayload<ExtArgs>
+        fields: Prisma.SpeakerRoleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SpeakerRoleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SpeakerRoleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload>
+          }
+          findFirst: {
+            args: Prisma.SpeakerRoleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SpeakerRoleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload>
+          }
+          findMany: {
+            args: Prisma.SpeakerRoleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload>[]
+          }
+          create: {
+            args: Prisma.SpeakerRoleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload>
+          }
+          createMany: {
+            args: Prisma.SpeakerRoleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SpeakerRoleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload>[]
+          }
+          delete: {
+            args: Prisma.SpeakerRoleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload>
+          }
+          update: {
+            args: Prisma.SpeakerRoleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload>
+          }
+          deleteMany: {
+            args: Prisma.SpeakerRoleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SpeakerRoleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SpeakerRoleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload>[]
+          }
+          upsert: {
+            args: Prisma.SpeakerRoleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpeakerRolePayload>
+          }
+          aggregate: {
+            args: Prisma.SpeakerRoleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSpeakerRole>
+          }
+          groupBy: {
+            args: Prisma.SpeakerRoleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SpeakerRoleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SpeakerRoleCountArgs<ExtArgs>
+            result: $Utils.Optional<SpeakerRoleCountAggregateOutputType> | number
           }
         }
       }
@@ -2448,6 +2628,8 @@ export namespace Prisma {
     tenant?: TenantOmit
     user?: UserOmit
     event?: EventOmit
+    activityType?: ActivityTypeOmit
+    speakerRole?: SpeakerRoleOmit
     activity?: ActivityOmit
     speaker?: SpeakerOmit
     activitySpeaker?: ActivitySpeakerOmit
@@ -2546,12 +2728,16 @@ export namespace Prisma {
     users: number
     events: number
     speakers: number
+    activityTypes: number
+    speakerRoles: number
   }
 
   export type TenantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | TenantCountOutputTypeCountUsersArgs
     events?: boolean | TenantCountOutputTypeCountEventsArgs
     speakers?: boolean | TenantCountOutputTypeCountSpeakersArgs
+    activityTypes?: boolean | TenantCountOutputTypeCountActivityTypesArgs
+    speakerRoles?: boolean | TenantCountOutputTypeCountSpeakerRolesArgs
   }
 
   // Custom InputTypes
@@ -2584,6 +2770,20 @@ export namespace Prisma {
    */
   export type TenantCountOutputTypeCountSpeakersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SpeakerWhereInput
+  }
+
+  /**
+   * TenantCountOutputType without action
+   */
+  export type TenantCountOutputTypeCountActivityTypesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActivityTypeWhereInput
+  }
+
+  /**
+   * TenantCountOutputType without action
+   */
+  export type TenantCountOutputTypeCountSpeakerRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpeakerRoleWhereInput
   }
 
 
@@ -2709,6 +2909,68 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountCertificateTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CertificateTemplateWhereInput
+  }
+
+
+  /**
+   * Count Type ActivityTypeCountOutputType
+   */
+
+  export type ActivityTypeCountOutputType = {
+    activities: number
+  }
+
+  export type ActivityTypeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    activities?: boolean | ActivityTypeCountOutputTypeCountActivitiesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ActivityTypeCountOutputType without action
+   */
+  export type ActivityTypeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityTypeCountOutputType
+     */
+    select?: ActivityTypeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ActivityTypeCountOutputType without action
+   */
+  export type ActivityTypeCountOutputTypeCountActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActivityWhereInput
+  }
+
+
+  /**
+   * Count Type SpeakerRoleCountOutputType
+   */
+
+  export type SpeakerRoleCountOutputType = {
+    activitySpeakers: number
+  }
+
+  export type SpeakerRoleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    activitySpeakers?: boolean | SpeakerRoleCountOutputTypeCountActivitySpeakersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SpeakerRoleCountOutputType without action
+   */
+  export type SpeakerRoleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRoleCountOutputType
+     */
+    select?: SpeakerRoleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SpeakerRoleCountOutputType without action
+   */
+  export type SpeakerRoleCountOutputTypeCountActivitySpeakersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActivitySpeakerWhereInput
   }
 
 
@@ -3237,6 +3499,8 @@ export namespace Prisma {
     users?: boolean | Tenant$usersArgs<ExtArgs>
     events?: boolean | Tenant$eventsArgs<ExtArgs>
     speakers?: boolean | Tenant$speakersArgs<ExtArgs>
+    activityTypes?: boolean | Tenant$activityTypesArgs<ExtArgs>
+    speakerRoles?: boolean | Tenant$speakerRolesArgs<ExtArgs>
     _count?: boolean | TenantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tenant"]>
 
@@ -3275,6 +3539,8 @@ export namespace Prisma {
     users?: boolean | Tenant$usersArgs<ExtArgs>
     events?: boolean | Tenant$eventsArgs<ExtArgs>
     speakers?: boolean | Tenant$speakersArgs<ExtArgs>
+    activityTypes?: boolean | Tenant$activityTypesArgs<ExtArgs>
+    speakerRoles?: boolean | Tenant$speakerRolesArgs<ExtArgs>
     _count?: boolean | TenantCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TenantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3286,6 +3552,8 @@ export namespace Prisma {
       users: Prisma.$UserPayload<ExtArgs>[]
       events: Prisma.$EventPayload<ExtArgs>[]
       speakers: Prisma.$SpeakerPayload<ExtArgs>[]
+      activityTypes: Prisma.$ActivityTypePayload<ExtArgs>[]
+      speakerRoles: Prisma.$SpeakerRolePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3692,6 +3960,8 @@ export namespace Prisma {
     users<T extends Tenant$usersArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     events<T extends Tenant$eventsArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     speakers<T extends Tenant$speakersArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$speakersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpeakerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activityTypes<T extends Tenant$activityTypesArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$activityTypesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    speakerRoles<T extends Tenant$speakerRolesArgs<ExtArgs> = {}>(args?: Subset<T, Tenant$speakerRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4190,6 +4460,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SpeakerScalarFieldEnum | SpeakerScalarFieldEnum[]
+  }
+
+  /**
+   * Tenant.activityTypes
+   */
+  export type Tenant$activityTypesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    where?: ActivityTypeWhereInput
+    orderBy?: ActivityTypeOrderByWithRelationInput | ActivityTypeOrderByWithRelationInput[]
+    cursor?: ActivityTypeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActivityTypeScalarFieldEnum | ActivityTypeScalarFieldEnum[]
+  }
+
+  /**
+   * Tenant.speakerRoles
+   */
+  export type Tenant$speakerRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    where?: SpeakerRoleWhereInput
+    orderBy?: SpeakerRoleOrderByWithRelationInput | SpeakerRoleOrderByWithRelationInput[]
+    cursor?: SpeakerRoleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SpeakerRoleScalarFieldEnum | SpeakerRoleScalarFieldEnum[]
   }
 
   /**
@@ -6772,6 +7090,2140 @@ export namespace Prisma {
 
 
   /**
+   * Model ActivityType
+   */
+
+  export type AggregateActivityType = {
+    _count: ActivityTypeCountAggregateOutputType | null
+    _min: ActivityTypeMinAggregateOutputType | null
+    _max: ActivityTypeMaxAggregateOutputType | null
+  }
+
+  export type ActivityTypeMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    name: string | null
+  }
+
+  export type ActivityTypeMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    name: string | null
+  }
+
+  export type ActivityTypeCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    name: number
+    _all: number
+  }
+
+
+  export type ActivityTypeMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    name?: true
+  }
+
+  export type ActivityTypeMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    name?: true
+  }
+
+  export type ActivityTypeCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    name?: true
+    _all?: true
+  }
+
+  export type ActivityTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ActivityType to aggregate.
+     */
+    where?: ActivityTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActivityTypes to fetch.
+     */
+    orderBy?: ActivityTypeOrderByWithRelationInput | ActivityTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ActivityTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActivityTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActivityTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ActivityTypes
+    **/
+    _count?: true | ActivityTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ActivityTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ActivityTypeMaxAggregateInputType
+  }
+
+  export type GetActivityTypeAggregateType<T extends ActivityTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateActivityType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateActivityType[P]>
+      : GetScalarType<T[P], AggregateActivityType[P]>
+  }
+
+
+
+
+  export type ActivityTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActivityTypeWhereInput
+    orderBy?: ActivityTypeOrderByWithAggregationInput | ActivityTypeOrderByWithAggregationInput[]
+    by: ActivityTypeScalarFieldEnum[] | ActivityTypeScalarFieldEnum
+    having?: ActivityTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ActivityTypeCountAggregateInputType | true
+    _min?: ActivityTypeMinAggregateInputType
+    _max?: ActivityTypeMaxAggregateInputType
+  }
+
+  export type ActivityTypeGroupByOutputType = {
+    id: string
+    tenantId: string
+    name: string
+    _count: ActivityTypeCountAggregateOutputType | null
+    _min: ActivityTypeMinAggregateOutputType | null
+    _max: ActivityTypeMaxAggregateOutputType | null
+  }
+
+  type GetActivityTypeGroupByPayload<T extends ActivityTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ActivityTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ActivityTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ActivityTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], ActivityTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ActivityTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    name?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+    activities?: boolean | ActivityType$activitiesArgs<ExtArgs>
+    _count?: boolean | ActivityTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activityType"]>
+
+  export type ActivityTypeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    name?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activityType"]>
+
+  export type ActivityTypeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    name?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["activityType"]>
+
+  export type ActivityTypeSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    name?: boolean
+  }
+
+  export type ActivityTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "name", ExtArgs["result"]["activityType"]>
+  export type ActivityTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+    activities?: boolean | ActivityType$activitiesArgs<ExtArgs>
+    _count?: boolean | ActivityTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ActivityTypeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }
+  export type ActivityTypeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }
+
+  export type $ActivityTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ActivityType"
+    objects: {
+      tenant: Prisma.$TenantPayload<ExtArgs>
+      activities: Prisma.$ActivityPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      name: string
+    }, ExtArgs["result"]["activityType"]>
+    composites: {}
+  }
+
+  type ActivityTypeGetPayload<S extends boolean | null | undefined | ActivityTypeDefaultArgs> = $Result.GetResult<Prisma.$ActivityTypePayload, S>
+
+  type ActivityTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ActivityTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ActivityTypeCountAggregateInputType | true
+    }
+
+  export interface ActivityTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ActivityType'], meta: { name: 'ActivityType' } }
+    /**
+     * Find zero or one ActivityType that matches the filter.
+     * @param {ActivityTypeFindUniqueArgs} args - Arguments to find a ActivityType
+     * @example
+     * // Get one ActivityType
+     * const activityType = await prisma.activityType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ActivityTypeFindUniqueArgs>(args: SelectSubset<T, ActivityTypeFindUniqueArgs<ExtArgs>>): Prisma__ActivityTypeClient<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ActivityType that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ActivityTypeFindUniqueOrThrowArgs} args - Arguments to find a ActivityType
+     * @example
+     * // Get one ActivityType
+     * const activityType = await prisma.activityType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ActivityTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, ActivityTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ActivityTypeClient<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ActivityType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActivityTypeFindFirstArgs} args - Arguments to find a ActivityType
+     * @example
+     * // Get one ActivityType
+     * const activityType = await prisma.activityType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ActivityTypeFindFirstArgs>(args?: SelectSubset<T, ActivityTypeFindFirstArgs<ExtArgs>>): Prisma__ActivityTypeClient<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ActivityType that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActivityTypeFindFirstOrThrowArgs} args - Arguments to find a ActivityType
+     * @example
+     * // Get one ActivityType
+     * const activityType = await prisma.activityType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ActivityTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, ActivityTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__ActivityTypeClient<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ActivityTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActivityTypeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ActivityTypes
+     * const activityTypes = await prisma.activityType.findMany()
+     * 
+     * // Get first 10 ActivityTypes
+     * const activityTypes = await prisma.activityType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const activityTypeWithIdOnly = await prisma.activityType.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ActivityTypeFindManyArgs>(args?: SelectSubset<T, ActivityTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ActivityType.
+     * @param {ActivityTypeCreateArgs} args - Arguments to create a ActivityType.
+     * @example
+     * // Create one ActivityType
+     * const ActivityType = await prisma.activityType.create({
+     *   data: {
+     *     // ... data to create a ActivityType
+     *   }
+     * })
+     * 
+     */
+    create<T extends ActivityTypeCreateArgs>(args: SelectSubset<T, ActivityTypeCreateArgs<ExtArgs>>): Prisma__ActivityTypeClient<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ActivityTypes.
+     * @param {ActivityTypeCreateManyArgs} args - Arguments to create many ActivityTypes.
+     * @example
+     * // Create many ActivityTypes
+     * const activityType = await prisma.activityType.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ActivityTypeCreateManyArgs>(args?: SelectSubset<T, ActivityTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ActivityTypes and returns the data saved in the database.
+     * @param {ActivityTypeCreateManyAndReturnArgs} args - Arguments to create many ActivityTypes.
+     * @example
+     * // Create many ActivityTypes
+     * const activityType = await prisma.activityType.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ActivityTypes and only return the `id`
+     * const activityTypeWithIdOnly = await prisma.activityType.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ActivityTypeCreateManyAndReturnArgs>(args?: SelectSubset<T, ActivityTypeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ActivityType.
+     * @param {ActivityTypeDeleteArgs} args - Arguments to delete one ActivityType.
+     * @example
+     * // Delete one ActivityType
+     * const ActivityType = await prisma.activityType.delete({
+     *   where: {
+     *     // ... filter to delete one ActivityType
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ActivityTypeDeleteArgs>(args: SelectSubset<T, ActivityTypeDeleteArgs<ExtArgs>>): Prisma__ActivityTypeClient<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ActivityType.
+     * @param {ActivityTypeUpdateArgs} args - Arguments to update one ActivityType.
+     * @example
+     * // Update one ActivityType
+     * const activityType = await prisma.activityType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ActivityTypeUpdateArgs>(args: SelectSubset<T, ActivityTypeUpdateArgs<ExtArgs>>): Prisma__ActivityTypeClient<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ActivityTypes.
+     * @param {ActivityTypeDeleteManyArgs} args - Arguments to filter ActivityTypes to delete.
+     * @example
+     * // Delete a few ActivityTypes
+     * const { count } = await prisma.activityType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ActivityTypeDeleteManyArgs>(args?: SelectSubset<T, ActivityTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ActivityTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActivityTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ActivityTypes
+     * const activityType = await prisma.activityType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ActivityTypeUpdateManyArgs>(args: SelectSubset<T, ActivityTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ActivityTypes and returns the data updated in the database.
+     * @param {ActivityTypeUpdateManyAndReturnArgs} args - Arguments to update many ActivityTypes.
+     * @example
+     * // Update many ActivityTypes
+     * const activityType = await prisma.activityType.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ActivityTypes and only return the `id`
+     * const activityTypeWithIdOnly = await prisma.activityType.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ActivityTypeUpdateManyAndReturnArgs>(args: SelectSubset<T, ActivityTypeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ActivityType.
+     * @param {ActivityTypeUpsertArgs} args - Arguments to update or create a ActivityType.
+     * @example
+     * // Update or create a ActivityType
+     * const activityType = await prisma.activityType.upsert({
+     *   create: {
+     *     // ... data to create a ActivityType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ActivityType we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ActivityTypeUpsertArgs>(args: SelectSubset<T, ActivityTypeUpsertArgs<ExtArgs>>): Prisma__ActivityTypeClient<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ActivityTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActivityTypeCountArgs} args - Arguments to filter ActivityTypes to count.
+     * @example
+     * // Count the number of ActivityTypes
+     * const count = await prisma.activityType.count({
+     *   where: {
+     *     // ... the filter for the ActivityTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends ActivityTypeCountArgs>(
+      args?: Subset<T, ActivityTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ActivityTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ActivityType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActivityTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ActivityTypeAggregateArgs>(args: Subset<T, ActivityTypeAggregateArgs>): Prisma.PrismaPromise<GetActivityTypeAggregateType<T>>
+
+    /**
+     * Group by ActivityType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActivityTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ActivityTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ActivityTypeGroupByArgs['orderBy'] }
+        : { orderBy?: ActivityTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ActivityTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetActivityTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ActivityType model
+   */
+  readonly fields: ActivityTypeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ActivityType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ActivityTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tenant<T extends TenantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TenantDefaultArgs<ExtArgs>>): Prisma__TenantClient<$Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    activities<T extends ActivityType$activitiesArgs<ExtArgs> = {}>(args?: Subset<T, ActivityType$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ActivityType model
+   */
+  interface ActivityTypeFieldRefs {
+    readonly id: FieldRef<"ActivityType", 'String'>
+    readonly tenantId: FieldRef<"ActivityType", 'String'>
+    readonly name: FieldRef<"ActivityType", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ActivityType findUnique
+   */
+  export type ActivityTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ActivityType to fetch.
+     */
+    where: ActivityTypeWhereUniqueInput
+  }
+
+  /**
+   * ActivityType findUniqueOrThrow
+   */
+  export type ActivityTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ActivityType to fetch.
+     */
+    where: ActivityTypeWhereUniqueInput
+  }
+
+  /**
+   * ActivityType findFirst
+   */
+  export type ActivityTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ActivityType to fetch.
+     */
+    where?: ActivityTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActivityTypes to fetch.
+     */
+    orderBy?: ActivityTypeOrderByWithRelationInput | ActivityTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ActivityTypes.
+     */
+    cursor?: ActivityTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActivityTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActivityTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActivityTypes.
+     */
+    distinct?: ActivityTypeScalarFieldEnum | ActivityTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ActivityType findFirstOrThrow
+   */
+  export type ActivityTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ActivityType to fetch.
+     */
+    where?: ActivityTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActivityTypes to fetch.
+     */
+    orderBy?: ActivityTypeOrderByWithRelationInput | ActivityTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ActivityTypes.
+     */
+    cursor?: ActivityTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActivityTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActivityTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActivityTypes.
+     */
+    distinct?: ActivityTypeScalarFieldEnum | ActivityTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ActivityType findMany
+   */
+  export type ActivityTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ActivityTypes to fetch.
+     */
+    where?: ActivityTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActivityTypes to fetch.
+     */
+    orderBy?: ActivityTypeOrderByWithRelationInput | ActivityTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ActivityTypes.
+     */
+    cursor?: ActivityTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActivityTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActivityTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActivityTypes.
+     */
+    distinct?: ActivityTypeScalarFieldEnum | ActivityTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ActivityType create
+   */
+  export type ActivityTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ActivityType.
+     */
+    data: XOR<ActivityTypeCreateInput, ActivityTypeUncheckedCreateInput>
+  }
+
+  /**
+   * ActivityType createMany
+   */
+  export type ActivityTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ActivityTypes.
+     */
+    data: ActivityTypeCreateManyInput | ActivityTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ActivityType createManyAndReturn
+   */
+  export type ActivityTypeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * The data used to create many ActivityTypes.
+     */
+    data: ActivityTypeCreateManyInput | ActivityTypeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ActivityType update
+   */
+  export type ActivityTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ActivityType.
+     */
+    data: XOR<ActivityTypeUpdateInput, ActivityTypeUncheckedUpdateInput>
+    /**
+     * Choose, which ActivityType to update.
+     */
+    where: ActivityTypeWhereUniqueInput
+  }
+
+  /**
+   * ActivityType updateMany
+   */
+  export type ActivityTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ActivityTypes.
+     */
+    data: XOR<ActivityTypeUpdateManyMutationInput, ActivityTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which ActivityTypes to update
+     */
+    where?: ActivityTypeWhereInput
+    /**
+     * Limit how many ActivityTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ActivityType updateManyAndReturn
+   */
+  export type ActivityTypeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * The data used to update ActivityTypes.
+     */
+    data: XOR<ActivityTypeUpdateManyMutationInput, ActivityTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which ActivityTypes to update
+     */
+    where?: ActivityTypeWhereInput
+    /**
+     * Limit how many ActivityTypes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ActivityType upsert
+   */
+  export type ActivityTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ActivityType to update in case it exists.
+     */
+    where: ActivityTypeWhereUniqueInput
+    /**
+     * In case the ActivityType found by the `where` argument doesn't exist, create a new ActivityType with this data.
+     */
+    create: XOR<ActivityTypeCreateInput, ActivityTypeUncheckedCreateInput>
+    /**
+     * In case the ActivityType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ActivityTypeUpdateInput, ActivityTypeUncheckedUpdateInput>
+  }
+
+  /**
+   * ActivityType delete
+   */
+  export type ActivityTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    /**
+     * Filter which ActivityType to delete.
+     */
+    where: ActivityTypeWhereUniqueInput
+  }
+
+  /**
+   * ActivityType deleteMany
+   */
+  export type ActivityTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ActivityTypes to delete
+     */
+    where?: ActivityTypeWhereInput
+    /**
+     * Limit how many ActivityTypes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ActivityType.activities
+   */
+  export type ActivityType$activitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Activity
+     */
+    select?: ActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Activity
+     */
+    omit?: ActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityInclude<ExtArgs> | null
+    where?: ActivityWhereInput
+    orderBy?: ActivityOrderByWithRelationInput | ActivityOrderByWithRelationInput[]
+    cursor?: ActivityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActivityScalarFieldEnum | ActivityScalarFieldEnum[]
+  }
+
+  /**
+   * ActivityType without action
+   */
+  export type ActivityTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SpeakerRole
+   */
+
+  export type AggregateSpeakerRole = {
+    _count: SpeakerRoleCountAggregateOutputType | null
+    _min: SpeakerRoleMinAggregateOutputType | null
+    _max: SpeakerRoleMaxAggregateOutputType | null
+  }
+
+  export type SpeakerRoleMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    name: string | null
+  }
+
+  export type SpeakerRoleMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    name: string | null
+  }
+
+  export type SpeakerRoleCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    name: number
+    _all: number
+  }
+
+
+  export type SpeakerRoleMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    name?: true
+  }
+
+  export type SpeakerRoleMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    name?: true
+  }
+
+  export type SpeakerRoleCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    name?: true
+    _all?: true
+  }
+
+  export type SpeakerRoleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SpeakerRole to aggregate.
+     */
+    where?: SpeakerRoleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpeakerRoles to fetch.
+     */
+    orderBy?: SpeakerRoleOrderByWithRelationInput | SpeakerRoleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SpeakerRoleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpeakerRoles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpeakerRoles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SpeakerRoles
+    **/
+    _count?: true | SpeakerRoleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SpeakerRoleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SpeakerRoleMaxAggregateInputType
+  }
+
+  export type GetSpeakerRoleAggregateType<T extends SpeakerRoleAggregateArgs> = {
+        [P in keyof T & keyof AggregateSpeakerRole]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSpeakerRole[P]>
+      : GetScalarType<T[P], AggregateSpeakerRole[P]>
+  }
+
+
+
+
+  export type SpeakerRoleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpeakerRoleWhereInput
+    orderBy?: SpeakerRoleOrderByWithAggregationInput | SpeakerRoleOrderByWithAggregationInput[]
+    by: SpeakerRoleScalarFieldEnum[] | SpeakerRoleScalarFieldEnum
+    having?: SpeakerRoleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SpeakerRoleCountAggregateInputType | true
+    _min?: SpeakerRoleMinAggregateInputType
+    _max?: SpeakerRoleMaxAggregateInputType
+  }
+
+  export type SpeakerRoleGroupByOutputType = {
+    id: string
+    tenantId: string
+    name: string
+    _count: SpeakerRoleCountAggregateOutputType | null
+    _min: SpeakerRoleMinAggregateOutputType | null
+    _max: SpeakerRoleMaxAggregateOutputType | null
+  }
+
+  type GetSpeakerRoleGroupByPayload<T extends SpeakerRoleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SpeakerRoleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SpeakerRoleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SpeakerRoleGroupByOutputType[P]>
+            : GetScalarType<T[P], SpeakerRoleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SpeakerRoleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    name?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+    activitySpeakers?: boolean | SpeakerRole$activitySpeakersArgs<ExtArgs>
+    _count?: boolean | SpeakerRoleCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["speakerRole"]>
+
+  export type SpeakerRoleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    name?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["speakerRole"]>
+
+  export type SpeakerRoleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    name?: boolean
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["speakerRole"]>
+
+  export type SpeakerRoleSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    name?: boolean
+  }
+
+  export type SpeakerRoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "name", ExtArgs["result"]["speakerRole"]>
+  export type SpeakerRoleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+    activitySpeakers?: boolean | SpeakerRole$activitySpeakersArgs<ExtArgs>
+    _count?: boolean | SpeakerRoleCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SpeakerRoleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }
+  export type SpeakerRoleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tenant?: boolean | TenantDefaultArgs<ExtArgs>
+  }
+
+  export type $SpeakerRolePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SpeakerRole"
+    objects: {
+      tenant: Prisma.$TenantPayload<ExtArgs>
+      activitySpeakers: Prisma.$ActivitySpeakerPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      name: string
+    }, ExtArgs["result"]["speakerRole"]>
+    composites: {}
+  }
+
+  type SpeakerRoleGetPayload<S extends boolean | null | undefined | SpeakerRoleDefaultArgs> = $Result.GetResult<Prisma.$SpeakerRolePayload, S>
+
+  type SpeakerRoleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SpeakerRoleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SpeakerRoleCountAggregateInputType | true
+    }
+
+  export interface SpeakerRoleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SpeakerRole'], meta: { name: 'SpeakerRole' } }
+    /**
+     * Find zero or one SpeakerRole that matches the filter.
+     * @param {SpeakerRoleFindUniqueArgs} args - Arguments to find a SpeakerRole
+     * @example
+     * // Get one SpeakerRole
+     * const speakerRole = await prisma.speakerRole.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SpeakerRoleFindUniqueArgs>(args: SelectSubset<T, SpeakerRoleFindUniqueArgs<ExtArgs>>): Prisma__SpeakerRoleClient<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SpeakerRole that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SpeakerRoleFindUniqueOrThrowArgs} args - Arguments to find a SpeakerRole
+     * @example
+     * // Get one SpeakerRole
+     * const speakerRole = await prisma.speakerRole.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SpeakerRoleFindUniqueOrThrowArgs>(args: SelectSubset<T, SpeakerRoleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SpeakerRoleClient<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SpeakerRole that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpeakerRoleFindFirstArgs} args - Arguments to find a SpeakerRole
+     * @example
+     * // Get one SpeakerRole
+     * const speakerRole = await prisma.speakerRole.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SpeakerRoleFindFirstArgs>(args?: SelectSubset<T, SpeakerRoleFindFirstArgs<ExtArgs>>): Prisma__SpeakerRoleClient<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SpeakerRole that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpeakerRoleFindFirstOrThrowArgs} args - Arguments to find a SpeakerRole
+     * @example
+     * // Get one SpeakerRole
+     * const speakerRole = await prisma.speakerRole.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SpeakerRoleFindFirstOrThrowArgs>(args?: SelectSubset<T, SpeakerRoleFindFirstOrThrowArgs<ExtArgs>>): Prisma__SpeakerRoleClient<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SpeakerRoles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpeakerRoleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SpeakerRoles
+     * const speakerRoles = await prisma.speakerRole.findMany()
+     * 
+     * // Get first 10 SpeakerRoles
+     * const speakerRoles = await prisma.speakerRole.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const speakerRoleWithIdOnly = await prisma.speakerRole.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SpeakerRoleFindManyArgs>(args?: SelectSubset<T, SpeakerRoleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SpeakerRole.
+     * @param {SpeakerRoleCreateArgs} args - Arguments to create a SpeakerRole.
+     * @example
+     * // Create one SpeakerRole
+     * const SpeakerRole = await prisma.speakerRole.create({
+     *   data: {
+     *     // ... data to create a SpeakerRole
+     *   }
+     * })
+     * 
+     */
+    create<T extends SpeakerRoleCreateArgs>(args: SelectSubset<T, SpeakerRoleCreateArgs<ExtArgs>>): Prisma__SpeakerRoleClient<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SpeakerRoles.
+     * @param {SpeakerRoleCreateManyArgs} args - Arguments to create many SpeakerRoles.
+     * @example
+     * // Create many SpeakerRoles
+     * const speakerRole = await prisma.speakerRole.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SpeakerRoleCreateManyArgs>(args?: SelectSubset<T, SpeakerRoleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SpeakerRoles and returns the data saved in the database.
+     * @param {SpeakerRoleCreateManyAndReturnArgs} args - Arguments to create many SpeakerRoles.
+     * @example
+     * // Create many SpeakerRoles
+     * const speakerRole = await prisma.speakerRole.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SpeakerRoles and only return the `id`
+     * const speakerRoleWithIdOnly = await prisma.speakerRole.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SpeakerRoleCreateManyAndReturnArgs>(args?: SelectSubset<T, SpeakerRoleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SpeakerRole.
+     * @param {SpeakerRoleDeleteArgs} args - Arguments to delete one SpeakerRole.
+     * @example
+     * // Delete one SpeakerRole
+     * const SpeakerRole = await prisma.speakerRole.delete({
+     *   where: {
+     *     // ... filter to delete one SpeakerRole
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SpeakerRoleDeleteArgs>(args: SelectSubset<T, SpeakerRoleDeleteArgs<ExtArgs>>): Prisma__SpeakerRoleClient<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SpeakerRole.
+     * @param {SpeakerRoleUpdateArgs} args - Arguments to update one SpeakerRole.
+     * @example
+     * // Update one SpeakerRole
+     * const speakerRole = await prisma.speakerRole.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SpeakerRoleUpdateArgs>(args: SelectSubset<T, SpeakerRoleUpdateArgs<ExtArgs>>): Prisma__SpeakerRoleClient<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SpeakerRoles.
+     * @param {SpeakerRoleDeleteManyArgs} args - Arguments to filter SpeakerRoles to delete.
+     * @example
+     * // Delete a few SpeakerRoles
+     * const { count } = await prisma.speakerRole.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SpeakerRoleDeleteManyArgs>(args?: SelectSubset<T, SpeakerRoleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SpeakerRoles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpeakerRoleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SpeakerRoles
+     * const speakerRole = await prisma.speakerRole.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SpeakerRoleUpdateManyArgs>(args: SelectSubset<T, SpeakerRoleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SpeakerRoles and returns the data updated in the database.
+     * @param {SpeakerRoleUpdateManyAndReturnArgs} args - Arguments to update many SpeakerRoles.
+     * @example
+     * // Update many SpeakerRoles
+     * const speakerRole = await prisma.speakerRole.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SpeakerRoles and only return the `id`
+     * const speakerRoleWithIdOnly = await prisma.speakerRole.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SpeakerRoleUpdateManyAndReturnArgs>(args: SelectSubset<T, SpeakerRoleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SpeakerRole.
+     * @param {SpeakerRoleUpsertArgs} args - Arguments to update or create a SpeakerRole.
+     * @example
+     * // Update or create a SpeakerRole
+     * const speakerRole = await prisma.speakerRole.upsert({
+     *   create: {
+     *     // ... data to create a SpeakerRole
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SpeakerRole we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SpeakerRoleUpsertArgs>(args: SelectSubset<T, SpeakerRoleUpsertArgs<ExtArgs>>): Prisma__SpeakerRoleClient<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SpeakerRoles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpeakerRoleCountArgs} args - Arguments to filter SpeakerRoles to count.
+     * @example
+     * // Count the number of SpeakerRoles
+     * const count = await prisma.speakerRole.count({
+     *   where: {
+     *     // ... the filter for the SpeakerRoles we want to count
+     *   }
+     * })
+    **/
+    count<T extends SpeakerRoleCountArgs>(
+      args?: Subset<T, SpeakerRoleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SpeakerRoleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SpeakerRole.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpeakerRoleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SpeakerRoleAggregateArgs>(args: Subset<T, SpeakerRoleAggregateArgs>): Prisma.PrismaPromise<GetSpeakerRoleAggregateType<T>>
+
+    /**
+     * Group by SpeakerRole.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpeakerRoleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SpeakerRoleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SpeakerRoleGroupByArgs['orderBy'] }
+        : { orderBy?: SpeakerRoleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SpeakerRoleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSpeakerRoleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SpeakerRole model
+   */
+  readonly fields: SpeakerRoleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SpeakerRole.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SpeakerRoleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tenant<T extends TenantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TenantDefaultArgs<ExtArgs>>): Prisma__TenantClient<$Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    activitySpeakers<T extends SpeakerRole$activitySpeakersArgs<ExtArgs> = {}>(args?: Subset<T, SpeakerRole$activitySpeakersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivitySpeakerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SpeakerRole model
+   */
+  interface SpeakerRoleFieldRefs {
+    readonly id: FieldRef<"SpeakerRole", 'String'>
+    readonly tenantId: FieldRef<"SpeakerRole", 'String'>
+    readonly name: FieldRef<"SpeakerRole", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SpeakerRole findUnique
+   */
+  export type SpeakerRoleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    /**
+     * Filter, which SpeakerRole to fetch.
+     */
+    where: SpeakerRoleWhereUniqueInput
+  }
+
+  /**
+   * SpeakerRole findUniqueOrThrow
+   */
+  export type SpeakerRoleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    /**
+     * Filter, which SpeakerRole to fetch.
+     */
+    where: SpeakerRoleWhereUniqueInput
+  }
+
+  /**
+   * SpeakerRole findFirst
+   */
+  export type SpeakerRoleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    /**
+     * Filter, which SpeakerRole to fetch.
+     */
+    where?: SpeakerRoleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpeakerRoles to fetch.
+     */
+    orderBy?: SpeakerRoleOrderByWithRelationInput | SpeakerRoleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SpeakerRoles.
+     */
+    cursor?: SpeakerRoleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpeakerRoles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpeakerRoles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SpeakerRoles.
+     */
+    distinct?: SpeakerRoleScalarFieldEnum | SpeakerRoleScalarFieldEnum[]
+  }
+
+  /**
+   * SpeakerRole findFirstOrThrow
+   */
+  export type SpeakerRoleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    /**
+     * Filter, which SpeakerRole to fetch.
+     */
+    where?: SpeakerRoleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpeakerRoles to fetch.
+     */
+    orderBy?: SpeakerRoleOrderByWithRelationInput | SpeakerRoleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SpeakerRoles.
+     */
+    cursor?: SpeakerRoleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpeakerRoles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpeakerRoles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SpeakerRoles.
+     */
+    distinct?: SpeakerRoleScalarFieldEnum | SpeakerRoleScalarFieldEnum[]
+  }
+
+  /**
+   * SpeakerRole findMany
+   */
+  export type SpeakerRoleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    /**
+     * Filter, which SpeakerRoles to fetch.
+     */
+    where?: SpeakerRoleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpeakerRoles to fetch.
+     */
+    orderBy?: SpeakerRoleOrderByWithRelationInput | SpeakerRoleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SpeakerRoles.
+     */
+    cursor?: SpeakerRoleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpeakerRoles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpeakerRoles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SpeakerRoles.
+     */
+    distinct?: SpeakerRoleScalarFieldEnum | SpeakerRoleScalarFieldEnum[]
+  }
+
+  /**
+   * SpeakerRole create
+   */
+  export type SpeakerRoleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SpeakerRole.
+     */
+    data: XOR<SpeakerRoleCreateInput, SpeakerRoleUncheckedCreateInput>
+  }
+
+  /**
+   * SpeakerRole createMany
+   */
+  export type SpeakerRoleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SpeakerRoles.
+     */
+    data: SpeakerRoleCreateManyInput | SpeakerRoleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SpeakerRole createManyAndReturn
+   */
+  export type SpeakerRoleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * The data used to create many SpeakerRoles.
+     */
+    data: SpeakerRoleCreateManyInput | SpeakerRoleCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SpeakerRole update
+   */
+  export type SpeakerRoleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SpeakerRole.
+     */
+    data: XOR<SpeakerRoleUpdateInput, SpeakerRoleUncheckedUpdateInput>
+    /**
+     * Choose, which SpeakerRole to update.
+     */
+    where: SpeakerRoleWhereUniqueInput
+  }
+
+  /**
+   * SpeakerRole updateMany
+   */
+  export type SpeakerRoleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SpeakerRoles.
+     */
+    data: XOR<SpeakerRoleUpdateManyMutationInput, SpeakerRoleUncheckedUpdateManyInput>
+    /**
+     * Filter which SpeakerRoles to update
+     */
+    where?: SpeakerRoleWhereInput
+    /**
+     * Limit how many SpeakerRoles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SpeakerRole updateManyAndReturn
+   */
+  export type SpeakerRoleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * The data used to update SpeakerRoles.
+     */
+    data: XOR<SpeakerRoleUpdateManyMutationInput, SpeakerRoleUncheckedUpdateManyInput>
+    /**
+     * Filter which SpeakerRoles to update
+     */
+    where?: SpeakerRoleWhereInput
+    /**
+     * Limit how many SpeakerRoles to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SpeakerRole upsert
+   */
+  export type SpeakerRoleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SpeakerRole to update in case it exists.
+     */
+    where: SpeakerRoleWhereUniqueInput
+    /**
+     * In case the SpeakerRole found by the `where` argument doesn't exist, create a new SpeakerRole with this data.
+     */
+    create: XOR<SpeakerRoleCreateInput, SpeakerRoleUncheckedCreateInput>
+    /**
+     * In case the SpeakerRole was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SpeakerRoleUpdateInput, SpeakerRoleUncheckedUpdateInput>
+  }
+
+  /**
+   * SpeakerRole delete
+   */
+  export type SpeakerRoleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    /**
+     * Filter which SpeakerRole to delete.
+     */
+    where: SpeakerRoleWhereUniqueInput
+  }
+
+  /**
+   * SpeakerRole deleteMany
+   */
+  export type SpeakerRoleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SpeakerRoles to delete
+     */
+    where?: SpeakerRoleWhereInput
+    /**
+     * Limit how many SpeakerRoles to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SpeakerRole.activitySpeakers
+   */
+  export type SpeakerRole$activitySpeakersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivitySpeaker
+     */
+    select?: ActivitySpeakerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivitySpeaker
+     */
+    omit?: ActivitySpeakerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivitySpeakerInclude<ExtArgs> | null
+    where?: ActivitySpeakerWhereInput
+    orderBy?: ActivitySpeakerOrderByWithRelationInput | ActivitySpeakerOrderByWithRelationInput[]
+    cursor?: ActivitySpeakerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActivitySpeakerScalarFieldEnum | ActivitySpeakerScalarFieldEnum[]
+  }
+
+  /**
+   * SpeakerRole without action
+   */
+  export type SpeakerRoleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Activity
    */
 
@@ -6801,6 +9253,8 @@ export namespace Prisma {
     endAt: Date | null
     capacity: number | null
     status: $Enums.ActivityStatus | null
+    typeId: string | null
+    requiresEnrollment: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6815,6 +9269,8 @@ export namespace Prisma {
     endAt: Date | null
     capacity: number | null
     status: $Enums.ActivityStatus | null
+    typeId: string | null
+    requiresEnrollment: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6829,6 +9285,8 @@ export namespace Prisma {
     endAt: number
     capacity: number
     status: number
+    typeId: number
+    requiresEnrollment: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6853,6 +9311,8 @@ export namespace Prisma {
     endAt?: true
     capacity?: true
     status?: true
+    typeId?: true
+    requiresEnrollment?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6867,6 +9327,8 @@ export namespace Prisma {
     endAt?: true
     capacity?: true
     status?: true
+    typeId?: true
+    requiresEnrollment?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6881,6 +9343,8 @@ export namespace Prisma {
     endAt?: true
     capacity?: true
     status?: true
+    typeId?: true
+    requiresEnrollment?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6982,6 +9446,8 @@ export namespace Prisma {
     endAt: Date
     capacity: number | null
     status: $Enums.ActivityStatus
+    typeId: string | null
+    requiresEnrollment: boolean
     createdAt: Date
     updatedAt: Date
     _count: ActivityCountAggregateOutputType | null
@@ -7015,9 +9481,12 @@ export namespace Prisma {
     endAt?: boolean
     capacity?: boolean
     status?: boolean
+    typeId?: boolean
+    requiresEnrollment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
+    type?: boolean | Activity$typeArgs<ExtArgs>
     speakers?: boolean | Activity$speakersArgs<ExtArgs>
     enrollments?: boolean | Activity$enrollmentsArgs<ExtArgs>
     attendances?: boolean | Activity$attendancesArgs<ExtArgs>
@@ -7034,9 +9503,12 @@ export namespace Prisma {
     endAt?: boolean
     capacity?: boolean
     status?: boolean
+    typeId?: boolean
+    requiresEnrollment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
+    type?: boolean | Activity$typeArgs<ExtArgs>
   }, ExtArgs["result"]["activity"]>
 
   export type ActivitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7049,9 +9521,12 @@ export namespace Prisma {
     endAt?: boolean
     capacity?: boolean
     status?: boolean
+    typeId?: boolean
+    requiresEnrollment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
+    type?: boolean | Activity$typeArgs<ExtArgs>
   }, ExtArgs["result"]["activity"]>
 
   export type ActivitySelectScalar = {
@@ -7064,13 +9539,16 @@ export namespace Prisma {
     endAt?: boolean
     capacity?: boolean
     status?: boolean
+    typeId?: boolean
+    requiresEnrollment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ActivityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "title" | "description" | "location" | "startAt" | "endAt" | "capacity" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["activity"]>
+  export type ActivityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "title" | "description" | "location" | "startAt" | "endAt" | "capacity" | "status" | "typeId" | "requiresEnrollment" | "createdAt" | "updatedAt", ExtArgs["result"]["activity"]>
   export type ActivityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
+    type?: boolean | Activity$typeArgs<ExtArgs>
     speakers?: boolean | Activity$speakersArgs<ExtArgs>
     enrollments?: boolean | Activity$enrollmentsArgs<ExtArgs>
     attendances?: boolean | Activity$attendancesArgs<ExtArgs>
@@ -7078,15 +9556,18 @@ export namespace Prisma {
   }
   export type ActivityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
+    type?: boolean | Activity$typeArgs<ExtArgs>
   }
   export type ActivityIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
+    type?: boolean | Activity$typeArgs<ExtArgs>
   }
 
   export type $ActivityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Activity"
     objects: {
       event: Prisma.$EventPayload<ExtArgs>
+      type: Prisma.$ActivityTypePayload<ExtArgs> | null
       speakers: Prisma.$ActivitySpeakerPayload<ExtArgs>[]
       enrollments: Prisma.$ActivityEnrollmentPayload<ExtArgs>[]
       attendances: Prisma.$AttendancePayload<ExtArgs>[]
@@ -7101,6 +9582,8 @@ export namespace Prisma {
       endAt: Date
       capacity: number | null
       status: $Enums.ActivityStatus
+      typeId: string | null
+      requiresEnrollment: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["activity"]>
@@ -7498,6 +9981,7 @@ export namespace Prisma {
   export interface Prisma__ActivityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    type<T extends Activity$typeArgs<ExtArgs> = {}>(args?: Subset<T, Activity$typeArgs<ExtArgs>>): Prisma__ActivityTypeClient<$Result.GetResult<Prisma.$ActivityTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     speakers<T extends Activity$speakersArgs<ExtArgs> = {}>(args?: Subset<T, Activity$speakersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivitySpeakerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     enrollments<T extends Activity$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, Activity$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     attendances<T extends Activity$attendancesArgs<ExtArgs> = {}>(args?: Subset<T, Activity$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7539,6 +10023,8 @@ export namespace Prisma {
     readonly endAt: FieldRef<"Activity", 'DateTime'>
     readonly capacity: FieldRef<"Activity", 'Int'>
     readonly status: FieldRef<"Activity", 'ActivityStatus'>
+    readonly typeId: FieldRef<"Activity", 'String'>
+    readonly requiresEnrollment: FieldRef<"Activity", 'Boolean'>
     readonly createdAt: FieldRef<"Activity", 'DateTime'>
     readonly updatedAt: FieldRef<"Activity", 'DateTime'>
   }
@@ -7939,6 +10425,25 @@ export namespace Prisma {
      * Limit how many Activities to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Activity.type
+   */
+  export type Activity$typeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActivityType
+     */
+    select?: ActivityTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActivityType
+     */
+    omit?: ActivityTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityTypeInclude<ExtArgs> | null
+    where?: ActivityTypeWhereInput
   }
 
   /**
@@ -9164,16 +11669,19 @@ export namespace Prisma {
   export type ActivitySpeakerMinAggregateOutputType = {
     activityId: string | null
     speakerId: string | null
+    roleId: string | null
   }
 
   export type ActivitySpeakerMaxAggregateOutputType = {
     activityId: string | null
     speakerId: string | null
+    roleId: string | null
   }
 
   export type ActivitySpeakerCountAggregateOutputType = {
     activityId: number
     speakerId: number
+    roleId: number
     _all: number
   }
 
@@ -9181,16 +11689,19 @@ export namespace Prisma {
   export type ActivitySpeakerMinAggregateInputType = {
     activityId?: true
     speakerId?: true
+    roleId?: true
   }
 
   export type ActivitySpeakerMaxAggregateInputType = {
     activityId?: true
     speakerId?: true
+    roleId?: true
   }
 
   export type ActivitySpeakerCountAggregateInputType = {
     activityId?: true
     speakerId?: true
+    roleId?: true
     _all?: true
   }
 
@@ -9269,6 +11780,7 @@ export namespace Prisma {
   export type ActivitySpeakerGroupByOutputType = {
     activityId: string
     speakerId: string
+    roleId: string | null
     _count: ActivitySpeakerCountAggregateOutputType | null
     _min: ActivitySpeakerMinAggregateOutputType | null
     _max: ActivitySpeakerMaxAggregateOutputType | null
@@ -9291,41 +11803,51 @@ export namespace Prisma {
   export type ActivitySpeakerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     activityId?: boolean
     speakerId?: boolean
+    roleId?: boolean
     activity?: boolean | ActivityDefaultArgs<ExtArgs>
     speaker?: boolean | SpeakerDefaultArgs<ExtArgs>
+    role?: boolean | ActivitySpeaker$roleArgs<ExtArgs>
   }, ExtArgs["result"]["activitySpeaker"]>
 
   export type ActivitySpeakerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     activityId?: boolean
     speakerId?: boolean
+    roleId?: boolean
     activity?: boolean | ActivityDefaultArgs<ExtArgs>
     speaker?: boolean | SpeakerDefaultArgs<ExtArgs>
+    role?: boolean | ActivitySpeaker$roleArgs<ExtArgs>
   }, ExtArgs["result"]["activitySpeaker"]>
 
   export type ActivitySpeakerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     activityId?: boolean
     speakerId?: boolean
+    roleId?: boolean
     activity?: boolean | ActivityDefaultArgs<ExtArgs>
     speaker?: boolean | SpeakerDefaultArgs<ExtArgs>
+    role?: boolean | ActivitySpeaker$roleArgs<ExtArgs>
   }, ExtArgs["result"]["activitySpeaker"]>
 
   export type ActivitySpeakerSelectScalar = {
     activityId?: boolean
     speakerId?: boolean
+    roleId?: boolean
   }
 
-  export type ActivitySpeakerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"activityId" | "speakerId", ExtArgs["result"]["activitySpeaker"]>
+  export type ActivitySpeakerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"activityId" | "speakerId" | "roleId", ExtArgs["result"]["activitySpeaker"]>
   export type ActivitySpeakerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activity?: boolean | ActivityDefaultArgs<ExtArgs>
     speaker?: boolean | SpeakerDefaultArgs<ExtArgs>
+    role?: boolean | ActivitySpeaker$roleArgs<ExtArgs>
   }
   export type ActivitySpeakerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activity?: boolean | ActivityDefaultArgs<ExtArgs>
     speaker?: boolean | SpeakerDefaultArgs<ExtArgs>
+    role?: boolean | ActivitySpeaker$roleArgs<ExtArgs>
   }
   export type ActivitySpeakerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activity?: boolean | ActivityDefaultArgs<ExtArgs>
     speaker?: boolean | SpeakerDefaultArgs<ExtArgs>
+    role?: boolean | ActivitySpeaker$roleArgs<ExtArgs>
   }
 
   export type $ActivitySpeakerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9333,10 +11855,12 @@ export namespace Prisma {
     objects: {
       activity: Prisma.$ActivityPayload<ExtArgs>
       speaker: Prisma.$SpeakerPayload<ExtArgs>
+      role: Prisma.$SpeakerRolePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       activityId: string
       speakerId: string
+      roleId: string | null
     }, ExtArgs["result"]["activitySpeaker"]>
     composites: {}
   }
@@ -9733,6 +12257,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     activity<T extends ActivityDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ActivityDefaultArgs<ExtArgs>>): Prisma__ActivityClient<$Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     speaker<T extends SpeakerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SpeakerDefaultArgs<ExtArgs>>): Prisma__SpeakerClient<$Result.GetResult<Prisma.$SpeakerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    role<T extends ActivitySpeaker$roleArgs<ExtArgs> = {}>(args?: Subset<T, ActivitySpeaker$roleArgs<ExtArgs>>): Prisma__SpeakerRoleClient<$Result.GetResult<Prisma.$SpeakerRolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9764,6 +12289,7 @@ export namespace Prisma {
   interface ActivitySpeakerFieldRefs {
     readonly activityId: FieldRef<"ActivitySpeaker", 'String'>
     readonly speakerId: FieldRef<"ActivitySpeaker", 'String'>
+    readonly roleId: FieldRef<"ActivitySpeaker", 'String'>
   }
     
 
@@ -10162,6 +12688,25 @@ export namespace Prisma {
      * Limit how many ActivitySpeakers to delete.
      */
     limit?: number
+  }
+
+  /**
+   * ActivitySpeaker.role
+   */
+  export type ActivitySpeaker$roleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpeakerRole
+     */
+    select?: SpeakerRoleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpeakerRole
+     */
+    omit?: SpeakerRoleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpeakerRoleInclude<ExtArgs> | null
+    where?: SpeakerRoleWhereInput
   }
 
   /**
@@ -23752,6 +26297,24 @@ export namespace Prisma {
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
 
 
+  export const ActivityTypeScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    name: 'name'
+  };
+
+  export type ActivityTypeScalarFieldEnum = (typeof ActivityTypeScalarFieldEnum)[keyof typeof ActivityTypeScalarFieldEnum]
+
+
+  export const SpeakerRoleScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    name: 'name'
+  };
+
+  export type SpeakerRoleScalarFieldEnum = (typeof SpeakerRoleScalarFieldEnum)[keyof typeof SpeakerRoleScalarFieldEnum]
+
+
   export const ActivityScalarFieldEnum: {
     id: 'id',
     eventId: 'eventId',
@@ -23762,6 +26325,8 @@ export namespace Prisma {
     endAt: 'endAt',
     capacity: 'capacity',
     status: 'status',
+    typeId: 'typeId',
+    requiresEnrollment: 'requiresEnrollment',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -23784,7 +26349,8 @@ export namespace Prisma {
 
   export const ActivitySpeakerScalarFieldEnum: {
     activityId: 'activityId',
-    speakerId: 'speakerId'
+    speakerId: 'speakerId',
+    roleId: 'roleId'
   };
 
   export type ActivitySpeakerScalarFieldEnum = (typeof ActivitySpeakerScalarFieldEnum)[keyof typeof ActivitySpeakerScalarFieldEnum]
@@ -24087,6 +26653,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'TicketType'
    */
   export type EnumTicketTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TicketType'>
@@ -24157,13 +26730,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
    * Reference to a field of type 'SubmissionStatus'
    */
   export type EnumSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubmissionStatus'>
@@ -24222,6 +26788,8 @@ export namespace Prisma {
     users?: UserListRelationFilter
     events?: EventListRelationFilter
     speakers?: SpeakerListRelationFilter
+    activityTypes?: ActivityTypeListRelationFilter
+    speakerRoles?: SpeakerRoleListRelationFilter
   }
 
   export type TenantOrderByWithRelationInput = {
@@ -24235,6 +26803,8 @@ export namespace Prisma {
     users?: UserOrderByRelationAggregateInput
     events?: EventOrderByRelationAggregateInput
     speakers?: SpeakerOrderByRelationAggregateInput
+    activityTypes?: ActivityTypeOrderByRelationAggregateInput
+    speakerRoles?: SpeakerRoleOrderByRelationAggregateInput
   }
 
   export type TenantWhereUniqueInput = Prisma.AtLeast<{
@@ -24251,6 +26821,8 @@ export namespace Prisma {
     users?: UserListRelationFilter
     events?: EventListRelationFilter
     speakers?: SpeakerListRelationFilter
+    activityTypes?: ActivityTypeListRelationFilter
+    speakerRoles?: SpeakerRoleListRelationFilter
   }, "id" | "slug">
 
   export type TenantOrderByWithAggregationInput = {
@@ -24487,6 +27059,104 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
   }
 
+  export type ActivityTypeWhereInput = {
+    AND?: ActivityTypeWhereInput | ActivityTypeWhereInput[]
+    OR?: ActivityTypeWhereInput[]
+    NOT?: ActivityTypeWhereInput | ActivityTypeWhereInput[]
+    id?: StringFilter<"ActivityType"> | string
+    tenantId?: StringFilter<"ActivityType"> | string
+    name?: StringFilter<"ActivityType"> | string
+    tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
+    activities?: ActivityListRelationFilter
+  }
+
+  export type ActivityTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    name?: SortOrder
+    tenant?: TenantOrderByWithRelationInput
+    activities?: ActivityOrderByRelationAggregateInput
+  }
+
+  export type ActivityTypeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tenantId_name?: ActivityTypeTenantIdNameCompoundUniqueInput
+    AND?: ActivityTypeWhereInput | ActivityTypeWhereInput[]
+    OR?: ActivityTypeWhereInput[]
+    NOT?: ActivityTypeWhereInput | ActivityTypeWhereInput[]
+    tenantId?: StringFilter<"ActivityType"> | string
+    name?: StringFilter<"ActivityType"> | string
+    tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
+    activities?: ActivityListRelationFilter
+  }, "id" | "tenantId_name">
+
+  export type ActivityTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    name?: SortOrder
+    _count?: ActivityTypeCountOrderByAggregateInput
+    _max?: ActivityTypeMaxOrderByAggregateInput
+    _min?: ActivityTypeMinOrderByAggregateInput
+  }
+
+  export type ActivityTypeScalarWhereWithAggregatesInput = {
+    AND?: ActivityTypeScalarWhereWithAggregatesInput | ActivityTypeScalarWhereWithAggregatesInput[]
+    OR?: ActivityTypeScalarWhereWithAggregatesInput[]
+    NOT?: ActivityTypeScalarWhereWithAggregatesInput | ActivityTypeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ActivityType"> | string
+    tenantId?: StringWithAggregatesFilter<"ActivityType"> | string
+    name?: StringWithAggregatesFilter<"ActivityType"> | string
+  }
+
+  export type SpeakerRoleWhereInput = {
+    AND?: SpeakerRoleWhereInput | SpeakerRoleWhereInput[]
+    OR?: SpeakerRoleWhereInput[]
+    NOT?: SpeakerRoleWhereInput | SpeakerRoleWhereInput[]
+    id?: StringFilter<"SpeakerRole"> | string
+    tenantId?: StringFilter<"SpeakerRole"> | string
+    name?: StringFilter<"SpeakerRole"> | string
+    tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
+    activitySpeakers?: ActivitySpeakerListRelationFilter
+  }
+
+  export type SpeakerRoleOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    name?: SortOrder
+    tenant?: TenantOrderByWithRelationInput
+    activitySpeakers?: ActivitySpeakerOrderByRelationAggregateInput
+  }
+
+  export type SpeakerRoleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tenantId_name?: SpeakerRoleTenantIdNameCompoundUniqueInput
+    AND?: SpeakerRoleWhereInput | SpeakerRoleWhereInput[]
+    OR?: SpeakerRoleWhereInput[]
+    NOT?: SpeakerRoleWhereInput | SpeakerRoleWhereInput[]
+    tenantId?: StringFilter<"SpeakerRole"> | string
+    name?: StringFilter<"SpeakerRole"> | string
+    tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
+    activitySpeakers?: ActivitySpeakerListRelationFilter
+  }, "id" | "tenantId_name">
+
+  export type SpeakerRoleOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    name?: SortOrder
+    _count?: SpeakerRoleCountOrderByAggregateInput
+    _max?: SpeakerRoleMaxOrderByAggregateInput
+    _min?: SpeakerRoleMinOrderByAggregateInput
+  }
+
+  export type SpeakerRoleScalarWhereWithAggregatesInput = {
+    AND?: SpeakerRoleScalarWhereWithAggregatesInput | SpeakerRoleScalarWhereWithAggregatesInput[]
+    OR?: SpeakerRoleScalarWhereWithAggregatesInput[]
+    NOT?: SpeakerRoleScalarWhereWithAggregatesInput | SpeakerRoleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SpeakerRole"> | string
+    tenantId?: StringWithAggregatesFilter<"SpeakerRole"> | string
+    name?: StringWithAggregatesFilter<"SpeakerRole"> | string
+  }
+
   export type ActivityWhereInput = {
     AND?: ActivityWhereInput | ActivityWhereInput[]
     OR?: ActivityWhereInput[]
@@ -24500,9 +27170,12 @@ export namespace Prisma {
     endAt?: DateTimeFilter<"Activity"> | Date | string
     capacity?: IntNullableFilter<"Activity"> | number | null
     status?: EnumActivityStatusFilter<"Activity"> | $Enums.ActivityStatus
+    typeId?: StringNullableFilter<"Activity"> | string | null
+    requiresEnrollment?: BoolFilter<"Activity"> | boolean
     createdAt?: DateTimeFilter<"Activity"> | Date | string
     updatedAt?: DateTimeFilter<"Activity"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    type?: XOR<ActivityTypeNullableScalarRelationFilter, ActivityTypeWhereInput> | null
     speakers?: ActivitySpeakerListRelationFilter
     enrollments?: ActivityEnrollmentListRelationFilter
     attendances?: AttendanceListRelationFilter
@@ -24518,9 +27191,12 @@ export namespace Prisma {
     endAt?: SortOrder
     capacity?: SortOrderInput | SortOrder
     status?: SortOrder
+    typeId?: SortOrderInput | SortOrder
+    requiresEnrollment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     event?: EventOrderByWithRelationInput
+    type?: ActivityTypeOrderByWithRelationInput
     speakers?: ActivitySpeakerOrderByRelationAggregateInput
     enrollments?: ActivityEnrollmentOrderByRelationAggregateInput
     attendances?: AttendanceOrderByRelationAggregateInput
@@ -24539,9 +27215,12 @@ export namespace Prisma {
     endAt?: DateTimeFilter<"Activity"> | Date | string
     capacity?: IntNullableFilter<"Activity"> | number | null
     status?: EnumActivityStatusFilter<"Activity"> | $Enums.ActivityStatus
+    typeId?: StringNullableFilter<"Activity"> | string | null
+    requiresEnrollment?: BoolFilter<"Activity"> | boolean
     createdAt?: DateTimeFilter<"Activity"> | Date | string
     updatedAt?: DateTimeFilter<"Activity"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    type?: XOR<ActivityTypeNullableScalarRelationFilter, ActivityTypeWhereInput> | null
     speakers?: ActivitySpeakerListRelationFilter
     enrollments?: ActivityEnrollmentListRelationFilter
     attendances?: AttendanceListRelationFilter
@@ -24557,6 +27236,8 @@ export namespace Prisma {
     endAt?: SortOrder
     capacity?: SortOrderInput | SortOrder
     status?: SortOrder
+    typeId?: SortOrderInput | SortOrder
+    requiresEnrollment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ActivityCountOrderByAggregateInput
@@ -24579,6 +27260,8 @@ export namespace Prisma {
     endAt?: DateTimeWithAggregatesFilter<"Activity"> | Date | string
     capacity?: IntNullableWithAggregatesFilter<"Activity"> | number | null
     status?: EnumActivityStatusWithAggregatesFilter<"Activity"> | $Enums.ActivityStatus
+    typeId?: StringNullableWithAggregatesFilter<"Activity"> | string | null
+    requiresEnrollment?: BoolWithAggregatesFilter<"Activity"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Activity"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Activity"> | Date | string
   }
@@ -24657,15 +27340,19 @@ export namespace Prisma {
     NOT?: ActivitySpeakerWhereInput | ActivitySpeakerWhereInput[]
     activityId?: StringFilter<"ActivitySpeaker"> | string
     speakerId?: StringFilter<"ActivitySpeaker"> | string
+    roleId?: StringNullableFilter<"ActivitySpeaker"> | string | null
     activity?: XOR<ActivityScalarRelationFilter, ActivityWhereInput>
     speaker?: XOR<SpeakerScalarRelationFilter, SpeakerWhereInput>
+    role?: XOR<SpeakerRoleNullableScalarRelationFilter, SpeakerRoleWhereInput> | null
   }
 
   export type ActivitySpeakerOrderByWithRelationInput = {
     activityId?: SortOrder
     speakerId?: SortOrder
+    roleId?: SortOrderInput | SortOrder
     activity?: ActivityOrderByWithRelationInput
     speaker?: SpeakerOrderByWithRelationInput
+    role?: SpeakerRoleOrderByWithRelationInput
   }
 
   export type ActivitySpeakerWhereUniqueInput = Prisma.AtLeast<{
@@ -24675,13 +27362,16 @@ export namespace Prisma {
     NOT?: ActivitySpeakerWhereInput | ActivitySpeakerWhereInput[]
     activityId?: StringFilter<"ActivitySpeaker"> | string
     speakerId?: StringFilter<"ActivitySpeaker"> | string
+    roleId?: StringNullableFilter<"ActivitySpeaker"> | string | null
     activity?: XOR<ActivityScalarRelationFilter, ActivityWhereInput>
     speaker?: XOR<SpeakerScalarRelationFilter, SpeakerWhereInput>
+    role?: XOR<SpeakerRoleNullableScalarRelationFilter, SpeakerRoleWhereInput> | null
   }, "activityId_speakerId">
 
   export type ActivitySpeakerOrderByWithAggregationInput = {
     activityId?: SortOrder
     speakerId?: SortOrder
+    roleId?: SortOrderInput | SortOrder
     _count?: ActivitySpeakerCountOrderByAggregateInput
     _max?: ActivitySpeakerMaxOrderByAggregateInput
     _min?: ActivitySpeakerMinOrderByAggregateInput
@@ -24693,6 +27383,7 @@ export namespace Prisma {
     NOT?: ActivitySpeakerScalarWhereWithAggregatesInput | ActivitySpeakerScalarWhereWithAggregatesInput[]
     activityId?: StringWithAggregatesFilter<"ActivitySpeaker"> | string
     speakerId?: StringWithAggregatesFilter<"ActivitySpeaker"> | string
+    roleId?: StringNullableWithAggregatesFilter<"ActivitySpeaker"> | string | null
   }
 
   export type RegistrationWhereInput = {
@@ -25503,6 +28194,8 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutTenantInput
     events?: EventCreateNestedManyWithoutTenantInput
     speakers?: SpeakerCreateNestedManyWithoutTenantInput
+    activityTypes?: ActivityTypeCreateNestedManyWithoutTenantInput
+    speakerRoles?: SpeakerRoleCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateInput = {
@@ -25516,6 +28209,8 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     events?: EventUncheckedCreateNestedManyWithoutTenantInput
     speakers?: SpeakerUncheckedCreateNestedManyWithoutTenantInput
+    activityTypes?: ActivityTypeUncheckedCreateNestedManyWithoutTenantInput
+    speakerRoles?: SpeakerRoleUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUpdateInput = {
@@ -25529,6 +28224,8 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutTenantNestedInput
     events?: EventUpdateManyWithoutTenantNestedInput
     speakers?: SpeakerUpdateManyWithoutTenantNestedInput
+    activityTypes?: ActivityTypeUpdateManyWithoutTenantNestedInput
+    speakerRoles?: SpeakerRoleUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateInput = {
@@ -25542,6 +28239,8 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     events?: EventUncheckedUpdateManyWithoutTenantNestedInput
     speakers?: SpeakerUncheckedUpdateManyWithoutTenantNestedInput
+    activityTypes?: ActivityTypeUncheckedUpdateManyWithoutTenantNestedInput
+    speakerRoles?: SpeakerRoleUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantCreateManyInput = {
@@ -25818,6 +28517,96 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ActivityTypeCreateInput = {
+    id?: string
+    name: string
+    tenant: TenantCreateNestedOneWithoutActivityTypesInput
+    activities?: ActivityCreateNestedManyWithoutTypeInput
+  }
+
+  export type ActivityTypeUncheckedCreateInput = {
+    id?: string
+    tenantId: string
+    name: string
+    activities?: ActivityUncheckedCreateNestedManyWithoutTypeInput
+  }
+
+  export type ActivityTypeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tenant?: TenantUpdateOneRequiredWithoutActivityTypesNestedInput
+    activities?: ActivityUpdateManyWithoutTypeNestedInput
+  }
+
+  export type ActivityTypeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    activities?: ActivityUncheckedUpdateManyWithoutTypeNestedInput
+  }
+
+  export type ActivityTypeCreateManyInput = {
+    id?: string
+    tenantId: string
+    name: string
+  }
+
+  export type ActivityTypeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ActivityTypeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SpeakerRoleCreateInput = {
+    id?: string
+    name: string
+    tenant: TenantCreateNestedOneWithoutSpeakerRolesInput
+    activitySpeakers?: ActivitySpeakerCreateNestedManyWithoutRoleInput
+  }
+
+  export type SpeakerRoleUncheckedCreateInput = {
+    id?: string
+    tenantId: string
+    name: string
+    activitySpeakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutRoleInput
+  }
+
+  export type SpeakerRoleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tenant?: TenantUpdateOneRequiredWithoutSpeakerRolesNestedInput
+    activitySpeakers?: ActivitySpeakerUpdateManyWithoutRoleNestedInput
+  }
+
+  export type SpeakerRoleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    activitySpeakers?: ActivitySpeakerUncheckedUpdateManyWithoutRoleNestedInput
+  }
+
+  export type SpeakerRoleCreateManyInput = {
+    id?: string
+    tenantId: string
+    name: string
+  }
+
+  export type SpeakerRoleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SpeakerRoleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
   export type ActivityCreateInput = {
     id?: string
     title: string
@@ -25827,9 +28616,11 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutActivitiesInput
+    type?: ActivityTypeCreateNestedOneWithoutActivitiesInput
     speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
     attendances?: AttendanceCreateNestedManyWithoutActivityInput
@@ -25845,6 +28636,8 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    typeId?: string | null
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
@@ -25861,9 +28654,11 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutActivitiesNestedInput
+    type?: ActivityTypeUpdateOneWithoutActivitiesNestedInput
     speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUpdateManyWithoutActivityNestedInput
@@ -25879,6 +28674,8 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    typeId?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
@@ -25896,6 +28693,8 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    typeId?: string | null
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -25909,6 +28708,7 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -25923,6 +28723,8 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    typeId?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -26003,26 +28805,31 @@ export namespace Prisma {
   export type ActivitySpeakerCreateInput = {
     activity: ActivityCreateNestedOneWithoutSpeakersInput
     speaker: SpeakerCreateNestedOneWithoutActivitiesInput
+    role?: SpeakerRoleCreateNestedOneWithoutActivitySpeakersInput
   }
 
   export type ActivitySpeakerUncheckedCreateInput = {
     activityId: string
     speakerId: string
+    roleId?: string | null
   }
 
   export type ActivitySpeakerUpdateInput = {
     activity?: ActivityUpdateOneRequiredWithoutSpeakersNestedInput
     speaker?: SpeakerUpdateOneRequiredWithoutActivitiesNestedInput
+    role?: SpeakerRoleUpdateOneWithoutActivitySpeakersNestedInput
   }
 
   export type ActivitySpeakerUncheckedUpdateInput = {
     activityId?: StringFieldUpdateOperationsInput | string
     speakerId?: StringFieldUpdateOperationsInput | string
+    roleId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ActivitySpeakerCreateManyInput = {
     activityId: string
     speakerId: string
+    roleId?: string | null
   }
 
   export type ActivitySpeakerUpdateManyMutationInput = {
@@ -26032,6 +28839,7 @@ export namespace Prisma {
   export type ActivitySpeakerUncheckedUpdateManyInput = {
     activityId?: StringFieldUpdateOperationsInput | string
     speakerId?: StringFieldUpdateOperationsInput | string
+    roleId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RegistrationCreateInput = {
@@ -26905,6 +29713,18 @@ export namespace Prisma {
     none?: SpeakerWhereInput
   }
 
+  export type ActivityTypeListRelationFilter = {
+    every?: ActivityTypeWhereInput
+    some?: ActivityTypeWhereInput
+    none?: ActivityTypeWhereInput
+  }
+
+  export type SpeakerRoleListRelationFilter = {
+    every?: SpeakerRoleWhereInput
+    some?: SpeakerRoleWhereInput
+    none?: SpeakerRoleWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -26919,6 +29739,14 @@ export namespace Prisma {
   }
 
   export type SpeakerOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ActivityTypeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SpeakerRoleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -27228,6 +30056,62 @@ export namespace Prisma {
     _max?: NestedEnumEventStatusFilter<$PrismaModel>
   }
 
+  export type ActivityTypeTenantIdNameCompoundUniqueInput = {
+    tenantId: string
+    name: string
+  }
+
+  export type ActivityTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    name?: SortOrder
+  }
+
+  export type ActivityTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    name?: SortOrder
+  }
+
+  export type ActivityTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    name?: SortOrder
+  }
+
+  export type ActivitySpeakerListRelationFilter = {
+    every?: ActivitySpeakerWhereInput
+    some?: ActivitySpeakerWhereInput
+    none?: ActivitySpeakerWhereInput
+  }
+
+  export type ActivitySpeakerOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SpeakerRoleTenantIdNameCompoundUniqueInput = {
+    tenantId: string
+    name: string
+  }
+
+  export type SpeakerRoleCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    name?: SortOrder
+  }
+
+  export type SpeakerRoleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    name?: SortOrder
+  }
+
+  export type SpeakerRoleMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    name?: SortOrder
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -27246,15 +30130,19 @@ export namespace Prisma {
     not?: NestedEnumActivityStatusFilter<$PrismaModel> | $Enums.ActivityStatus
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type EventScalarRelationFilter = {
     is?: EventWhereInput
     isNot?: EventWhereInput
   }
 
-  export type ActivitySpeakerListRelationFilter = {
-    every?: ActivitySpeakerWhereInput
-    some?: ActivitySpeakerWhereInput
-    none?: ActivitySpeakerWhereInput
+  export type ActivityTypeNullableScalarRelationFilter = {
+    is?: ActivityTypeWhereInput | null
+    isNot?: ActivityTypeWhereInput | null
   }
 
   export type ActivityEnrollmentListRelationFilter = {
@@ -27267,10 +30155,6 @@ export namespace Prisma {
     every?: AttendanceWhereInput
     some?: AttendanceWhereInput
     none?: AttendanceWhereInput
-  }
-
-  export type ActivitySpeakerOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type ActivityEnrollmentOrderByRelationAggregateInput = {
@@ -27291,6 +30175,8 @@ export namespace Prisma {
     endAt?: SortOrder
     capacity?: SortOrder
     status?: SortOrder
+    typeId?: SortOrder
+    requiresEnrollment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -27309,6 +30195,8 @@ export namespace Prisma {
     endAt?: SortOrder
     capacity?: SortOrder
     status?: SortOrder
+    typeId?: SortOrder
+    requiresEnrollment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -27323,6 +30211,8 @@ export namespace Prisma {
     endAt?: SortOrder
     capacity?: SortOrder
     status?: SortOrder
+    typeId?: SortOrder
+    requiresEnrollment?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -27355,6 +30245,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumActivityStatusFilter<$PrismaModel>
     _max?: NestedEnumActivityStatusFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type SpeakerCountOrderByAggregateInput = {
@@ -27397,6 +30295,11 @@ export namespace Prisma {
     isNot?: SpeakerWhereInput
   }
 
+  export type SpeakerRoleNullableScalarRelationFilter = {
+    is?: SpeakerRoleWhereInput | null
+    isNot?: SpeakerRoleWhereInput | null
+  }
+
   export type ActivitySpeakerActivityIdSpeakerIdCompoundUniqueInput = {
     activityId: string
     speakerId: string
@@ -27405,16 +30308,19 @@ export namespace Prisma {
   export type ActivitySpeakerCountOrderByAggregateInput = {
     activityId?: SortOrder
     speakerId?: SortOrder
+    roleId?: SortOrder
   }
 
   export type ActivitySpeakerMaxOrderByAggregateInput = {
     activityId?: SortOrder
     speakerId?: SortOrder
+    roleId?: SortOrder
   }
 
   export type ActivitySpeakerMinOrderByAggregateInput = {
     activityId?: SortOrder
     speakerId?: SortOrder
+    roleId?: SortOrder
   }
 
   export type UserScalarRelationFilter = {
@@ -27655,11 +30561,6 @@ export namespace Prisma {
     not?: NestedEnumFormFieldTypeFilter<$PrismaModel> | $Enums.FormFieldType
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -27736,14 +30637,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumFormFieldTypeFilter<$PrismaModel>
     _max?: NestedEnumFormFieldTypeFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -28098,6 +30991,20 @@ export namespace Prisma {
     connect?: SpeakerWhereUniqueInput | SpeakerWhereUniqueInput[]
   }
 
+  export type ActivityTypeCreateNestedManyWithoutTenantInput = {
+    create?: XOR<ActivityTypeCreateWithoutTenantInput, ActivityTypeUncheckedCreateWithoutTenantInput> | ActivityTypeCreateWithoutTenantInput[] | ActivityTypeUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: ActivityTypeCreateOrConnectWithoutTenantInput | ActivityTypeCreateOrConnectWithoutTenantInput[]
+    createMany?: ActivityTypeCreateManyTenantInputEnvelope
+    connect?: ActivityTypeWhereUniqueInput | ActivityTypeWhereUniqueInput[]
+  }
+
+  export type SpeakerRoleCreateNestedManyWithoutTenantInput = {
+    create?: XOR<SpeakerRoleCreateWithoutTenantInput, SpeakerRoleUncheckedCreateWithoutTenantInput> | SpeakerRoleCreateWithoutTenantInput[] | SpeakerRoleUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: SpeakerRoleCreateOrConnectWithoutTenantInput | SpeakerRoleCreateOrConnectWithoutTenantInput[]
+    createMany?: SpeakerRoleCreateManyTenantInputEnvelope
+    connect?: SpeakerRoleWhereUniqueInput | SpeakerRoleWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutTenantInput = {
     create?: XOR<UserCreateWithoutTenantInput, UserUncheckedCreateWithoutTenantInput> | UserCreateWithoutTenantInput[] | UserUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: UserCreateOrConnectWithoutTenantInput | UserCreateOrConnectWithoutTenantInput[]
@@ -28117,6 +31024,20 @@ export namespace Prisma {
     connectOrCreate?: SpeakerCreateOrConnectWithoutTenantInput | SpeakerCreateOrConnectWithoutTenantInput[]
     createMany?: SpeakerCreateManyTenantInputEnvelope
     connect?: SpeakerWhereUniqueInput | SpeakerWhereUniqueInput[]
+  }
+
+  export type ActivityTypeUncheckedCreateNestedManyWithoutTenantInput = {
+    create?: XOR<ActivityTypeCreateWithoutTenantInput, ActivityTypeUncheckedCreateWithoutTenantInput> | ActivityTypeCreateWithoutTenantInput[] | ActivityTypeUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: ActivityTypeCreateOrConnectWithoutTenantInput | ActivityTypeCreateOrConnectWithoutTenantInput[]
+    createMany?: ActivityTypeCreateManyTenantInputEnvelope
+    connect?: ActivityTypeWhereUniqueInput | ActivityTypeWhereUniqueInput[]
+  }
+
+  export type SpeakerRoleUncheckedCreateNestedManyWithoutTenantInput = {
+    create?: XOR<SpeakerRoleCreateWithoutTenantInput, SpeakerRoleUncheckedCreateWithoutTenantInput> | SpeakerRoleCreateWithoutTenantInput[] | SpeakerRoleUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: SpeakerRoleCreateOrConnectWithoutTenantInput | SpeakerRoleCreateOrConnectWithoutTenantInput[]
+    createMany?: SpeakerRoleCreateManyTenantInputEnvelope
+    connect?: SpeakerRoleWhereUniqueInput | SpeakerRoleWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -28173,6 +31094,34 @@ export namespace Prisma {
     deleteMany?: SpeakerScalarWhereInput | SpeakerScalarWhereInput[]
   }
 
+  export type ActivityTypeUpdateManyWithoutTenantNestedInput = {
+    create?: XOR<ActivityTypeCreateWithoutTenantInput, ActivityTypeUncheckedCreateWithoutTenantInput> | ActivityTypeCreateWithoutTenantInput[] | ActivityTypeUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: ActivityTypeCreateOrConnectWithoutTenantInput | ActivityTypeCreateOrConnectWithoutTenantInput[]
+    upsert?: ActivityTypeUpsertWithWhereUniqueWithoutTenantInput | ActivityTypeUpsertWithWhereUniqueWithoutTenantInput[]
+    createMany?: ActivityTypeCreateManyTenantInputEnvelope
+    set?: ActivityTypeWhereUniqueInput | ActivityTypeWhereUniqueInput[]
+    disconnect?: ActivityTypeWhereUniqueInput | ActivityTypeWhereUniqueInput[]
+    delete?: ActivityTypeWhereUniqueInput | ActivityTypeWhereUniqueInput[]
+    connect?: ActivityTypeWhereUniqueInput | ActivityTypeWhereUniqueInput[]
+    update?: ActivityTypeUpdateWithWhereUniqueWithoutTenantInput | ActivityTypeUpdateWithWhereUniqueWithoutTenantInput[]
+    updateMany?: ActivityTypeUpdateManyWithWhereWithoutTenantInput | ActivityTypeUpdateManyWithWhereWithoutTenantInput[]
+    deleteMany?: ActivityTypeScalarWhereInput | ActivityTypeScalarWhereInput[]
+  }
+
+  export type SpeakerRoleUpdateManyWithoutTenantNestedInput = {
+    create?: XOR<SpeakerRoleCreateWithoutTenantInput, SpeakerRoleUncheckedCreateWithoutTenantInput> | SpeakerRoleCreateWithoutTenantInput[] | SpeakerRoleUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: SpeakerRoleCreateOrConnectWithoutTenantInput | SpeakerRoleCreateOrConnectWithoutTenantInput[]
+    upsert?: SpeakerRoleUpsertWithWhereUniqueWithoutTenantInput | SpeakerRoleUpsertWithWhereUniqueWithoutTenantInput[]
+    createMany?: SpeakerRoleCreateManyTenantInputEnvelope
+    set?: SpeakerRoleWhereUniqueInput | SpeakerRoleWhereUniqueInput[]
+    disconnect?: SpeakerRoleWhereUniqueInput | SpeakerRoleWhereUniqueInput[]
+    delete?: SpeakerRoleWhereUniqueInput | SpeakerRoleWhereUniqueInput[]
+    connect?: SpeakerRoleWhereUniqueInput | SpeakerRoleWhereUniqueInput[]
+    update?: SpeakerRoleUpdateWithWhereUniqueWithoutTenantInput | SpeakerRoleUpdateWithWhereUniqueWithoutTenantInput[]
+    updateMany?: SpeakerRoleUpdateManyWithWhereWithoutTenantInput | SpeakerRoleUpdateManyWithWhereWithoutTenantInput[]
+    deleteMany?: SpeakerRoleScalarWhereInput | SpeakerRoleScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutTenantNestedInput = {
     create?: XOR<UserCreateWithoutTenantInput, UserUncheckedCreateWithoutTenantInput> | UserCreateWithoutTenantInput[] | UserUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: UserCreateOrConnectWithoutTenantInput | UserCreateOrConnectWithoutTenantInput[]
@@ -28213,6 +31162,34 @@ export namespace Prisma {
     update?: SpeakerUpdateWithWhereUniqueWithoutTenantInput | SpeakerUpdateWithWhereUniqueWithoutTenantInput[]
     updateMany?: SpeakerUpdateManyWithWhereWithoutTenantInput | SpeakerUpdateManyWithWhereWithoutTenantInput[]
     deleteMany?: SpeakerScalarWhereInput | SpeakerScalarWhereInput[]
+  }
+
+  export type ActivityTypeUncheckedUpdateManyWithoutTenantNestedInput = {
+    create?: XOR<ActivityTypeCreateWithoutTenantInput, ActivityTypeUncheckedCreateWithoutTenantInput> | ActivityTypeCreateWithoutTenantInput[] | ActivityTypeUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: ActivityTypeCreateOrConnectWithoutTenantInput | ActivityTypeCreateOrConnectWithoutTenantInput[]
+    upsert?: ActivityTypeUpsertWithWhereUniqueWithoutTenantInput | ActivityTypeUpsertWithWhereUniqueWithoutTenantInput[]
+    createMany?: ActivityTypeCreateManyTenantInputEnvelope
+    set?: ActivityTypeWhereUniqueInput | ActivityTypeWhereUniqueInput[]
+    disconnect?: ActivityTypeWhereUniqueInput | ActivityTypeWhereUniqueInput[]
+    delete?: ActivityTypeWhereUniqueInput | ActivityTypeWhereUniqueInput[]
+    connect?: ActivityTypeWhereUniqueInput | ActivityTypeWhereUniqueInput[]
+    update?: ActivityTypeUpdateWithWhereUniqueWithoutTenantInput | ActivityTypeUpdateWithWhereUniqueWithoutTenantInput[]
+    updateMany?: ActivityTypeUpdateManyWithWhereWithoutTenantInput | ActivityTypeUpdateManyWithWhereWithoutTenantInput[]
+    deleteMany?: ActivityTypeScalarWhereInput | ActivityTypeScalarWhereInput[]
+  }
+
+  export type SpeakerRoleUncheckedUpdateManyWithoutTenantNestedInput = {
+    create?: XOR<SpeakerRoleCreateWithoutTenantInput, SpeakerRoleUncheckedCreateWithoutTenantInput> | SpeakerRoleCreateWithoutTenantInput[] | SpeakerRoleUncheckedCreateWithoutTenantInput[]
+    connectOrCreate?: SpeakerRoleCreateOrConnectWithoutTenantInput | SpeakerRoleCreateOrConnectWithoutTenantInput[]
+    upsert?: SpeakerRoleUpsertWithWhereUniqueWithoutTenantInput | SpeakerRoleUpsertWithWhereUniqueWithoutTenantInput[]
+    createMany?: SpeakerRoleCreateManyTenantInputEnvelope
+    set?: SpeakerRoleWhereUniqueInput | SpeakerRoleWhereUniqueInput[]
+    disconnect?: SpeakerRoleWhereUniqueInput | SpeakerRoleWhereUniqueInput[]
+    delete?: SpeakerRoleWhereUniqueInput | SpeakerRoleWhereUniqueInput[]
+    connect?: SpeakerRoleWhereUniqueInput | SpeakerRoleWhereUniqueInput[]
+    update?: SpeakerRoleUpdateWithWhereUniqueWithoutTenantInput | SpeakerRoleUpdateWithWhereUniqueWithoutTenantInput[]
+    updateMany?: SpeakerRoleUpdateManyWithWhereWithoutTenantInput | SpeakerRoleUpdateManyWithWhereWithoutTenantInput[]
+    deleteMany?: SpeakerRoleScalarWhereInput | SpeakerRoleScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutUsersInput = {
@@ -28629,10 +31606,128 @@ export namespace Prisma {
     deleteMany?: CertificateTemplateScalarWhereInput | CertificateTemplateScalarWhereInput[]
   }
 
+  export type TenantCreateNestedOneWithoutActivityTypesInput = {
+    create?: XOR<TenantCreateWithoutActivityTypesInput, TenantUncheckedCreateWithoutActivityTypesInput>
+    connectOrCreate?: TenantCreateOrConnectWithoutActivityTypesInput
+    connect?: TenantWhereUniqueInput
+  }
+
+  export type ActivityCreateNestedManyWithoutTypeInput = {
+    create?: XOR<ActivityCreateWithoutTypeInput, ActivityUncheckedCreateWithoutTypeInput> | ActivityCreateWithoutTypeInput[] | ActivityUncheckedCreateWithoutTypeInput[]
+    connectOrCreate?: ActivityCreateOrConnectWithoutTypeInput | ActivityCreateOrConnectWithoutTypeInput[]
+    createMany?: ActivityCreateManyTypeInputEnvelope
+    connect?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+  }
+
+  export type ActivityUncheckedCreateNestedManyWithoutTypeInput = {
+    create?: XOR<ActivityCreateWithoutTypeInput, ActivityUncheckedCreateWithoutTypeInput> | ActivityCreateWithoutTypeInput[] | ActivityUncheckedCreateWithoutTypeInput[]
+    connectOrCreate?: ActivityCreateOrConnectWithoutTypeInput | ActivityCreateOrConnectWithoutTypeInput[]
+    createMany?: ActivityCreateManyTypeInputEnvelope
+    connect?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+  }
+
+  export type TenantUpdateOneRequiredWithoutActivityTypesNestedInput = {
+    create?: XOR<TenantCreateWithoutActivityTypesInput, TenantUncheckedCreateWithoutActivityTypesInput>
+    connectOrCreate?: TenantCreateOrConnectWithoutActivityTypesInput
+    upsert?: TenantUpsertWithoutActivityTypesInput
+    connect?: TenantWhereUniqueInput
+    update?: XOR<XOR<TenantUpdateToOneWithWhereWithoutActivityTypesInput, TenantUpdateWithoutActivityTypesInput>, TenantUncheckedUpdateWithoutActivityTypesInput>
+  }
+
+  export type ActivityUpdateManyWithoutTypeNestedInput = {
+    create?: XOR<ActivityCreateWithoutTypeInput, ActivityUncheckedCreateWithoutTypeInput> | ActivityCreateWithoutTypeInput[] | ActivityUncheckedCreateWithoutTypeInput[]
+    connectOrCreate?: ActivityCreateOrConnectWithoutTypeInput | ActivityCreateOrConnectWithoutTypeInput[]
+    upsert?: ActivityUpsertWithWhereUniqueWithoutTypeInput | ActivityUpsertWithWhereUniqueWithoutTypeInput[]
+    createMany?: ActivityCreateManyTypeInputEnvelope
+    set?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+    disconnect?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+    delete?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+    connect?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+    update?: ActivityUpdateWithWhereUniqueWithoutTypeInput | ActivityUpdateWithWhereUniqueWithoutTypeInput[]
+    updateMany?: ActivityUpdateManyWithWhereWithoutTypeInput | ActivityUpdateManyWithWhereWithoutTypeInput[]
+    deleteMany?: ActivityScalarWhereInput | ActivityScalarWhereInput[]
+  }
+
+  export type ActivityUncheckedUpdateManyWithoutTypeNestedInput = {
+    create?: XOR<ActivityCreateWithoutTypeInput, ActivityUncheckedCreateWithoutTypeInput> | ActivityCreateWithoutTypeInput[] | ActivityUncheckedCreateWithoutTypeInput[]
+    connectOrCreate?: ActivityCreateOrConnectWithoutTypeInput | ActivityCreateOrConnectWithoutTypeInput[]
+    upsert?: ActivityUpsertWithWhereUniqueWithoutTypeInput | ActivityUpsertWithWhereUniqueWithoutTypeInput[]
+    createMany?: ActivityCreateManyTypeInputEnvelope
+    set?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+    disconnect?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+    delete?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+    connect?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+    update?: ActivityUpdateWithWhereUniqueWithoutTypeInput | ActivityUpdateWithWhereUniqueWithoutTypeInput[]
+    updateMany?: ActivityUpdateManyWithWhereWithoutTypeInput | ActivityUpdateManyWithWhereWithoutTypeInput[]
+    deleteMany?: ActivityScalarWhereInput | ActivityScalarWhereInput[]
+  }
+
+  export type TenantCreateNestedOneWithoutSpeakerRolesInput = {
+    create?: XOR<TenantCreateWithoutSpeakerRolesInput, TenantUncheckedCreateWithoutSpeakerRolesInput>
+    connectOrCreate?: TenantCreateOrConnectWithoutSpeakerRolesInput
+    connect?: TenantWhereUniqueInput
+  }
+
+  export type ActivitySpeakerCreateNestedManyWithoutRoleInput = {
+    create?: XOR<ActivitySpeakerCreateWithoutRoleInput, ActivitySpeakerUncheckedCreateWithoutRoleInput> | ActivitySpeakerCreateWithoutRoleInput[] | ActivitySpeakerUncheckedCreateWithoutRoleInput[]
+    connectOrCreate?: ActivitySpeakerCreateOrConnectWithoutRoleInput | ActivitySpeakerCreateOrConnectWithoutRoleInput[]
+    createMany?: ActivitySpeakerCreateManyRoleInputEnvelope
+    connect?: ActivitySpeakerWhereUniqueInput | ActivitySpeakerWhereUniqueInput[]
+  }
+
+  export type ActivitySpeakerUncheckedCreateNestedManyWithoutRoleInput = {
+    create?: XOR<ActivitySpeakerCreateWithoutRoleInput, ActivitySpeakerUncheckedCreateWithoutRoleInput> | ActivitySpeakerCreateWithoutRoleInput[] | ActivitySpeakerUncheckedCreateWithoutRoleInput[]
+    connectOrCreate?: ActivitySpeakerCreateOrConnectWithoutRoleInput | ActivitySpeakerCreateOrConnectWithoutRoleInput[]
+    createMany?: ActivitySpeakerCreateManyRoleInputEnvelope
+    connect?: ActivitySpeakerWhereUniqueInput | ActivitySpeakerWhereUniqueInput[]
+  }
+
+  export type TenantUpdateOneRequiredWithoutSpeakerRolesNestedInput = {
+    create?: XOR<TenantCreateWithoutSpeakerRolesInput, TenantUncheckedCreateWithoutSpeakerRolesInput>
+    connectOrCreate?: TenantCreateOrConnectWithoutSpeakerRolesInput
+    upsert?: TenantUpsertWithoutSpeakerRolesInput
+    connect?: TenantWhereUniqueInput
+    update?: XOR<XOR<TenantUpdateToOneWithWhereWithoutSpeakerRolesInput, TenantUpdateWithoutSpeakerRolesInput>, TenantUncheckedUpdateWithoutSpeakerRolesInput>
+  }
+
+  export type ActivitySpeakerUpdateManyWithoutRoleNestedInput = {
+    create?: XOR<ActivitySpeakerCreateWithoutRoleInput, ActivitySpeakerUncheckedCreateWithoutRoleInput> | ActivitySpeakerCreateWithoutRoleInput[] | ActivitySpeakerUncheckedCreateWithoutRoleInput[]
+    connectOrCreate?: ActivitySpeakerCreateOrConnectWithoutRoleInput | ActivitySpeakerCreateOrConnectWithoutRoleInput[]
+    upsert?: ActivitySpeakerUpsertWithWhereUniqueWithoutRoleInput | ActivitySpeakerUpsertWithWhereUniqueWithoutRoleInput[]
+    createMany?: ActivitySpeakerCreateManyRoleInputEnvelope
+    set?: ActivitySpeakerWhereUniqueInput | ActivitySpeakerWhereUniqueInput[]
+    disconnect?: ActivitySpeakerWhereUniqueInput | ActivitySpeakerWhereUniqueInput[]
+    delete?: ActivitySpeakerWhereUniqueInput | ActivitySpeakerWhereUniqueInput[]
+    connect?: ActivitySpeakerWhereUniqueInput | ActivitySpeakerWhereUniqueInput[]
+    update?: ActivitySpeakerUpdateWithWhereUniqueWithoutRoleInput | ActivitySpeakerUpdateWithWhereUniqueWithoutRoleInput[]
+    updateMany?: ActivitySpeakerUpdateManyWithWhereWithoutRoleInput | ActivitySpeakerUpdateManyWithWhereWithoutRoleInput[]
+    deleteMany?: ActivitySpeakerScalarWhereInput | ActivitySpeakerScalarWhereInput[]
+  }
+
+  export type ActivitySpeakerUncheckedUpdateManyWithoutRoleNestedInput = {
+    create?: XOR<ActivitySpeakerCreateWithoutRoleInput, ActivitySpeakerUncheckedCreateWithoutRoleInput> | ActivitySpeakerCreateWithoutRoleInput[] | ActivitySpeakerUncheckedCreateWithoutRoleInput[]
+    connectOrCreate?: ActivitySpeakerCreateOrConnectWithoutRoleInput | ActivitySpeakerCreateOrConnectWithoutRoleInput[]
+    upsert?: ActivitySpeakerUpsertWithWhereUniqueWithoutRoleInput | ActivitySpeakerUpsertWithWhereUniqueWithoutRoleInput[]
+    createMany?: ActivitySpeakerCreateManyRoleInputEnvelope
+    set?: ActivitySpeakerWhereUniqueInput | ActivitySpeakerWhereUniqueInput[]
+    disconnect?: ActivitySpeakerWhereUniqueInput | ActivitySpeakerWhereUniqueInput[]
+    delete?: ActivitySpeakerWhereUniqueInput | ActivitySpeakerWhereUniqueInput[]
+    connect?: ActivitySpeakerWhereUniqueInput | ActivitySpeakerWhereUniqueInput[]
+    update?: ActivitySpeakerUpdateWithWhereUniqueWithoutRoleInput | ActivitySpeakerUpdateWithWhereUniqueWithoutRoleInput[]
+    updateMany?: ActivitySpeakerUpdateManyWithWhereWithoutRoleInput | ActivitySpeakerUpdateManyWithWhereWithoutRoleInput[]
+    deleteMany?: ActivitySpeakerScalarWhereInput | ActivitySpeakerScalarWhereInput[]
+  }
+
   export type EventCreateNestedOneWithoutActivitiesInput = {
     create?: XOR<EventCreateWithoutActivitiesInput, EventUncheckedCreateWithoutActivitiesInput>
     connectOrCreate?: EventCreateOrConnectWithoutActivitiesInput
     connect?: EventWhereUniqueInput
+  }
+
+  export type ActivityTypeCreateNestedOneWithoutActivitiesInput = {
+    create?: XOR<ActivityTypeCreateWithoutActivitiesInput, ActivityTypeUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: ActivityTypeCreateOrConnectWithoutActivitiesInput
+    connect?: ActivityTypeWhereUniqueInput
   }
 
   export type ActivitySpeakerCreateNestedManyWithoutActivityInput = {
@@ -28689,12 +31784,26 @@ export namespace Prisma {
     set?: $Enums.ActivityStatus
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type EventUpdateOneRequiredWithoutActivitiesNestedInput = {
     create?: XOR<EventCreateWithoutActivitiesInput, EventUncheckedCreateWithoutActivitiesInput>
     connectOrCreate?: EventCreateOrConnectWithoutActivitiesInput
     upsert?: EventUpsertWithoutActivitiesInput
     connect?: EventWhereUniqueInput
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutActivitiesInput, EventUpdateWithoutActivitiesInput>, EventUncheckedUpdateWithoutActivitiesInput>
+  }
+
+  export type ActivityTypeUpdateOneWithoutActivitiesNestedInput = {
+    create?: XOR<ActivityTypeCreateWithoutActivitiesInput, ActivityTypeUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: ActivityTypeCreateOrConnectWithoutActivitiesInput
+    upsert?: ActivityTypeUpsertWithoutActivitiesInput
+    disconnect?: ActivityTypeWhereInput | boolean
+    delete?: ActivityTypeWhereInput | boolean
+    connect?: ActivityTypeWhereUniqueInput
+    update?: XOR<XOR<ActivityTypeUpdateToOneWithWhereWithoutActivitiesInput, ActivityTypeUpdateWithoutActivitiesInput>, ActivityTypeUncheckedUpdateWithoutActivitiesInput>
   }
 
   export type ActivitySpeakerUpdateManyWithoutActivityNestedInput = {
@@ -28849,6 +31958,12 @@ export namespace Prisma {
     connect?: SpeakerWhereUniqueInput
   }
 
+  export type SpeakerRoleCreateNestedOneWithoutActivitySpeakersInput = {
+    create?: XOR<SpeakerRoleCreateWithoutActivitySpeakersInput, SpeakerRoleUncheckedCreateWithoutActivitySpeakersInput>
+    connectOrCreate?: SpeakerRoleCreateOrConnectWithoutActivitySpeakersInput
+    connect?: SpeakerRoleWhereUniqueInput
+  }
+
   export type ActivityUpdateOneRequiredWithoutSpeakersNestedInput = {
     create?: XOR<ActivityCreateWithoutSpeakersInput, ActivityUncheckedCreateWithoutSpeakersInput>
     connectOrCreate?: ActivityCreateOrConnectWithoutSpeakersInput
@@ -28863,6 +31978,16 @@ export namespace Prisma {
     upsert?: SpeakerUpsertWithoutActivitiesInput
     connect?: SpeakerWhereUniqueInput
     update?: XOR<XOR<SpeakerUpdateToOneWithWhereWithoutActivitiesInput, SpeakerUpdateWithoutActivitiesInput>, SpeakerUncheckedUpdateWithoutActivitiesInput>
+  }
+
+  export type SpeakerRoleUpdateOneWithoutActivitySpeakersNestedInput = {
+    create?: XOR<SpeakerRoleCreateWithoutActivitySpeakersInput, SpeakerRoleUncheckedCreateWithoutActivitySpeakersInput>
+    connectOrCreate?: SpeakerRoleCreateOrConnectWithoutActivitySpeakersInput
+    upsert?: SpeakerRoleUpsertWithoutActivitySpeakersInput
+    disconnect?: SpeakerRoleWhereInput | boolean
+    delete?: SpeakerRoleWhereInput | boolean
+    connect?: SpeakerRoleWhereUniqueInput
+    update?: XOR<XOR<SpeakerRoleUpdateToOneWithWhereWithoutActivitySpeakersInput, SpeakerRoleUpdateWithoutActivitySpeakersInput>, SpeakerRoleUncheckedUpdateWithoutActivitySpeakersInput>
   }
 
   export type EventCreateNestedOneWithoutRegistrationsInput = {
@@ -29299,10 +32424,6 @@ export namespace Prisma {
 
   export type EnumFormFieldTypeFieldUpdateOperationsInput = {
     set?: $Enums.FormFieldType
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -29900,6 +33021,11 @@ export namespace Prisma {
     not?: NestedEnumActivityStatusFilter<$PrismaModel> | $Enums.ActivityStatus
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -29935,6 +33061,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumActivityStatusFilter<$PrismaModel>
     _max?: NestedEnumActivityStatusFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumTicketTypeFilter<$PrismaModel = never> = {
@@ -30022,11 +33156,6 @@ export namespace Prisma {
     not?: NestedEnumFormFieldTypeFilter<$PrismaModel> | $Enums.FormFieldType
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedEnumFormFieldTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.FormFieldType | EnumFormFieldTypeFieldRefInput<$PrismaModel>
     in?: $Enums.FormFieldType[] | ListEnumFormFieldTypeFieldRefInput<$PrismaModel>
@@ -30035,14 +33164,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumFormFieldTypeFilter<$PrismaModel>
     _max?: NestedEnumFormFieldTypeFilter<$PrismaModel>
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -30253,6 +33374,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ActivityTypeCreateWithoutTenantInput = {
+    id?: string
+    name: string
+    activities?: ActivityCreateNestedManyWithoutTypeInput
+  }
+
+  export type ActivityTypeUncheckedCreateWithoutTenantInput = {
+    id?: string
+    name: string
+    activities?: ActivityUncheckedCreateNestedManyWithoutTypeInput
+  }
+
+  export type ActivityTypeCreateOrConnectWithoutTenantInput = {
+    where: ActivityTypeWhereUniqueInput
+    create: XOR<ActivityTypeCreateWithoutTenantInput, ActivityTypeUncheckedCreateWithoutTenantInput>
+  }
+
+  export type ActivityTypeCreateManyTenantInputEnvelope = {
+    data: ActivityTypeCreateManyTenantInput | ActivityTypeCreateManyTenantInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SpeakerRoleCreateWithoutTenantInput = {
+    id?: string
+    name: string
+    activitySpeakers?: ActivitySpeakerCreateNestedManyWithoutRoleInput
+  }
+
+  export type SpeakerRoleUncheckedCreateWithoutTenantInput = {
+    id?: string
+    name: string
+    activitySpeakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutRoleInput
+  }
+
+  export type SpeakerRoleCreateOrConnectWithoutTenantInput = {
+    where: SpeakerRoleWhereUniqueInput
+    create: XOR<SpeakerRoleCreateWithoutTenantInput, SpeakerRoleUncheckedCreateWithoutTenantInput>
+  }
+
+  export type SpeakerRoleCreateManyTenantInputEnvelope = {
+    data: SpeakerRoleCreateManyTenantInput | SpeakerRoleCreateManyTenantInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithWhereUniqueWithoutTenantInput = {
     where: UserWhereUniqueInput
     update: XOR<UserUpdateWithoutTenantInput, UserUncheckedUpdateWithoutTenantInput>
@@ -30350,6 +33515,56 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Speaker"> | Date | string
   }
 
+  export type ActivityTypeUpsertWithWhereUniqueWithoutTenantInput = {
+    where: ActivityTypeWhereUniqueInput
+    update: XOR<ActivityTypeUpdateWithoutTenantInput, ActivityTypeUncheckedUpdateWithoutTenantInput>
+    create: XOR<ActivityTypeCreateWithoutTenantInput, ActivityTypeUncheckedCreateWithoutTenantInput>
+  }
+
+  export type ActivityTypeUpdateWithWhereUniqueWithoutTenantInput = {
+    where: ActivityTypeWhereUniqueInput
+    data: XOR<ActivityTypeUpdateWithoutTenantInput, ActivityTypeUncheckedUpdateWithoutTenantInput>
+  }
+
+  export type ActivityTypeUpdateManyWithWhereWithoutTenantInput = {
+    where: ActivityTypeScalarWhereInput
+    data: XOR<ActivityTypeUpdateManyMutationInput, ActivityTypeUncheckedUpdateManyWithoutTenantInput>
+  }
+
+  export type ActivityTypeScalarWhereInput = {
+    AND?: ActivityTypeScalarWhereInput | ActivityTypeScalarWhereInput[]
+    OR?: ActivityTypeScalarWhereInput[]
+    NOT?: ActivityTypeScalarWhereInput | ActivityTypeScalarWhereInput[]
+    id?: StringFilter<"ActivityType"> | string
+    tenantId?: StringFilter<"ActivityType"> | string
+    name?: StringFilter<"ActivityType"> | string
+  }
+
+  export type SpeakerRoleUpsertWithWhereUniqueWithoutTenantInput = {
+    where: SpeakerRoleWhereUniqueInput
+    update: XOR<SpeakerRoleUpdateWithoutTenantInput, SpeakerRoleUncheckedUpdateWithoutTenantInput>
+    create: XOR<SpeakerRoleCreateWithoutTenantInput, SpeakerRoleUncheckedCreateWithoutTenantInput>
+  }
+
+  export type SpeakerRoleUpdateWithWhereUniqueWithoutTenantInput = {
+    where: SpeakerRoleWhereUniqueInput
+    data: XOR<SpeakerRoleUpdateWithoutTenantInput, SpeakerRoleUncheckedUpdateWithoutTenantInput>
+  }
+
+  export type SpeakerRoleUpdateManyWithWhereWithoutTenantInput = {
+    where: SpeakerRoleScalarWhereInput
+    data: XOR<SpeakerRoleUpdateManyMutationInput, SpeakerRoleUncheckedUpdateManyWithoutTenantInput>
+  }
+
+  export type SpeakerRoleScalarWhereInput = {
+    AND?: SpeakerRoleScalarWhereInput | SpeakerRoleScalarWhereInput[]
+    OR?: SpeakerRoleScalarWhereInput[]
+    NOT?: SpeakerRoleScalarWhereInput | SpeakerRoleScalarWhereInput[]
+    id?: StringFilter<"SpeakerRole"> | string
+    tenantId?: StringFilter<"SpeakerRole"> | string
+    name?: StringFilter<"SpeakerRole"> | string
+  }
+
   export type TenantCreateWithoutUsersInput = {
     id?: string
     name: string
@@ -30360,6 +33575,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     events?: EventCreateNestedManyWithoutTenantInput
     speakers?: SpeakerCreateNestedManyWithoutTenantInput
+    activityTypes?: ActivityTypeCreateNestedManyWithoutTenantInput
+    speakerRoles?: SpeakerRoleCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutUsersInput = {
@@ -30372,6 +33589,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     events?: EventUncheckedCreateNestedManyWithoutTenantInput
     speakers?: SpeakerUncheckedCreateNestedManyWithoutTenantInput
+    activityTypes?: ActivityTypeUncheckedCreateNestedManyWithoutTenantInput
+    speakerRoles?: SpeakerRoleUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutUsersInput = {
@@ -30494,6 +33713,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     events?: EventUpdateManyWithoutTenantNestedInput
     speakers?: SpeakerUpdateManyWithoutTenantNestedInput
+    activityTypes?: ActivityTypeUpdateManyWithoutTenantNestedInput
+    speakerRoles?: SpeakerRoleUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutUsersInput = {
@@ -30506,6 +33727,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     events?: EventUncheckedUpdateManyWithoutTenantNestedInput
     speakers?: SpeakerUncheckedUpdateManyWithoutTenantNestedInput
+    activityTypes?: ActivityTypeUncheckedUpdateManyWithoutTenantNestedInput
+    speakerRoles?: SpeakerRoleUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type RegistrationUpsertWithWhereUniqueWithoutUserInput = {
@@ -30604,6 +33827,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutTenantInput
     speakers?: SpeakerCreateNestedManyWithoutTenantInput
+    activityTypes?: ActivityTypeCreateNestedManyWithoutTenantInput
+    speakerRoles?: SpeakerRoleCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutEventsInput = {
@@ -30616,6 +33841,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     speakers?: SpeakerUncheckedCreateNestedManyWithoutTenantInput
+    activityTypes?: ActivityTypeUncheckedCreateNestedManyWithoutTenantInput
+    speakerRoles?: SpeakerRoleUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutEventsInput = {
@@ -30632,8 +33859,10 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    type?: ActivityTypeCreateNestedOneWithoutActivitiesInput
     speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
     attendances?: AttendanceCreateNestedManyWithoutActivityInput
@@ -30648,6 +33877,8 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    typeId?: string | null
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
@@ -30846,6 +34077,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutTenantNestedInput
     speakers?: SpeakerUpdateManyWithoutTenantNestedInput
+    activityTypes?: ActivityTypeUpdateManyWithoutTenantNestedInput
+    speakerRoles?: SpeakerRoleUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutEventsInput = {
@@ -30858,6 +34091,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     speakers?: SpeakerUncheckedUpdateManyWithoutTenantNestedInput
+    activityTypes?: ActivityTypeUncheckedUpdateManyWithoutTenantNestedInput
+    speakerRoles?: SpeakerRoleUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type ActivityUpsertWithWhereUniqueWithoutEventInput = {
@@ -30889,6 +34124,8 @@ export namespace Prisma {
     endAt?: DateTimeFilter<"Activity"> | Date | string
     capacity?: IntNullableFilter<"Activity"> | number | null
     status?: EnumActivityStatusFilter<"Activity"> | $Enums.ActivityStatus
+    typeId?: StringNullableFilter<"Activity"> | string | null
+    requiresEnrollment?: BoolFilter<"Activity"> | boolean
     createdAt?: DateTimeFilter<"Activity"> | Date | string
     updatedAt?: DateTimeFilter<"Activity"> | Date | string
   }
@@ -31013,6 +34250,257 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"CertificateTemplate"> | Date | string
   }
 
+  export type TenantCreateWithoutActivityTypesInput = {
+    id?: string
+    name: string
+    slug: string
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutTenantInput
+    events?: EventCreateNestedManyWithoutTenantInput
+    speakers?: SpeakerCreateNestedManyWithoutTenantInput
+    speakerRoles?: SpeakerRoleCreateNestedManyWithoutTenantInput
+  }
+
+  export type TenantUncheckedCreateWithoutActivityTypesInput = {
+    id?: string
+    name: string
+    slug: string
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    events?: EventUncheckedCreateNestedManyWithoutTenantInput
+    speakers?: SpeakerUncheckedCreateNestedManyWithoutTenantInput
+    speakerRoles?: SpeakerRoleUncheckedCreateNestedManyWithoutTenantInput
+  }
+
+  export type TenantCreateOrConnectWithoutActivityTypesInput = {
+    where: TenantWhereUniqueInput
+    create: XOR<TenantCreateWithoutActivityTypesInput, TenantUncheckedCreateWithoutActivityTypesInput>
+  }
+
+  export type ActivityCreateWithoutTypeInput = {
+    id?: string
+    title: string
+    description?: string | null
+    location?: string | null
+    startAt: Date | string
+    endAt: Date | string
+    capacity?: number | null
+    status?: $Enums.ActivityStatus
+    requiresEnrollment?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutActivitiesInput
+    speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
+    enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
+    attendances?: AttendanceCreateNestedManyWithoutActivityInput
+  }
+
+  export type ActivityUncheckedCreateWithoutTypeInput = {
+    id?: string
+    eventId: string
+    title: string
+    description?: string | null
+    location?: string | null
+    startAt: Date | string
+    endAt: Date | string
+    capacity?: number | null
+    status?: $Enums.ActivityStatus
+    requiresEnrollment?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
+    enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutActivityInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutActivityInput
+  }
+
+  export type ActivityCreateOrConnectWithoutTypeInput = {
+    where: ActivityWhereUniqueInput
+    create: XOR<ActivityCreateWithoutTypeInput, ActivityUncheckedCreateWithoutTypeInput>
+  }
+
+  export type ActivityCreateManyTypeInputEnvelope = {
+    data: ActivityCreateManyTypeInput | ActivityCreateManyTypeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TenantUpsertWithoutActivityTypesInput = {
+    update: XOR<TenantUpdateWithoutActivityTypesInput, TenantUncheckedUpdateWithoutActivityTypesInput>
+    create: XOR<TenantCreateWithoutActivityTypesInput, TenantUncheckedCreateWithoutActivityTypesInput>
+    where?: TenantWhereInput
+  }
+
+  export type TenantUpdateToOneWithWhereWithoutActivityTypesInput = {
+    where?: TenantWhereInput
+    data: XOR<TenantUpdateWithoutActivityTypesInput, TenantUncheckedUpdateWithoutActivityTypesInput>
+  }
+
+  export type TenantUpdateWithoutActivityTypesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutTenantNestedInput
+    events?: EventUpdateManyWithoutTenantNestedInput
+    speakers?: SpeakerUpdateManyWithoutTenantNestedInput
+    speakerRoles?: SpeakerRoleUpdateManyWithoutTenantNestedInput
+  }
+
+  export type TenantUncheckedUpdateWithoutActivityTypesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    events?: EventUncheckedUpdateManyWithoutTenantNestedInput
+    speakers?: SpeakerUncheckedUpdateManyWithoutTenantNestedInput
+    speakerRoles?: SpeakerRoleUncheckedUpdateManyWithoutTenantNestedInput
+  }
+
+  export type ActivityUpsertWithWhereUniqueWithoutTypeInput = {
+    where: ActivityWhereUniqueInput
+    update: XOR<ActivityUpdateWithoutTypeInput, ActivityUncheckedUpdateWithoutTypeInput>
+    create: XOR<ActivityCreateWithoutTypeInput, ActivityUncheckedCreateWithoutTypeInput>
+  }
+
+  export type ActivityUpdateWithWhereUniqueWithoutTypeInput = {
+    where: ActivityWhereUniqueInput
+    data: XOR<ActivityUpdateWithoutTypeInput, ActivityUncheckedUpdateWithoutTypeInput>
+  }
+
+  export type ActivityUpdateManyWithWhereWithoutTypeInput = {
+    where: ActivityScalarWhereInput
+    data: XOR<ActivityUpdateManyMutationInput, ActivityUncheckedUpdateManyWithoutTypeInput>
+  }
+
+  export type TenantCreateWithoutSpeakerRolesInput = {
+    id?: string
+    name: string
+    slug: string
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutTenantInput
+    events?: EventCreateNestedManyWithoutTenantInput
+    speakers?: SpeakerCreateNestedManyWithoutTenantInput
+    activityTypes?: ActivityTypeCreateNestedManyWithoutTenantInput
+  }
+
+  export type TenantUncheckedCreateWithoutSpeakerRolesInput = {
+    id?: string
+    name: string
+    slug: string
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutTenantInput
+    events?: EventUncheckedCreateNestedManyWithoutTenantInput
+    speakers?: SpeakerUncheckedCreateNestedManyWithoutTenantInput
+    activityTypes?: ActivityTypeUncheckedCreateNestedManyWithoutTenantInput
+  }
+
+  export type TenantCreateOrConnectWithoutSpeakerRolesInput = {
+    where: TenantWhereUniqueInput
+    create: XOR<TenantCreateWithoutSpeakerRolesInput, TenantUncheckedCreateWithoutSpeakerRolesInput>
+  }
+
+  export type ActivitySpeakerCreateWithoutRoleInput = {
+    activity: ActivityCreateNestedOneWithoutSpeakersInput
+    speaker: SpeakerCreateNestedOneWithoutActivitiesInput
+  }
+
+  export type ActivitySpeakerUncheckedCreateWithoutRoleInput = {
+    activityId: string
+    speakerId: string
+  }
+
+  export type ActivitySpeakerCreateOrConnectWithoutRoleInput = {
+    where: ActivitySpeakerWhereUniqueInput
+    create: XOR<ActivitySpeakerCreateWithoutRoleInput, ActivitySpeakerUncheckedCreateWithoutRoleInput>
+  }
+
+  export type ActivitySpeakerCreateManyRoleInputEnvelope = {
+    data: ActivitySpeakerCreateManyRoleInput | ActivitySpeakerCreateManyRoleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TenantUpsertWithoutSpeakerRolesInput = {
+    update: XOR<TenantUpdateWithoutSpeakerRolesInput, TenantUncheckedUpdateWithoutSpeakerRolesInput>
+    create: XOR<TenantCreateWithoutSpeakerRolesInput, TenantUncheckedCreateWithoutSpeakerRolesInput>
+    where?: TenantWhereInput
+  }
+
+  export type TenantUpdateToOneWithWhereWithoutSpeakerRolesInput = {
+    where?: TenantWhereInput
+    data: XOR<TenantUpdateWithoutSpeakerRolesInput, TenantUncheckedUpdateWithoutSpeakerRolesInput>
+  }
+
+  export type TenantUpdateWithoutSpeakerRolesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutTenantNestedInput
+    events?: EventUpdateManyWithoutTenantNestedInput
+    speakers?: SpeakerUpdateManyWithoutTenantNestedInput
+    activityTypes?: ActivityTypeUpdateManyWithoutTenantNestedInput
+  }
+
+  export type TenantUncheckedUpdateWithoutSpeakerRolesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutTenantNestedInput
+    events?: EventUncheckedUpdateManyWithoutTenantNestedInput
+    speakers?: SpeakerUncheckedUpdateManyWithoutTenantNestedInput
+    activityTypes?: ActivityTypeUncheckedUpdateManyWithoutTenantNestedInput
+  }
+
+  export type ActivitySpeakerUpsertWithWhereUniqueWithoutRoleInput = {
+    where: ActivitySpeakerWhereUniqueInput
+    update: XOR<ActivitySpeakerUpdateWithoutRoleInput, ActivitySpeakerUncheckedUpdateWithoutRoleInput>
+    create: XOR<ActivitySpeakerCreateWithoutRoleInput, ActivitySpeakerUncheckedCreateWithoutRoleInput>
+  }
+
+  export type ActivitySpeakerUpdateWithWhereUniqueWithoutRoleInput = {
+    where: ActivitySpeakerWhereUniqueInput
+    data: XOR<ActivitySpeakerUpdateWithoutRoleInput, ActivitySpeakerUncheckedUpdateWithoutRoleInput>
+  }
+
+  export type ActivitySpeakerUpdateManyWithWhereWithoutRoleInput = {
+    where: ActivitySpeakerScalarWhereInput
+    data: XOR<ActivitySpeakerUpdateManyMutationInput, ActivitySpeakerUncheckedUpdateManyWithoutRoleInput>
+  }
+
+  export type ActivitySpeakerScalarWhereInput = {
+    AND?: ActivitySpeakerScalarWhereInput | ActivitySpeakerScalarWhereInput[]
+    OR?: ActivitySpeakerScalarWhereInput[]
+    NOT?: ActivitySpeakerScalarWhereInput | ActivitySpeakerScalarWhereInput[]
+    activityId?: StringFilter<"ActivitySpeaker"> | string
+    speakerId?: StringFilter<"ActivitySpeaker"> | string
+    roleId?: StringNullableFilter<"ActivitySpeaker"> | string | null
+  }
+
   export type EventCreateWithoutActivitiesInput = {
     id?: string
     name: string
@@ -31066,12 +34554,31 @@ export namespace Prisma {
     create: XOR<EventCreateWithoutActivitiesInput, EventUncheckedCreateWithoutActivitiesInput>
   }
 
+  export type ActivityTypeCreateWithoutActivitiesInput = {
+    id?: string
+    name: string
+    tenant: TenantCreateNestedOneWithoutActivityTypesInput
+  }
+
+  export type ActivityTypeUncheckedCreateWithoutActivitiesInput = {
+    id?: string
+    tenantId: string
+    name: string
+  }
+
+  export type ActivityTypeCreateOrConnectWithoutActivitiesInput = {
+    where: ActivityTypeWhereUniqueInput
+    create: XOR<ActivityTypeCreateWithoutActivitiesInput, ActivityTypeUncheckedCreateWithoutActivitiesInput>
+  }
+
   export type ActivitySpeakerCreateWithoutActivityInput = {
     speaker: SpeakerCreateNestedOneWithoutActivitiesInput
+    role?: SpeakerRoleCreateNestedOneWithoutActivitySpeakersInput
   }
 
   export type ActivitySpeakerUncheckedCreateWithoutActivityInput = {
     speakerId: string
+    roleId?: string | null
   }
 
   export type ActivitySpeakerCreateOrConnectWithoutActivityInput = {
@@ -31187,6 +34694,29 @@ export namespace Prisma {
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
   }
 
+  export type ActivityTypeUpsertWithoutActivitiesInput = {
+    update: XOR<ActivityTypeUpdateWithoutActivitiesInput, ActivityTypeUncheckedUpdateWithoutActivitiesInput>
+    create: XOR<ActivityTypeCreateWithoutActivitiesInput, ActivityTypeUncheckedCreateWithoutActivitiesInput>
+    where?: ActivityTypeWhereInput
+  }
+
+  export type ActivityTypeUpdateToOneWithWhereWithoutActivitiesInput = {
+    where?: ActivityTypeWhereInput
+    data: XOR<ActivityTypeUpdateWithoutActivitiesInput, ActivityTypeUncheckedUpdateWithoutActivitiesInput>
+  }
+
+  export type ActivityTypeUpdateWithoutActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tenant?: TenantUpdateOneRequiredWithoutActivityTypesNestedInput
+  }
+
+  export type ActivityTypeUncheckedUpdateWithoutActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
   export type ActivitySpeakerUpsertWithWhereUniqueWithoutActivityInput = {
     where: ActivitySpeakerWhereUniqueInput
     update: XOR<ActivitySpeakerUpdateWithoutActivityInput, ActivitySpeakerUncheckedUpdateWithoutActivityInput>
@@ -31201,14 +34731,6 @@ export namespace Prisma {
   export type ActivitySpeakerUpdateManyWithWhereWithoutActivityInput = {
     where: ActivitySpeakerScalarWhereInput
     data: XOR<ActivitySpeakerUpdateManyMutationInput, ActivitySpeakerUncheckedUpdateManyWithoutActivityInput>
-  }
-
-  export type ActivitySpeakerScalarWhereInput = {
-    AND?: ActivitySpeakerScalarWhereInput | ActivitySpeakerScalarWhereInput[]
-    OR?: ActivitySpeakerScalarWhereInput[]
-    NOT?: ActivitySpeakerScalarWhereInput | ActivitySpeakerScalarWhereInput[]
-    activityId?: StringFilter<"ActivitySpeaker"> | string
-    speakerId?: StringFilter<"ActivitySpeaker"> | string
   }
 
   export type ActivityEnrollmentUpsertWithWhereUniqueWithoutActivityInput = {
@@ -31273,6 +34795,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutTenantInput
     events?: EventCreateNestedManyWithoutTenantInput
+    activityTypes?: ActivityTypeCreateNestedManyWithoutTenantInput
+    speakerRoles?: SpeakerRoleCreateNestedManyWithoutTenantInput
   }
 
   export type TenantUncheckedCreateWithoutSpeakersInput = {
@@ -31285,6 +34809,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutTenantInput
     events?: EventUncheckedCreateNestedManyWithoutTenantInput
+    activityTypes?: ActivityTypeUncheckedCreateNestedManyWithoutTenantInput
+    speakerRoles?: SpeakerRoleUncheckedCreateNestedManyWithoutTenantInput
   }
 
   export type TenantCreateOrConnectWithoutSpeakersInput = {
@@ -31294,10 +34820,12 @@ export namespace Prisma {
 
   export type ActivitySpeakerCreateWithoutSpeakerInput = {
     activity: ActivityCreateNestedOneWithoutSpeakersInput
+    role?: SpeakerRoleCreateNestedOneWithoutActivitySpeakersInput
   }
 
   export type ActivitySpeakerUncheckedCreateWithoutSpeakerInput = {
     activityId: string
+    roleId?: string | null
   }
 
   export type ActivitySpeakerCreateOrConnectWithoutSpeakerInput = {
@@ -31331,6 +34859,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutTenantNestedInput
     events?: EventUpdateManyWithoutTenantNestedInput
+    activityTypes?: ActivityTypeUpdateManyWithoutTenantNestedInput
+    speakerRoles?: SpeakerRoleUpdateManyWithoutTenantNestedInput
   }
 
   export type TenantUncheckedUpdateWithoutSpeakersInput = {
@@ -31343,6 +34873,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutTenantNestedInput
     events?: EventUncheckedUpdateManyWithoutTenantNestedInput
+    activityTypes?: ActivityTypeUncheckedUpdateManyWithoutTenantNestedInput
+    speakerRoles?: SpeakerRoleUncheckedUpdateManyWithoutTenantNestedInput
   }
 
   export type ActivitySpeakerUpsertWithWhereUniqueWithoutSpeakerInput = {
@@ -31370,9 +34902,11 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutActivitiesInput
+    type?: ActivityTypeCreateNestedOneWithoutActivitiesInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
     attendances?: AttendanceCreateNestedManyWithoutActivityInput
   }
@@ -31387,6 +34921,8 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    typeId?: string | null
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutActivityInput
@@ -31423,6 +34959,23 @@ export namespace Prisma {
     create: XOR<SpeakerCreateWithoutActivitiesInput, SpeakerUncheckedCreateWithoutActivitiesInput>
   }
 
+  export type SpeakerRoleCreateWithoutActivitySpeakersInput = {
+    id?: string
+    name: string
+    tenant: TenantCreateNestedOneWithoutSpeakerRolesInput
+  }
+
+  export type SpeakerRoleUncheckedCreateWithoutActivitySpeakersInput = {
+    id?: string
+    tenantId: string
+    name: string
+  }
+
+  export type SpeakerRoleCreateOrConnectWithoutActivitySpeakersInput = {
+    where: SpeakerRoleWhereUniqueInput
+    create: XOR<SpeakerRoleCreateWithoutActivitySpeakersInput, SpeakerRoleUncheckedCreateWithoutActivitySpeakersInput>
+  }
+
   export type ActivityUpsertWithoutSpeakersInput = {
     update: XOR<ActivityUpdateWithoutSpeakersInput, ActivityUncheckedUpdateWithoutSpeakersInput>
     create: XOR<ActivityCreateWithoutSpeakersInput, ActivityUncheckedCreateWithoutSpeakersInput>
@@ -31443,9 +34996,11 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutActivitiesNestedInput
+    type?: ActivityTypeUpdateOneWithoutActivitiesNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUpdateManyWithoutActivityNestedInput
   }
@@ -31460,6 +35015,8 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    typeId?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutActivityNestedInput
@@ -31495,6 +35052,29 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SpeakerRoleUpsertWithoutActivitySpeakersInput = {
+    update: XOR<SpeakerRoleUpdateWithoutActivitySpeakersInput, SpeakerRoleUncheckedUpdateWithoutActivitySpeakersInput>
+    create: XOR<SpeakerRoleCreateWithoutActivitySpeakersInput, SpeakerRoleUncheckedCreateWithoutActivitySpeakersInput>
+    where?: SpeakerRoleWhereInput
+  }
+
+  export type SpeakerRoleUpdateToOneWithWhereWithoutActivitySpeakersInput = {
+    where?: SpeakerRoleWhereInput
+    data: XOR<SpeakerRoleUpdateWithoutActivitySpeakersInput, SpeakerRoleUncheckedUpdateWithoutActivitySpeakersInput>
+  }
+
+  export type SpeakerRoleUpdateWithoutActivitySpeakersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    tenant?: TenantUpdateOneRequiredWithoutSpeakerRolesNestedInput
+  }
+
+  export type SpeakerRoleUncheckedUpdateWithoutActivitySpeakersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
   }
 
   export type EventCreateWithoutRegistrationsInput = {
@@ -31878,9 +35458,11 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutActivitiesInput
+    type?: ActivityTypeCreateNestedOneWithoutActivitiesInput
     speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
     attendances?: AttendanceCreateNestedManyWithoutActivityInput
   }
@@ -31895,6 +35477,8 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    typeId?: string | null
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
@@ -31951,9 +35535,11 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutActivitiesNestedInput
+    type?: ActivityTypeUpdateOneWithoutActivitiesNestedInput
     speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUpdateManyWithoutActivityNestedInput
   }
@@ -31968,6 +35554,8 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    typeId?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
@@ -33304,9 +36892,11 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutActivitiesInput
+    type?: ActivityTypeCreateNestedOneWithoutActivitiesInput
     speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
   }
@@ -33321,6 +36911,8 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    typeId?: string | null
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
@@ -33387,9 +36979,11 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutActivitiesNestedInput
+    type?: ActivityTypeUpdateOneWithoutActivitiesNestedInput
     speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
   }
@@ -33404,6 +36998,8 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    typeId?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
@@ -33711,6 +37307,16 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ActivityTypeCreateManyTenantInput = {
+    id?: string
+    name: string
+  }
+
+  export type SpeakerRoleCreateManyTenantInput = {
+    id?: string
+    name: string
+  }
+
   export type UserUpdateWithoutTenantInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -33842,6 +37448,40 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ActivityTypeUpdateWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    activities?: ActivityUpdateManyWithoutTypeNestedInput
+  }
+
+  export type ActivityTypeUncheckedUpdateWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    activities?: ActivityUncheckedUpdateManyWithoutTypeNestedInput
+  }
+
+  export type ActivityTypeUncheckedUpdateManyWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SpeakerRoleUpdateWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    activitySpeakers?: ActivitySpeakerUpdateManyWithoutRoleNestedInput
+  }
+
+  export type SpeakerRoleUncheckedUpdateWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    activitySpeakers?: ActivitySpeakerUncheckedUpdateManyWithoutRoleNestedInput
+  }
+
+  export type SpeakerRoleUncheckedUpdateManyWithoutTenantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
   export type RegistrationCreateManyUserInput = {
     id?: string
     eventId: string
@@ -33967,6 +37607,8 @@ export namespace Prisma {
     endAt: Date | string
     capacity?: number | null
     status?: $Enums.ActivityStatus
+    typeId?: string | null
+    requiresEnrollment?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34025,8 +37667,10 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: ActivityTypeUpdateOneWithoutActivitiesNestedInput
     speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUpdateManyWithoutActivityNestedInput
@@ -34041,6 +37685,8 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    typeId?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
@@ -34057,6 +37703,8 @@ export namespace Prisma {
     endAt?: DateTimeFieldUpdateOperationsInput | Date | string
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    typeId?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34216,8 +37864,95 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ActivityCreateManyTypeInput = {
+    id?: string
+    eventId: string
+    title: string
+    description?: string | null
+    location?: string | null
+    startAt: Date | string
+    endAt: Date | string
+    capacity?: number | null
+    status?: $Enums.ActivityStatus
+    requiresEnrollment?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ActivityUpdateWithoutTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutActivitiesNestedInput
+    speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
+    enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
+    attendances?: AttendanceUpdateManyWithoutActivityNestedInput
+  }
+
+  export type ActivityUncheckedUpdateWithoutTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
+    enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutActivityNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutActivityNestedInput
+  }
+
+  export type ActivityUncheckedUpdateManyWithoutTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActivitySpeakerCreateManyRoleInput = {
+    activityId: string
+    speakerId: string
+  }
+
+  export type ActivitySpeakerUpdateWithoutRoleInput = {
+    activity?: ActivityUpdateOneRequiredWithoutSpeakersNestedInput
+    speaker?: SpeakerUpdateOneRequiredWithoutActivitiesNestedInput
+  }
+
+  export type ActivitySpeakerUncheckedUpdateWithoutRoleInput = {
+    activityId?: StringFieldUpdateOperationsInput | string
+    speakerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ActivitySpeakerUncheckedUpdateManyWithoutRoleInput = {
+    activityId?: StringFieldUpdateOperationsInput | string
+    speakerId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type ActivitySpeakerCreateManyActivityInput = {
     speakerId: string
+    roleId?: string | null
   }
 
   export type ActivityEnrollmentCreateManyActivityInput = {
@@ -34234,14 +37969,17 @@ export namespace Prisma {
 
   export type ActivitySpeakerUpdateWithoutActivityInput = {
     speaker?: SpeakerUpdateOneRequiredWithoutActivitiesNestedInput
+    role?: SpeakerRoleUpdateOneWithoutActivitySpeakersNestedInput
   }
 
   export type ActivitySpeakerUncheckedUpdateWithoutActivityInput = {
     speakerId?: StringFieldUpdateOperationsInput | string
+    roleId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ActivitySpeakerUncheckedUpdateManyWithoutActivityInput = {
     speakerId?: StringFieldUpdateOperationsInput | string
+    roleId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ActivityEnrollmentUpdateWithoutActivityInput = {
@@ -34282,18 +38020,22 @@ export namespace Prisma {
 
   export type ActivitySpeakerCreateManySpeakerInput = {
     activityId: string
+    roleId?: string | null
   }
 
   export type ActivitySpeakerUpdateWithoutSpeakerInput = {
     activity?: ActivityUpdateOneRequiredWithoutSpeakersNestedInput
+    role?: SpeakerRoleUpdateOneWithoutActivitySpeakersNestedInput
   }
 
   export type ActivitySpeakerUncheckedUpdateWithoutSpeakerInput = {
     activityId?: StringFieldUpdateOperationsInput | string
+    roleId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ActivitySpeakerUncheckedUpdateManyWithoutSpeakerInput = {
     activityId?: StringFieldUpdateOperationsInput | string
+    roleId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TicketCreateManyRegistrationInput = {

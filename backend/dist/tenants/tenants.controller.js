@@ -20,9 +20,19 @@ const roles_guard_1 = require("../auth/roles.guard");
 const roles_types_1 = require("../auth/roles.types");
 const tenants_service_1 = require("./tenants.service");
 const update_tenant_dto_1 = require("./dto/update-tenant.dto");
+const prisma_service_1 = require("../prisma/prisma.service");
 let TenantsController = class TenantsController {
-    constructor(tenantsService) {
+    constructor(tenantsService, prisma) {
         this.tenantsService = tenantsService;
+        this.prisma = prisma;
+    }
+    async getPublicTenant() {
+        const tenant = await this.prisma.tenant.findFirst();
+        return {
+            name: tenant === null || tenant === void 0 ? void 0 : tenant.name,
+            logoUrl: tenant === null || tenant === void 0 ? void 0 : tenant.logoUrl,
+            themeConfig: tenant === null || tenant === void 0 ? void 0 : tenant.themeConfig,
+        };
     }
     async getMe(req) {
         return this.tenantsService.getTenant(req.user.tenantId);
@@ -33,6 +43,14 @@ let TenantsController = class TenantsController {
 };
 exports.TenantsController = TenantsController;
 __decorate([
+    (0, common_1.Get)('public/tenant'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], TenantsController.prototype, "getPublicTenant", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     (0, common_1.Get)('me'),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -49,8 +67,7 @@ __decorate([
 ], TenantsController.prototype, "updateMe", null);
 exports.TenantsController = TenantsController = __decorate([
     (0, common_1.Controller)('tenants'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    __metadata("design:paramtypes", [tenants_service_1.TenantsService])
+    __metadata("design:paramtypes", [tenants_service_1.TenantsService,
+        prisma_service_1.PrismaService])
 ], TenantsController);
 //# sourceMappingURL=tenants.controller.js.map
