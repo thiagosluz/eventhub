@@ -26,6 +26,8 @@ import { TenantsModule } from './tenants/tenants.module';
 import { FormsModule } from './forms/forms.module';
 import { StorageModule } from './storage/storage.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { SponsorsModule } from './sponsors/sponsors.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -37,6 +39,8 @@ import { AnalyticsModule } from './analytics/analytics.module';
     FormsModule,
     StorageModule,
     AnalyticsModule,
+    SponsorsModule,
+    UsersModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST ?? 'localhost',

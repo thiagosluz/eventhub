@@ -3,6 +3,8 @@ export interface User {
   name: string;
   email: string;
   role: 'ORGANIZER' | 'PARTICIPANT' | 'ADMIN' | 'REVIEWER';
+  avatarUrl?: string;
+  bio?: string;
   tenantId?: string;
 }
 

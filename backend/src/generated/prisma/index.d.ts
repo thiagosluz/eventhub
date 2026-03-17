@@ -113,6 +113,16 @@ export type CertificateTemplate = $Result.DefaultSelection<Prisma.$CertificateTe
  * 
  */
 export type IssuedCertificate = $Result.DefaultSelection<Prisma.$IssuedCertificatePayload>
+/**
+ * Model SponsorCategory
+ * 
+ */
+export type SponsorCategory = $Result.DefaultSelection<Prisma.$SponsorCategoryPayload>
+/**
+ * Model Sponsor
+ * 
+ */
+export type Sponsor = $Result.DefaultSelection<Prisma.$SponsorPayload>
 
 /**
  * Enums
@@ -206,6 +216,15 @@ export const ReviewRecommendation: {
 
 export type ReviewRecommendation = (typeof ReviewRecommendation)[keyof typeof ReviewRecommendation]
 
+
+export const SponsorSize: {
+  SMALL: 'SMALL',
+  MEDIUM: 'MEDIUM',
+  LARGE: 'LARGE'
+};
+
+export type SponsorSize = (typeof SponsorSize)[keyof typeof SponsorSize]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -243,6 +262,10 @@ export const FormFieldType: typeof $Enums.FormFieldType
 export type ReviewRecommendation = $Enums.ReviewRecommendation
 
 export const ReviewRecommendation: typeof $Enums.ReviewRecommendation
+
+export type SponsorSize = $Enums.SponsorSize
+
+export const SponsorSize: typeof $Enums.SponsorSize
 
 /**
  * ##  Prisma Client ʲˢ
@@ -564,6 +587,26 @@ export class PrismaClient<
     * ```
     */
   get issuedCertificate(): Prisma.IssuedCertificateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sponsorCategory`: Exposes CRUD operations for the **SponsorCategory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SponsorCategories
+    * const sponsorCategories = await prisma.sponsorCategory.findMany()
+    * ```
+    */
+  get sponsorCategory(): Prisma.SponsorCategoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sponsor`: Exposes CRUD operations for the **Sponsor** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Sponsors
+    * const sponsors = await prisma.sponsor.findMany()
+    * ```
+    */
+  get sponsor(): Prisma.SponsorDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1017,7 +1060,9 @@ export namespace Prisma {
     Review: 'Review',
     Attendance: 'Attendance',
     CertificateTemplate: 'CertificateTemplate',
-    IssuedCertificate: 'IssuedCertificate'
+    IssuedCertificate: 'IssuedCertificate',
+    SponsorCategory: 'SponsorCategory',
+    Sponsor: 'Sponsor'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1033,7 +1078,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "attendance" | "certificateTemplate" | "issuedCertificate"
+      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2517,6 +2562,154 @@ export namespace Prisma {
           }
         }
       }
+      SponsorCategory: {
+        payload: Prisma.$SponsorCategoryPayload<ExtArgs>
+        fields: Prisma.SponsorCategoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SponsorCategoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SponsorCategoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload>
+          }
+          findFirst: {
+            args: Prisma.SponsorCategoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SponsorCategoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload>
+          }
+          findMany: {
+            args: Prisma.SponsorCategoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload>[]
+          }
+          create: {
+            args: Prisma.SponsorCategoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload>
+          }
+          createMany: {
+            args: Prisma.SponsorCategoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SponsorCategoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload>[]
+          }
+          delete: {
+            args: Prisma.SponsorCategoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload>
+          }
+          update: {
+            args: Prisma.SponsorCategoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.SponsorCategoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SponsorCategoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SponsorCategoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.SponsorCategoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorCategoryPayload>
+          }
+          aggregate: {
+            args: Prisma.SponsorCategoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSponsorCategory>
+          }
+          groupBy: {
+            args: Prisma.SponsorCategoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SponsorCategoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SponsorCategoryCountArgs<ExtArgs>
+            result: $Utils.Optional<SponsorCategoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      Sponsor: {
+        payload: Prisma.$SponsorPayload<ExtArgs>
+        fields: Prisma.SponsorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SponsorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SponsorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload>
+          }
+          findFirst: {
+            args: Prisma.SponsorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SponsorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload>
+          }
+          findMany: {
+            args: Prisma.SponsorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload>[]
+          }
+          create: {
+            args: Prisma.SponsorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload>
+          }
+          createMany: {
+            args: Prisma.SponsorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SponsorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload>[]
+          }
+          delete: {
+            args: Prisma.SponsorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload>
+          }
+          update: {
+            args: Prisma.SponsorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload>
+          }
+          deleteMany: {
+            args: Prisma.SponsorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SponsorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SponsorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload>[]
+          }
+          upsert: {
+            args: Prisma.SponsorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SponsorPayload>
+          }
+          aggregate: {
+            args: Prisma.SponsorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSponsor>
+          }
+          groupBy: {
+            args: Prisma.SponsorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SponsorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SponsorCountArgs<ExtArgs>
+            result: $Utils.Optional<SponsorCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2645,6 +2838,8 @@ export namespace Prisma {
     attendance?: AttendanceOmit
     certificateTemplate?: CertificateTemplateOmit
     issuedCertificate?: IssuedCertificateOmit
+    sponsorCategory?: SponsorCategoryOmit
+    sponsor?: SponsorOmit
   }
 
   /* Types for Logging */
@@ -2847,6 +3042,7 @@ export namespace Prisma {
     forms: number
     submissions: number
     certificateTemplates: number
+    sponsorCategories: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2856,6 +3052,7 @@ export namespace Prisma {
     forms?: boolean | EventCountOutputTypeCountFormsArgs
     submissions?: boolean | EventCountOutputTypeCountSubmissionsArgs
     certificateTemplates?: boolean | EventCountOutputTypeCountCertificateTemplatesArgs
+    sponsorCategories?: boolean | EventCountOutputTypeCountSponsorCategoriesArgs
   }
 
   // Custom InputTypes
@@ -2909,6 +3106,13 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountCertificateTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CertificateTemplateWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountSponsorCategoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SponsorCategoryWhereInput
   }
 
 
@@ -3313,6 +3517,37 @@ export namespace Prisma {
    */
   export type CertificateTemplateCountOutputTypeCountIssuedCertificatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: IssuedCertificateWhereInput
+  }
+
+
+  /**
+   * Count Type SponsorCategoryCountOutputType
+   */
+
+  export type SponsorCategoryCountOutputType = {
+    sponsors: number
+  }
+
+  export type SponsorCategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sponsors?: boolean | SponsorCategoryCountOutputTypeCountSponsorsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SponsorCategoryCountOutputType without action
+   */
+  export type SponsorCategoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategoryCountOutputType
+     */
+    select?: SponsorCategoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SponsorCategoryCountOutputType without action
+   */
+  export type SponsorCategoryCountOutputTypeCountSponsorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SponsorWhereInput
   }
 
 
@@ -4545,6 +4780,8 @@ export namespace Prisma {
     password: string | null
     name: string | null
     role: $Enums.UserRole | null
+    avatarUrl: string | null
+    bio: string | null
     createdAt: Date | null
     updatedAt: Date | null
     tenantId: string | null
@@ -4556,6 +4793,8 @@ export namespace Prisma {
     password: string | null
     name: string | null
     role: $Enums.UserRole | null
+    avatarUrl: string | null
+    bio: string | null
     createdAt: Date | null
     updatedAt: Date | null
     tenantId: string | null
@@ -4567,6 +4806,8 @@ export namespace Prisma {
     password: number
     name: number
     role: number
+    avatarUrl: number
+    bio: number
     createdAt: number
     updatedAt: number
     tenantId: number
@@ -4580,6 +4821,8 @@ export namespace Prisma {
     password?: true
     name?: true
     role?: true
+    avatarUrl?: true
+    bio?: true
     createdAt?: true
     updatedAt?: true
     tenantId?: true
@@ -4591,6 +4834,8 @@ export namespace Prisma {
     password?: true
     name?: true
     role?: true
+    avatarUrl?: true
+    bio?: true
     createdAt?: true
     updatedAt?: true
     tenantId?: true
@@ -4602,6 +4847,8 @@ export namespace Prisma {
     password?: true
     name?: true
     role?: true
+    avatarUrl?: true
+    bio?: true
     createdAt?: true
     updatedAt?: true
     tenantId?: true
@@ -4686,6 +4933,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl: string | null
+    bio: string | null
     createdAt: Date
     updatedAt: Date
     tenantId: string
@@ -4714,6 +4963,8 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     role?: boolean
+    avatarUrl?: boolean
+    bio?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenantId?: boolean
@@ -4730,6 +4981,8 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     role?: boolean
+    avatarUrl?: boolean
+    bio?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenantId?: boolean
@@ -4742,6 +4995,8 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     role?: boolean
+    avatarUrl?: boolean
+    bio?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenantId?: boolean
@@ -4754,12 +5009,14 @@ export namespace Prisma {
     password?: boolean
     name?: boolean
     role?: boolean
+    avatarUrl?: boolean
+    bio?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenantId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "createdAt" | "updatedAt" | "tenantId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "avatarUrl" | "bio" | "createdAt" | "updatedAt" | "tenantId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     registrations?: boolean | User$registrationsArgs<ExtArgs>
@@ -4788,6 +5045,8 @@ export namespace Prisma {
       password: string
       name: string
       role: $Enums.UserRole
+      avatarUrl: string | null
+      bio: string | null
       createdAt: Date
       updatedAt: Date
       tenantId: string
@@ -5223,6 +5482,8 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'UserRole'>
+    readonly avatarUrl: FieldRef<"User", 'String'>
+    readonly bio: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly tenantId: FieldRef<"User", 'String'>
@@ -5972,6 +6233,7 @@ export namespace Prisma {
     forms?: boolean | Event$formsArgs<ExtArgs>
     submissions?: boolean | Event$submissionsArgs<ExtArgs>
     certificateTemplates?: boolean | Event$certificateTemplatesArgs<ExtArgs>
+    sponsorCategories?: boolean | Event$sponsorCategoriesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -6043,6 +6305,7 @@ export namespace Prisma {
     forms?: boolean | Event$formsArgs<ExtArgs>
     submissions?: boolean | Event$submissionsArgs<ExtArgs>
     certificateTemplates?: boolean | Event$certificateTemplatesArgs<ExtArgs>
+    sponsorCategories?: boolean | Event$sponsorCategoriesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6062,6 +6325,7 @@ export namespace Prisma {
       forms: Prisma.$CustomFormPayload<ExtArgs>[]
       submissions: Prisma.$SubmissionPayload<ExtArgs>[]
       certificateTemplates: Prisma.$CertificateTemplatePayload<ExtArgs>[]
+      sponsorCategories: Prisma.$SponsorCategoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6481,6 +6745,7 @@ export namespace Prisma {
     forms<T extends Event$formsArgs<ExtArgs> = {}>(args?: Subset<T, Event$formsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomFormPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     submissions<T extends Event$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, Event$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     certificateTemplates<T extends Event$certificateTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Event$certificateTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CertificateTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sponsorCategories<T extends Event$sponsorCategoriesArgs<ExtArgs> = {}>(args?: Subset<T, Event$sponsorCategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7068,6 +7333,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CertificateTemplateScalarFieldEnum | CertificateTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * Event.sponsorCategories
+   */
+  export type Event$sponsorCategoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+    where?: SponsorCategoryWhereInput
+    orderBy?: SponsorCategoryOrderByWithRelationInput | SponsorCategoryOrderByWithRelationInput[]
+    cursor?: SponsorCategoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SponsorCategoryScalarFieldEnum | SponsorCategoryScalarFieldEnum[]
   }
 
   /**
@@ -26274,6 +26563,2308 @@ export namespace Prisma {
 
 
   /**
+   * Model SponsorCategory
+   */
+
+  export type AggregateSponsorCategory = {
+    _count: SponsorCategoryCountAggregateOutputType | null
+    _avg: SponsorCategoryAvgAggregateOutputType | null
+    _sum: SponsorCategorySumAggregateOutputType | null
+    _min: SponsorCategoryMinAggregateOutputType | null
+    _max: SponsorCategoryMaxAggregateOutputType | null
+  }
+
+  export type SponsorCategoryAvgAggregateOutputType = {
+    displayOrder: number | null
+  }
+
+  export type SponsorCategorySumAggregateOutputType = {
+    displayOrder: number | null
+  }
+
+  export type SponsorCategoryMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    name: string | null
+    displayOrder: number | null
+    size: $Enums.SponsorSize | null
+    color: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SponsorCategoryMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    name: string | null
+    displayOrder: number | null
+    size: $Enums.SponsorSize | null
+    color: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SponsorCategoryCountAggregateOutputType = {
+    id: number
+    eventId: number
+    name: number
+    displayOrder: number
+    size: number
+    color: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SponsorCategoryAvgAggregateInputType = {
+    displayOrder?: true
+  }
+
+  export type SponsorCategorySumAggregateInputType = {
+    displayOrder?: true
+  }
+
+  export type SponsorCategoryMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    displayOrder?: true
+    size?: true
+    color?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SponsorCategoryMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    displayOrder?: true
+    size?: true
+    color?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SponsorCategoryCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    displayOrder?: true
+    size?: true
+    color?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SponsorCategoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SponsorCategory to aggregate.
+     */
+    where?: SponsorCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SponsorCategories to fetch.
+     */
+    orderBy?: SponsorCategoryOrderByWithRelationInput | SponsorCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SponsorCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SponsorCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SponsorCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SponsorCategories
+    **/
+    _count?: true | SponsorCategoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SponsorCategoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SponsorCategorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SponsorCategoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SponsorCategoryMaxAggregateInputType
+  }
+
+  export type GetSponsorCategoryAggregateType<T extends SponsorCategoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateSponsorCategory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSponsorCategory[P]>
+      : GetScalarType<T[P], AggregateSponsorCategory[P]>
+  }
+
+
+
+
+  export type SponsorCategoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SponsorCategoryWhereInput
+    orderBy?: SponsorCategoryOrderByWithAggregationInput | SponsorCategoryOrderByWithAggregationInput[]
+    by: SponsorCategoryScalarFieldEnum[] | SponsorCategoryScalarFieldEnum
+    having?: SponsorCategoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SponsorCategoryCountAggregateInputType | true
+    _avg?: SponsorCategoryAvgAggregateInputType
+    _sum?: SponsorCategorySumAggregateInputType
+    _min?: SponsorCategoryMinAggregateInputType
+    _max?: SponsorCategoryMaxAggregateInputType
+  }
+
+  export type SponsorCategoryGroupByOutputType = {
+    id: string
+    eventId: string
+    name: string
+    displayOrder: number
+    size: $Enums.SponsorSize
+    color: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SponsorCategoryCountAggregateOutputType | null
+    _avg: SponsorCategoryAvgAggregateOutputType | null
+    _sum: SponsorCategorySumAggregateOutputType | null
+    _min: SponsorCategoryMinAggregateOutputType | null
+    _max: SponsorCategoryMaxAggregateOutputType | null
+  }
+
+  type GetSponsorCategoryGroupByPayload<T extends SponsorCategoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SponsorCategoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SponsorCategoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SponsorCategoryGroupByOutputType[P]>
+            : GetScalarType<T[P], SponsorCategoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SponsorCategorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    displayOrder?: boolean
+    size?: boolean
+    color?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    sponsors?: boolean | SponsorCategory$sponsorsArgs<ExtArgs>
+    _count?: boolean | SponsorCategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sponsorCategory"]>
+
+  export type SponsorCategorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    displayOrder?: boolean
+    size?: boolean
+    color?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sponsorCategory"]>
+
+  export type SponsorCategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    displayOrder?: boolean
+    size?: boolean
+    color?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sponsorCategory"]>
+
+  export type SponsorCategorySelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    displayOrder?: boolean
+    size?: boolean
+    color?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SponsorCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "name" | "displayOrder" | "size" | "color" | "createdAt" | "updatedAt", ExtArgs["result"]["sponsorCategory"]>
+  export type SponsorCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    sponsors?: boolean | SponsorCategory$sponsorsArgs<ExtArgs>
+    _count?: boolean | SponsorCategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SponsorCategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type SponsorCategoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+
+  export type $SponsorCategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SponsorCategory"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      sponsors: Prisma.$SponsorPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      name: string
+      displayOrder: number
+      size: $Enums.SponsorSize
+      color: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["sponsorCategory"]>
+    composites: {}
+  }
+
+  type SponsorCategoryGetPayload<S extends boolean | null | undefined | SponsorCategoryDefaultArgs> = $Result.GetResult<Prisma.$SponsorCategoryPayload, S>
+
+  type SponsorCategoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SponsorCategoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SponsorCategoryCountAggregateInputType | true
+    }
+
+  export interface SponsorCategoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SponsorCategory'], meta: { name: 'SponsorCategory' } }
+    /**
+     * Find zero or one SponsorCategory that matches the filter.
+     * @param {SponsorCategoryFindUniqueArgs} args - Arguments to find a SponsorCategory
+     * @example
+     * // Get one SponsorCategory
+     * const sponsorCategory = await prisma.sponsorCategory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SponsorCategoryFindUniqueArgs>(args: SelectSubset<T, SponsorCategoryFindUniqueArgs<ExtArgs>>): Prisma__SponsorCategoryClient<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SponsorCategory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SponsorCategoryFindUniqueOrThrowArgs} args - Arguments to find a SponsorCategory
+     * @example
+     * // Get one SponsorCategory
+     * const sponsorCategory = await prisma.sponsorCategory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SponsorCategoryFindUniqueOrThrowArgs>(args: SelectSubset<T, SponsorCategoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SponsorCategoryClient<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SponsorCategory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorCategoryFindFirstArgs} args - Arguments to find a SponsorCategory
+     * @example
+     * // Get one SponsorCategory
+     * const sponsorCategory = await prisma.sponsorCategory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SponsorCategoryFindFirstArgs>(args?: SelectSubset<T, SponsorCategoryFindFirstArgs<ExtArgs>>): Prisma__SponsorCategoryClient<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SponsorCategory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorCategoryFindFirstOrThrowArgs} args - Arguments to find a SponsorCategory
+     * @example
+     * // Get one SponsorCategory
+     * const sponsorCategory = await prisma.sponsorCategory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SponsorCategoryFindFirstOrThrowArgs>(args?: SelectSubset<T, SponsorCategoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__SponsorCategoryClient<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SponsorCategories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorCategoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SponsorCategories
+     * const sponsorCategories = await prisma.sponsorCategory.findMany()
+     * 
+     * // Get first 10 SponsorCategories
+     * const sponsorCategories = await prisma.sponsorCategory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sponsorCategoryWithIdOnly = await prisma.sponsorCategory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SponsorCategoryFindManyArgs>(args?: SelectSubset<T, SponsorCategoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SponsorCategory.
+     * @param {SponsorCategoryCreateArgs} args - Arguments to create a SponsorCategory.
+     * @example
+     * // Create one SponsorCategory
+     * const SponsorCategory = await prisma.sponsorCategory.create({
+     *   data: {
+     *     // ... data to create a SponsorCategory
+     *   }
+     * })
+     * 
+     */
+    create<T extends SponsorCategoryCreateArgs>(args: SelectSubset<T, SponsorCategoryCreateArgs<ExtArgs>>): Prisma__SponsorCategoryClient<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SponsorCategories.
+     * @param {SponsorCategoryCreateManyArgs} args - Arguments to create many SponsorCategories.
+     * @example
+     * // Create many SponsorCategories
+     * const sponsorCategory = await prisma.sponsorCategory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SponsorCategoryCreateManyArgs>(args?: SelectSubset<T, SponsorCategoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SponsorCategories and returns the data saved in the database.
+     * @param {SponsorCategoryCreateManyAndReturnArgs} args - Arguments to create many SponsorCategories.
+     * @example
+     * // Create many SponsorCategories
+     * const sponsorCategory = await prisma.sponsorCategory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SponsorCategories and only return the `id`
+     * const sponsorCategoryWithIdOnly = await prisma.sponsorCategory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SponsorCategoryCreateManyAndReturnArgs>(args?: SelectSubset<T, SponsorCategoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SponsorCategory.
+     * @param {SponsorCategoryDeleteArgs} args - Arguments to delete one SponsorCategory.
+     * @example
+     * // Delete one SponsorCategory
+     * const SponsorCategory = await prisma.sponsorCategory.delete({
+     *   where: {
+     *     // ... filter to delete one SponsorCategory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SponsorCategoryDeleteArgs>(args: SelectSubset<T, SponsorCategoryDeleteArgs<ExtArgs>>): Prisma__SponsorCategoryClient<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SponsorCategory.
+     * @param {SponsorCategoryUpdateArgs} args - Arguments to update one SponsorCategory.
+     * @example
+     * // Update one SponsorCategory
+     * const sponsorCategory = await prisma.sponsorCategory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SponsorCategoryUpdateArgs>(args: SelectSubset<T, SponsorCategoryUpdateArgs<ExtArgs>>): Prisma__SponsorCategoryClient<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SponsorCategories.
+     * @param {SponsorCategoryDeleteManyArgs} args - Arguments to filter SponsorCategories to delete.
+     * @example
+     * // Delete a few SponsorCategories
+     * const { count } = await prisma.sponsorCategory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SponsorCategoryDeleteManyArgs>(args?: SelectSubset<T, SponsorCategoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SponsorCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorCategoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SponsorCategories
+     * const sponsorCategory = await prisma.sponsorCategory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SponsorCategoryUpdateManyArgs>(args: SelectSubset<T, SponsorCategoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SponsorCategories and returns the data updated in the database.
+     * @param {SponsorCategoryUpdateManyAndReturnArgs} args - Arguments to update many SponsorCategories.
+     * @example
+     * // Update many SponsorCategories
+     * const sponsorCategory = await prisma.sponsorCategory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SponsorCategories and only return the `id`
+     * const sponsorCategoryWithIdOnly = await prisma.sponsorCategory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SponsorCategoryUpdateManyAndReturnArgs>(args: SelectSubset<T, SponsorCategoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SponsorCategory.
+     * @param {SponsorCategoryUpsertArgs} args - Arguments to update or create a SponsorCategory.
+     * @example
+     * // Update or create a SponsorCategory
+     * const sponsorCategory = await prisma.sponsorCategory.upsert({
+     *   create: {
+     *     // ... data to create a SponsorCategory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SponsorCategory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SponsorCategoryUpsertArgs>(args: SelectSubset<T, SponsorCategoryUpsertArgs<ExtArgs>>): Prisma__SponsorCategoryClient<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SponsorCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorCategoryCountArgs} args - Arguments to filter SponsorCategories to count.
+     * @example
+     * // Count the number of SponsorCategories
+     * const count = await prisma.sponsorCategory.count({
+     *   where: {
+     *     // ... the filter for the SponsorCategories we want to count
+     *   }
+     * })
+    **/
+    count<T extends SponsorCategoryCountArgs>(
+      args?: Subset<T, SponsorCategoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SponsorCategoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SponsorCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorCategoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SponsorCategoryAggregateArgs>(args: Subset<T, SponsorCategoryAggregateArgs>): Prisma.PrismaPromise<GetSponsorCategoryAggregateType<T>>
+
+    /**
+     * Group by SponsorCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorCategoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SponsorCategoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SponsorCategoryGroupByArgs['orderBy'] }
+        : { orderBy?: SponsorCategoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SponsorCategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSponsorCategoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SponsorCategory model
+   */
+  readonly fields: SponsorCategoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SponsorCategory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SponsorCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sponsors<T extends SponsorCategory$sponsorsArgs<ExtArgs> = {}>(args?: Subset<T, SponsorCategory$sponsorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SponsorCategory model
+   */
+  interface SponsorCategoryFieldRefs {
+    readonly id: FieldRef<"SponsorCategory", 'String'>
+    readonly eventId: FieldRef<"SponsorCategory", 'String'>
+    readonly name: FieldRef<"SponsorCategory", 'String'>
+    readonly displayOrder: FieldRef<"SponsorCategory", 'Int'>
+    readonly size: FieldRef<"SponsorCategory", 'SponsorSize'>
+    readonly color: FieldRef<"SponsorCategory", 'String'>
+    readonly createdAt: FieldRef<"SponsorCategory", 'DateTime'>
+    readonly updatedAt: FieldRef<"SponsorCategory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SponsorCategory findUnique
+   */
+  export type SponsorCategoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which SponsorCategory to fetch.
+     */
+    where: SponsorCategoryWhereUniqueInput
+  }
+
+  /**
+   * SponsorCategory findUniqueOrThrow
+   */
+  export type SponsorCategoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which SponsorCategory to fetch.
+     */
+    where: SponsorCategoryWhereUniqueInput
+  }
+
+  /**
+   * SponsorCategory findFirst
+   */
+  export type SponsorCategoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which SponsorCategory to fetch.
+     */
+    where?: SponsorCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SponsorCategories to fetch.
+     */
+    orderBy?: SponsorCategoryOrderByWithRelationInput | SponsorCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SponsorCategories.
+     */
+    cursor?: SponsorCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SponsorCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SponsorCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SponsorCategories.
+     */
+    distinct?: SponsorCategoryScalarFieldEnum | SponsorCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * SponsorCategory findFirstOrThrow
+   */
+  export type SponsorCategoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which SponsorCategory to fetch.
+     */
+    where?: SponsorCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SponsorCategories to fetch.
+     */
+    orderBy?: SponsorCategoryOrderByWithRelationInput | SponsorCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SponsorCategories.
+     */
+    cursor?: SponsorCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SponsorCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SponsorCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SponsorCategories.
+     */
+    distinct?: SponsorCategoryScalarFieldEnum | SponsorCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * SponsorCategory findMany
+   */
+  export type SponsorCategoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which SponsorCategories to fetch.
+     */
+    where?: SponsorCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SponsorCategories to fetch.
+     */
+    orderBy?: SponsorCategoryOrderByWithRelationInput | SponsorCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SponsorCategories.
+     */
+    cursor?: SponsorCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SponsorCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SponsorCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SponsorCategories.
+     */
+    distinct?: SponsorCategoryScalarFieldEnum | SponsorCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * SponsorCategory create
+   */
+  export type SponsorCategoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SponsorCategory.
+     */
+    data: XOR<SponsorCategoryCreateInput, SponsorCategoryUncheckedCreateInput>
+  }
+
+  /**
+   * SponsorCategory createMany
+   */
+  export type SponsorCategoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SponsorCategories.
+     */
+    data: SponsorCategoryCreateManyInput | SponsorCategoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SponsorCategory createManyAndReturn
+   */
+  export type SponsorCategoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many SponsorCategories.
+     */
+    data: SponsorCategoryCreateManyInput | SponsorCategoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SponsorCategory update
+   */
+  export type SponsorCategoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SponsorCategory.
+     */
+    data: XOR<SponsorCategoryUpdateInput, SponsorCategoryUncheckedUpdateInput>
+    /**
+     * Choose, which SponsorCategory to update.
+     */
+    where: SponsorCategoryWhereUniqueInput
+  }
+
+  /**
+   * SponsorCategory updateMany
+   */
+  export type SponsorCategoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SponsorCategories.
+     */
+    data: XOR<SponsorCategoryUpdateManyMutationInput, SponsorCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which SponsorCategories to update
+     */
+    where?: SponsorCategoryWhereInput
+    /**
+     * Limit how many SponsorCategories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SponsorCategory updateManyAndReturn
+   */
+  export type SponsorCategoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * The data used to update SponsorCategories.
+     */
+    data: XOR<SponsorCategoryUpdateManyMutationInput, SponsorCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which SponsorCategories to update
+     */
+    where?: SponsorCategoryWhereInput
+    /**
+     * Limit how many SponsorCategories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SponsorCategory upsert
+   */
+  export type SponsorCategoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SponsorCategory to update in case it exists.
+     */
+    where: SponsorCategoryWhereUniqueInput
+    /**
+     * In case the SponsorCategory found by the `where` argument doesn't exist, create a new SponsorCategory with this data.
+     */
+    create: XOR<SponsorCategoryCreateInput, SponsorCategoryUncheckedCreateInput>
+    /**
+     * In case the SponsorCategory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SponsorCategoryUpdateInput, SponsorCategoryUncheckedUpdateInput>
+  }
+
+  /**
+   * SponsorCategory delete
+   */
+  export type SponsorCategoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+    /**
+     * Filter which SponsorCategory to delete.
+     */
+    where: SponsorCategoryWhereUniqueInput
+  }
+
+  /**
+   * SponsorCategory deleteMany
+   */
+  export type SponsorCategoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SponsorCategories to delete
+     */
+    where?: SponsorCategoryWhereInput
+    /**
+     * Limit how many SponsorCategories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SponsorCategory.sponsors
+   */
+  export type SponsorCategory$sponsorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+    where?: SponsorWhereInput
+    orderBy?: SponsorOrderByWithRelationInput | SponsorOrderByWithRelationInput[]
+    cursor?: SponsorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SponsorScalarFieldEnum | SponsorScalarFieldEnum[]
+  }
+
+  /**
+   * SponsorCategory without action
+   */
+  export type SponsorCategoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SponsorCategory
+     */
+    select?: SponsorCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SponsorCategory
+     */
+    omit?: SponsorCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorCategoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Sponsor
+   */
+
+  export type AggregateSponsor = {
+    _count: SponsorCountAggregateOutputType | null
+    _avg: SponsorAvgAggregateOutputType | null
+    _sum: SponsorSumAggregateOutputType | null
+    _min: SponsorMinAggregateOutputType | null
+    _max: SponsorMaxAggregateOutputType | null
+  }
+
+  export type SponsorAvgAggregateOutputType = {
+    displayOrder: number | null
+  }
+
+  export type SponsorSumAggregateOutputType = {
+    displayOrder: number | null
+  }
+
+  export type SponsorMinAggregateOutputType = {
+    id: string | null
+    categoryId: string | null
+    name: string | null
+    logoUrl: string | null
+    websiteUrl: string | null
+    displayOrder: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SponsorMaxAggregateOutputType = {
+    id: string | null
+    categoryId: string | null
+    name: string | null
+    logoUrl: string | null
+    websiteUrl: string | null
+    displayOrder: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SponsorCountAggregateOutputType = {
+    id: number
+    categoryId: number
+    name: number
+    logoUrl: number
+    websiteUrl: number
+    displayOrder: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SponsorAvgAggregateInputType = {
+    displayOrder?: true
+  }
+
+  export type SponsorSumAggregateInputType = {
+    displayOrder?: true
+  }
+
+  export type SponsorMinAggregateInputType = {
+    id?: true
+    categoryId?: true
+    name?: true
+    logoUrl?: true
+    websiteUrl?: true
+    displayOrder?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SponsorMaxAggregateInputType = {
+    id?: true
+    categoryId?: true
+    name?: true
+    logoUrl?: true
+    websiteUrl?: true
+    displayOrder?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SponsorCountAggregateInputType = {
+    id?: true
+    categoryId?: true
+    name?: true
+    logoUrl?: true
+    websiteUrl?: true
+    displayOrder?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SponsorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Sponsor to aggregate.
+     */
+    where?: SponsorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sponsors to fetch.
+     */
+    orderBy?: SponsorOrderByWithRelationInput | SponsorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SponsorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sponsors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sponsors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Sponsors
+    **/
+    _count?: true | SponsorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SponsorAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SponsorSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SponsorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SponsorMaxAggregateInputType
+  }
+
+  export type GetSponsorAggregateType<T extends SponsorAggregateArgs> = {
+        [P in keyof T & keyof AggregateSponsor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSponsor[P]>
+      : GetScalarType<T[P], AggregateSponsor[P]>
+  }
+
+
+
+
+  export type SponsorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SponsorWhereInput
+    orderBy?: SponsorOrderByWithAggregationInput | SponsorOrderByWithAggregationInput[]
+    by: SponsorScalarFieldEnum[] | SponsorScalarFieldEnum
+    having?: SponsorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SponsorCountAggregateInputType | true
+    _avg?: SponsorAvgAggregateInputType
+    _sum?: SponsorSumAggregateInputType
+    _min?: SponsorMinAggregateInputType
+    _max?: SponsorMaxAggregateInputType
+  }
+
+  export type SponsorGroupByOutputType = {
+    id: string
+    categoryId: string
+    name: string
+    logoUrl: string
+    websiteUrl: string | null
+    displayOrder: number
+    createdAt: Date
+    updatedAt: Date
+    _count: SponsorCountAggregateOutputType | null
+    _avg: SponsorAvgAggregateOutputType | null
+    _sum: SponsorSumAggregateOutputType | null
+    _min: SponsorMinAggregateOutputType | null
+    _max: SponsorMaxAggregateOutputType | null
+  }
+
+  type GetSponsorGroupByPayload<T extends SponsorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SponsorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SponsorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SponsorGroupByOutputType[P]>
+            : GetScalarType<T[P], SponsorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SponsorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    categoryId?: boolean
+    name?: boolean
+    logoUrl?: boolean
+    websiteUrl?: boolean
+    displayOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    category?: boolean | SponsorCategoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sponsor"]>
+
+  export type SponsorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    categoryId?: boolean
+    name?: boolean
+    logoUrl?: boolean
+    websiteUrl?: boolean
+    displayOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    category?: boolean | SponsorCategoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sponsor"]>
+
+  export type SponsorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    categoryId?: boolean
+    name?: boolean
+    logoUrl?: boolean
+    websiteUrl?: boolean
+    displayOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    category?: boolean | SponsorCategoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sponsor"]>
+
+  export type SponsorSelectScalar = {
+    id?: boolean
+    categoryId?: boolean
+    name?: boolean
+    logoUrl?: boolean
+    websiteUrl?: boolean
+    displayOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SponsorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "categoryId" | "name" | "logoUrl" | "websiteUrl" | "displayOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["sponsor"]>
+  export type SponsorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | SponsorCategoryDefaultArgs<ExtArgs>
+  }
+  export type SponsorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | SponsorCategoryDefaultArgs<ExtArgs>
+  }
+  export type SponsorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | SponsorCategoryDefaultArgs<ExtArgs>
+  }
+
+  export type $SponsorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Sponsor"
+    objects: {
+      category: Prisma.$SponsorCategoryPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      categoryId: string
+      name: string
+      logoUrl: string
+      websiteUrl: string | null
+      displayOrder: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["sponsor"]>
+    composites: {}
+  }
+
+  type SponsorGetPayload<S extends boolean | null | undefined | SponsorDefaultArgs> = $Result.GetResult<Prisma.$SponsorPayload, S>
+
+  type SponsorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SponsorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SponsorCountAggregateInputType | true
+    }
+
+  export interface SponsorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Sponsor'], meta: { name: 'Sponsor' } }
+    /**
+     * Find zero or one Sponsor that matches the filter.
+     * @param {SponsorFindUniqueArgs} args - Arguments to find a Sponsor
+     * @example
+     * // Get one Sponsor
+     * const sponsor = await prisma.sponsor.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SponsorFindUniqueArgs>(args: SelectSubset<T, SponsorFindUniqueArgs<ExtArgs>>): Prisma__SponsorClient<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Sponsor that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SponsorFindUniqueOrThrowArgs} args - Arguments to find a Sponsor
+     * @example
+     * // Get one Sponsor
+     * const sponsor = await prisma.sponsor.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SponsorFindUniqueOrThrowArgs>(args: SelectSubset<T, SponsorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SponsorClient<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Sponsor that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorFindFirstArgs} args - Arguments to find a Sponsor
+     * @example
+     * // Get one Sponsor
+     * const sponsor = await prisma.sponsor.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SponsorFindFirstArgs>(args?: SelectSubset<T, SponsorFindFirstArgs<ExtArgs>>): Prisma__SponsorClient<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Sponsor that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorFindFirstOrThrowArgs} args - Arguments to find a Sponsor
+     * @example
+     * // Get one Sponsor
+     * const sponsor = await prisma.sponsor.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SponsorFindFirstOrThrowArgs>(args?: SelectSubset<T, SponsorFindFirstOrThrowArgs<ExtArgs>>): Prisma__SponsorClient<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Sponsors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Sponsors
+     * const sponsors = await prisma.sponsor.findMany()
+     * 
+     * // Get first 10 Sponsors
+     * const sponsors = await prisma.sponsor.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sponsorWithIdOnly = await prisma.sponsor.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SponsorFindManyArgs>(args?: SelectSubset<T, SponsorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Sponsor.
+     * @param {SponsorCreateArgs} args - Arguments to create a Sponsor.
+     * @example
+     * // Create one Sponsor
+     * const Sponsor = await prisma.sponsor.create({
+     *   data: {
+     *     // ... data to create a Sponsor
+     *   }
+     * })
+     * 
+     */
+    create<T extends SponsorCreateArgs>(args: SelectSubset<T, SponsorCreateArgs<ExtArgs>>): Prisma__SponsorClient<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Sponsors.
+     * @param {SponsorCreateManyArgs} args - Arguments to create many Sponsors.
+     * @example
+     * // Create many Sponsors
+     * const sponsor = await prisma.sponsor.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SponsorCreateManyArgs>(args?: SelectSubset<T, SponsorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Sponsors and returns the data saved in the database.
+     * @param {SponsorCreateManyAndReturnArgs} args - Arguments to create many Sponsors.
+     * @example
+     * // Create many Sponsors
+     * const sponsor = await prisma.sponsor.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Sponsors and only return the `id`
+     * const sponsorWithIdOnly = await prisma.sponsor.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SponsorCreateManyAndReturnArgs>(args?: SelectSubset<T, SponsorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Sponsor.
+     * @param {SponsorDeleteArgs} args - Arguments to delete one Sponsor.
+     * @example
+     * // Delete one Sponsor
+     * const Sponsor = await prisma.sponsor.delete({
+     *   where: {
+     *     // ... filter to delete one Sponsor
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SponsorDeleteArgs>(args: SelectSubset<T, SponsorDeleteArgs<ExtArgs>>): Prisma__SponsorClient<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Sponsor.
+     * @param {SponsorUpdateArgs} args - Arguments to update one Sponsor.
+     * @example
+     * // Update one Sponsor
+     * const sponsor = await prisma.sponsor.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SponsorUpdateArgs>(args: SelectSubset<T, SponsorUpdateArgs<ExtArgs>>): Prisma__SponsorClient<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Sponsors.
+     * @param {SponsorDeleteManyArgs} args - Arguments to filter Sponsors to delete.
+     * @example
+     * // Delete a few Sponsors
+     * const { count } = await prisma.sponsor.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SponsorDeleteManyArgs>(args?: SelectSubset<T, SponsorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sponsors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Sponsors
+     * const sponsor = await prisma.sponsor.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SponsorUpdateManyArgs>(args: SelectSubset<T, SponsorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sponsors and returns the data updated in the database.
+     * @param {SponsorUpdateManyAndReturnArgs} args - Arguments to update many Sponsors.
+     * @example
+     * // Update many Sponsors
+     * const sponsor = await prisma.sponsor.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Sponsors and only return the `id`
+     * const sponsorWithIdOnly = await prisma.sponsor.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SponsorUpdateManyAndReturnArgs>(args: SelectSubset<T, SponsorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Sponsor.
+     * @param {SponsorUpsertArgs} args - Arguments to update or create a Sponsor.
+     * @example
+     * // Update or create a Sponsor
+     * const sponsor = await prisma.sponsor.upsert({
+     *   create: {
+     *     // ... data to create a Sponsor
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Sponsor we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SponsorUpsertArgs>(args: SelectSubset<T, SponsorUpsertArgs<ExtArgs>>): Prisma__SponsorClient<$Result.GetResult<Prisma.$SponsorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Sponsors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorCountArgs} args - Arguments to filter Sponsors to count.
+     * @example
+     * // Count the number of Sponsors
+     * const count = await prisma.sponsor.count({
+     *   where: {
+     *     // ... the filter for the Sponsors we want to count
+     *   }
+     * })
+    **/
+    count<T extends SponsorCountArgs>(
+      args?: Subset<T, SponsorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SponsorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Sponsor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SponsorAggregateArgs>(args: Subset<T, SponsorAggregateArgs>): Prisma.PrismaPromise<GetSponsorAggregateType<T>>
+
+    /**
+     * Group by Sponsor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SponsorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SponsorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SponsorGroupByArgs['orderBy'] }
+        : { orderBy?: SponsorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SponsorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSponsorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Sponsor model
+   */
+  readonly fields: SponsorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Sponsor.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SponsorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    category<T extends SponsorCategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SponsorCategoryDefaultArgs<ExtArgs>>): Prisma__SponsorCategoryClient<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Sponsor model
+   */
+  interface SponsorFieldRefs {
+    readonly id: FieldRef<"Sponsor", 'String'>
+    readonly categoryId: FieldRef<"Sponsor", 'String'>
+    readonly name: FieldRef<"Sponsor", 'String'>
+    readonly logoUrl: FieldRef<"Sponsor", 'String'>
+    readonly websiteUrl: FieldRef<"Sponsor", 'String'>
+    readonly displayOrder: FieldRef<"Sponsor", 'Int'>
+    readonly createdAt: FieldRef<"Sponsor", 'DateTime'>
+    readonly updatedAt: FieldRef<"Sponsor", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Sponsor findUnique
+   */
+  export type SponsorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+    /**
+     * Filter, which Sponsor to fetch.
+     */
+    where: SponsorWhereUniqueInput
+  }
+
+  /**
+   * Sponsor findUniqueOrThrow
+   */
+  export type SponsorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+    /**
+     * Filter, which Sponsor to fetch.
+     */
+    where: SponsorWhereUniqueInput
+  }
+
+  /**
+   * Sponsor findFirst
+   */
+  export type SponsorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+    /**
+     * Filter, which Sponsor to fetch.
+     */
+    where?: SponsorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sponsors to fetch.
+     */
+    orderBy?: SponsorOrderByWithRelationInput | SponsorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sponsors.
+     */
+    cursor?: SponsorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sponsors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sponsors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sponsors.
+     */
+    distinct?: SponsorScalarFieldEnum | SponsorScalarFieldEnum[]
+  }
+
+  /**
+   * Sponsor findFirstOrThrow
+   */
+  export type SponsorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+    /**
+     * Filter, which Sponsor to fetch.
+     */
+    where?: SponsorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sponsors to fetch.
+     */
+    orderBy?: SponsorOrderByWithRelationInput | SponsorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sponsors.
+     */
+    cursor?: SponsorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sponsors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sponsors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sponsors.
+     */
+    distinct?: SponsorScalarFieldEnum | SponsorScalarFieldEnum[]
+  }
+
+  /**
+   * Sponsor findMany
+   */
+  export type SponsorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+    /**
+     * Filter, which Sponsors to fetch.
+     */
+    where?: SponsorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sponsors to fetch.
+     */
+    orderBy?: SponsorOrderByWithRelationInput | SponsorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Sponsors.
+     */
+    cursor?: SponsorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sponsors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sponsors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sponsors.
+     */
+    distinct?: SponsorScalarFieldEnum | SponsorScalarFieldEnum[]
+  }
+
+  /**
+   * Sponsor create
+   */
+  export type SponsorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Sponsor.
+     */
+    data: XOR<SponsorCreateInput, SponsorUncheckedCreateInput>
+  }
+
+  /**
+   * Sponsor createMany
+   */
+  export type SponsorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Sponsors.
+     */
+    data: SponsorCreateManyInput | SponsorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Sponsor createManyAndReturn
+   */
+  export type SponsorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * The data used to create many Sponsors.
+     */
+    data: SponsorCreateManyInput | SponsorCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Sponsor update
+   */
+  export type SponsorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Sponsor.
+     */
+    data: XOR<SponsorUpdateInput, SponsorUncheckedUpdateInput>
+    /**
+     * Choose, which Sponsor to update.
+     */
+    where: SponsorWhereUniqueInput
+  }
+
+  /**
+   * Sponsor updateMany
+   */
+  export type SponsorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Sponsors.
+     */
+    data: XOR<SponsorUpdateManyMutationInput, SponsorUncheckedUpdateManyInput>
+    /**
+     * Filter which Sponsors to update
+     */
+    where?: SponsorWhereInput
+    /**
+     * Limit how many Sponsors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Sponsor updateManyAndReturn
+   */
+  export type SponsorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * The data used to update Sponsors.
+     */
+    data: XOR<SponsorUpdateManyMutationInput, SponsorUncheckedUpdateManyInput>
+    /**
+     * Filter which Sponsors to update
+     */
+    where?: SponsorWhereInput
+    /**
+     * Limit how many Sponsors to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Sponsor upsert
+   */
+  export type SponsorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Sponsor to update in case it exists.
+     */
+    where: SponsorWhereUniqueInput
+    /**
+     * In case the Sponsor found by the `where` argument doesn't exist, create a new Sponsor with this data.
+     */
+    create: XOR<SponsorCreateInput, SponsorUncheckedCreateInput>
+    /**
+     * In case the Sponsor was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SponsorUpdateInput, SponsorUncheckedUpdateInput>
+  }
+
+  /**
+   * Sponsor delete
+   */
+  export type SponsorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+    /**
+     * Filter which Sponsor to delete.
+     */
+    where: SponsorWhereUniqueInput
+  }
+
+  /**
+   * Sponsor deleteMany
+   */
+  export type SponsorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Sponsors to delete
+     */
+    where?: SponsorWhereInput
+    /**
+     * Limit how many Sponsors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Sponsor without action
+   */
+  export type SponsorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sponsor
+     */
+    select?: SponsorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sponsor
+     */
+    omit?: SponsorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SponsorInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -26306,6 +28897,8 @@ export namespace Prisma {
     password: 'password',
     name: 'name',
     role: 'role',
+    avatarUrl: 'avatarUrl',
+    bio: 'bio',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     tenantId: 'tenantId'
@@ -26541,6 +29134,34 @@ export namespace Prisma {
   };
 
   export type IssuedCertificateScalarFieldEnum = (typeof IssuedCertificateScalarFieldEnum)[keyof typeof IssuedCertificateScalarFieldEnum]
+
+
+  export const SponsorCategoryScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    name: 'name',
+    displayOrder: 'displayOrder',
+    size: 'size',
+    color: 'color',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SponsorCategoryScalarFieldEnum = (typeof SponsorCategoryScalarFieldEnum)[keyof typeof SponsorCategoryScalarFieldEnum]
+
+
+  export const SponsorScalarFieldEnum: {
+    id: 'id',
+    categoryId: 'categoryId',
+    name: 'name',
+    logoUrl: 'logoUrl',
+    websiteUrl: 'websiteUrl',
+    displayOrder: 'displayOrder',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SponsorScalarFieldEnum = (typeof SponsorScalarFieldEnum)[keyof typeof SponsorScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -26800,6 +29421,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'SponsorSize'
+   */
+  export type EnumSponsorSizeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SponsorSize'>
+    
+
+
+  /**
+   * Reference to a field of type 'SponsorSize[]'
+   */
+  export type ListEnumSponsorSizeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SponsorSize[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -26902,6 +29537,8 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    avatarUrl?: StringNullableFilter<"User"> | string | null
+    bio?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     tenantId?: StringFilter<"User"> | string
@@ -26917,6 +29554,8 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    avatarUrl?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tenantId?: SortOrder
@@ -26935,6 +29574,8 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    avatarUrl?: StringNullableFilter<"User"> | string | null
+    bio?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     tenantId?: StringFilter<"User"> | string
@@ -26950,6 +29591,8 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    avatarUrl?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tenantId?: SortOrder
@@ -26967,6 +29610,8 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"User"> | string
     name?: StringWithAggregatesFilter<"User"> | string
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
+    avatarUrl?: StringNullableWithAggregatesFilter<"User"> | string | null
+    bio?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     tenantId?: StringWithAggregatesFilter<"User"> | string
@@ -26999,6 +29644,7 @@ export namespace Prisma {
     forms?: CustomFormListRelationFilter
     submissions?: SubmissionListRelationFilter
     certificateTemplates?: CertificateTemplateListRelationFilter
+    sponsorCategories?: SponsorCategoryListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -27025,6 +29671,7 @@ export namespace Prisma {
     forms?: CustomFormOrderByRelationAggregateInput
     submissions?: SubmissionOrderByRelationAggregateInput
     certificateTemplates?: CertificateTemplateOrderByRelationAggregateInput
+    sponsorCategories?: SponsorCategoryOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -27055,6 +29702,7 @@ export namespace Prisma {
     forms?: CustomFormListRelationFilter
     submissions?: SubmissionListRelationFilter
     certificateTemplates?: CertificateTemplateListRelationFilter
+    sponsorCategories?: SponsorCategoryListRelationFilter
   }, "id" | "tenantId_slug">
 
   export type EventOrderByWithAggregationInput = {
@@ -28240,6 +30888,153 @@ export namespace Prisma {
     issuedAt?: DateTimeWithAggregatesFilter<"IssuedCertificate"> | Date | string
   }
 
+  export type SponsorCategoryWhereInput = {
+    AND?: SponsorCategoryWhereInput | SponsorCategoryWhereInput[]
+    OR?: SponsorCategoryWhereInput[]
+    NOT?: SponsorCategoryWhereInput | SponsorCategoryWhereInput[]
+    id?: StringFilter<"SponsorCategory"> | string
+    eventId?: StringFilter<"SponsorCategory"> | string
+    name?: StringFilter<"SponsorCategory"> | string
+    displayOrder?: IntFilter<"SponsorCategory"> | number
+    size?: EnumSponsorSizeFilter<"SponsorCategory"> | $Enums.SponsorSize
+    color?: StringNullableFilter<"SponsorCategory"> | string | null
+    createdAt?: DateTimeFilter<"SponsorCategory"> | Date | string
+    updatedAt?: DateTimeFilter<"SponsorCategory"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    sponsors?: SponsorListRelationFilter
+  }
+
+  export type SponsorCategoryOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    displayOrder?: SortOrder
+    size?: SortOrder
+    color?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    sponsors?: SponsorOrderByRelationAggregateInput
+  }
+
+  export type SponsorCategoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SponsorCategoryWhereInput | SponsorCategoryWhereInput[]
+    OR?: SponsorCategoryWhereInput[]
+    NOT?: SponsorCategoryWhereInput | SponsorCategoryWhereInput[]
+    eventId?: StringFilter<"SponsorCategory"> | string
+    name?: StringFilter<"SponsorCategory"> | string
+    displayOrder?: IntFilter<"SponsorCategory"> | number
+    size?: EnumSponsorSizeFilter<"SponsorCategory"> | $Enums.SponsorSize
+    color?: StringNullableFilter<"SponsorCategory"> | string | null
+    createdAt?: DateTimeFilter<"SponsorCategory"> | Date | string
+    updatedAt?: DateTimeFilter<"SponsorCategory"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    sponsors?: SponsorListRelationFilter
+  }, "id">
+
+  export type SponsorCategoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    displayOrder?: SortOrder
+    size?: SortOrder
+    color?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SponsorCategoryCountOrderByAggregateInput
+    _avg?: SponsorCategoryAvgOrderByAggregateInput
+    _max?: SponsorCategoryMaxOrderByAggregateInput
+    _min?: SponsorCategoryMinOrderByAggregateInput
+    _sum?: SponsorCategorySumOrderByAggregateInput
+  }
+
+  export type SponsorCategoryScalarWhereWithAggregatesInput = {
+    AND?: SponsorCategoryScalarWhereWithAggregatesInput | SponsorCategoryScalarWhereWithAggregatesInput[]
+    OR?: SponsorCategoryScalarWhereWithAggregatesInput[]
+    NOT?: SponsorCategoryScalarWhereWithAggregatesInput | SponsorCategoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SponsorCategory"> | string
+    eventId?: StringWithAggregatesFilter<"SponsorCategory"> | string
+    name?: StringWithAggregatesFilter<"SponsorCategory"> | string
+    displayOrder?: IntWithAggregatesFilter<"SponsorCategory"> | number
+    size?: EnumSponsorSizeWithAggregatesFilter<"SponsorCategory"> | $Enums.SponsorSize
+    color?: StringNullableWithAggregatesFilter<"SponsorCategory"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SponsorCategory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SponsorCategory"> | Date | string
+  }
+
+  export type SponsorWhereInput = {
+    AND?: SponsorWhereInput | SponsorWhereInput[]
+    OR?: SponsorWhereInput[]
+    NOT?: SponsorWhereInput | SponsorWhereInput[]
+    id?: StringFilter<"Sponsor"> | string
+    categoryId?: StringFilter<"Sponsor"> | string
+    name?: StringFilter<"Sponsor"> | string
+    logoUrl?: StringFilter<"Sponsor"> | string
+    websiteUrl?: StringNullableFilter<"Sponsor"> | string | null
+    displayOrder?: IntFilter<"Sponsor"> | number
+    createdAt?: DateTimeFilter<"Sponsor"> | Date | string
+    updatedAt?: DateTimeFilter<"Sponsor"> | Date | string
+    category?: XOR<SponsorCategoryScalarRelationFilter, SponsorCategoryWhereInput>
+  }
+
+  export type SponsorOrderByWithRelationInput = {
+    id?: SortOrder
+    categoryId?: SortOrder
+    name?: SortOrder
+    logoUrl?: SortOrder
+    websiteUrl?: SortOrderInput | SortOrder
+    displayOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    category?: SponsorCategoryOrderByWithRelationInput
+  }
+
+  export type SponsorWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SponsorWhereInput | SponsorWhereInput[]
+    OR?: SponsorWhereInput[]
+    NOT?: SponsorWhereInput | SponsorWhereInput[]
+    categoryId?: StringFilter<"Sponsor"> | string
+    name?: StringFilter<"Sponsor"> | string
+    logoUrl?: StringFilter<"Sponsor"> | string
+    websiteUrl?: StringNullableFilter<"Sponsor"> | string | null
+    displayOrder?: IntFilter<"Sponsor"> | number
+    createdAt?: DateTimeFilter<"Sponsor"> | Date | string
+    updatedAt?: DateTimeFilter<"Sponsor"> | Date | string
+    category?: XOR<SponsorCategoryScalarRelationFilter, SponsorCategoryWhereInput>
+  }, "id">
+
+  export type SponsorOrderByWithAggregationInput = {
+    id?: SortOrder
+    categoryId?: SortOrder
+    name?: SortOrder
+    logoUrl?: SortOrder
+    websiteUrl?: SortOrderInput | SortOrder
+    displayOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SponsorCountOrderByAggregateInput
+    _avg?: SponsorAvgOrderByAggregateInput
+    _max?: SponsorMaxOrderByAggregateInput
+    _min?: SponsorMinOrderByAggregateInput
+    _sum?: SponsorSumOrderByAggregateInput
+  }
+
+  export type SponsorScalarWhereWithAggregatesInput = {
+    AND?: SponsorScalarWhereWithAggregatesInput | SponsorScalarWhereWithAggregatesInput[]
+    OR?: SponsorScalarWhereWithAggregatesInput[]
+    NOT?: SponsorScalarWhereWithAggregatesInput | SponsorScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Sponsor"> | string
+    categoryId?: StringWithAggregatesFilter<"Sponsor"> | string
+    name?: StringWithAggregatesFilter<"Sponsor"> | string
+    logoUrl?: StringWithAggregatesFilter<"Sponsor"> | string
+    websiteUrl?: StringNullableWithAggregatesFilter<"Sponsor"> | string | null
+    displayOrder?: IntWithAggregatesFilter<"Sponsor"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Sponsor"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Sponsor"> | Date | string
+  }
+
   export type TenantCreateInput = {
     id?: string
     name: string
@@ -28336,6 +31131,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutUsersInput
@@ -28350,6 +31147,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenantId: string
@@ -28364,6 +31163,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
@@ -28378,6 +31179,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
@@ -28392,6 +31195,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenantId: string
@@ -28403,6 +31208,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28413,6 +31220,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
@@ -28441,6 +31250,7 @@ export namespace Prisma {
     forms?: CustomFormCreateNestedManyWithoutEventInput
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -28466,6 +31276,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -28491,6 +31302,7 @@ export namespace Prisma {
     forms?: CustomFormUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -28516,6 +31328,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -29709,6 +32522,162 @@ export namespace Prisma {
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SponsorCategoryCreateInput = {
+    id?: string
+    name: string
+    displayOrder?: number
+    size?: $Enums.SponsorSize
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutSponsorCategoriesInput
+    sponsors?: SponsorCreateNestedManyWithoutCategoryInput
+  }
+
+  export type SponsorCategoryUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    name: string
+    displayOrder?: number
+    size?: $Enums.SponsorSize
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sponsors?: SponsorUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type SponsorCategoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    size?: EnumSponsorSizeFieldUpdateOperationsInput | $Enums.SponsorSize
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutSponsorCategoriesNestedInput
+    sponsors?: SponsorUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type SponsorCategoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    size?: EnumSponsorSizeFieldUpdateOperationsInput | $Enums.SponsorSize
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sponsors?: SponsorUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type SponsorCategoryCreateManyInput = {
+    id?: string
+    eventId: string
+    name: string
+    displayOrder?: number
+    size?: $Enums.SponsorSize
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SponsorCategoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    size?: EnumSponsorSizeFieldUpdateOperationsInput | $Enums.SponsorSize
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SponsorCategoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    size?: EnumSponsorSizeFieldUpdateOperationsInput | $Enums.SponsorSize
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SponsorCreateInput = {
+    id?: string
+    name: string
+    logoUrl: string
+    websiteUrl?: string | null
+    displayOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: SponsorCategoryCreateNestedOneWithoutSponsorsInput
+  }
+
+  export type SponsorUncheckedCreateInput = {
+    id?: string
+    categoryId: string
+    name: string
+    logoUrl: string
+    websiteUrl?: string | null
+    displayOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SponsorUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    logoUrl?: StringFieldUpdateOperationsInput | string
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: SponsorCategoryUpdateOneRequiredWithoutSponsorsNestedInput
+  }
+
+  export type SponsorUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    logoUrl?: StringFieldUpdateOperationsInput | string
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SponsorCreateManyInput = {
+    id?: string
+    categoryId: string
+    name: string
+    logoUrl: string
+    websiteUrl?: string | null
+    displayOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SponsorUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    logoUrl?: StringFieldUpdateOperationsInput | string
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SponsorUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    logoUrl?: StringFieldUpdateOperationsInput | string
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -29980,6 +32949,8 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    avatarUrl?: SortOrder
+    bio?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tenantId?: SortOrder
@@ -29991,6 +32962,8 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    avatarUrl?: SortOrder
+    bio?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tenantId?: SortOrder
@@ -30002,6 +32975,8 @@ export namespace Prisma {
     password?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    avatarUrl?: SortOrder
+    bio?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tenantId?: SortOrder
@@ -30048,6 +33023,12 @@ export namespace Prisma {
     none?: CertificateTemplateWhereInput
   }
 
+  export type SponsorCategoryListRelationFilter = {
+    every?: SponsorCategoryWhereInput
+    some?: SponsorCategoryWhereInput
+    none?: SponsorCategoryWhereInput
+  }
+
   export type ActivityOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -30061,6 +33042,10 @@ export namespace Prisma {
   }
 
   export type CertificateTemplateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SponsorCategoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -31057,6 +34042,120 @@ export namespace Prisma {
     issuedAt?: SortOrder
   }
 
+  export type EnumSponsorSizeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SponsorSize | EnumSponsorSizeFieldRefInput<$PrismaModel>
+    in?: $Enums.SponsorSize[] | ListEnumSponsorSizeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SponsorSize[] | ListEnumSponsorSizeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSponsorSizeFilter<$PrismaModel> | $Enums.SponsorSize
+  }
+
+  export type SponsorListRelationFilter = {
+    every?: SponsorWhereInput
+    some?: SponsorWhereInput
+    none?: SponsorWhereInput
+  }
+
+  export type SponsorOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SponsorCategoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    displayOrder?: SortOrder
+    size?: SortOrder
+    color?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SponsorCategoryAvgOrderByAggregateInput = {
+    displayOrder?: SortOrder
+  }
+
+  export type SponsorCategoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    displayOrder?: SortOrder
+    size?: SortOrder
+    color?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SponsorCategoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    displayOrder?: SortOrder
+    size?: SortOrder
+    color?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SponsorCategorySumOrderByAggregateInput = {
+    displayOrder?: SortOrder
+  }
+
+  export type EnumSponsorSizeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SponsorSize | EnumSponsorSizeFieldRefInput<$PrismaModel>
+    in?: $Enums.SponsorSize[] | ListEnumSponsorSizeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SponsorSize[] | ListEnumSponsorSizeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSponsorSizeWithAggregatesFilter<$PrismaModel> | $Enums.SponsorSize
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSponsorSizeFilter<$PrismaModel>
+    _max?: NestedEnumSponsorSizeFilter<$PrismaModel>
+  }
+
+  export type SponsorCategoryScalarRelationFilter = {
+    is?: SponsorCategoryWhereInput
+    isNot?: SponsorCategoryWhereInput
+  }
+
+  export type SponsorCountOrderByAggregateInput = {
+    id?: SortOrder
+    categoryId?: SortOrder
+    name?: SortOrder
+    logoUrl?: SortOrder
+    websiteUrl?: SortOrder
+    displayOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SponsorAvgOrderByAggregateInput = {
+    displayOrder?: SortOrder
+  }
+
+  export type SponsorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    categoryId?: SortOrder
+    name?: SortOrder
+    logoUrl?: SortOrder
+    websiteUrl?: SortOrder
+    displayOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SponsorMinOrderByAggregateInput = {
+    id?: SortOrder
+    categoryId?: SortOrder
+    name?: SortOrder
+    logoUrl?: SortOrder
+    websiteUrl?: SortOrder
+    displayOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SponsorSumOrderByAggregateInput = {
+    displayOrder?: SortOrder
+  }
+
   export type UserCreateNestedManyWithoutTenantInput = {
     create?: XOR<UserCreateWithoutTenantInput, UserUncheckedCreateWithoutTenantInput> | UserCreateWithoutTenantInput[] | UserUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: UserCreateOrConnectWithoutTenantInput | UserCreateOrConnectWithoutTenantInput[]
@@ -31471,6 +34570,13 @@ export namespace Prisma {
     connect?: CertificateTemplateWhereUniqueInput | CertificateTemplateWhereUniqueInput[]
   }
 
+  export type SponsorCategoryCreateNestedManyWithoutEventInput = {
+    create?: XOR<SponsorCategoryCreateWithoutEventInput, SponsorCategoryUncheckedCreateWithoutEventInput> | SponsorCategoryCreateWithoutEventInput[] | SponsorCategoryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SponsorCategoryCreateOrConnectWithoutEventInput | SponsorCategoryCreateOrConnectWithoutEventInput[]
+    createMany?: SponsorCategoryCreateManyEventInputEnvelope
+    connect?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
+  }
+
   export type ActivityUncheckedCreateNestedManyWithoutEventInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -31511,6 +34617,13 @@ export namespace Prisma {
     connectOrCreate?: CertificateTemplateCreateOrConnectWithoutEventInput | CertificateTemplateCreateOrConnectWithoutEventInput[]
     createMany?: CertificateTemplateCreateManyEventInputEnvelope
     connect?: CertificateTemplateWhereUniqueInput | CertificateTemplateWhereUniqueInput[]
+  }
+
+  export type SponsorCategoryUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<SponsorCategoryCreateWithoutEventInput, SponsorCategoryUncheckedCreateWithoutEventInput> | SponsorCategoryCreateWithoutEventInput[] | SponsorCategoryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SponsorCategoryCreateOrConnectWithoutEventInput | SponsorCategoryCreateOrConnectWithoutEventInput[]
+    createMany?: SponsorCategoryCreateManyEventInputEnvelope
+    connect?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
   }
 
   export type EnumEventStatusFieldUpdateOperationsInput = {
@@ -31609,6 +34722,20 @@ export namespace Prisma {
     deleteMany?: CertificateTemplateScalarWhereInput | CertificateTemplateScalarWhereInput[]
   }
 
+  export type SponsorCategoryUpdateManyWithoutEventNestedInput = {
+    create?: XOR<SponsorCategoryCreateWithoutEventInput, SponsorCategoryUncheckedCreateWithoutEventInput> | SponsorCategoryCreateWithoutEventInput[] | SponsorCategoryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SponsorCategoryCreateOrConnectWithoutEventInput | SponsorCategoryCreateOrConnectWithoutEventInput[]
+    upsert?: SponsorCategoryUpsertWithWhereUniqueWithoutEventInput | SponsorCategoryUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: SponsorCategoryCreateManyEventInputEnvelope
+    set?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
+    disconnect?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
+    delete?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
+    connect?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
+    update?: SponsorCategoryUpdateWithWhereUniqueWithoutEventInput | SponsorCategoryUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: SponsorCategoryUpdateManyWithWhereWithoutEventInput | SponsorCategoryUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: SponsorCategoryScalarWhereInput | SponsorCategoryScalarWhereInput[]
+  }
+
   export type ActivityUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -31691,6 +34818,20 @@ export namespace Prisma {
     update?: CertificateTemplateUpdateWithWhereUniqueWithoutEventInput | CertificateTemplateUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: CertificateTemplateUpdateManyWithWhereWithoutEventInput | CertificateTemplateUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: CertificateTemplateScalarWhereInput | CertificateTemplateScalarWhereInput[]
+  }
+
+  export type SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<SponsorCategoryCreateWithoutEventInput, SponsorCategoryUncheckedCreateWithoutEventInput> | SponsorCategoryCreateWithoutEventInput[] | SponsorCategoryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SponsorCategoryCreateOrConnectWithoutEventInput | SponsorCategoryCreateOrConnectWithoutEventInput[]
+    upsert?: SponsorCategoryUpsertWithWhereUniqueWithoutEventInput | SponsorCategoryUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: SponsorCategoryCreateManyEventInputEnvelope
+    set?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
+    disconnect?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
+    delete?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
+    connect?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
+    update?: SponsorCategoryUpdateWithWhereUniqueWithoutEventInput | SponsorCategoryUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: SponsorCategoryUpdateManyWithWhereWithoutEventInput | SponsorCategoryUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: SponsorCategoryScalarWhereInput | SponsorCategoryScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutActivityTypesInput = {
@@ -32935,6 +36076,80 @@ export namespace Prisma {
     update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutCertificatesInput, RegistrationUpdateWithoutCertificatesInput>, RegistrationUncheckedUpdateWithoutCertificatesInput>
   }
 
+  export type EventCreateNestedOneWithoutSponsorCategoriesInput = {
+    create?: XOR<EventCreateWithoutSponsorCategoriesInput, EventUncheckedCreateWithoutSponsorCategoriesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutSponsorCategoriesInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type SponsorCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<SponsorCreateWithoutCategoryInput, SponsorUncheckedCreateWithoutCategoryInput> | SponsorCreateWithoutCategoryInput[] | SponsorUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: SponsorCreateOrConnectWithoutCategoryInput | SponsorCreateOrConnectWithoutCategoryInput[]
+    createMany?: SponsorCreateManyCategoryInputEnvelope
+    connect?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+  }
+
+  export type SponsorUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<SponsorCreateWithoutCategoryInput, SponsorUncheckedCreateWithoutCategoryInput> | SponsorCreateWithoutCategoryInput[] | SponsorUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: SponsorCreateOrConnectWithoutCategoryInput | SponsorCreateOrConnectWithoutCategoryInput[]
+    createMany?: SponsorCreateManyCategoryInputEnvelope
+    connect?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+  }
+
+  export type EnumSponsorSizeFieldUpdateOperationsInput = {
+    set?: $Enums.SponsorSize
+  }
+
+  export type EventUpdateOneRequiredWithoutSponsorCategoriesNestedInput = {
+    create?: XOR<EventCreateWithoutSponsorCategoriesInput, EventUncheckedCreateWithoutSponsorCategoriesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutSponsorCategoriesInput
+    upsert?: EventUpsertWithoutSponsorCategoriesInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutSponsorCategoriesInput, EventUpdateWithoutSponsorCategoriesInput>, EventUncheckedUpdateWithoutSponsorCategoriesInput>
+  }
+
+  export type SponsorUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<SponsorCreateWithoutCategoryInput, SponsorUncheckedCreateWithoutCategoryInput> | SponsorCreateWithoutCategoryInput[] | SponsorUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: SponsorCreateOrConnectWithoutCategoryInput | SponsorCreateOrConnectWithoutCategoryInput[]
+    upsert?: SponsorUpsertWithWhereUniqueWithoutCategoryInput | SponsorUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: SponsorCreateManyCategoryInputEnvelope
+    set?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+    disconnect?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+    delete?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+    connect?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+    update?: SponsorUpdateWithWhereUniqueWithoutCategoryInput | SponsorUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: SponsorUpdateManyWithWhereWithoutCategoryInput | SponsorUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: SponsorScalarWhereInput | SponsorScalarWhereInput[]
+  }
+
+  export type SponsorUncheckedUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<SponsorCreateWithoutCategoryInput, SponsorUncheckedCreateWithoutCategoryInput> | SponsorCreateWithoutCategoryInput[] | SponsorUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: SponsorCreateOrConnectWithoutCategoryInput | SponsorCreateOrConnectWithoutCategoryInput[]
+    upsert?: SponsorUpsertWithWhereUniqueWithoutCategoryInput | SponsorUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: SponsorCreateManyCategoryInputEnvelope
+    set?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+    disconnect?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+    delete?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+    connect?: SponsorWhereUniqueInput | SponsorWhereUniqueInput[]
+    update?: SponsorUpdateWithWhereUniqueWithoutCategoryInput | SponsorUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: SponsorUpdateManyWithWhereWithoutCategoryInput | SponsorUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: SponsorScalarWhereInput | SponsorScalarWhereInput[]
+  }
+
+  export type SponsorCategoryCreateNestedOneWithoutSponsorsInput = {
+    create?: XOR<SponsorCategoryCreateWithoutSponsorsInput, SponsorCategoryUncheckedCreateWithoutSponsorsInput>
+    connectOrCreate?: SponsorCategoryCreateOrConnectWithoutSponsorsInput
+    connect?: SponsorCategoryWhereUniqueInput
+  }
+
+  export type SponsorCategoryUpdateOneRequiredWithoutSponsorsNestedInput = {
+    create?: XOR<SponsorCategoryCreateWithoutSponsorsInput, SponsorCategoryUncheckedCreateWithoutSponsorsInput>
+    connectOrCreate?: SponsorCategoryCreateOrConnectWithoutSponsorsInput
+    upsert?: SponsorCategoryUpsertWithoutSponsorsInput
+    connect?: SponsorCategoryWhereUniqueInput
+    update?: XOR<XOR<SponsorCategoryUpdateToOneWithWhereWithoutSponsorsInput, SponsorCategoryUpdateWithoutSponsorsInput>, SponsorCategoryUncheckedUpdateWithoutSponsorsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -33337,12 +36552,31 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedEnumSponsorSizeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SponsorSize | EnumSponsorSizeFieldRefInput<$PrismaModel>
+    in?: $Enums.SponsorSize[] | ListEnumSponsorSizeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SponsorSize[] | ListEnumSponsorSizeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSponsorSizeFilter<$PrismaModel> | $Enums.SponsorSize
+  }
+
+  export type NestedEnumSponsorSizeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SponsorSize | EnumSponsorSizeFieldRefInput<$PrismaModel>
+    in?: $Enums.SponsorSize[] | ListEnumSponsorSizeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SponsorSize[] | ListEnumSponsorSizeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSponsorSizeWithAggregatesFilter<$PrismaModel> | $Enums.SponsorSize
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSponsorSizeFilter<$PrismaModel>
+    _max?: NestedEnumSponsorSizeFilter<$PrismaModel>
+  }
+
   export type UserCreateWithoutTenantInput = {
     id?: string
     email: string
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     registrations?: RegistrationCreateNestedManyWithoutUserInput
@@ -33356,6 +36590,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
@@ -33395,6 +36631,7 @@ export namespace Prisma {
     forms?: CustomFormCreateNestedManyWithoutEventInput
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTenantInput = {
@@ -33419,6 +36656,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTenantInput = {
@@ -33536,6 +36774,8 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    avatarUrl?: StringNullableFilter<"User"> | string | null
+    bio?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     tenantId?: StringFilter<"User"> | string
@@ -34152,6 +37392,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SponsorCategoryCreateWithoutEventInput = {
+    id?: string
+    name: string
+    displayOrder?: number
+    size?: $Enums.SponsorSize
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sponsors?: SponsorCreateNestedManyWithoutCategoryInput
+  }
+
+  export type SponsorCategoryUncheckedCreateWithoutEventInput = {
+    id?: string
+    name: string
+    displayOrder?: number
+    size?: $Enums.SponsorSize
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sponsors?: SponsorUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type SponsorCategoryCreateOrConnectWithoutEventInput = {
+    where: SponsorCategoryWhereUniqueInput
+    create: XOR<SponsorCategoryCreateWithoutEventInput, SponsorCategoryUncheckedCreateWithoutEventInput>
+  }
+
+  export type SponsorCategoryCreateManyEventInputEnvelope = {
+    data: SponsorCategoryCreateManyEventInput | SponsorCategoryCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TenantUpsertWithoutEventsInput = {
     update: XOR<TenantUpdateWithoutEventsInput, TenantUncheckedUpdateWithoutEventsInput>
     create: XOR<TenantCreateWithoutEventsInput, TenantUncheckedCreateWithoutEventsInput>
@@ -34344,6 +37616,36 @@ export namespace Prisma {
     layoutConfig?: JsonFilter<"CertificateTemplate">
     createdAt?: DateTimeFilter<"CertificateTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"CertificateTemplate"> | Date | string
+  }
+
+  export type SponsorCategoryUpsertWithWhereUniqueWithoutEventInput = {
+    where: SponsorCategoryWhereUniqueInput
+    update: XOR<SponsorCategoryUpdateWithoutEventInput, SponsorCategoryUncheckedUpdateWithoutEventInput>
+    create: XOR<SponsorCategoryCreateWithoutEventInput, SponsorCategoryUncheckedCreateWithoutEventInput>
+  }
+
+  export type SponsorCategoryUpdateWithWhereUniqueWithoutEventInput = {
+    where: SponsorCategoryWhereUniqueInput
+    data: XOR<SponsorCategoryUpdateWithoutEventInput, SponsorCategoryUncheckedUpdateWithoutEventInput>
+  }
+
+  export type SponsorCategoryUpdateManyWithWhereWithoutEventInput = {
+    where: SponsorCategoryScalarWhereInput
+    data: XOR<SponsorCategoryUpdateManyMutationInput, SponsorCategoryUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type SponsorCategoryScalarWhereInput = {
+    AND?: SponsorCategoryScalarWhereInput | SponsorCategoryScalarWhereInput[]
+    OR?: SponsorCategoryScalarWhereInput[]
+    NOT?: SponsorCategoryScalarWhereInput | SponsorCategoryScalarWhereInput[]
+    id?: StringFilter<"SponsorCategory"> | string
+    eventId?: StringFilter<"SponsorCategory"> | string
+    name?: StringFilter<"SponsorCategory"> | string
+    displayOrder?: IntFilter<"SponsorCategory"> | number
+    size?: EnumSponsorSizeFilter<"SponsorCategory"> | $Enums.SponsorSize
+    color?: StringNullableFilter<"SponsorCategory"> | string | null
+    createdAt?: DateTimeFilter<"SponsorCategory"> | Date | string
+    updatedAt?: DateTimeFilter<"SponsorCategory"> | Date | string
   }
 
   export type TenantCreateWithoutActivityTypesInput = {
@@ -34619,6 +37921,7 @@ export namespace Prisma {
     forms?: CustomFormCreateNestedManyWithoutEventInput
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutActivitiesInput = {
@@ -34643,6 +37946,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutActivitiesInput = {
@@ -34764,6 +38068,7 @@ export namespace Prisma {
     forms?: CustomFormUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutActivitiesInput = {
@@ -34788,6 +38093,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityTypeUpsertWithoutActivitiesInput = {
@@ -35207,6 +38513,7 @@ export namespace Prisma {
     forms?: CustomFormCreateNestedManyWithoutEventInput
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -35231,6 +38538,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -35244,6 +38552,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutUsersInput
@@ -35257,6 +38567,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenantId: string
@@ -35408,6 +38720,7 @@ export namespace Prisma {
     forms?: CustomFormUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -35432,6 +38745,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutRegistrationsInput = {
@@ -35451,6 +38765,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
@@ -35464,6 +38780,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
@@ -35723,6 +39041,7 @@ export namespace Prisma {
     forms?: CustomFormCreateNestedManyWithoutEventInput
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTicketsInput = {
@@ -35747,6 +39066,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTicketsInput = {
@@ -35834,6 +39154,7 @@ export namespace Prisma {
     forms?: CustomFormUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTicketsInput = {
@@ -35858,6 +39179,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutTicketsInput = {
@@ -35929,6 +39251,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutEventInput
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutFormsInput = {
@@ -35953,6 +39276,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutFormsInput = {
@@ -36053,6 +39377,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutFormsInput = {
@@ -36077,6 +39402,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type CustomFormFieldUpsertWithWhereUniqueWithoutFormInput = {
@@ -36582,6 +39908,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutEventInput
     forms?: CustomFormCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionsInput = {
@@ -36606,6 +39933,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
     forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionsInput = {
@@ -36619,6 +39947,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutUsersInput
@@ -36632,6 +39962,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenantId: string
@@ -36731,6 +40063,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutEventNestedInput
     forms?: CustomFormUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionsInput = {
@@ -36755,6 +40088,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
     forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutSubmissionsInput = {
@@ -36774,6 +40108,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
@@ -36787,6 +40123,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
@@ -36863,6 +40201,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutUsersInput
@@ -36876,6 +40216,8 @@ export namespace Prisma {
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenantId: string
@@ -36942,6 +40284,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
@@ -36955,6 +40299,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
@@ -37136,6 +40482,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutEventInput
     forms?: CustomFormCreateNestedManyWithoutEventInput
     submissions?: SubmissionCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutCertificateTemplatesInput = {
@@ -37160,6 +40507,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
     forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutCertificateTemplatesInput = {
@@ -37224,6 +40572,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutEventNestedInput
     forms?: CustomFormUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutCertificateTemplatesInput = {
@@ -37248,6 +40597,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
     forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type IssuedCertificateUpsertWithWhereUniqueWithoutTemplateInput = {
@@ -37378,12 +40728,250 @@ export namespace Prisma {
     formResponses?: CustomFormResponseUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
+  export type EventCreateWithoutSponsorCategoriesInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutEventsInput
+    activities?: ActivityCreateNestedManyWithoutEventInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    tickets?: TicketCreateNestedManyWithoutEventInput
+    forms?: CustomFormCreateNestedManyWithoutEventInput
+    submissions?: SubmissionCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutSponsorCategoriesInput = {
+    id?: string
+    tenantId: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutSponsorCategoriesInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutSponsorCategoriesInput, EventUncheckedCreateWithoutSponsorCategoriesInput>
+  }
+
+  export type SponsorCreateWithoutCategoryInput = {
+    id?: string
+    name: string
+    logoUrl: string
+    websiteUrl?: string | null
+    displayOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SponsorUncheckedCreateWithoutCategoryInput = {
+    id?: string
+    name: string
+    logoUrl: string
+    websiteUrl?: string | null
+    displayOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SponsorCreateOrConnectWithoutCategoryInput = {
+    where: SponsorWhereUniqueInput
+    create: XOR<SponsorCreateWithoutCategoryInput, SponsorUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type SponsorCreateManyCategoryInputEnvelope = {
+    data: SponsorCreateManyCategoryInput | SponsorCreateManyCategoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventUpsertWithoutSponsorCategoriesInput = {
+    update: XOR<EventUpdateWithoutSponsorCategoriesInput, EventUncheckedUpdateWithoutSponsorCategoriesInput>
+    create: XOR<EventCreateWithoutSponsorCategoriesInput, EventUncheckedCreateWithoutSponsorCategoriesInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutSponsorCategoriesInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutSponsorCategoriesInput, EventUncheckedUpdateWithoutSponsorCategoriesInput>
+  }
+
+  export type EventUpdateWithoutSponsorCategoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
+    activities?: ActivityUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    tickets?: TicketUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutSponsorCategoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type SponsorUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: SponsorWhereUniqueInput
+    update: XOR<SponsorUpdateWithoutCategoryInput, SponsorUncheckedUpdateWithoutCategoryInput>
+    create: XOR<SponsorCreateWithoutCategoryInput, SponsorUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type SponsorUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: SponsorWhereUniqueInput
+    data: XOR<SponsorUpdateWithoutCategoryInput, SponsorUncheckedUpdateWithoutCategoryInput>
+  }
+
+  export type SponsorUpdateManyWithWhereWithoutCategoryInput = {
+    where: SponsorScalarWhereInput
+    data: XOR<SponsorUpdateManyMutationInput, SponsorUncheckedUpdateManyWithoutCategoryInput>
+  }
+
+  export type SponsorScalarWhereInput = {
+    AND?: SponsorScalarWhereInput | SponsorScalarWhereInput[]
+    OR?: SponsorScalarWhereInput[]
+    NOT?: SponsorScalarWhereInput | SponsorScalarWhereInput[]
+    id?: StringFilter<"Sponsor"> | string
+    categoryId?: StringFilter<"Sponsor"> | string
+    name?: StringFilter<"Sponsor"> | string
+    logoUrl?: StringFilter<"Sponsor"> | string
+    websiteUrl?: StringNullableFilter<"Sponsor"> | string | null
+    displayOrder?: IntFilter<"Sponsor"> | number
+    createdAt?: DateTimeFilter<"Sponsor"> | Date | string
+    updatedAt?: DateTimeFilter<"Sponsor"> | Date | string
+  }
+
+  export type SponsorCategoryCreateWithoutSponsorsInput = {
+    id?: string
+    name: string
+    displayOrder?: number
+    size?: $Enums.SponsorSize
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutSponsorCategoriesInput
+  }
+
+  export type SponsorCategoryUncheckedCreateWithoutSponsorsInput = {
+    id?: string
+    eventId: string
+    name: string
+    displayOrder?: number
+    size?: $Enums.SponsorSize
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SponsorCategoryCreateOrConnectWithoutSponsorsInput = {
+    where: SponsorCategoryWhereUniqueInput
+    create: XOR<SponsorCategoryCreateWithoutSponsorsInput, SponsorCategoryUncheckedCreateWithoutSponsorsInput>
+  }
+
+  export type SponsorCategoryUpsertWithoutSponsorsInput = {
+    update: XOR<SponsorCategoryUpdateWithoutSponsorsInput, SponsorCategoryUncheckedUpdateWithoutSponsorsInput>
+    create: XOR<SponsorCategoryCreateWithoutSponsorsInput, SponsorCategoryUncheckedCreateWithoutSponsorsInput>
+    where?: SponsorCategoryWhereInput
+  }
+
+  export type SponsorCategoryUpdateToOneWithWhereWithoutSponsorsInput = {
+    where?: SponsorCategoryWhereInput
+    data: XOR<SponsorCategoryUpdateWithoutSponsorsInput, SponsorCategoryUncheckedUpdateWithoutSponsorsInput>
+  }
+
+  export type SponsorCategoryUpdateWithoutSponsorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    size?: EnumSponsorSizeFieldUpdateOperationsInput | $Enums.SponsorSize
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutSponsorCategoriesNestedInput
+  }
+
+  export type SponsorCategoryUncheckedUpdateWithoutSponsorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    size?: EnumSponsorSizeFieldUpdateOperationsInput | $Enums.SponsorSize
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateManyTenantInput = {
     id?: string
     email: string
     password: string
     name: string
     role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -37434,6 +41022,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
@@ -37447,6 +41037,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
@@ -37460,6 +41052,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -37486,6 +41080,7 @@ export namespace Prisma {
     forms?: CustomFormUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTenantInput = {
@@ -37510,6 +41105,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutTenantInput = {
@@ -37778,6 +41374,16 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type SponsorCategoryCreateManyEventInput = {
+    id?: string
+    name: string
+    displayOrder?: number
+    size?: $Enums.SponsorSize
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ActivityUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -37980,6 +41586,38 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     backgroundUrl?: StringFieldUpdateOperationsInput | string
     layoutConfig?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SponsorCategoryUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    size?: EnumSponsorSizeFieldUpdateOperationsInput | $Enums.SponsorSize
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sponsors?: SponsorUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type SponsorCategoryUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    size?: EnumSponsorSizeFieldUpdateOperationsInput | $Enums.SponsorSize
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sponsors?: SponsorUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type SponsorCategoryUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    size?: EnumSponsorSizeFieldUpdateOperationsInput | $Enums.SponsorSize
+    color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -38526,6 +42164,46 @@ export namespace Prisma {
     registrationId?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SponsorCreateManyCategoryInput = {
+    id?: string
+    name: string
+    logoUrl: string
+    websiteUrl?: string | null
+    displayOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SponsorUpdateWithoutCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    logoUrl?: StringFieldUpdateOperationsInput | string
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SponsorUncheckedUpdateWithoutCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    logoUrl?: StringFieldUpdateOperationsInput | string
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SponsorUncheckedUpdateManyWithoutCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    logoUrl?: StringFieldUpdateOperationsInput | string
+    websiteUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

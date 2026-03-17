@@ -136,6 +136,8 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   name: 'name',
   role: 'role',
+  avatarUrl: 'avatarUrl',
+  bio: 'bio',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   tenantId: 'tenantId'
@@ -316,6 +318,28 @@ exports.Prisma.IssuedCertificateScalarFieldEnum = {
   issuedAt: 'issuedAt'
 };
 
+exports.Prisma.SponsorCategoryScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  name: 'name',
+  displayOrder: 'displayOrder',
+  size: 'size',
+  color: 'color',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SponsorScalarFieldEnum = {
+  id: 'id',
+  categoryId: 'categoryId',
+  name: 'name',
+  logoUrl: 'logoUrl',
+  websiteUrl: 'websiteUrl',
+  displayOrder: 'displayOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -407,6 +431,12 @@ exports.ReviewRecommendation = exports.$Enums.ReviewRecommendation = {
   STRONG_REJECT: 'STRONG_REJECT'
 };
 
+exports.SponsorSize = exports.$Enums.SponsorSize = {
+  SMALL: 'SMALL',
+  MEDIUM: 'MEDIUM',
+  LARGE: 'LARGE'
+};
+
 exports.Prisma.ModelName = {
   Tenant: 'Tenant',
   User: 'User',
@@ -427,7 +457,9 @@ exports.Prisma.ModelName = {
   Review: 'Review',
   Attendance: 'Attendance',
   CertificateTemplate: 'CertificateTemplate',
-  IssuedCertificate: 'IssuedCertificate'
+  IssuedCertificate: 'IssuedCertificate',
+  SponsorCategory: 'SponsorCategory',
+  Sponsor: 'Sponsor'
 };
 
 /**

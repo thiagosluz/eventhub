@@ -36,6 +36,8 @@ const tenants_module_1 = require("./tenants/tenants.module");
 const forms_module_1 = require("./forms/forms.module");
 const storage_module_1 = require("./storage/storage.module");
 const analytics_module_1 = require("./analytics/analytics.module");
+const sponsors_module_1 = require("./sponsors/sponsors.module");
+const users_module_1 = require("./users/users.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -50,6 +52,8 @@ exports.AppModule = AppModule = __decorate([
             forms_module_1.FormsModule,
             storage_module_1.StorageModule,
             analytics_module_1.AnalyticsModule,
+            sponsors_module_1.SponsorsModule,
+            users_module_1.UsersModule,
             bullmq_1.BullModule.forRoot({
                 connection: {
                     host: (_a = process.env.REDIS_HOST) !== null && _a !== void 0 ? _a : 'localhost',

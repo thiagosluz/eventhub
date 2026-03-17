@@ -77,13 +77,16 @@ let EventsController = class EventsController {
             data: body,
         });
     }
-    async exportParticipants(req, res) {
+    async exportParticipants(req, res, eventId, search) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
             throw new Error("Tenant missing");
         }
-        const participants = await this.eventsService.listParticipants(tenantId, {});
+        const participants = await this.eventsService.listParticipants(tenantId, {
+            eventId,
+            search,
+        });
         const header = "Nome,Email,Evento,Ticket,Data de Inscrição\n";
         const rows = participants
             .map((p) => {
@@ -108,13 +111,13 @@ let EventsController = class EventsController {
         }
         return this.eventsService.findParticipantDetail(tenantId, id);
     }
-    async listParticipants(req) {
+    async listParticipants(req, eventId, search) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
             throw new Error("Tenant missing");
         }
-        return this.eventsService.listParticipants(tenantId, {});
+        return this.eventsService.listParticipants(tenantId, { eventId, search });
     }
     async uploadBanner(id, file, req) {
         var _a;
@@ -231,8 +234,10 @@ __decorate([
     (0, common_1.Get)("participants/export"),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
+    __param(2, (0, common_1.Query)("eventId")),
+    __param(3, (0, common_1.Query)("search")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, String, String]),
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "exportParticipants", null);
 __decorate([
@@ -250,8 +255,10 @@ __decorate([
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     (0, common_1.Get)("participants"),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)("eventId")),
+    __param(2, (0, common_1.Query)("search")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "listParticipants", null);
 __decorate([

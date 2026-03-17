@@ -18,10 +18,12 @@ const bullmq_1 = require("@nestjs/bullmq");
 const bullmq_2 = require("bullmq");
 const prisma_service_1 = require("../prisma/prisma.service");
 const minio_service_1 = require("../storage/minio.service");
+const mail_service_1 = require("../mail/mail.service");
 let SubmissionsService = class SubmissionsService {
-    constructor(prisma, minio, assignReviewsQueue) {
+    constructor(prisma, minio, mail, assignReviewsQueue) {
         this.prisma = prisma;
         this.minio = minio;
+        this.mail = mail;
         this.assignReviewsQueue = assignReviewsQueue;
     }
     async createSubmission(params) {
@@ -48,7 +50,30 @@ let SubmissionsService = class SubmissionsService {
                 abstract,
                 fileUrl,
             },
+            include: {
+                author: true,
+                event: true,
+            }
         });
+        if (submission.author.email) {
+            await this.mail.enqueue({
+                to: submission.author.email,
+                subject: `Trabalho Recebido: ${submission.title}`,
+                text: `Olá ${submission.author.name},\n\nConfirmamos o recebimento do seu trabalho "${submission.title}" para o evento "${submission.event.name}".\n\nVocê pode acompanhar o status da avaliação no seu painel.`,
+                html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+            <h1 style="color: #6366f1;">Trabalho Recebido!</h1>
+            <p>Olá <strong>${submission.author.name}</strong>,</p>
+            <p>Confirmamos o recebimento da sua submissão para o evento <strong>${submission.event.name}</strong>.</p>
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin: 20px 0;">
+              <p style="margin: 0;"><strong>Título:</strong> ${submission.title}</p>
+              <p style="margin: 5px 0 0 0;"><strong>Status:</strong> Aguardando Avaliação</p>
+            </div>
+            <p>Obrigado por contribuir com nosso evento!</p>
+          </div>
+        `,
+            });
+        }
         await this.assignReviewsQueue.add("assign", {
             submissionId: submission.id,
             eventId,
@@ -137,9 +162,10 @@ let SubmissionsService = class SubmissionsService {
 exports.SubmissionsService = SubmissionsService;
 exports.SubmissionsService = SubmissionsService = __decorate([
     (0, common_1.Injectable)(),
-    __param(2, (0, bullmq_1.InjectQueue)("assign-reviews")),
+    __param(3, (0, bullmq_1.InjectQueue)("assign-reviews")),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         minio_service_1.MinioService,
+        mail_service_1.MailService,
         bullmq_2.Queue])
 ], SubmissionsService);
 //# sourceMappingURL=submissions.service.js.map

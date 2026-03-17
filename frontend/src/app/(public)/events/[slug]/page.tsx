@@ -1,6 +1,8 @@
 import { eventsService } from "@/services/events.service";
 import { notFound } from "next/navigation";
 import { TicketWidget } from "@/components/events/TicketWidget";
+import { SponsorShowcase } from "@/components/events/SponsorShowcase";
+import { sponsorsService } from "@/services/sponsors.service";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -20,6 +22,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   }
 
   if (!event) return notFound();
+
+  let sponsors: any[] = [];
+  try {
+    sponsors = await sponsorsService.listPublicSponsors(slug);
+  } catch (e) {
+    console.error("Failed to fetch sponsors:", e);
+  }
 
   const startDate = new Date(event.startDate);
   const endDate = new Date(event.endDate);
@@ -73,7 +82,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
         
         <div className="absolute bottom-0 left-0 w-full px-6 py-12">
-          <div className="max-w-7xl mx-auto space-y-4">
+          <div className="max-w-7xl mx-auto px-6 space-y-4">
              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-xs font-bold uppercase tracking-wider">
                Evento Confirmado
              </div>
@@ -139,6 +148,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               </div>
             </section>
           )}
+
+          {/* Sponsors Showcase */}
+          <SponsorShowcase categories={sponsors} />
         </div>
 
         {/* Sidebar / Ticket Selection */}

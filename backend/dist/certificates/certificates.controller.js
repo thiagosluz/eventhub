@@ -74,6 +74,18 @@ let CertificatesController = class CertificatesController {
             mimetype: file.mimetype,
         });
     }
+    async previewTemplate(body, res) {
+        const pdfBuffer = await this.certificatePdf.generatePreview({
+            backgroundUrl: body.backgroundUrl,
+            layoutConfig: body.layoutConfig,
+        });
+        res.set({
+            "Content-Type": "application/pdf",
+            "Content-Disposition": "inline; filename=preview.pdf",
+            "Content-Length": pdfBuffer.length,
+        });
+        res.end(pdfBuffer);
+    }
     async issueBulk(templateId, body, req) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
@@ -211,6 +223,16 @@ __decorate([
     __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", Promise)
 ], CertificatesController.prototype, "uploadTemplateBackground", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Post)("templates/preview"),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], CertificatesController.prototype, "previewTemplate", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),

@@ -96,6 +96,8 @@ model User {
   password    String
   name        String
   role        UserRole
+  avatarUrl   String?
+  bio         String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -135,6 +137,7 @@ model Event {
   forms         CustomForm[]
   submissions   Submission[]
   certificateTemplates CertificateTemplate[]
+  sponsorCategories SponsorCategory[]
 
   @@unique([tenantId, slug])
 }
@@ -393,4 +396,39 @@ model IssuedCertificate {
 
   fileUrl         String
   issuedAt        DateTime @default(now())
+}
+enum SponsorSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+model SponsorCategory {
+  id            String       @id @default(cuid())
+  eventId       String
+  event         Event        @relation(fields: [eventId], references: [id])
+
+  name          String
+  displayOrder  Int          @default(0)
+  size          SponsorSize  @default(MEDIUM)
+  color         String?      // Hex color for the category (e.g., Gold)
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  sponsors      Sponsor[]
+}
+
+model Sponsor {
+  id                String          @id @default(cuid())
+  categoryId        String
+  category          SponsorCategory @relation(fields: [categoryId], references: [id])
+
+  name              String
+  logoUrl           String
+  websiteUrl        String?
+  displayOrder      Int             @default(0)
+
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 }

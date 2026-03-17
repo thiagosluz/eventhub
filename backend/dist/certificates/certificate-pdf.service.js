@@ -22,6 +22,21 @@ let CertificatePdfService = class CertificatePdfService {
         this.prisma = prisma;
         this.minio = minio;
     }
+    async generatePreview(params) {
+        var _a;
+        const { backgroundUrl, layoutConfig } = params;
+        const data = {
+            participantName: "Nome do Participante (Exemplo)",
+            eventName: "Nome do Evento (Exemplo)",
+            workload: "10h",
+        };
+        const placeholders = (_a = layoutConfig.placeholders) !== null && _a !== void 0 ? _a : [
+            { key: "participantName", x: 100, y: 280, fontSize: 24 },
+            { key: "eventName", x: 100, y: 340, fontSize: 14 },
+            { key: "workload", x: 100, y: 380, fontSize: 12 },
+        ];
+        return this.renderPdf(backgroundUrl, placeholders, data);
+    }
     async generateAndStore(templateId, registrationId) {
         var _a, _b;
         const template = await this.prisma.certificateTemplate.findFirst({
@@ -81,17 +96,20 @@ let CertificatePdfService = class CertificatePdfService {
             doc.on("end", () => resolve(Buffer.concat(chunks)));
             doc.on("error", reject);
             doc.image(imageBuffer, 0, 0, { width: 841.89, height: 595.28 });
-            doc.fillColor("#000000");
             for (const p of placeholders) {
                 const value = (_a = data[p.key]) !== null && _a !== void 0 ? _a : "";
                 const fontSize = p.fontSize || 16;
                 doc.fontSize(fontSize);
-                if (p.key === "participantName") {
+                if (p.fontFamily) {
+                    doc.font(p.fontFamily);
+                }
+                else if (p.key === "participantName") {
                     doc.font("Helvetica-Bold");
                 }
                 else {
                     doc.font("Helvetica");
                 }
+                doc.fillColor(p.color || "#000000");
                 doc.text(value, p.x, p.y);
             }
             doc.end();
