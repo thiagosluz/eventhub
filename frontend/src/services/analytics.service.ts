@@ -3,11 +3,14 @@ import api from "@/services/api";
 export interface EventAnalytics {
   eventId: string;
   eventName: string;
+  totalRegistrations: number;
+  totalCheckins: number;
   activityParticipation: {
     id: string;
     name: string;
     type: string;
     enrolled: number;
+    attended: number;
     capacity: number;
     occupancyRate: number;
   }[];
@@ -25,9 +28,43 @@ export interface EventAnalytics {
   }[];
 }
 
+export interface Participant {
+  id: string;
+  userId: string;
+  name: string;
+  email: string;
+  registrationDate: string;
+  ticketType: string;
+  ticketStatus: string;
+  qrCodeToken?: string;
+  attendances: { id: string; activityId: string | null }[];
+  enrollmentsCount: number;
+}
+
+export interface Checkin {
+  id: string;
+  checkedAt: string;
+  name: string;
+  email: string;
+  ticketType: string;
+  activityName: string;
+}
+
 export const analyticsService = {
   getEventAnalytics: async (eventId: string): Promise<EventAnalytics> => {
     const response = await api.get(`/analytics/events/${eventId}`);
+    return response.data;
+  },
+
+  getEventParticipants: async (eventId: string): Promise<Participant[]> => {
+    const response = await api.get(`/analytics/events/${eventId}/participants`);
+    return response.data;
+  },
+
+  getEventCheckins: async (eventId: string, activityId?: string): Promise<Checkin[]> => {
+    const response = await api.get(`/analytics/events/${eventId}/checkins`, {
+      params: { activityId },
+    });
     return response.data;
   },
 };

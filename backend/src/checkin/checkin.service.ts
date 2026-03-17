@@ -181,4 +181,18 @@ export class CheckinService {
 
     return { winners };
   }
+
+  async undoCheckin(attendanceId: string): Promise<void> {
+    const attendance = await this.prisma.attendance.findUnique({
+      where: { id: attendanceId },
+    });
+
+    if (!attendance) {
+      throw new NotFoundException("Registro de presença não encontrado.");
+    }
+
+    await this.prisma.attendance.delete({
+      where: { id: attendanceId },
+    });
+  }
 }

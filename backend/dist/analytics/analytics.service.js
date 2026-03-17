@@ -24,11 +24,17 @@ let AnalyticsService = class AnalyticsService {
                     include: {
                         enrollments: true,
                         type: true,
+                        attendances: true,
                     },
                 },
                 registrations: {
                     include: {
-                        tickets: true,
+                        tickets: {
+                            include: {
+                                attendances: true,
+                            },
+                        },
+                        user: true,
                     },
                 },
             },
@@ -43,6 +49,7 @@ let AnalyticsService = class AnalyticsService {
                 name: activity.title,
                 type: ((_a = activity.type) === null || _a === void 0 ? void 0 : _a.name) || "Geral",
                 enrolled: activity.enrollments.length,
+                attended: activity.attendances.length,
                 capacity: activity.capacity || 0,
                 occupancyRate: activity.capacity
                     ? (activity.enrollments.length / activity.capacity) * 100
@@ -84,14 +91,84 @@ let AnalyticsService = class AnalyticsService {
                 count,
             });
         }
+        const totalCheckins = event.registrations.filter((r) => r.tickets.some((t) => t.attendances.some((a) => a.activityId === null || a.activityId === undefined))).length;
         return {
             eventId: event.id,
             eventName: event.name,
+            totalRegistrations: event.registrations.length,
+            totalCheckins,
             activityParticipation,
             registrationStatus,
             ticketDistribution,
             dailyRegistrations,
         };
+    }
+    async getEventParticipants(tenantId, eventId) {
+        const registrations = await this.prisma.registration.findMany({
+            where: {
+                eventId,
+                event: { tenantId },
+            },
+            include: {
+                user: true,
+                tickets: true,
+                enrollments: {
+                    include: {
+                        activity: true,
+                    },
+                },
+            },
+            orderBy: { createdAt: "desc" },
+        });
+        return registrations.map((reg) => {
+            var _a, _b, _c;
+            return ({
+                id: reg.id,
+                userId: reg.userId,
+                name: reg.user.name,
+                email: reg.user.email,
+                registrationDate: reg.createdAt,
+                ticketType: ((_a = reg.tickets[0]) === null || _a === void 0 ? void 0 : _a.type) || "FREE",
+                ticketStatus: ((_b = reg.tickets[0]) === null || _b === void 0 ? void 0 : _b.status) || "PENDING",
+                qrCodeToken: (_c = reg.tickets[0]) === null || _c === void 0 ? void 0 : _c.qrCodeToken,
+                enrollmentsCount: reg.enrollments.length,
+            });
+        });
+    }
+    async getEventCheckins(tenantId, eventId, activityId) {
+        const attendances = await this.prisma.attendance.findMany({
+            where: {
+                ticket: {
+                    eventId,
+                    event: { tenantId },
+                },
+                ...(activityId ? { activityId } : { activityId: null }),
+            },
+            include: {
+                ticket: {
+                    include: {
+                        registration: {
+                            include: {
+                                user: true,
+                            },
+                        },
+                    },
+                },
+                activity: true,
+            },
+            orderBy: { checkedAt: "desc" },
+        });
+        return attendances.map((att) => {
+            var _a;
+            return ({
+                id: att.id,
+                checkedAt: att.checkedAt,
+                name: att.ticket.registration.user.name,
+                email: att.ticket.registration.user.email,
+                ticketType: att.ticket.type,
+                activityName: ((_a = att.activity) === null || _a === void 0 ? void 0 : _a.title) || "Check-in Geral",
+            });
+        });
     }
 };
 exports.AnalyticsService = AnalyticsService;

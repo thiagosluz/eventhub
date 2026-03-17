@@ -31,6 +31,22 @@ let AnalyticsController = class AnalyticsController {
         }
         return this.analyticsService.getEventAnalytics(tenantId, id);
     }
+    async getEventParticipants(id, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId) {
+            throw new Error("Tenant missing from request.");
+        }
+        return this.analyticsService.getEventParticipants(tenantId, id);
+    }
+    async getEventCheckins(id, activityId, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId) {
+            throw new Error("Tenant missing from request.");
+        }
+        return this.analyticsService.getEventCheckins(tenantId, id, activityId);
+    }
 };
 exports.AnalyticsController = AnalyticsController;
 __decorate([
@@ -41,6 +57,23 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], AnalyticsController.prototype, "getEventAnalytics", null);
+__decorate([
+    (0, common_1.Get)("events/:id/participants"),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], AnalyticsController.prototype, "getEventParticipants", null);
+__decorate([
+    (0, common_1.Get)("events/:id/checkins"),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Query)("activityId")),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:returntype", Promise)
+], AnalyticsController.prototype, "getEventCheckins", null);
 exports.AnalyticsController = AnalyticsController = __decorate([
     (0, common_1.Controller)("analytics"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),

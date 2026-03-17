@@ -2,8 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
+  Delete,
   Req,
   Res,
   UseGuards,
@@ -72,5 +75,13 @@ export class CheckinController {
       activityId: body.activityId,
       count: body.count ?? 1,
     });
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete("checkin/:id")
+  async undoCheckin(@Param("id") id: string) {
+    return this.checkinService.undoCheckin(id);
   }
 }

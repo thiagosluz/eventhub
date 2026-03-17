@@ -22,4 +22,8 @@ export const operationsService = {
   drawRaffle: async (eventId: string, activityId?: string, count: number = 1): Promise<RaffleResponse> => {
     return api.post<RaffleResponse>('/raffles', { eventId, activityId, count });
   },
+
+  undoCheckin: async (attendanceId: string): Promise<void> => {
+    return api.delete(`/checkin/${attendanceId}`);
+  },
 };

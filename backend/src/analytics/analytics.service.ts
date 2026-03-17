@@ -13,11 +13,17 @@ export class AnalyticsService {
           include: {
             enrollments: true,
             type: true,
+            attendances: true,
           },
         },
         registrations: {
           include: {
-            tickets: true,
+            tickets: {
+              include: {
+                attendances: true,
+              },
+            },
+            user: true,
           },
         },
       },
@@ -33,6 +39,7 @@ export class AnalyticsService {
       name: activity.title,
       type: activity.type?.name || "Geral",
       enrolled: activity.enrollments.length,
+      attended: activity.attendances.length,
       capacity: activity.capacity || 0,
       occupancyRate: activity.capacity
         ? (activity.enrollments.length / activity.capacity) * 100
@@ -75,8 +82,7 @@ export class AnalyticsService {
       }),
     );
 
-    // 4. Daily Registrations (Last 15 days of the event enrollment period or last 15 days from now)
-    // For simplicity, last 15 days from now
+    // 4. Daily Registrations
     const dailyRegistrations = [];
     const now = new Date();
     for (let i = 14; i >= 0; i--) {
@@ -96,13 +102,92 @@ export class AnalyticsService {
       });
     }
 
+    // 5. Overall Event Check-ins
+    const totalCheckins = event.registrations.filter((r) =>
+      r.tickets.some((t) =>
+        t.attendances.some((a) => a.activityId === null || a.activityId === undefined),
+      ),
+    ).length;
+
     return {
       eventId: event.id,
       eventName: event.name,
+      totalRegistrations: event.registrations.length,
+      totalCheckins,
       activityParticipation,
       registrationStatus,
       ticketDistribution,
       dailyRegistrations,
     };
+  }
+
+  async getEventParticipants(tenantId: string, eventId: string) {
+    const registrations = await this.prisma.registration.findMany({
+      where: {
+        eventId,
+        event: { tenantId },
+      },
+      include: {
+        user: true,
+        tickets: {
+          include: {
+            attendances: true
+          }
+        },
+        enrollments: {
+          include: {
+            activity: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return registrations.map((reg) => ({
+      id: reg.id,
+      userId: reg.userId,
+      name: reg.user.name,
+      email: reg.user.email,
+      registrationDate: reg.createdAt,
+      ticketType: reg.tickets[0]?.type || "FREE",
+      ticketStatus: reg.tickets[0]?.status || "PENDING",
+      qrCodeToken: reg.tickets[0]?.qrCodeToken,
+      attendances: reg.tickets[0]?.attendances?.map(a => ({ id: a.id, activityId: a.activityId })) || [],
+      enrollmentsCount: reg.enrollments.length,
+    }));
+  }
+
+  async getEventCheckins(tenantId: string, eventId: string, activityId?: string) {
+    const attendances = await this.prisma.attendance.findMany({
+      where: {
+        ticket: {
+          eventId,
+          event: { tenantId },
+        },
+        ...(activityId ? { activityId } : { activityId: null }),
+      },
+      include: {
+        ticket: {
+          include: {
+            registration: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+        activity: true,
+      },
+      orderBy: { checkedAt: "desc" },
+    });
+
+    return attendances.map((att) => ({
+      id: att.id,
+      checkedAt: att.checkedAt,
+      name: att.ticket.registration.user.name,
+      email: att.ticket.registration.user.email,
+      ticketType: att.ticket.type,
+      activityName: att.activity?.title || "Check-in Geral",
+    }));
   }
 }
