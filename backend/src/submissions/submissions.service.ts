@@ -57,7 +57,7 @@ export class SubmissionsService {
       include: {
         author: true,
         event: true,
-      }
+      },
     });
 
     if (submission.author.email) {
@@ -113,7 +113,7 @@ export class SubmissionsService {
       // double-blind: organizador vê tudo; autores/revisores são tratados em endpoints específicos
     }));
   }
-  
+
   async listMySubmissions(authorId: string) {
     return this.prisma.submission.findMany({
       where: { authorId },
@@ -123,10 +123,10 @@ export class SubmissionsService {
             id: true,
             name: true,
             slug: true,
-          }
-        }
+          },
+        },
       },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: "desc" },
     });
   }
 

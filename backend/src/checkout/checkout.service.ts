@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { ActivitiesService } from "../activities/activities.service";
 import { FreeTicketStrategy } from "./free-ticket.strategy";
@@ -49,7 +53,9 @@ export class CheckoutService {
     });
 
     if (existingRegistration) {
-      throw new ConflictException("Você já possui uma inscrição para este evento.");
+      throw new ConflictException(
+        "Você já possui uma inscrição para este evento.",
+      );
     }
 
     const registration = await this.prisma.registration.create({

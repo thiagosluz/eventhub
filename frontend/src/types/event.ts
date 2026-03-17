@@ -120,4 +120,7 @@ export interface Event {
   tickets?: Ticket[];
   forms?: Form[];
   tenant?: Tenant;
+  _count?: {
+    registrations: number;
+  };
 }

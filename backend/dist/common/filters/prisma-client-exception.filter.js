@@ -15,21 +15,21 @@ let PrismaClientExceptionFilter = class PrismaClientExceptionFilter extends core
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         switch (exception.code) {
-            case 'P2002': {
+            case "P2002": {
                 const status = common_1.HttpStatus.CONFLICT;
                 response.status(status).json({
                     statusCode: status,
-                    message: 'Um item com este valor já existe.',
-                    error: 'Conflict',
+                    message: "Um item com este valor já existe.",
+                    error: "Conflict",
                 });
                 break;
             }
-            case 'P2025': {
+            case "P2025": {
                 const status = common_1.HttpStatus.NOT_FOUND;
                 response.status(status).json({
                     statusCode: status,
-                    message: exception.message || 'Item não encontrado.',
-                    error: 'Not Found',
+                    message: exception.message || "Item não encontrado.",
+                    error: "Not Found",
                 });
                 break;
             }

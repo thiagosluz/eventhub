@@ -3,4 +3,3 @@ export class CreateSubmissionDto {
   title!: string;
   abstract?: string;
 }
-

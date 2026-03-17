@@ -37,7 +37,10 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Patch("me/password")
-  async updatePassword(@Body() dto: UpdatePasswordDto, @Req() req: AuthRequest) {
+  async updatePassword(
+    @Body() dto: UpdatePasswordDto,
+    @Req() req: AuthRequest,
+  ) {
     return this.usersService.updatePassword(req.user!.sub, dto);
   }
 

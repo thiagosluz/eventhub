@@ -14,4 +14,3 @@ export class CreateActivityDto {
   requiresEnrollment?: boolean;
   speakers?: SpeakerAssociationDto[];
 }
-

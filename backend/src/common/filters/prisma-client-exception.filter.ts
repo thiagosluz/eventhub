@@ -1,7 +1,7 @@
-import { ArgumentsHost, Catch, HttpStatus } from '@nestjs/common';
-import { BaseExceptionFilter } from '@nestjs/core';
-import { Prisma } from '../../generated/prisma';
-import { Response } from 'express';
+import { ArgumentsHost, Catch, HttpStatus } from "@nestjs/common";
+import { BaseExceptionFilter } from "@nestjs/core";
+import { Prisma } from "../../generated/prisma";
+import { Response } from "express";
 
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaClientExceptionFilter extends BaseExceptionFilter {
@@ -10,21 +10,21 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     const response = ctx.getResponse<Response>();
 
     switch (exception.code) {
-      case 'P2002': {
+      case "P2002": {
         const status = HttpStatus.CONFLICT;
         response.status(status).json({
           statusCode: status,
-          message: 'Um item com este valor já existe.',
-          error: 'Conflict',
+          message: "Um item com este valor já existe.",
+          error: "Conflict",
         });
         break;
       }
-      case 'P2025': {
+      case "P2025": {
         const status = HttpStatus.NOT_FOUND;
         response.status(status).json({
           statusCode: status,
-          message: exception.message || 'Item não encontrado.',
-          error: 'Not Found',
+          message: exception.message || "Item não encontrado.",
+          error: "Not Found",
         });
         break;
       }

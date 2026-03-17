@@ -4,4 +4,3 @@ export class SubmitReviewDto {
   recommendation?: string;
   comments?: string;
 }
-

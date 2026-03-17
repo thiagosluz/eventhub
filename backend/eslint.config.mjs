@@ -29,6 +29,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['dist/**', 'node_modules/**', 'prisma/migrations/**', '*.sql', 'eslint.config.mjs'],
+    ignores: ['dist/**', 'node_modules/**', 'prisma/migrations/**', '*.sql', 'eslint.config.mjs', 'src/generated/**'],
   }
 );

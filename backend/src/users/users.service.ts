@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, ConflictException, UnauthorizedException } from "@nestjs/common";
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { UpdateProfileDto, UpdatePasswordDto } from "./dto/update-user.dto";
 import * as argon2 from "argon2";
@@ -34,7 +39,9 @@ export class UsersService {
         where: { email: dto.email, id: { not: userId } },
       });
       if (existing) {
-        throw new ConflictException("Este e-mail já está em uso por outro usuário.");
+        throw new ConflictException(
+          "Este e-mail já está em uso por outro usuário.",
+        );
       }
     }
 
@@ -75,7 +82,10 @@ export class UsersService {
     return { message: "Senha atualizada com sucesso." };
   }
 
-  async uploadAvatar(userId: string, file: { buffer: Buffer; mimetype: string }) {
+  async uploadAvatar(
+    userId: string,
+    file: { buffer: Buffer; mimetype: string },
+  ) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });

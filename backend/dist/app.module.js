@@ -56,11 +56,11 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             bullmq_1.BullModule.forRoot({
                 connection: {
-                    host: (_a = process.env.REDIS_HOST) !== null && _a !== void 0 ? _a : 'localhost',
+                    host: (_a = process.env.REDIS_HOST) !== null && _a !== void 0 ? _a : "localhost",
                     port: Number((_b = process.env.REDIS_PORT) !== null && _b !== void 0 ? _b : 6379),
                 },
             }),
-            bullmq_1.BullModule.registerQueue({ name: 'assign-reviews' }, { name: 'emails' }),
+            bullmq_1.BullModule.registerQueue({ name: "assign-reviews" }, { name: "emails" }),
         ],
         controllers: [
             protected_controller_1.ProtectedExampleController,

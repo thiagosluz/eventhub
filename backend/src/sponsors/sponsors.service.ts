@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { CreateSponsorCategoryDto, UpdateSponsorCategoryDto } from "./dto/sponsor-category.dto";
+import {
+  CreateSponsorCategoryDto,
+  UpdateSponsorCategoryDto,
+} from "./dto/sponsor-category.dto";
 import { CreateSponsorDto, UpdateSponsorDto } from "./dto/sponsor.dto";
 import { MinioService } from "../storage/minio.service";
 
@@ -13,7 +16,11 @@ export class SponsorsService {
 
   // --- Categories ---
 
-  async createCategory(tenantId: string, eventId: string, dto: CreateSponsorCategoryDto) {
+  async createCategory(
+    tenantId: string,
+    eventId: string,
+    dto: CreateSponsorCategoryDto,
+  ) {
     const event = await this.prisma.event.findFirst({
       where: { id: eventId, tenantId },
     });
@@ -40,7 +47,11 @@ export class SponsorsService {
     });
   }
 
-  async updateCategory(tenantId: string, categoryId: string, dto: UpdateSponsorCategoryDto) {
+  async updateCategory(
+    tenantId: string,
+    categoryId: string,
+    dto: UpdateSponsorCategoryDto,
+  ) {
     const category = await this.prisma.sponsorCategory.findUnique({
       where: { id: categoryId },
       include: { event: true },
@@ -91,7 +102,11 @@ export class SponsorsService {
     });
   }
 
-  async updateSponsor(tenantId: string, sponsorId: string, dto: UpdateSponsorDto) {
+  async updateSponsor(
+    tenantId: string,
+    sponsorId: string,
+    dto: UpdateSponsorDto,
+  ) {
     const sponsor = await this.prisma.sponsor.findUnique({
       where: { id: sponsorId },
       include: { category: { include: { event: true } } },
@@ -122,7 +137,11 @@ export class SponsorsService {
     });
   }
 
-  async uploadLogo(tenantId: string, sponsorId: string, file: { buffer: Buffer; mimetype: string }) {
+  async uploadLogo(
+    tenantId: string,
+    sponsorId: string,
+    file: { buffer: Buffer; mimetype: string },
+  ) {
     const sponsor = await this.prisma.sponsor.findUnique({
       where: { id: sponsorId },
       include: { category: { include: { event: true } } },

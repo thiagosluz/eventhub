@@ -53,7 +53,7 @@ let SubmissionsService = class SubmissionsService {
             include: {
                 author: true,
                 event: true,
-            }
+            },
         });
         if (submission.author.email) {
             await this.mail.enqueue({
@@ -111,10 +111,10 @@ let SubmissionsService = class SubmissionsService {
                         id: true,
                         name: true,
                         slug: true,
-                    }
-                }
+                    },
+                },
             },
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: "desc" },
         });
     }
     async listAssignedToReviewer(reviewerId) {

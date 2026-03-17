@@ -18,7 +18,10 @@ import { Roles } from "../auth/roles.decorator";
 import { RolesGuard } from "../auth/roles.guard";
 import { UserRole } from "../auth/roles.types";
 import { SponsorsService } from "./sponsors.service";
-import { CreateSponsorCategoryDto, UpdateSponsorCategoryDto } from "./dto/sponsor-category.dto";
+import {
+  CreateSponsorCategoryDto,
+  UpdateSponsorCategoryDto,
+} from "./dto/sponsor-category.dto";
 import { CreateSponsorDto, UpdateSponsorDto } from "./dto/sponsor.dto";
 
 interface AuthRequest extends Request {
@@ -39,14 +42,24 @@ export class SponsorsController {
     @Body() dto: CreateSponsorCategoryDto,
     @Req() req: AuthRequest,
   ) {
-    return this.sponsorsService.createCategory(req.user!.tenantId, eventId, dto);
+    return this.sponsorsService.createCategory(
+      req.user!.tenantId,
+      eventId,
+      dto,
+    );
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Get("categories/:eventId")
-  async listCategories(@Param("eventId") eventId: string, @Req() req: AuthRequest) {
-    return this.sponsorsService.listCategoriesByEvent(req.user!.tenantId, eventId);
+  async listCategories(
+    @Param("eventId") eventId: string,
+    @Req() req: AuthRequest,
+  ) {
+    return this.sponsorsService.listCategoriesByEvent(
+      req.user!.tenantId,
+      eventId,
+    );
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

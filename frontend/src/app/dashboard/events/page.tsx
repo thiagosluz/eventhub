@@ -123,7 +123,7 @@ export default function EventsManagementPage() {
 
                 <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
                   <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                    <span className="text-foreground font-black">412</span> Inscritos
+                    <span className="text-foreground font-black">{event._count?.registrations ?? 0}</span> Inscritos
                   </div>
                   <Link 
                     href={`/dashboard/events/${event.id}`}

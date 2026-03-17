@@ -86,7 +86,7 @@ export class SubmissionsController {
 
     return this.submissions.listAssignedToReviewer(reviewerId);
   }
-  
+
   @UseGuards(JwtAuthGuard)
   @Get("me/submissions")
   async listMySubmissions(@Req() req: AuthRequest) {

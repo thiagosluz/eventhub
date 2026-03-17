@@ -60,6 +60,11 @@ export class EventsService {
     return this.prisma.event.findMany({
       where: { tenantId },
       orderBy: { createdAt: "desc" },
+      include: {
+        _count: {
+          select: { registrations: true },
+        },
+      },
     });
   }
 
@@ -68,6 +73,9 @@ export class EventsService {
       where: { id: eventId, tenantId },
       include: {
         activities: { orderBy: { startAt: "asc" } },
+        _count: {
+          select: { registrations: true },
+        },
       },
     });
     if (!event) {

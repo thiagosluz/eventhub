@@ -9,4 +9,3 @@ export class UpdateActivityDto {
   requiresEnrollment?: boolean;
   speakers?: { speakerId: string; roleId?: string }[];
 }
-

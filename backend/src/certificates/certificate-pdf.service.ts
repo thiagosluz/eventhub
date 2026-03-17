@@ -122,7 +122,6 @@ export class CertificatePdfService {
       // A4 Landscape is 841.89 x 595.28 points
       doc.image(imageBuffer, 0, 0, { width: 841.89, height: 595.28 });
 
-
       for (const p of placeholders) {
         const value = data[p.key] ?? "";
         const fontSize = p.fontSize || 16;

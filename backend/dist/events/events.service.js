@@ -50,6 +50,11 @@ let EventsService = class EventsService {
         return this.prisma.event.findMany({
             where: { tenantId },
             orderBy: { createdAt: "desc" },
+            include: {
+                _count: {
+                    select: { registrations: true },
+                },
+            },
         });
     }
     async findEventById(tenantId, eventId) {
@@ -57,6 +62,9 @@ let EventsService = class EventsService {
             where: { id: eventId, tenantId },
             include: {
                 activities: { orderBy: { startAt: "asc" } },
+                _count: {
+                    select: { registrations: true },
+                },
             },
         });
         if (!event) {

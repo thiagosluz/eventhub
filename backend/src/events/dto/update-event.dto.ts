@@ -10,6 +10,5 @@ export class UpdateEventDto {
   themeConfig?: Record<string, unknown>;
   bannerUrl?: string;
   logoUrl?: string;
-  status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+  status?: "DRAFT" | "PUBLISHED" | "ARCHIVED";
 }
-
