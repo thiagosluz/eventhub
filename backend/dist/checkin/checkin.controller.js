@@ -52,6 +52,9 @@ let CheckinController = class CheckinController {
             count: (_b = body.count) !== null && _b !== void 0 ? _b : 1,
         });
     }
+    async undoCheckin(id) {
+        return this.checkinService.undoCheckin(id);
+    }
 };
 exports.CheckinController = CheckinController;
 __decorate([
@@ -82,6 +85,16 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], CheckinController.prototype, "drawRaffle", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
+    (0, common_1.Delete)("checkin/:id"),
+    __param(0, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CheckinController.prototype, "undoCheckin", null);
 exports.CheckinController = CheckinController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [checkin_service_1.CheckinService])

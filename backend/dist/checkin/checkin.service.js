@@ -183,6 +183,17 @@ let CheckinService = class CheckinService {
         const winners = shuffled.slice(0, drawCount);
         return { winners };
     }
+    async undoCheckin(attendanceId) {
+        const attendance = await this.prisma.attendance.findUnique({
+            where: { id: attendanceId },
+        });
+        if (!attendance) {
+            throw new common_1.NotFoundException("Registro de presença não encontrado.");
+        }
+        await this.prisma.attendance.delete({
+            where: { id: attendanceId },
+        });
+    }
 };
 exports.CheckinService = CheckinService;
 exports.CheckinService = CheckinService = __decorate([

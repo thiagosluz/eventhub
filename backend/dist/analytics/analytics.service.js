@@ -111,7 +111,11 @@ let AnalyticsService = class AnalyticsService {
             },
             include: {
                 user: true,
-                tickets: true,
+                tickets: {
+                    include: {
+                        attendances: true
+                    }
+                },
                 enrollments: {
                     include: {
                         activity: true,
@@ -121,7 +125,7 @@ let AnalyticsService = class AnalyticsService {
             orderBy: { createdAt: "desc" },
         });
         return registrations.map((reg) => {
-            var _a, _b, _c;
+            var _a, _b, _c, _d, _e;
             return ({
                 id: reg.id,
                 userId: reg.userId,
@@ -131,6 +135,7 @@ let AnalyticsService = class AnalyticsService {
                 ticketType: ((_a = reg.tickets[0]) === null || _a === void 0 ? void 0 : _a.type) || "FREE",
                 ticketStatus: ((_b = reg.tickets[0]) === null || _b === void 0 ? void 0 : _b.status) || "PENDING",
                 qrCodeToken: (_c = reg.tickets[0]) === null || _c === void 0 ? void 0 : _c.qrCodeToken,
+                attendances: ((_e = (_d = reg.tickets[0]) === null || _d === void 0 ? void 0 : _d.attendances) === null || _e === void 0 ? void 0 : _e.map(a => ({ id: a.id, activityId: a.activityId }))) || [],
                 enrollmentsCount: reg.enrollments.length,
             });
         });
