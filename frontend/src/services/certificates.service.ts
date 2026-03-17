@@ -98,4 +98,16 @@ export const certificatesService = {
     if (!res.ok) throw new Error("Falha ao carregar seus certificados.");
     return res.json();
   },
+  async previewTemplate(data: { backgroundUrl: string; layoutConfig: any }): Promise<Blob> {
+    const res = await fetch(`${API_BASE_URL}/certificates/templates/preview`, {
+      method: "POST",
+      headers: {
+        ...getAuthHeader(),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("Falha ao gerar pré-visualização.");
+    return res.blob();
+  },
 };

@@ -86,6 +86,16 @@ export class SubmissionsController {
 
     return this.submissions.listAssignedToReviewer(reviewerId);
   }
+  
+  @UseGuards(JwtAuthGuard)
+  @Get("me/submissions")
+  async listMySubmissions(@Req() req: AuthRequest) {
+    const authorId = req.user?.sub;
+    if (!authorId) {
+      throw new Error("Missing user id on token payload.");
+    }
+    return this.submissions.listMySubmissions(authorId);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post("reviews")

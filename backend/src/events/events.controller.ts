@@ -11,6 +11,7 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Query,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Request, Response } from "express";
@@ -112,16 +113,21 @@ export class EventsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Get("participants/export")
-  async exportParticipants(@Req() req: AuthRequest, @Res() res: Response) {
+  async exportParticipants(
+    @Req() req: AuthRequest,
+    @Res() res: Response,
+    @Query("eventId") eventId?: string,
+    @Query("search") search?: string,
+  ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) {
       throw new Error("Tenant missing");
     }
 
-    const participants = await this.eventsService.listParticipants(
-      tenantId,
-      {},
-    );
+    const participants = await this.eventsService.listParticipants(tenantId, {
+      eventId,
+      search,
+    });
 
     const header = "Nome,Email,Evento,Ticket,Data de Inscrição\n";
     const rows = participants
@@ -157,12 +163,16 @@ export class EventsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Get("participants")
-  async listParticipants(@Req() req: AuthRequest) {
+  async listParticipants(
+    @Req() req: AuthRequest,
+    @Query("eventId") eventId?: string,
+    @Query("search") search?: string,
+  ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) {
       throw new Error("Tenant missing");
     }
-    return this.eventsService.listParticipants(tenantId, {});
+    return this.eventsService.listParticipants(tenantId, { eventId, search });
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

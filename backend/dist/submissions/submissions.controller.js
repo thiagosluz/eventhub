@@ -62,6 +62,14 @@ let SubmissionsController = class SubmissionsController {
         }
         return this.submissions.listAssignedToReviewer(reviewerId);
     }
+    async listMySubmissions(req) {
+        var _a;
+        const authorId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
+        if (!authorId) {
+            throw new Error("Missing user id on token payload.");
+        }
+        return this.submissions.listMySubmissions(authorId);
+    }
     async submitReview(body, req) {
         var _a;
         const reviewerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
@@ -107,6 +115,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], SubmissionsController.prototype, "listAssignedToMe", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Get)("me/submissions"),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], SubmissionsController.prototype, "listMySubmissions", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)("reviews"),

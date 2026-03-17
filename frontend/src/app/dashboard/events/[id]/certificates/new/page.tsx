@@ -20,9 +20,9 @@ export default function NewCertificateTemplatePage({ params }: { params: Promise
   const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [placeholders, setPlaceholders] = useState([
-    { key: "participantName", label: "Nome do Participante", x: 100, y: 150, fontSize: 24 },
-    { key: "eventName", label: "Nome do Evento", x: 100, y: 300, fontSize: 14 },
-    { key: "workload", label: "Carga Horária", x: 100, y: 400, fontSize: 12 },
+    { key: "participantName", label: "Nome do Participante", x: 100, y: 150, fontSize: 24, color: "#000000" },
+    { key: "eventName", label: "Nome do Evento", x: 100, y: 300, fontSize: 14, color: "#000000" },
+    { key: "workload", label: "Carga Horária", x: 100, y: 400, fontSize: 12, color: "#000000" },
   ]);
   const [activePlaceholder, setActivePlaceholder] = useState<number | null>(null);
 
@@ -37,10 +37,27 @@ export default function NewCertificateTemplatePage({ params }: { params: Promise
     }
   };
 
-  const handlePlaceholderChange = (index: number, field: string, value: number) => {
+  const handlePlaceholderChange = (index: number, field: string, value: any) => {
     const updated = [...placeholders];
     (updated[index] as any)[field] = value;
     setPlaceholders(updated);
+  };
+
+  const handlePreview = async () => {
+    if (!previewUrl) return;
+    setIsSaving(true);
+    try {
+      const blob = await certificatesService.previewTemplate({
+        backgroundUrl: previewUrl,
+        layoutConfig: { placeholders }
+      });
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    } catch (err: any) {
+      setError("Erro ao gerar pré-visualização: " + err.message);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -140,6 +157,8 @@ export default function NewCertificateTemplatePage({ params }: { params: Promise
                         style={{ 
                           left: `${(p.x / 841.89) * 100}%`, 
                           top: `${(p.y / 595.28) * 100}%`,
+                          color: p.color,
+                          borderColor: activePlaceholder === index ? 'var(--primary)' : `${p.color}80`
                         }}
                       >
                          <div className="flex flex-col items-center">
@@ -164,7 +183,17 @@ export default function NewCertificateTemplatePage({ params }: { params: Promise
               </div>
               {previewUrl && (
                 <div className="flex justify-between items-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2">
-                  <span>Dica: Arraste os campos sobre o certificado</span>
+                  <div className="flex gap-4">
+                    <span>Dica: Arraste os campos sobre o certificado</span>
+                    <button 
+                      type="button"
+                      onClick={handlePreview}
+                      className="text-primary hover:underline flex items-center gap-1"
+                    >
+                      <PhotoIcon className="w-3 h-3" />
+                      Visualizar PDF de Teste
+                    </button>
+                  </div>
                   <button 
                     type="button"
                     onClick={() => setPreviewUrl(null)}
@@ -223,7 +252,7 @@ export default function NewCertificateTemplatePage({ params }: { params: Promise
                           className="w-full h-8 px-2 rounded-lg bg-card border border-border text-xs font-bold outline-none focus:border-primary"
                         />
                       </div>
-                      <div className="space-y-1">
+                       <div className="space-y-1">
                         <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Pos Y</label>
                         <input 
                           type="number" 
@@ -233,12 +262,21 @@ export default function NewCertificateTemplatePage({ params }: { params: Promise
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Size</label>
+                        <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Tamanho</label>
                         <input 
                           type="number" 
                           value={p.fontSize} 
                           onChange={(e) => handlePlaceholderChange(idx, 'fontSize', parseInt(e.target.value))}
                           className="w-full h-8 px-2 rounded-lg bg-card border border-border text-xs font-bold outline-none focus:border-primary"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Cor</label>
+                        <input 
+                          type="color" 
+                          value={p.color} 
+                          onChange={(e) => handlePlaceholderChange(idx, 'color', e.target.value)}
+                          className="w-full h-8 px-1 py-1 rounded-lg bg-card border border-border cursor-pointer outline-none focus:border-primary"
                         />
                       </div>
                    </div>

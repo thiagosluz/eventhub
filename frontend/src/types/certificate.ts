@@ -12,6 +12,8 @@ export interface CertificateTemplate {
       x: number;
       y: number;
       fontSize?: number;
+      color?: string;
+      fontFamily?: 'Helvetica' | 'Helvetica-Bold';
     }>;
   };
   createdAt: string;

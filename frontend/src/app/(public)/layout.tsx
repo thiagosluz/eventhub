@@ -20,7 +20,7 @@ export default function PublicLayout({
   return (
     <ThemeProvider themeConfig={tenant?.themeConfig}>
       <Navbar tenant={tenant} />
-      <div className="min-h-[calc(100vh-80px)] pt-20">
+      <div className="min-h-[calc(100vh-80px)] pt-20 px-8 sm:px-12 lg:px-16">
         {children}
       </div>
       <Footer />

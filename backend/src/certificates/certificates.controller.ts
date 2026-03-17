@@ -7,12 +7,13 @@ import {
   Patch,
   Post,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { Request } from "express";
+import { Request, Response } from "express";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../auth/roles.decorator";
 import { RolesGuard } from "../auth/roles.guard";
@@ -105,6 +106,27 @@ export class CertificatesController {
       buffer: file.buffer,
       mimetype: file.mimetype,
     });
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post("templates/preview")
+  async previewTemplate(
+    @Body() body: { backgroundUrl: string; layoutConfig: any },
+    @Res() res: Response,
+  ) {
+    const pdfBuffer = await this.certificatePdf.generatePreview({
+      backgroundUrl: body.backgroundUrl,
+      layoutConfig: body.layoutConfig,
+    });
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": "inline; filename=preview.pdf",
+      "Content-Length": pdfBuffer.length,
+    });
+
+    res.end(pdfBuffer);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

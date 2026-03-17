@@ -77,6 +77,21 @@ let SubmissionsService = class SubmissionsService {
             createdAt: s.createdAt,
         }));
     }
+    async listMySubmissions(authorId) {
+        return this.prisma.submission.findMany({
+            where: { authorId },
+            include: {
+                event: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slug: true,
+                    }
+                }
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+    }
     async listAssignedToReviewer(reviewerId) {
         const reviews = await this.prisma.review.findMany({
             where: { reviewerId },

@@ -14,7 +14,8 @@ import {
 import Link from "next/link";
 import { CertificatesList } from "@/components/certificates/CertificatesList";
 import { ActivityEnrollmentList } from "@/components/activities/ActivityEnrollmentList";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, ClipboardDocumentListIcon } from "@heroicons/react/24/outline";
+import { SubmissionsList } from "@/components/submissions/SubmissionsList";
 import Image from "next/image";
 
 function QRCodeImage({ ticketId }: { ticketId: string }) {
@@ -60,7 +61,7 @@ export default function MyTicketsPage() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-  const [activeTab, setActiveTab] = useState<'tickets' | 'certificates'>('tickets');
+  const [activeTab, setActiveTab] = useState<'tickets' | 'certificates' | 'submissions'>('tickets');
   const [viewingActivitiesEvent, setViewingActivitiesEvent] = useState<{ id: string, name: string } | null>(null);
 
   useEffect(() => {
@@ -78,7 +79,7 @@ export default function MyTicketsPage() {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="max-w-7xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-foreground">
@@ -107,6 +108,14 @@ export default function MyTicketsPage() {
               <AcademicCapIcon className="w-4 h-4" />
               Certificados
               {activeTab === 'certificates' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary animate-in fade-in slide-in-from-left-2" />}
+            </button>
+            <button 
+              onClick={() => setActiveTab('submissions')}
+              className={`flex items-center gap-2 pb-4 text-sm font-black uppercase tracking-widest transition-all relative ${activeTab === 'submissions' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+            >
+              <ClipboardDocumentListIcon className="w-4 h-4" />
+              Submissões
+              {activeTab === 'submissions' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary animate-in fade-in slide-in-from-left-2" />}
             </button>
           </div>
         )}
@@ -213,8 +222,10 @@ export default function MyTicketsPage() {
               </div>
             )}
           </>
-        ) : (
+        ) : activeTab === 'certificates' ? (
           <CertificatesList />
+        ) : (
+          <SubmissionsList />
         )}
       </div>
 

@@ -8,6 +8,8 @@ interface LayoutPlaceholder {
   x: number;
   y: number;
   fontSize?: number;
+  color?: string;
+  fontFamily?: "Helvetica" | "Helvetica-Bold";
 }
 
 interface LayoutConfig {
@@ -20,6 +22,26 @@ export class CertificatePdfService {
     private readonly prisma: PrismaService,
     private readonly minio: MinioService,
   ) {}
+
+  async generatePreview(params: {
+    backgroundUrl: string;
+    layoutConfig: LayoutConfig;
+  }): Promise<Buffer> {
+    const { backgroundUrl, layoutConfig } = params;
+    const data: Record<string, string> = {
+      participantName: "Nome do Participante (Exemplo)",
+      eventName: "Nome do Evento (Exemplo)",
+      workload: "10h",
+    };
+
+    const placeholders = layoutConfig.placeholders ?? [
+      { key: "participantName", x: 100, y: 280, fontSize: 24 },
+      { key: "eventName", x: 100, y: 340, fontSize: 14 },
+      { key: "workload", x: 100, y: 380, fontSize: 12 },
+    ];
+
+    return this.renderPdf(backgroundUrl, placeholders, data);
+  }
 
   async generateAndStore(
     templateId: string,
@@ -100,20 +122,21 @@ export class CertificatePdfService {
       // A4 Landscape is 841.89 x 595.28 points
       doc.image(imageBuffer, 0, 0, { width: 841.89, height: 595.28 });
 
-      doc.fillColor("#000000"); // Default color
 
       for (const p of placeholders) {
         const value = data[p.key] ?? "";
         const fontSize = p.fontSize || 16;
 
         doc.fontSize(fontSize);
-        // We use 'Helvetica-Bold' for a more premium look on the participant name
-        if (p.key === "participantName") {
+        if (p.fontFamily) {
+          doc.font(p.fontFamily);
+        } else if (p.key === "participantName") {
           doc.font("Helvetica-Bold");
         } else {
           doc.font("Helvetica");
         }
 
+        doc.fillColor(p.color || "#000000");
         doc.text(value, p.x, p.y);
       }
 

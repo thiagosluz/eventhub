@@ -166,10 +166,7 @@ let ActivitiesService = class ActivitiesService {
                 ? Math.max(activity.capacity - activity.enrollments.length, 0)
                 : null,
             speakers: activity.speakers.map((as) => ({
-                id: as.speaker.id,
-                name: as.speaker.name,
-                bio: as.speaker.bio,
-                avatarUrl: as.speaker.avatarUrl,
+                speaker: as.speaker,
                 role: as.role ? { id: as.role.id, name: as.role.name } : null,
             })),
             type: activity.type

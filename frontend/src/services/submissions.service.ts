@@ -33,4 +33,8 @@ export const submissionsService = {
   listSubmissionsForEvent: async (eventId: string): Promise<Submission[]> => {
     return api.get<Submission[]>(`/events/${eventId}/submissions`);
   },
+  
+  listMySubmissions: async (): Promise<Submission[]> => {
+    return api.get<Submission[]>('/me/submissions');
+  },
 };

@@ -9,7 +9,7 @@ export function Navbar({ tenant }: { tenant?: Tenant }) {
   const { user, isAuthenticated, logout } = useAuth();
 
   return (
-    <nav className="fixed top-0 w-full z-10 px-6 py-6 border-b border-border/50 bg-background/80 backdrop-blur-md">
+    <nav className="fixed top-0 w-full z-10 px-8 sm:px-12 lg:px-16 py-6 border-b border-border/50 bg-background/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
           {tenant?.logoUrl ? (

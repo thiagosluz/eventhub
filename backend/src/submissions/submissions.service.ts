@@ -7,6 +7,7 @@ import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
 import { PrismaService } from "../prisma/prisma.service";
 import { MinioService } from "../storage/minio.service";
+import { MailService } from "../mail/mail.service";
 
 interface CreateSubmissionParams {
   authorId: string;
@@ -21,6 +22,7 @@ export class SubmissionsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly minio: MinioService,
+    private readonly mail: MailService,
     @InjectQueue("assign-reviews") private readonly assignReviewsQueue: Queue,
   ) {}
 
@@ -52,7 +54,31 @@ export class SubmissionsService {
         abstract,
         fileUrl,
       },
+      include: {
+        author: true,
+        event: true,
+      }
     });
+
+    if (submission.author.email) {
+      await this.mail.enqueue({
+        to: submission.author.email,
+        subject: `Trabalho Recebido: ${submission.title}`,
+        text: `Olá ${submission.author.name},\n\nConfirmamos o recebimento do seu trabalho "${submission.title}" para o evento "${submission.event.name}".\n\nVocê pode acompanhar o status da avaliação no seu painel.`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+            <h1 style="color: #6366f1;">Trabalho Recebido!</h1>
+            <p>Olá <strong>${submission.author.name}</strong>,</p>
+            <p>Confirmamos o recebimento da sua submissão para o evento <strong>${submission.event.name}</strong>.</p>
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin: 20px 0;">
+              <p style="margin: 0;"><strong>Título:</strong> ${submission.title}</p>
+              <p style="margin: 5px 0 0 0;"><strong>Status:</strong> Aguardando Avaliação</p>
+            </div>
+            <p>Obrigado por contribuir com nosso evento!</p>
+          </div>
+        `,
+      });
+    }
 
     await this.assignReviewsQueue.add("assign", {
       submissionId: submission.id,
@@ -86,6 +112,22 @@ export class SubmissionsService {
       createdAt: s.createdAt,
       // double-blind: organizador vê tudo; autores/revisores são tratados em endpoints específicos
     }));
+  }
+  
+  async listMySubmissions(authorId: string) {
+    return this.prisma.submission.findMany({
+      where: { authorId },
+      include: {
+        event: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
   }
 
   async listAssignedToReviewer(reviewerId: string) {

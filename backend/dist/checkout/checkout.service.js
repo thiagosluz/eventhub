@@ -29,7 +29,7 @@ let CheckoutService = class CheckoutService {
             where: { id: eventId },
         });
         if (!event) {
-            throw new Error("Evento não encontrado.");
+            throw new common_1.NotFoundException("Evento não encontrado.");
         }
         const existingRegistration = await this.prisma.registration.findFirst({
             where: {
@@ -38,7 +38,7 @@ let CheckoutService = class CheckoutService {
             },
         });
         if (existingRegistration) {
-            throw new Error("Você já possui uma inscrição para este evento.");
+            throw new common_1.ConflictException("Você já possui uma inscrição para este evento.");
         }
         const registration = await this.prisma.registration.create({
             data: {
