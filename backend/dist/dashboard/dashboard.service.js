@@ -21,7 +21,7 @@ let DashboardService = class DashboardService {
             _sum: { price: true },
             where: {
                 event: { tenantId },
-                status: 'COMPLETED',
+                status: "COMPLETED",
             },
         });
         const registrationsCount = await this.prisma.registration.count({
@@ -32,20 +32,20 @@ let DashboardService = class DashboardService {
         const activeEventsCount = await this.prisma.event.count({
             where: {
                 tenantId,
-                status: 'PUBLISHED',
+                status: "PUBLISHED",
             },
         });
         const ticketsSoldCount = await this.prisma.ticket.count({
             where: {
                 event: { tenantId },
-                status: 'COMPLETED',
+                status: "COMPLETED",
             },
         });
         const [recentRegistrations, recentEvents] = await Promise.all([
             this.prisma.registration.findMany({
                 where: { event: { tenantId } },
                 take: 3,
-                orderBy: { createdAt: 'desc' },
+                orderBy: { createdAt: "desc" },
                 include: {
                     user: { select: { name: true } },
                     event: { select: { name: true } },
@@ -54,25 +54,28 @@ let DashboardService = class DashboardService {
             this.prisma.event.findMany({
                 where: { tenantId },
                 take: 2,
-                orderBy: { updatedAt: 'desc' },
+                orderBy: { updatedAt: "desc" },
                 select: { id: true, name: true, updatedAt: true, status: true },
             }),
         ]);
         const registrationActivities = recentRegistrations.map((reg) => ({
             id: reg.id,
-            type: 'REGISTRATION',
+            type: "REGISTRATION",
             description: `${reg.user.name} inscreveu-se no evento.`,
             timestamp: reg.createdAt,
             eventTitle: reg.event.name,
         }));
         const eventActivities = recentEvents.map((evt) => ({
             id: evt.id,
-            type: 'EVENT_UPDATE',
+            type: "EVENT_UPDATE",
             description: `Evento "${evt.name}" foi atualizado para ${evt.status}.`,
             timestamp: evt.updatedAt,
             eventTitle: evt.name,
         }));
-        const recentActivities = [...registrationActivities, ...eventActivities].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+        const recentActivities = [
+            ...registrationActivities,
+            ...eventActivities,
+        ].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
         const eventsWithSales = await this.prisma.event.findMany({
             where: { tenantId },
             include: {
@@ -80,7 +83,7 @@ let DashboardService = class DashboardService {
                     select: { registrations: true },
                 },
                 tickets: {
-                    where: { status: 'COMPLETED' },
+                    where: { status: "COMPLETED" },
                     select: { price: true },
                 },
             },
@@ -118,7 +121,7 @@ let DashboardService = class DashboardService {
                     _sum: { price: true },
                     where: {
                         event: { tenantId },
-                        status: 'COMPLETED',
+                        status: "COMPLETED",
                         createdAt: { gte: date, lt: nextDay },
                     },
                 }),
@@ -130,7 +133,7 @@ let DashboardService = class DashboardService {
                 }),
             ]);
             timeSeriesData.push({
-                date: date.toISOString().split('T')[0],
+                date: date.toISOString().split("T")[0],
                 revenue: Number(revenueData._sum.price || 0),
                 sales: salesCount,
             });

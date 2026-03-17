@@ -10,16 +10,16 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Roles } from '../auth/roles.decorator';
-import { RolesGuard } from '../auth/roles.guard';
-import { UserRole } from '../auth/roles.types';
-import { SpeakersService } from './speakers.service';
-import { CreateSpeakerDto } from './dto/create-speaker.dto';
-import { UpdateSpeakerDto } from './dto/update-speaker.dto';
-import { Request } from 'express';
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { Roles } from "../auth/roles.decorator";
+import { RolesGuard } from "../auth/roles.guard";
+import { UserRole } from "../auth/roles.types";
+import { SpeakersService } from "./speakers.service";
+import { CreateSpeakerDto } from "./dto/create-speaker.dto";
+import { UpdateSpeakerDto } from "./dto/update-speaker.dto";
+import { Request } from "express";
 
 interface AuthRequest extends Request {
   user?: {
@@ -30,7 +30,7 @@ interface AuthRequest extends Request {
   };
 }
 
-@Controller('speakers')
+@Controller("speakers")
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRole.ORGANIZER)
 export class SpeakersController {
@@ -46,47 +46,44 @@ export class SpeakersController {
     return this.speakersService.findAll(req.user!.tenantId);
   }
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(
-    @Req() req: AuthRequest,
-    @UploadedFile() file: any,
-  ) {
+  @Post("upload")
+  @UseInterceptors(FileInterceptor("file"))
+  async uploadFile(@Req() req: AuthRequest, @UploadedFile() file: any) {
     return this.speakersService.uploadAvatar(req.user!.tenantId, file);
   }
 
   // Speaker Roles
-  @Post('roles')
-  async createRole(@Req() req: AuthRequest, @Body('name') name: string) {
+  @Post("roles")
+  async createRole(@Req() req: AuthRequest, @Body("name") name: string) {
     return this.speakersService.createRole(req.user!.tenantId, name);
   }
 
-  @Get('roles')
+  @Get("roles")
   async findAllRoles(@Req() req: AuthRequest) {
     return this.speakersService.findAllRoles(req.user!.tenantId);
   }
 
-  @Delete('roles/:id')
-  async removeRole(@Req() req: AuthRequest, @Param('id') id: string) {
+  @Delete("roles/:id")
+  async removeRole(@Req() req: AuthRequest, @Param("id") id: string) {
     return this.speakersService.removeRole(req.user!.tenantId, id);
   }
 
-  @Get(':id')
-  async findOne(@Req() req: AuthRequest, @Param('id') id: string) {
+  @Get(":id")
+  async findOne(@Req() req: AuthRequest, @Param("id") id: string) {
     return this.speakersService.findOne(req.user!.tenantId, id);
   }
 
-  @Patch(':id')
+  @Patch(":id")
   async update(
     @Req() req: AuthRequest,
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() data: UpdateSpeakerDto,
   ) {
     return this.speakersService.update(req.user!.tenantId, id, data);
   }
 
-  @Delete(':id')
-  async remove(@Req() req: AuthRequest, @Param('id') id: string) {
+  @Delete(":id")
+  async remove(@Req() req: AuthRequest, @Param("id") id: string) {
     return this.speakersService.remove(req.user!.tenantId, id);
   }
 }

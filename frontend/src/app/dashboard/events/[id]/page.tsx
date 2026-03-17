@@ -59,7 +59,7 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
           seoTitle: (data as any).seoTitle || "",
           seoDescription: (data as any).seoDescription || "",
           status: data.status,
-          primaryColor: data.themeConfig?.primaryColor || "#6366f1"
+          primaryColor: (data.themeConfig as any)?.primaryColor || "#6366f1"
         });
       } catch (err) {
         setError("Não foi possível carregar os dados do evento.");

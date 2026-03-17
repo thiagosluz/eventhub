@@ -71,8 +71,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SpeakersController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Post)('upload'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, common_1.Post)("upload"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("file")),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
@@ -80,55 +80,55 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SpeakersController.prototype, "uploadFile", null);
 __decorate([
-    (0, common_1.Post)('roles'),
+    (0, common_1.Post)("roles"),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Body)('name')),
+    __param(1, (0, common_1.Body)("name")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], SpeakersController.prototype, "createRole", null);
 __decorate([
-    (0, common_1.Get)('roles'),
+    (0, common_1.Get)("roles"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], SpeakersController.prototype, "findAllRoles", null);
 __decorate([
-    (0, common_1.Delete)('roles/:id'),
+    (0, common_1.Delete)("roles/:id"),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], SpeakersController.prototype, "removeRole", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)(":id"),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], SpeakersController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
+    (0, common_1.Patch)(":id"),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, update_speaker_dto_1.UpdateSpeakerDto]),
     __metadata("design:returntype", Promise)
 ], SpeakersController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Delete)(":id"),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], SpeakersController.prototype, "remove", null);
 exports.SpeakersController = SpeakersController = __decorate([
-    (0, common_1.Controller)('speakers'),
+    (0, common_1.Controller)("speakers"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __metadata("design:paramtypes", [speakers_service_1.SpeakersService])

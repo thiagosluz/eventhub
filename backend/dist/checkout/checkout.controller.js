@@ -30,7 +30,7 @@ let CheckoutController = class CheckoutController {
         var _a, _b, _c;
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
         if (!userId) {
-            throw new Error('Missing user id on token payload.');
+            throw new Error("Missing user id on token payload.");
         }
         const activityIds = (_b = body.activityIds) !== null && _b !== void 0 ? _b : [];
         const formResponses = (_c = body.formResponses) === null || _c === void 0 ? void 0 : _c.map((fr) => ({
@@ -53,7 +53,7 @@ let CheckoutController = class CheckoutController {
 exports.CheckoutController = CheckoutController;
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Post)('checkout'),
+    (0, common_1.Post)("checkout"),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),

@@ -13,6 +13,9 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { CertificatesList } from "@/components/certificates/CertificatesList";
+import { ActivityEnrollmentList } from "@/components/activities/ActivityEnrollmentList";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 function QRCodeImage({ ticketId }: { ticketId: string }) {
   const [qrUrl, setQrUrl] = useState<string | null>(null);
@@ -41,7 +44,16 @@ function QRCodeImage({ ticketId }: { ticketId: string }) {
   if (loading) return <div className="w-48 h-48 bg-muted animate-pulse rounded-xl" />;
   if (!qrUrl) return <div className="w-48 h-48 bg-destructive/10 flex items-center justify-center text-destructive rounded-xl text-[10px] font-bold">Erro ao carregar QR</div>;
 
-  return <img src={qrUrl} alt="Ticket QR Code" className="w-48 h-48 rounded-xl shadow-inner bg-white p-2" />;
+  return (
+    <div className="relative w-48 h-48 rounded-xl shadow-inner bg-white p-2">
+      <Image 
+        src={qrUrl} 
+        alt="Ticket QR Code" 
+        fill
+        className="object-contain p-2" 
+      />
+    </div>
+  );
 }
 
 export default function MyTicketsPage() {
@@ -49,6 +61,7 @@ export default function MyTicketsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [activeTab, setActiveTab] = useState<'tickets' | 'certificates'>('tickets');
+  const [viewingActivitiesEvent, setViewingActivitiesEvent] = useState<{ id: string, name: string } | null>(null);
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -68,27 +81,44 @@ export default function MyTicketsPage() {
     <div className="max-w-6xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground">Meus Ingressos</h1>
-          <p className="text-muted-foreground font-medium">Acesse seus acessos e credenciais para os eventos.</p>
+          <h1 className="text-3xl font-black tracking-tight text-foreground">
+            {viewingActivitiesEvent ? `Atividades: ${viewingActivitiesEvent.name}` : "Meus Ingressos"}
+          </h1>
+          <p className="text-muted-foreground font-medium">
+            {viewingActivitiesEvent 
+              ? "Gerencie sua participação em palestras e workshops deste evento." 
+              : "Acesse seus acessos e credenciais para os eventos."}
+          </p>
         </div>
-        <div className="flex items-center gap-6">
+        {!viewingActivitiesEvent && (
+          <div className="flex items-center gap-6">
+            <button 
+              onClick={() => setActiveTab('tickets')}
+              className={`flex items-center gap-2 pb-4 text-sm font-black uppercase tracking-widest transition-all relative ${activeTab === 'tickets' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+            >
+              <TicketIcon className="w-4 h-4" />
+              Ingressos
+              {activeTab === 'tickets' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary animate-in fade-in slide-in-from-left-2" />}
+            </button>
+            <button 
+              onClick={() => setActiveTab('certificates')}
+              className={`flex items-center gap-2 pb-4 text-sm font-black uppercase tracking-widest transition-all relative ${activeTab === 'certificates' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+            >
+              <AcademicCapIcon className="w-4 h-4" />
+              Certificados
+              {activeTab === 'certificates' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary animate-in fade-in slide-in-from-left-2" />}
+            </button>
+          </div>
+        )}
+        {viewingActivitiesEvent && (
           <button 
-            onClick={() => setActiveTab('tickets')}
-            className={`flex items-center gap-2 pb-4 text-sm font-black uppercase tracking-widest transition-all relative ${activeTab === 'tickets' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+            onClick={() => setViewingActivitiesEvent(null)}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl border border-border text-xs font-black uppercase tracking-widest text-muted-foreground hover:bg-muted transition-all"
           >
-            <TicketIcon className="w-4 h-4" />
-            Ingressos
-            {activeTab === 'tickets' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary animate-in fade-in slide-in-from-left-2" />}
+            <ArrowLeftIcon className="w-4 h-4" />
+            Voltar aos Ingressos
           </button>
-          <button 
-            onClick={() => setActiveTab('certificates')}
-            className={`flex items-center gap-2 pb-4 text-sm font-black uppercase tracking-widest transition-all relative ${activeTab === 'certificates' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            <AcademicCapIcon className="w-4 h-4" />
-            Certificados
-            {activeTab === 'certificates' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary animate-in fade-in slide-in-from-left-2" />}
-          </button>
-        </div>
+        )}
       </div>
 
       <div className="space-y-12">
@@ -100,6 +130,8 @@ export default function MyTicketsPage() {
                   <div key={i} className="h-64 rounded-3xl bg-muted animate-pulse" />
                 ))}
               </div>
+            ) : viewingActivitiesEvent ? (
+              <ActivityEnrollmentList eventId={viewingActivitiesEvent.id} />
             ) : tickets.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8">
           {tickets.map((ticket) => (
@@ -107,7 +139,12 @@ export default function MyTicketsPage() {
               {/* Event Image Side */}
               <div className="w-full md:w-48 aspect-video md:aspect-auto relative overflow-hidden bg-muted flex-shrink-0">
                 {ticket.event?.bannerUrl ? (
-                  <img src={ticket.event.bannerUrl} alt={ticket.event.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <Image 
+                    src={ticket.event.bannerUrl} 
+                    alt={ticket.event.name} 
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700" 
+                  />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-primary/10 text-primary">
                     <TicketIcon className="w-12 h-12 opacity-20" />
@@ -136,13 +173,20 @@ export default function MyTicketsPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap items-center gap-3">
                   <button 
                     onClick={() => setSelectedTicket(ticket)}
                     className="flex-1 premium-button !py-3 !text-xs !font-black flex items-center justify-center gap-2"
                   >
                     <QrCodeIcon className="w-4 h-4" />
-                    Ver QR Code
+                    Ingresso
+                  </button>
+                  <button 
+                    onClick={() => setViewingActivitiesEvent({ id: ticket.eventId, name: ticket.event?.name || "" })}
+                    className="flex-1 px-6 py-3 rounded-xl border-2 border-primary/20 text-primary text-xs font-black uppercase tracking-widest hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
+                  >
+                    <CalendarIcon className="w-4 h-4" />
+                    Atividades
                   </button>
                   <Link 
                     href={`/events/${ticket.event?.slug}`}

@@ -1,7 +1,7 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import * as argon2 from 'argon2';
-import { PrismaService } from '../prisma/prisma.service';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import * as argon2 from "argon2";
+import { PrismaService } from "../prisma/prisma.service";
 
 interface RegisterOrganizerInput {
   tenantName: string;
@@ -29,7 +29,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new UnauthorizedException('Email já está em uso.');
+      throw new UnauthorizedException("Email já está em uso.");
     }
 
     const tenant = await this.prisma.tenant.create({
@@ -46,7 +46,7 @@ export class AuthService {
         email: input.email,
         name: input.name,
         password: passwordHash,
-        role: 'ORGANIZER',
+        role: "ORGANIZER",
         tenantId: tenant.id,
       },
     });
@@ -58,7 +58,7 @@ export class AuthService {
       role: user.role,
     });
 
-    return { 
+    return {
       access_token,
       user: {
         id: user.id,
@@ -66,17 +66,19 @@ export class AuthService {
         email: user.email,
         role: user.role,
         tenantId: user.tenantId,
-      }
+      },
     };
   }
 
-  async registerParticipant(input: Omit<RegisterOrganizerInput, 'tenantName' | 'tenantSlug'>) {
+  async registerParticipant(
+    input: Omit<RegisterOrganizerInput, "tenantName" | "tenantSlug">,
+  ) {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: input.email },
     });
 
     if (existingUser) {
-      throw new UnauthorizedException('Email já está em uso.');
+      throw new UnauthorizedException("Email já está em uso.");
     }
 
     const passwordHash = await argon2.hash(input.password);
@@ -93,7 +95,7 @@ export class AuthService {
         email: input.email,
         name: input.name,
         password: passwordHash,
-        role: 'PARTICIPANT',
+        role: "PARTICIPANT",
         tenantId: tenant.id,
       },
     });
@@ -105,7 +107,7 @@ export class AuthService {
       role: user.role,
     });
 
-    return { 
+    return {
       access_token,
       user: {
         id: user.id,
@@ -113,7 +115,7 @@ export class AuthService {
         email: user.email,
         role: user.role,
         tenantId: user.tenantId,
-      }
+      },
     };
   }
 
@@ -124,7 +126,7 @@ export class AuthService {
     });
 
     if (!user || !(await argon2.verify(user.password, input.password))) {
-      throw new UnauthorizedException('Credenciais inválidas.');
+      throw new UnauthorizedException("Credenciais inválidas.");
     }
 
     const access_token = await this.generateToken({
@@ -134,7 +136,7 @@ export class AuthService {
       role: user.role,
     });
 
-    return { 
+    return {
       access_token,
       user: {
         id: user.id,
@@ -142,7 +144,7 @@ export class AuthService {
         email: user.email,
         role: user.role,
         tenantId: user.tenantId,
-      }
+      },
     };
   }
 
@@ -162,4 +164,3 @@ export class AuthService {
     return this.jwtService.signAsync(payload);
   }
 }
-

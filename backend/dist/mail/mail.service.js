@@ -21,16 +21,16 @@ let MailService = class MailService {
         this.emailQueue = emailQueue;
     }
     async enqueue(payload) {
-        await this.emailQueue.add('send', payload, {
+        await this.emailQueue.add("send", payload, {
             attempts: 3,
-            backoff: { type: 'exponential', delay: 1000 },
+            backoff: { type: "exponential", delay: 1000 },
         });
     }
 };
 exports.MailService = MailService;
 exports.MailService = MailService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, bullmq_1.InjectQueue)('emails')),
+    __param(0, (0, bullmq_1.InjectQueue)("emails")),
     __metadata("design:paramtypes", [bullmq_2.Queue])
 ], MailService);
 //# sourceMappingURL=mail.service.js.map

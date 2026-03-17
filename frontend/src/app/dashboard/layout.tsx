@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { BellIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { tenantsService } from "@/services/tenants.service";
+import { Tenant } from "@/types/event";
 
 export default function DashboardLayout({
   children,
@@ -14,20 +15,20 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { user, isAuthenticated, isLoading } = useAuth();
-  const [tenant, setTenant] = useState<any>(null);
+  const [tenant, setTenant] = useState<Tenant | null>(null);
   const router = useRouter();
-
-  const fetchTenant = () => {
-    if (isAuthenticated && (user?.role === 'ORGANIZER' || user?.role === 'REVIEWER')) {
-      tenantsService.getMe().then(setTenant).catch(console.error);
-    }
-  };
 
   useEffect(() => {
     const allowedRoles = ["ORGANIZER", "REVIEWER"];
     if (!isLoading && (!isAuthenticated || !user || !allowedRoles.includes(user.role))) {
       router.push("/auth/login");
     }
+
+    const fetchTenant = () => {
+      if (isAuthenticated && (user?.role === 'ORGANIZER' || user?.role === 'REVIEWER')) {
+        tenantsService.getMe().then(setTenant).catch(console.error);
+      }
+    };
 
     fetchTenant();
 

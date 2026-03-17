@@ -1,5 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { Body, Controller, Post } from "@nestjs/common";
+import { AuthService } from "./auth.service";
 
 class RegisterOrganizerDto {
   tenantName!: string;
@@ -14,23 +14,24 @@ class LoginDto {
   password!: string;
 }
 
-@Controller('auth')
+@Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register-organizer')
+  @Post("register-organizer")
   registerOrganizer(@Body() body: RegisterOrganizerDto) {
     return this.authService.registerOrganizer(body);
   }
 
-  @Post('register-participant')
-  registerParticipant(@Body() body: Omit<RegisterOrganizerDto, 'tenantName' | 'tenantSlug'>) {
+  @Post("register-participant")
+  registerParticipant(
+    @Body() body: Omit<RegisterOrganizerDto, "tenantName" | "tenantSlug">,
+  ) {
     return this.authService.registerParticipant(body);
   }
 
-  @Post('login')
+  @Post("login")
   login(@Body() body: LoginDto) {
     return this.authService.login(body);
   }
 }
-

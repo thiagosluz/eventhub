@@ -27,10 +27,10 @@ let CheckinController = class CheckinController {
         var _a;
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
         if (!userId) {
-            throw new Error('Missing user id on token payload.');
+            throw new Error("Missing user id on token payload.");
         }
         const png = await this.checkinService.getQrCodePng(id, userId);
-        res.setHeader('Content-Type', 'image/png');
+        res.setHeader("Content-Type", "image/png");
         res.send(png);
     }
     async checkin(body) {
@@ -43,7 +43,7 @@ let CheckinController = class CheckinController {
         var _a, _b;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         return this.checkinService.drawRaffle({
             tenantId,
@@ -56,8 +56,8 @@ let CheckinController = class CheckinController {
 exports.CheckinController = CheckinController;
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Get)('tickets/:id/qrcode'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)("tickets/:id/qrcode"),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Req)()),
     __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -66,7 +66,7 @@ __decorate([
 ], CheckinController.prototype, "getTicketQrCode", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Post)('checkin'),
+    (0, common_1.Post)("checkin"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -75,7 +75,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('raffles'),
+    (0, common_1.Post)("raffles"),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),

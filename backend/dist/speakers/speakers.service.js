@@ -29,7 +29,7 @@ let SpeakersService = class SpeakersService {
     async findAll(tenantId) {
         return this.prisma.speaker.findMany({
             where: { tenantId },
-            orderBy: { name: 'asc' },
+            orderBy: { name: "asc" },
         });
     }
     async findOne(tenantId, id) {
@@ -55,10 +55,10 @@ let SpeakersService = class SpeakersService {
         });
     }
     async uploadAvatar(tenantId, file) {
-        const fileExt = file.originalname.split('.').pop();
+        const fileExt = file.originalname.split(".").pop();
         const fileName = `speakers/${tenantId}/${Date.now()}.${fileExt}`;
         const url = await this.minio.uploadObject({
-            bucket: 'eventhub',
+            bucket: "eventhub",
             objectName: fileName,
             data: file.buffer,
             contentType: file.mimetype,
@@ -73,7 +73,7 @@ let SpeakersService = class SpeakersService {
     async findAllRoles(tenantId) {
         return this.prisma.speakerRole.findMany({
             where: { tenantId },
-            orderBy: { name: 'asc' },
+            orderBy: { name: "asc" },
         });
     }
     async removeRole(tenantId, id) {
@@ -81,7 +81,7 @@ let SpeakersService = class SpeakersService {
             where: { id, tenantId },
         });
         if (!role)
-            throw new common_1.NotFoundException('Role not found');
+            throw new common_1.NotFoundException("Role not found");
         return this.prisma.speakerRole.delete({ where: { id } });
     }
 };

@@ -33,7 +33,7 @@ let FormsController = class FormsController {
 exports.FormsController = FormsController;
 __decorate([
     (0, common_1.Get)(),
-    __param(0, (0, common_1.Param)('eventId')),
+    __param(0, (0, common_1.Param)("eventId")),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
@@ -41,7 +41,7 @@ __decorate([
 ], FormsController.prototype, "getForm", null);
 __decorate([
     (0, common_1.Post)(),
-    __param(0, (0, common_1.Param)('eventId')),
+    __param(0, (0, common_1.Param)("eventId")),
     __param(1, (0, common_1.Req)()),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -49,7 +49,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FormsController.prototype, "saveForm", null);
 exports.FormsController = FormsController = __decorate([
-    (0, common_1.Controller)('events/:eventId/registration-form'),
+    (0, common_1.Controller)("events/:eventId/registration-form"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __metadata("design:paramtypes", [forms_service_1.FormsService])

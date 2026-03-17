@@ -8,16 +8,16 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Request } from 'express';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Roles } from '../auth/roles.decorator';
-import { RolesGuard } from '../auth/roles.guard';
-import { UserRole } from '../auth/roles.types';
-import { CreateSubmissionDto } from './dto/create-submission.dto';
-import { SubmitReviewDto } from './dto/submit-review.dto';
-import { SubmissionsService } from './submissions.service';
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { Request } from "express";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { Roles } from "../auth/roles.decorator";
+import { RolesGuard } from "../auth/roles.guard";
+import { UserRole } from "../auth/roles.types";
+import { CreateSubmissionDto } from "./dto/create-submission.dto";
+import { SubmitReviewDto } from "./dto/submit-review.dto";
+import { SubmissionsService } from "./submissions.service";
 
 interface AuthRequest extends Request {
   user?: {
@@ -33,8 +33,8 @@ export class SubmissionsController {
   constructor(private readonly submissions: SubmissionsService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('submissions')
-  @UseInterceptors(FileInterceptor('file'))
+  @Post("submissions")
+  @UseInterceptors(FileInterceptor("file"))
   async createSubmission(
     @UploadedFile() file: any,
     @Body() body: CreateSubmissionDto,
@@ -42,11 +42,11 @@ export class SubmissionsController {
   ) {
     const authorId = req.user?.sub;
     if (!authorId) {
-      throw new Error('Missing user id on token payload.');
+      throw new Error("Missing user id on token payload.");
     }
 
     if (!file) {
-      throw new Error('Arquivo de submissão é obrigatório.');
+      throw new Error("Arquivo de submissão é obrigatório.");
     }
 
     return this.submissions.createSubmission({
@@ -63,36 +63,36 @@ export class SubmissionsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Get('events/:eventId/submissions')
+  @Get("events/:eventId/submissions")
   async listSubmissionsForEvent(
-    @Param('eventId') eventId: string,
+    @Param("eventId") eventId: string,
     @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) {
-      throw new Error('Missing tenantId on token payload.');
+      throw new Error("Missing tenantId on token payload.");
     }
 
     return this.submissions.listSubmissionsForEvent(tenantId, eventId);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('me/reviews')
+  @Get("me/reviews")
   async listAssignedToMe(@Req() req: AuthRequest) {
     const reviewerId = req.user?.sub;
     if (!reviewerId) {
-      throw new Error('Missing user id on token payload.');
+      throw new Error("Missing user id on token payload.");
     }
 
     return this.submissions.listAssignedToReviewer(reviewerId);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('reviews')
+  @Post("reviews")
   async submitReview(@Body() body: SubmitReviewDto, @Req() req: AuthRequest) {
     const reviewerId = req.user?.sub;
     if (!reviewerId) {
-      throw new Error('Missing user id on token payload.');
+      throw new Error("Missing user id on token payload.");
     }
 
     return this.submissions.submitReview({
@@ -104,4 +104,3 @@ export class SubmissionsController {
     });
   }
 }
-

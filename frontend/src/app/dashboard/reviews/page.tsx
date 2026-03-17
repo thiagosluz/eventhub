@@ -61,8 +61,8 @@ export default function ReviewerDashboardPage() {
         // Refresh list
         submissionsService.listMyReviews().then(setReviews);
       }, 2000);
-    } catch (err: any) {
-      setError(err.message || "Falha ao enviar revisão.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Falha ao enviar revisão.");
     } finally {
       setIsSubmitting(false);
     }

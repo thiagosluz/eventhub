@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import PDFDocument from 'pdfkit';
-import { PrismaService } from '../prisma/prisma.service';
-import { MinioService } from '../storage/minio.service';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import PDFDocument from "pdfkit";
+import { PrismaService } from "../prisma/prisma.service";
+import { MinioService } from "../storage/minio.service";
 
 interface LayoutPlaceholder {
   key: string;
@@ -21,13 +21,16 @@ export class CertificatePdfService {
     private readonly minio: MinioService,
   ) {}
 
-  async generateAndStore(templateId: string, registrationId: string): Promise<{ fileUrl: string; issuedId: string }> {
+  async generateAndStore(
+    templateId: string,
+    registrationId: string,
+  ): Promise<{ fileUrl: string; issuedId: string }> {
     const template = await this.prisma.certificateTemplate.findFirst({
       where: { id: templateId },
       include: { event: true },
     });
     if (!template) {
-      throw new NotFoundException('Template de certificado não encontrado.');
+      throw new NotFoundException("Template de certificado não encontrado.");
     }
 
     const registration = await this.prisma.registration.findFirst({
@@ -35,20 +38,20 @@ export class CertificatePdfService {
       include: { user: true, event: true },
     });
     if (!registration) {
-      throw new NotFoundException('Inscrição não encontrada para este evento.');
+      throw new NotFoundException("Inscrição não encontrada para este evento.");
     }
 
     const data: Record<string, string> = {
       participantName: registration.user.name,
       eventName: registration.event.name,
-      workload: '8h',
+      workload: "8h",
     };
 
     const layout = (template.layoutConfig as LayoutConfig) ?? {};
     const placeholders = layout.placeholders ?? [
-      { key: 'participantName', x: 100, y: 280, fontSize: 24 },
-      { key: 'eventName', x: 100, y: 340, fontSize: 14 },
-      { key: 'workload', x: 100, y: 380, fontSize: 12 },
+      { key: "participantName", x: 100, y: 280, fontSize: 24 },
+      { key: "eventName", x: 100, y: 340, fontSize: 14 },
+      { key: "workload", x: 100, y: 380, fontSize: 12 },
     ];
 
     const pdfBuffer = await this.renderPdf(
@@ -59,10 +62,10 @@ export class CertificatePdfService {
 
     const objectName = `certificates/${template.eventId}/${registrationId}-${Date.now()}.pdf`;
     const fileUrl = await this.minio.uploadObject({
-      bucket: 'certificates',
+      bucket: "certificates",
       objectName,
       data: pdfBuffer,
-      contentType: 'application/pdf',
+      contentType: "application/pdf",
     });
 
     const issued = await this.prisma.issuedCertificate.create({
@@ -84,33 +87,33 @@ export class CertificatePdfService {
     const imageBuffer = await this.fetchImage(backgroundUrl);
     return new Promise((resolve, reject) => {
       const doc = new PDFDocument({
-        size: 'A4',
-        layout: 'landscape',
+        size: "A4",
+        layout: "landscape",
         margin: 0,
         bufferPages: true,
       });
       const chunks: Buffer[] = [];
-      doc.on('data', (chunk: Buffer) => chunks.push(chunk));
-      doc.on('end', () => resolve(Buffer.concat(chunks)));
-      doc.on('error', reject);
+      doc.on("data", (chunk: Buffer) => chunks.push(chunk));
+      doc.on("end", () => resolve(Buffer.concat(chunks)));
+      doc.on("error", reject);
 
       // A4 Landscape is 841.89 x 595.28 points
       doc.image(imageBuffer, 0, 0, { width: 841.89, height: 595.28 });
-      
-      doc.fillColor('#000000'); // Default color
+
+      doc.fillColor("#000000"); // Default color
 
       for (const p of placeholders) {
-        const value = data[p.key] ?? '';
+        const value = data[p.key] ?? "";
         const fontSize = p.fontSize || 16;
-        
+
         doc.fontSize(fontSize);
         // We use 'Helvetica-Bold' for a more premium look on the participant name
-        if (p.key === 'participantName') {
-          doc.font('Helvetica-Bold');
+        if (p.key === "participantName") {
+          doc.font("Helvetica-Bold");
         } else {
-          doc.font('Helvetica');
+          doc.font("Helvetica");
         }
-        
+
         doc.text(value, p.x, p.y);
       }
 

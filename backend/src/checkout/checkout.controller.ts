@@ -1,7 +1,7 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { CheckoutService } from './checkout.service';
+import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
+import { Request } from "express";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { CheckoutService } from "./checkout.service";
 
 interface AuthRequest extends Request {
   user?: {
@@ -33,11 +33,11 @@ export class CheckoutController {
   constructor(private readonly checkout: CheckoutService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('checkout')
+  @Post("checkout")
   async checkoutFree(@Body() body: CheckoutDto, @Req() req: AuthRequest) {
     const userId = req.user?.sub;
     if (!userId) {
-      throw new Error('Missing user id on token payload.');
+      throw new Error("Missing user id on token payload.");
     }
 
     const activityIds = body.activityIds ?? [];
@@ -60,4 +60,3 @@ export class CheckoutController {
     };
   }
 }
-

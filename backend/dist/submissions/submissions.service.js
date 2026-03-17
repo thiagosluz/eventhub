@@ -31,11 +31,11 @@ let SubmissionsService = class SubmissionsService {
             include: { tenant: true },
         });
         if (!event) {
-            throw new common_1.NotFoundException('Evento não encontrado.');
+            throw new common_1.NotFoundException("Evento não encontrado.");
         }
         const objectName = `events/${eventId}/submissions/${Date.now()}`;
         const fileUrl = await this.minio.uploadObject({
-            bucket: 'submissions',
+            bucket: "submissions",
             objectName,
             data: file.buffer,
             contentType: file.mimetype,
@@ -49,7 +49,7 @@ let SubmissionsService = class SubmissionsService {
                 fileUrl,
             },
         });
-        await this.assignReviewsQueue.add('assign', {
+        await this.assignReviewsQueue.add("assign", {
             submissionId: submission.id,
             eventId,
             tenantId: event.tenantId,
@@ -61,7 +61,7 @@ let SubmissionsService = class SubmissionsService {
             where: { id: eventId, tenantId },
         });
         if (!event) {
-            throw new common_1.ForbiddenException('Evento não pertence a este tenant.');
+            throw new common_1.ForbiddenException("Evento não pertence a este tenant.");
         }
         const submissions = await this.prisma.submission.findMany({
             where: { eventId },
@@ -107,7 +107,7 @@ let SubmissionsService = class SubmissionsService {
             where: { submissionId, reviewerId },
         });
         if (!review) {
-            throw new common_1.ForbiddenException('Revisor não está atribuído a esta submissão.');
+            throw new common_1.ForbiddenException("Revisor não está atribuído a esta submissão.");
         }
         return this.prisma.review.update({
             where: { id: review.id },
@@ -122,7 +122,7 @@ let SubmissionsService = class SubmissionsService {
 exports.SubmissionsService = SubmissionsService;
 exports.SubmissionsService = SubmissionsService = __decorate([
     (0, common_1.Injectable)(),
-    __param(2, (0, bullmq_1.InjectQueue)('assign-reviews')),
+    __param(2, (0, bullmq_1.InjectQueue)("assign-reviews")),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         minio_service_1.MinioService,
         bullmq_2.Queue])

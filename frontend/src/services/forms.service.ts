@@ -6,7 +6,7 @@ export const formsService = {
     return api.get<Form>(`/events/${eventId}/registration-form`);
   },
 
-  saveRegistrationForm: async (eventId: string, data: any): Promise<Form> => {
+  saveRegistrationForm: async (eventId: string, data: unknown): Promise<Form> => {
     return api.post<Form>(`/events/${eventId}/registration-form`, data);
   }
 };

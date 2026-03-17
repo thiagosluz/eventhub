@@ -25,7 +25,7 @@ let ProtectedExampleController = class ProtectedExampleController {
 };
 exports.ProtectedExampleController = ProtectedExampleController;
 __decorate([
-    (0, common_1.Get)('me-organizer'),
+    (0, common_1.Get)("me-organizer"),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -33,7 +33,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ProtectedExampleController.prototype, "getMeOrganizer", null);
 exports.ProtectedExampleController = ProtectedExampleController = __decorate([
-    (0, common_1.Controller)('example'),
+    (0, common_1.Controller)("example"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard)
 ], ProtectedExampleController);
 //# sourceMappingURL=protected.controller.js.map

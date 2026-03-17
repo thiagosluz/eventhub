@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
+import { Injectable } from "@nestjs/common";
+import { InjectQueue } from "@nestjs/bullmq";
+import { Queue } from "bullmq";
 
 export interface SendMailPayload {
   to: string;
@@ -11,14 +11,12 @@ export interface SendMailPayload {
 
 @Injectable()
 export class MailService {
-  constructor(
-    @InjectQueue('emails') private readonly emailQueue: Queue,
-  ) {}
+  constructor(@InjectQueue("emails") private readonly emailQueue: Queue) {}
 
   async enqueue(payload: SendMailPayload): Promise<void> {
-    await this.emailQueue.add('send', payload, {
+    await this.emailQueue.add("send", payload, {
       attempts: 3,
-      backoff: { type: 'exponential', delay: 1000 },
+      backoff: { type: "exponential", delay: 1000 },
     });
   }
 }

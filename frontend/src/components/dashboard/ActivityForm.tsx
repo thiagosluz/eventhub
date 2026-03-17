@@ -20,8 +20,8 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
     typeId: initialData?.type?.id || '',
     requiresEnrollment: initialData?.requiresEnrollment || false,
     speakers: (initialData?.speakers || []).map((s: any) => ({
-      speakerId: s.speakerId,
-      roleId: s.roleId || ''
+      speakerId: s.speaker?.id || s.speakerId || '',
+      roleId: s.role?.id || s.roleId || ''
     })) as { speakerId: string; roleId: string }[]
   });
 

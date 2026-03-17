@@ -1,22 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { Job } from 'bullmq';
-import { PrismaService } from '../prisma/prisma.service';
+import { Injectable } from "@nestjs/common";
+import { Processor, WorkerHost } from "@nestjs/bullmq";
+import { Job } from "bullmq";
+import { PrismaService } from "../prisma/prisma.service";
 
-@Processor('assign-reviews')
+@Processor("assign-reviews")
 @Injectable()
 export class AssignReviewsProcessor extends WorkerHost {
   constructor(private readonly prisma: PrismaService) {
     super();
   }
 
-  async process(job: Job<{ submissionId: string; eventId: string; tenantId: string }>): Promise<void> {
+  async process(
+    job: Job<{ submissionId: string; eventId: string; tenantId: string }>,
+  ): Promise<void> {
     const { submissionId, tenantId } = job.data;
 
     const reviewers = await this.prisma.user.findMany({
       where: {
         tenantId,
-        role: 'REVIEWER',
+        role: "REVIEWER",
       },
     });
 
@@ -41,6 +43,4 @@ export class AssignReviewsProcessor extends WorkerHost {
       data: toCreate,
     });
   }
-
 }
-

@@ -18,11 +18,11 @@ export const eventsService = {
     return api.get<Event>(`/events/${id}`);
   },
 
-  createEvent: async (data: any): Promise<Event> => {
+  createEvent: async (data: Partial<Event>): Promise<Event> => {
     return api.post<Event>('/events', data);
   },
 
-  updateEvent: async (id: string, data: any): Promise<Event> => {
+  updateEvent: async (id: string, data: Partial<Event>): Promise<Event> => {
     return api.patch<Event>(`/events/${id}`, data);
   },
 

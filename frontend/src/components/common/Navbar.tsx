@@ -1,10 +1,10 @@
-"use client";
-
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { Tenant } from "@/types/event";
 
-export function Navbar({ tenant }: { tenant?: any }) {
+export function Navbar({ tenant }: { tenant?: Tenant }) {
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuth();
 
@@ -13,7 +13,13 @@ export function Navbar({ tenant }: { tenant?: any }) {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
           {tenant?.logoUrl ? (
-            <img src={tenant.logoUrl} alt={tenant.name || 'EventHub'} className="w-9 h-9 rounded-xl object-contain bg-primary shadow-lg p-1" />
+            <Image 
+              src={tenant.logoUrl} 
+              alt={tenant.name || 'EventHub'} 
+              width={36}
+              height={36}
+              className="rounded-xl object-contain bg-primary shadow-lg p-1" 
+            />
           ) : (
             <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">

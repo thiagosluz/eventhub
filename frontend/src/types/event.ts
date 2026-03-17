@@ -34,7 +34,7 @@ export interface Tenant {
   name: string;
   slug: string;
   logoUrl?: string;
-  themeConfig?: any;
+  themeConfig?: Record<string, unknown>;
 }
 
 export interface Activity {
@@ -45,6 +45,7 @@ export interface Activity {
   startAt: string;
   endAt: string;
   capacity?: number;
+  remainingSpots?: number;
   status: 'SCHEDULED' | 'CANCELLED' | 'COMPLETED';
   typeId?: string;
   type?: ActivityType;
@@ -114,7 +115,7 @@ export interface Event {
   status: EventStatus;
   bannerUrl?: string;
   logoUrl?: string;
-  themeConfig?: any;
+  themeConfig?: Record<string, unknown>;
   activities?: Activity[];
   tickets?: Ticket[];
   forms?: Form[];

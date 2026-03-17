@@ -34,7 +34,7 @@ let EventsController = class EventsController {
         var _a, _b;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         try {
             return await this.eventsService.createEvent({
@@ -43,7 +43,7 @@ let EventsController = class EventsController {
             });
         }
         catch (error) {
-            if ((_b = error.message) === null || _b === void 0 ? void 0 : _b.includes('slug')) {
+            if ((_b = error.message) === null || _b === void 0 ? void 0 : _b.includes("slug")) {
                 throw new common_1.BadRequestException(error.message);
             }
             throw error;
@@ -53,7 +53,7 @@ let EventsController = class EventsController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         return this.eventsService.listEventsForTenant(tenantId);
     }
@@ -61,7 +61,7 @@ let EventsController = class EventsController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         return this.eventsService.findEventById(tenantId, id);
     }
@@ -69,7 +69,7 @@ let EventsController = class EventsController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         return this.eventsService.updateEvent({
             tenantId,
@@ -81,28 +81,30 @@ let EventsController = class EventsController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Tenant missing');
+            throw new Error("Tenant missing");
         }
         const participants = await this.eventsService.listParticipants(tenantId, {});
-        const header = 'Nome,Email,Evento,Ticket,Data de Inscrição\n';
-        const rows = participants.map(p => {
+        const header = "Nome,Email,Evento,Ticket,Data de Inscrição\n";
+        const rows = participants
+            .map((p) => {
             var _a;
-            const name = p.user.name.replace(/,/g, '');
+            const name = p.user.name.replace(/,/g, "");
             const email = p.user.email;
-            const eventName = p.event.name.replace(/,/g, '');
-            const ticketType = ((_a = p.tickets[0]) === null || _a === void 0 ? void 0 : _a.type) || 'N/A';
-            const date = new Date(p.createdAt).toLocaleDateString('pt-BR');
+            const eventName = p.event.name.replace(/,/g, "");
+            const ticketType = ((_a = p.tickets[0]) === null || _a === void 0 ? void 0 : _a.type) || "N/A";
+            const date = new Date(p.createdAt).toLocaleDateString("pt-BR");
             return `${name},${email},${eventName},${ticketType},${date}`;
-        }).join('\n');
-        res.setHeader('Content-Type', 'text/csv');
-        res.setHeader('Content-Disposition', 'attachment; filename=participantes.csv');
+        })
+            .join("\n");
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader("Content-Disposition", "attachment; filename=participantes.csv");
         res.status(200).send(header + rows);
     }
     async getParticipantDetail(req, id) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Tenant missing');
+            throw new Error("Tenant missing");
         }
         return this.eventsService.findParticipantDetail(tenantId, id);
     }
@@ -110,7 +112,7 @@ let EventsController = class EventsController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Tenant missing');
+            throw new Error("Tenant missing");
         }
         return this.eventsService.listParticipants(tenantId, {});
     }
@@ -118,11 +120,11 @@ let EventsController = class EventsController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         const objectName = `events/${id}/banner-${Date.now()}`;
         const url = await this.minioService.uploadObject({
-            bucket: 'event-media',
+            bucket: "event-media",
             objectName,
             data: file.buffer,
             contentType: file.mimetype,
@@ -137,11 +139,11 @@ let EventsController = class EventsController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         const objectName = `events/${id}/logo-${Date.now()}`;
         const url = await this.minioService.uploadObject({
-            bucket: 'event-media',
+            bucket: "event-media",
             objectName,
             data: file.buffer,
             contentType: file.mimetype,
@@ -157,16 +159,18 @@ let EventsController = class EventsController {
     }
     async getPublicEvent(slug, req) {
         let organizerTenantId;
-        const authHeader = req.headers['authorization'];
-        if (authHeader && typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
+        const authHeader = req.headers["authorization"];
+        if (authHeader &&
+            typeof authHeader === "string" &&
+            authHeader.startsWith("Bearer ")) {
             try {
-                const token = authHeader.split(' ')[1];
+                const token = authHeader.split(" ")[1];
                 const decoded = this.jwtService.decode(token);
                 if (decoded && decoded.tenantId) {
                     organizerTenantId = decoded.tenantId;
                 }
             }
-            catch (e) {
+            catch {
             }
         }
         return this.eventsService.findPublicBySlug(slug, organizerTenantId);
@@ -175,7 +179,7 @@ let EventsController = class EventsController {
         var _a;
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
         if (!userId) {
-            throw new Error('Missing user id on token payload.');
+            throw new Error("Missing user id on token payload.");
         }
         return this.eventsService.findMyTickets(userId);
     }
@@ -184,7 +188,7 @@ exports.EventsController = EventsController;
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('events'),
+    (0, common_1.Post)("events"),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -194,7 +198,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('events'),
+    (0, common_1.Get)("events"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -203,8 +207,8 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('events/:id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)("events/:id"),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
@@ -213,8 +217,8 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Patch)('events/:id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Patch)("events/:id"),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -224,7 +228,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('participants/export'),
+    (0, common_1.Get)("participants/export"),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -234,9 +238,9 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('participants/:id'),
+    (0, common_1.Get)("participants/:id"),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
@@ -244,7 +248,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('participants'),
+    (0, common_1.Get)("participants"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -253,9 +257,9 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('events/:id/banner'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Post)("events/:id/banner"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("file")),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.UploadedFile)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -265,9 +269,9 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('events/:id/logo'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Post)("events/:id/logo"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("file")),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.UploadedFile)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -275,14 +279,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "uploadLogo", null);
 __decorate([
-    (0, common_1.Get)('public/events'),
+    (0, common_1.Get)("public/events"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "listPublicEvents", null);
 __decorate([
-    (0, common_1.Get)('public/events/:slug'),
-    __param(0, (0, common_1.Param)('slug')),
+    (0, common_1.Get)("public/events/:slug"),
+    __param(0, (0, common_1.Param)("slug")),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
@@ -290,7 +294,7 @@ __decorate([
 ], EventsController.prototype, "getPublicEvent", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Get)('my-tickets'),
+    (0, common_1.Get)("my-tickets"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

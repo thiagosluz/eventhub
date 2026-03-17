@@ -1,11 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect } from 'react';
-
-interface ThemeConfig {
-  primaryColor?: string;
-  [key: string]: any;
-}
+import React, { createContext, useContext } from 'react';
 
 interface ThemeContextType {
   primaryColor: string;
@@ -19,10 +14,10 @@ export function ThemeProvider({
   tenantThemeConfig
 }: { 
   children: React.ReactNode;
-  themeConfig?: any;
-  tenantThemeConfig?: any;
+  themeConfig?: Record<string, unknown>;
+  tenantThemeConfig?: Record<string, unknown>;
 }) {
-  const primaryColor = themeConfig?.primaryColor || tenantThemeConfig?.primaryColor || '#10b981';
+  const primaryColor = (themeConfig?.primaryColor as string) || (tenantThemeConfig?.primaryColor as string) || '#10b981';
   const hslValue = hexToHsl(primaryColor);
 
   return (
@@ -55,7 +50,8 @@ function hexToHsl(hex: string): string {
   }
   r /= 255; g /= 255; b /= 255;
   const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h = 0, s = 0, l = (max + min) / 2;
+  let h = 0, s = 0;
+  const l = (max + min) / 2;
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);

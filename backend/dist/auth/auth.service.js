@@ -57,7 +57,7 @@ let AuthService = class AuthService {
             where: { email: input.email },
         });
         if (existingUser) {
-            throw new common_1.UnauthorizedException('Email já está em uso.');
+            throw new common_1.UnauthorizedException("Email já está em uso.");
         }
         const tenant = await this.prisma.tenant.create({
             data: {
@@ -71,7 +71,7 @@ let AuthService = class AuthService {
                 email: input.email,
                 name: input.name,
                 password: passwordHash,
-                role: 'ORGANIZER',
+                role: "ORGANIZER",
                 tenantId: tenant.id,
             },
         });
@@ -89,7 +89,7 @@ let AuthService = class AuthService {
                 email: user.email,
                 role: user.role,
                 tenantId: user.tenantId,
-            }
+            },
         };
     }
     async registerParticipant(input) {
@@ -97,7 +97,7 @@ let AuthService = class AuthService {
             where: { email: input.email },
         });
         if (existingUser) {
-            throw new common_1.UnauthorizedException('Email já está em uso.');
+            throw new common_1.UnauthorizedException("Email já está em uso.");
         }
         const passwordHash = await argon2.hash(input.password);
         const tenant = await this.prisma.tenant.create({
@@ -111,7 +111,7 @@ let AuthService = class AuthService {
                 email: input.email,
                 name: input.name,
                 password: passwordHash,
-                role: 'PARTICIPANT',
+                role: "PARTICIPANT",
                 tenantId: tenant.id,
             },
         });
@@ -129,7 +129,7 @@ let AuthService = class AuthService {
                 email: user.email,
                 role: user.role,
                 tenantId: user.tenantId,
-            }
+            },
         };
     }
     async login(input) {
@@ -138,7 +138,7 @@ let AuthService = class AuthService {
             include: { tenant: true },
         });
         if (!user || !(await argon2.verify(user.password, input.password))) {
-            throw new common_1.UnauthorizedException('Credenciais inválidas.');
+            throw new common_1.UnauthorizedException("Credenciais inválidas.");
         }
         const access_token = await this.generateToken({
             userId: user.id,
@@ -154,7 +154,7 @@ let AuthService = class AuthService {
                 email: user.email,
                 role: user.role,
                 tenantId: user.tenantId,
-            }
+            },
         };
     }
     async generateToken(params) {

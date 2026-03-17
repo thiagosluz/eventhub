@@ -29,33 +29,33 @@ let CertificatePdfService = class CertificatePdfService {
             include: { event: true },
         });
         if (!template) {
-            throw new common_1.NotFoundException('Template de certificado não encontrado.');
+            throw new common_1.NotFoundException("Template de certificado não encontrado.");
         }
         const registration = await this.prisma.registration.findFirst({
             where: { id: registrationId, eventId: template.eventId },
             include: { user: true, event: true },
         });
         if (!registration) {
-            throw new common_1.NotFoundException('Inscrição não encontrada para este evento.');
+            throw new common_1.NotFoundException("Inscrição não encontrada para este evento.");
         }
         const data = {
             participantName: registration.user.name,
             eventName: registration.event.name,
-            workload: '8h',
+            workload: "8h",
         };
         const layout = (_a = template.layoutConfig) !== null && _a !== void 0 ? _a : {};
         const placeholders = (_b = layout.placeholders) !== null && _b !== void 0 ? _b : [
-            { key: 'participantName', x: 100, y: 280, fontSize: 24 },
-            { key: 'eventName', x: 100, y: 340, fontSize: 14 },
-            { key: 'workload', x: 100, y: 380, fontSize: 12 },
+            { key: "participantName", x: 100, y: 280, fontSize: 24 },
+            { key: "eventName", x: 100, y: 340, fontSize: 14 },
+            { key: "workload", x: 100, y: 380, fontSize: 12 },
         ];
         const pdfBuffer = await this.renderPdf(template.backgroundUrl, placeholders, data);
         const objectName = `certificates/${template.eventId}/${registrationId}-${Date.now()}.pdf`;
         const fileUrl = await this.minio.uploadObject({
-            bucket: 'certificates',
+            bucket: "certificates",
             objectName,
             data: pdfBuffer,
-            contentType: 'application/pdf',
+            contentType: "application/pdf",
         });
         const issued = await this.prisma.issuedCertificate.create({
             data: {
@@ -71,26 +71,26 @@ let CertificatePdfService = class CertificatePdfService {
         return new Promise((resolve, reject) => {
             var _a;
             const doc = new pdfkit_1.default({
-                size: 'A4',
-                layout: 'landscape',
+                size: "A4",
+                layout: "landscape",
                 margin: 0,
                 bufferPages: true,
             });
             const chunks = [];
-            doc.on('data', (chunk) => chunks.push(chunk));
-            doc.on('end', () => resolve(Buffer.concat(chunks)));
-            doc.on('error', reject);
+            doc.on("data", (chunk) => chunks.push(chunk));
+            doc.on("end", () => resolve(Buffer.concat(chunks)));
+            doc.on("error", reject);
             doc.image(imageBuffer, 0, 0, { width: 841.89, height: 595.28 });
-            doc.fillColor('#000000');
+            doc.fillColor("#000000");
             for (const p of placeholders) {
-                const value = (_a = data[p.key]) !== null && _a !== void 0 ? _a : '';
+                const value = (_a = data[p.key]) !== null && _a !== void 0 ? _a : "";
                 const fontSize = p.fontSize || 16;
                 doc.fontSize(fontSize);
-                if (p.key === 'participantName') {
-                    doc.font('Helvetica-Bold');
+                if (p.key === "participantName") {
+                    doc.font("Helvetica-Bold");
                 }
                 else {
-                    doc.font('Helvetica');
+                    doc.font("Helvetica");
                 }
                 doc.text(value, p.x, p.y);
             }

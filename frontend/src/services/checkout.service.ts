@@ -1,5 +1,7 @@
 import { api } from "@/lib/api";
 
+import { Ticket } from "../types/event";
+
 export interface FormResponseInput {
   formId: string;
   answers: { fieldId: string; value: string }[];
@@ -13,7 +15,7 @@ export interface CheckoutInput {
 
 export interface CheckoutResponse {
   registrationId: string;
-  tickets: any[];
+  tickets: Ticket[];
   totalAmount: number;
 }
 

@@ -1,10 +1,11 @@
+import { Ticket } from "../types/event";
 import api from "./api";
 
 export interface ParticipantDetail extends Participant {
-  enrollments: any[];
-  formResponses: any[];
-  certificates: any[];
-  history: any[];
+  enrollments: unknown[];
+  formResponses: unknown[];
+  certificates: unknown[];
+  history: unknown[];
 }
 
 export interface Participant {
@@ -19,7 +20,7 @@ export interface Participant {
     id: string;
     name: string;
   };
-  tickets: any[];
+  tickets: Ticket[];
   createdAt: string;
 }
 

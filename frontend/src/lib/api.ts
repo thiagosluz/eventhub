@@ -1,5 +1,13 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
+interface ApiError extends Error {
+  status?: number;
+  response?: {
+    status: number;
+    data: unknown;
+  };
+}
+
 class ApiClient {
   private async request<T>(path: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE_URL}${path}`;
@@ -14,7 +22,7 @@ class ApiClient {
         const { cookies } = await import('next/headers');
         const cookieStore = await cookies();
         token = cookieStore.get('eventhub_token')?.value;
-      } catch (e) {
+      } catch {
         // Fallback or silence if not in a request context
       }
     }
@@ -32,33 +40,35 @@ class ApiClient {
 
     const response = await fetch(url, { ...options, headers });
 
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : {};
+
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      const error = new Error(errorData.message || `API Error: ${response.status}`);
-      (error as any).status = response.status;
-      (error as any).response = { status: response.status, data: errorData };
+      const error = new Error(data.message || `API Error: ${response.status}`) as ApiError;
+      error.status = response.status;
+      error.response = { status: response.status, data };
       throw error;
     }
 
-    return response.json();
+    return data;
   }
 
   get<T>(path: string, options?: RequestInit) {
     return this.request<T>(path, { ...options, method: 'GET' });
   }
 
-  post<T>(path: string, body: any, options?: RequestInit) {
+  post<T>(path: string, body: unknown, options?: RequestInit) {
     return this.request<T>(path, {
       ...options,
-      method: 'POST',
+      method: "POST",
       body: body instanceof FormData ? body : JSON.stringify(body),
     });
   }
 
-  patch<T>(path: string, body: any, options?: RequestInit) {
+  patch<T>(path: string, body: unknown, options?: RequestInit) {
     return this.request<T>(path, {
       ...options,
-      method: 'PATCH',
+      method: "PATCH",
       body: body instanceof FormData ? body : JSON.stringify(body),
     });
   }

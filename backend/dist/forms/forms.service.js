@@ -21,12 +21,12 @@ let FormsService = class FormsService {
             where: { id: eventId, tenantId },
         });
         if (!event) {
-            throw new common_1.NotFoundException('Evento não encontrado.');
+            throw new common_1.NotFoundException("Evento não encontrado.");
         }
         return this.prisma.customForm.findFirst({
-            where: { eventId, type: 'REGISTRATION' },
+            where: { eventId, type: "REGISTRATION" },
             include: {
-                fields: { orderBy: { order: 'asc' } },
+                fields: { orderBy: { order: "asc" } },
             },
         });
     }
@@ -35,17 +35,17 @@ let FormsService = class FormsService {
             where: { id: eventId, tenantId },
         });
         if (!event) {
-            throw new common_1.NotFoundException('Evento não encontrado.');
+            throw new common_1.NotFoundException("Evento não encontrado.");
         }
         let form = await this.prisma.customForm.findFirst({
-            where: { eventId, type: 'REGISTRATION' },
+            where: { eventId, type: "REGISTRATION" },
         });
         if (!form) {
             form = await this.prisma.customForm.create({
                 data: {
                     eventId,
                     name: data.name,
-                    type: 'REGISTRATION',
+                    type: "REGISTRATION",
                 },
             });
         }
@@ -58,11 +58,11 @@ let FormsService = class FormsService {
         const existingFields = await this.prisma.customFormField.findMany({
             where: { formId: form.id },
         });
-        const incomingFieldIds = data.fields.filter(f => f.id).map(f => f.id);
-        const fieldsToDelete = existingFields.filter(f => !incomingFieldIds.includes(f.id));
+        const incomingFieldIds = data.fields.filter((f) => f.id).map((f) => f.id);
+        const fieldsToDelete = existingFields.filter((f) => !incomingFieldIds.includes(f.id));
         if (fieldsToDelete.length > 0) {
             await this.prisma.customFormField.deleteMany({
-                where: { id: { in: fieldsToDelete.map(f => f.id) } },
+                where: { id: { in: fieldsToDelete.map((f) => f.id) } },
             });
         }
         for (const fieldData of data.fields) {

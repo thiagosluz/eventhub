@@ -11,18 +11,18 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Request, Response } from 'express';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Roles } from '../auth/roles.decorator';
-import { RolesGuard } from '../auth/roles.guard';
-import { UserRole } from '../auth/roles.types';
-import { EventsService } from './events.service';
-import { CreateEventDto } from './dto/create-event.dto';
-import { UpdateEventDto } from './dto/update-event.dto';
-import { JwtService } from '@nestjs/jwt';
-import { MinioService } from '../storage/minio.service';
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { Request, Response } from "express";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { Roles } from "../auth/roles.decorator";
+import { RolesGuard } from "../auth/roles.guard";
+import { UserRole } from "../auth/roles.types";
+import { EventsService } from "./events.service";
+import { CreateEventDto } from "./dto/create-event.dto";
+import { UpdateEventDto } from "./dto/update-event.dto";
+import { JwtService } from "@nestjs/jwt";
+import { MinioService } from "../storage/minio.service";
 
 interface AuthRequest extends Request {
   user?: {
@@ -43,12 +43,12 @@ export class EventsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Post('events')
+  @Post("events")
   async createEvent(@Body() body: CreateEventDto, @Req() req: AuthRequest) {
     const tenantId = req.user?.tenantId;
 
     if (!tenantId) {
-      throw new Error('Missing tenantId on token payload.');
+      throw new Error("Missing tenantId on token payload.");
     }
 
     try {
@@ -57,7 +57,7 @@ export class EventsController {
         data: body,
       });
     } catch (error: any) {
-      if (error.message?.includes('slug')) {
+      if (error.message?.includes("slug")) {
         throw new BadRequestException(error.message);
       }
       throw error;
@@ -66,12 +66,12 @@ export class EventsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Get('events')
+  @Get("events")
   async listEvents(@Req() req: AuthRequest) {
     const tenantId = req.user?.tenantId;
 
     if (!tenantId) {
-      throw new Error('Missing tenantId on token payload.');
+      throw new Error("Missing tenantId on token payload.");
     }
 
     return this.eventsService.listEventsForTenant(tenantId);
@@ -79,27 +79,27 @@ export class EventsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Get('events/:id')
-  async getEvent(@Param('id') id: string, @Req() req: AuthRequest) {
+  @Get("events/:id")
+  async getEvent(@Param("id") id: string, @Req() req: AuthRequest) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) {
-      throw new Error('Missing tenantId on token payload.');
+      throw new Error("Missing tenantId on token payload.");
     }
     return this.eventsService.findEventById(tenantId, id);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Patch('events/:id')
+  @Patch("events/:id")
   async updateEvent(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() body: UpdateEventDto,
     @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
 
     if (!tenantId) {
-      throw new Error('Missing tenantId on token payload.');
+      throw new Error("Missing tenantId on token payload.");
     }
 
     return this.eventsService.updateEvent({
@@ -111,70 +111,78 @@ export class EventsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Get('participants/export')
+  @Get("participants/export")
   async exportParticipants(@Req() req: AuthRequest, @Res() res: Response) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) {
-      throw new Error('Tenant missing');
+      throw new Error("Tenant missing");
     }
-    
-    const participants = await this.eventsService.listParticipants(tenantId, {});
-    
-    const header = 'Nome,Email,Evento,Ticket,Data de Inscrição\n';
-    const rows = participants.map(p => {
-      const name = p.user.name.replace(/,/g, '');
-      const email = p.user.email;
-      const eventName = p.event.name.replace(/,/g, '');
-      const ticketType = p.tickets[0]?.type || 'N/A';
-      const date = new Date(p.createdAt).toLocaleDateString('pt-BR');
-      return `${name},${email},${eventName},${ticketType},${date}`;
-    }).join('\n');
 
-    res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename=participantes.csv');
+    const participants = await this.eventsService.listParticipants(
+      tenantId,
+      {},
+    );
+
+    const header = "Nome,Email,Evento,Ticket,Data de Inscrição\n";
+    const rows = participants
+      .map((p) => {
+        const name = p.user.name.replace(/,/g, "");
+        const email = p.user.email;
+        const eventName = p.event.name.replace(/,/g, "");
+        const ticketType = p.tickets[0]?.type || "N/A";
+        const date = new Date(p.createdAt).toLocaleDateString("pt-BR");
+        return `${name},${email},${eventName},${ticketType},${date}`;
+      })
+      .join("\n");
+
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=participantes.csv",
+    );
     res.status(200).send(header + rows);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Get('participants/:id')
-  async getParticipantDetail(@Req() req: AuthRequest, @Param('id') id: string) {
+  @Get("participants/:id")
+  async getParticipantDetail(@Req() req: AuthRequest, @Param("id") id: string) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) {
-      throw new Error('Tenant missing');
+      throw new Error("Tenant missing");
     }
     return this.eventsService.findParticipantDetail(tenantId, id);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Get('participants')
+  @Get("participants")
   async listParticipants(@Req() req: AuthRequest) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) {
-      throw new Error('Tenant missing');
+      throw new Error("Tenant missing");
     }
     return this.eventsService.listParticipants(tenantId, {});
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Post('events/:id/banner')
-  @UseInterceptors(FileInterceptor('file'))
+  @Post("events/:id/banner")
+  @UseInterceptors(FileInterceptor("file"))
   async uploadBanner(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @UploadedFile() file: any,
     @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
 
     if (!tenantId) {
-      throw new Error('Missing tenantId on token payload.');
+      throw new Error("Missing tenantId on token payload.");
     }
 
     const objectName = `events/${id}/banner-${Date.now()}`;
     const url = await this.minioService.uploadObject({
-      bucket: 'event-media',
+      bucket: "event-media",
       objectName,
       data: file.buffer,
       contentType: file.mimetype,
@@ -189,22 +197,22 @@ export class EventsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
-  @Post('events/:id/logo')
-  @UseInterceptors(FileInterceptor('file'))
+  @Post("events/:id/logo")
+  @UseInterceptors(FileInterceptor("file"))
   async uploadLogo(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @UploadedFile() file: any,
     @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
 
     if (!tenantId) {
-      throw new Error('Missing tenantId on token payload.');
+      throw new Error("Missing tenantId on token payload.");
     }
 
     const objectName = `events/${id}/logo-${Date.now()}`;
     const url = await this.minioService.uploadObject({
-      bucket: 'event-media',
+      bucket: "event-media",
       objectName,
       data: file.buffer,
       contentType: file.mimetype,
@@ -217,25 +225,29 @@ export class EventsController {
     });
   }
 
-  @Get('public/events')
+  @Get("public/events")
   async listPublicEvents() {
     return this.eventsService.findAllPublic();
   }
 
-  @Get('public/events/:slug')
-  async getPublicEvent(@Param('slug') slug: string, @Req() req: Request) {
+  @Get("public/events/:slug")
+  async getPublicEvent(@Param("slug") slug: string, @Req() req: Request) {
     // Optional auth extraction for preview mode
     let organizerTenantId: string | undefined;
-    const authHeader = req.headers['authorization'];
-    
-    if (authHeader && typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
+    const authHeader = req.headers["authorization"];
+
+    if (
+      authHeader &&
+      typeof authHeader === "string" &&
+      authHeader.startsWith("Bearer ")
+    ) {
       try {
-        const token = authHeader.split(' ')[1];
+        const token = authHeader.split(" ")[1];
         const decoded = this.jwtService.decode(token) as any;
         if (decoded && decoded.tenantId) {
           organizerTenantId = decoded.tenantId;
         }
-      } catch (e) {
+      } catch {
         // Ignore invalid tokens for public route
       }
     }
@@ -244,13 +256,12 @@ export class EventsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('my-tickets')
+  @Get("my-tickets")
   async getMyTickets(@Req() req: AuthRequest) {
     const userId = req.user?.sub;
     if (!userId) {
-      throw new Error('Missing user id on token payload.');
+      throw new Error("Missing user id on token payload.");
     }
     return this.eventsService.findMyTickets(userId);
   }
 }
-

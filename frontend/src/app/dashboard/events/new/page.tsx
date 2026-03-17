@@ -81,8 +81,9 @@ export default function NewEventPage() {
     try {
       const createdEvent = await eventsService.createEvent(formData);
       router.push(`/dashboard/events/${createdEvent.id}?success=true`);
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.message || "Erro ao criar evento. Verifique os dados e tente novamente.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Erro ao criar evento. Verifique os dados e tente novamente.";
+      setError(message);
     } finally {
       setIsLoading(false);
     }

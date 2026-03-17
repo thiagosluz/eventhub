@@ -23,10 +23,10 @@ let CertificateTemplatesService = class CertificateTemplatesService {
             where: { id: eventId, tenantId },
         });
         if (!event)
-            throw new common_1.ForbiddenException('Evento não pertence a este tenant.');
+            throw new common_1.ForbiddenException("Evento não pertence a este tenant.");
         return this.prisma.certificateTemplate.findMany({
             where: { eventId },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { createdAt: "desc" },
         });
     }
     async create(tenantId, eventId, data) {
@@ -34,7 +34,7 @@ let CertificateTemplatesService = class CertificateTemplatesService {
             where: { id: eventId, tenantId },
         });
         if (!event)
-            throw new common_1.ForbiddenException('Evento não pertence a este tenant.');
+            throw new common_1.ForbiddenException("Evento não pertence a este tenant.");
         return this.prisma.certificateTemplate.create({
             data: {
                 eventId,
@@ -49,7 +49,7 @@ let CertificateTemplatesService = class CertificateTemplatesService {
             where: { id, event: { tenantId } },
         });
         if (!template)
-            throw new common_1.NotFoundException('Template não encontrado.');
+            throw new common_1.NotFoundException("Template não encontrado.");
         return template;
     }
     async update(tenantId, id, data) {
@@ -67,7 +67,7 @@ let CertificateTemplatesService = class CertificateTemplatesService {
         await this.findOne(tenantId, templateId);
         const objectName = `certificate-templates/${templateId}/background-${Date.now()}`;
         const url = await this.minio.uploadObject({
-            bucket: 'event-media',
+            bucket: "event-media",
             objectName,
             data: file.buffer,
             contentType: file.mimetype,

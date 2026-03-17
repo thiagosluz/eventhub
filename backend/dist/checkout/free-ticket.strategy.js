@@ -23,21 +23,21 @@ let FreeTicketStrategy = class FreeTicketStrategy {
             data: {
                 eventId: ctx.eventId,
                 registrationId: ctx.registrationId,
-                type: 'FREE',
-                status: 'COMPLETED',
+                type: "FREE",
+                status: "COMPLETED",
                 price: 0,
                 qrCodeToken: (0, crypto_1.randomUUID)(),
             },
         });
         tickets.push(eventTicket);
         if (ctx.activityIds.length > 0) {
-            for (const _ of ctx.activityIds) {
+            for (const _activityId of ctx.activityIds) {
                 const activityTicket = await this.prisma.ticket.create({
                     data: {
                         eventId: ctx.eventId,
                         registrationId: ctx.registrationId,
-                        type: 'FREE',
-                        status: 'COMPLETED',
+                        type: "FREE",
+                        status: "COMPLETED",
                         price: 0,
                         qrCodeToken: (0, crypto_1.randomUUID)(),
                     },
@@ -50,9 +50,9 @@ let FreeTicketStrategy = class FreeTicketStrategy {
                 id: t.id,
                 type: t.type,
                 status: t.status,
-                price: '0.00',
+                price: "0.00",
             })),
-            totalAmount: '0.00',
+            totalAmount: "0.00",
         };
     }
 };

@@ -15,6 +15,7 @@ import {
   ClipboardDocumentCheckIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Image from "next/image";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 function CheckoutContent() {
@@ -24,8 +25,6 @@ function CheckoutContent() {
   
   const eventId = searchParams.get("eventId");
   const slug = searchParams.get("slug");
-  const activityIdsStr = searchParams.get("activityIds");
-  const activityIds = activityIdsStr ? activityIdsStr.split(",") : [];
 
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
@@ -90,14 +89,15 @@ function CheckoutContent() {
 
       await checkoutService.processCheckout({
         eventId,
-        activityIds,
+        activityIds: [],
         formResponses
       });
 
       router.push("/checkout/success");
-    } catch (err: any) {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Ocorreu um erro ao processar sua inscrição. Tente novamente.";
       console.error(err);
-      setError(err.message || "Ocorreu um erro ao processar sua inscrição. Tente novamente.");
+      setError(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -110,7 +110,7 @@ function CheckoutContent() {
   ];
 
   return (
-    <ThemeProvider themeConfig={event.themeConfig} tenantThemeConfig={(event as any).tenant?.themeConfig}>
+    <ThemeProvider themeConfig={event.themeConfig} tenantThemeConfig={event.tenant?.themeConfig}>
       <div className="max-w-4xl mx-auto px-6 py-12 space-y-12">
       {/* Stepper */}
       <div className="relative">
@@ -227,8 +227,8 @@ function CheckoutContent() {
                     <span className="font-black text-primary uppercase">Ingresso Geral</span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted-foreground font-bold uppercase tracking-widest">Atividades</span>
-                    <span className="font-black text-foreground">{activityIds.length} selecionadas</span>
+                    <span className="text-muted-foreground font-bold uppercase tracking-widest">Acesso</span>
+                    <span className="font-black text-foreground">Todas as atividades abertas</span>
                   </div>
                 </div>
 
@@ -263,7 +263,12 @@ function CheckoutContent() {
               <div className="flex gap-4">
                 <div className="w-20 h-20 rounded-xl bg-muted overflow-hidden shrink-0 border border-border">
                   {event.bannerUrl ? (
-                    <img src={event.bannerUrl} alt={event.name} className="w-full h-full object-cover" />
+                    <Image 
+                      src={event.bannerUrl} 
+                      alt={event.name} 
+                      fill
+                      className="object-cover" 
+                    />
                   ) : (
                     <div className="w-full h-full bg-emerald-500/10 text-primary flex items-center justify-center">
                       <TicketIcon className="w-8 h-8 opacity-20" />
@@ -283,12 +288,10 @@ function CheckoutContent() {
                   <span className="text-muted-foreground">Ingresso Geral</span>
                   <span>R$ 0,00</span>
                 </div>
-                {activityIds.length > 0 && (
-                  <div className="flex justify-between text-xs font-medium text-muted-foreground italic">
-                    <span>+ {activityIds.length} Atividades extras</span>
-                    <span>R$ 0,00</span>
-                  </div>
-                )}
+                <div className="flex justify-between text-xs font-medium text-muted-foreground italic">
+                  <span>Palestras e Workshops Abertos</span>
+                  <span>Incluso</span>
+                </div>
                 <div className="flex justify-between text-lg font-black pt-4 text-primary border-t border-primary/10">
                   <span>Total</span>
                   <span>R$ 0,00</span>

@@ -23,12 +23,12 @@ let EventsService = class EventsService {
             where: { tenantId, slug: data.slug },
         });
         if (existing) {
-            throw new Error('Já existe um evento com este slug para a sua organização.');
+            throw new Error("Já existe um evento com este slug para a sua organização.");
         }
         const start = new Date(data.startDate);
         const end = new Date(data.endDate);
         if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-            throw new Error('As datas de início e término devem ser válidas.');
+            throw new Error("As datas de início e término devem ser válidas.");
         }
         return this.prisma.event.create({
             data: {
@@ -42,25 +42,25 @@ let EventsService = class EventsService {
                 seoTitle: data.seoTitle,
                 seoDescription: data.seoDescription,
                 themeConfig: data.themeConfig,
-                status: (_a = data.status) !== null && _a !== void 0 ? _a : 'DRAFT',
+                status: (_a = data.status) !== null && _a !== void 0 ? _a : "DRAFT",
             },
         });
     }
     async listEventsForTenant(tenantId) {
         return this.prisma.event.findMany({
             where: { tenantId },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { createdAt: "desc" },
         });
     }
     async findEventById(tenantId, eventId) {
         const event = await this.prisma.event.findFirst({
             where: { id: eventId, tenantId },
             include: {
-                activities: { orderBy: { startAt: 'asc' } },
+                activities: { orderBy: { startAt: "asc" } },
             },
         });
         if (!event) {
-            throw new common_1.NotFoundException('Evento não encontrado para este tenant.');
+            throw new common_1.NotFoundException("Evento não encontrado para este tenant.");
         }
         return event;
     }
@@ -70,7 +70,7 @@ let EventsService = class EventsService {
             where: { id: eventId, tenantId },
         });
         if (!existing) {
-            throw new common_1.NotFoundException('Evento não encontrado para este tenant.');
+            throw new common_1.NotFoundException("Evento não encontrado para este tenant.");
         }
         return this.prisma.event.update({
             where: { id: eventId },
@@ -79,8 +79,20 @@ let EventsService = class EventsService {
                 slug: data.slug,
                 description: data.description,
                 location: data.location,
-                startDate: data.startDate ? (isNaN(new Date(data.startDate).getTime()) ? (() => { throw new Error('Data de início inválida'); })() : new Date(data.startDate)) : undefined,
-                endDate: data.endDate ? (isNaN(new Date(data.endDate).getTime()) ? (() => { throw new Error('Data de término inválida'); })() : new Date(data.endDate)) : undefined,
+                startDate: data.startDate
+                    ? isNaN(new Date(data.startDate).getTime())
+                        ? (() => {
+                            throw new Error("Data de início inválida");
+                        })()
+                        : new Date(data.startDate)
+                    : undefined,
+                endDate: data.endDate
+                    ? isNaN(new Date(data.endDate).getTime())
+                        ? (() => {
+                            throw new Error("Data de término inválida");
+                        })()
+                        : new Date(data.endDate)
+                    : undefined,
                 seoTitle: data.seoTitle,
                 seoDescription: data.seoDescription,
                 themeConfig: data.themeConfig,
@@ -92,8 +104,8 @@ let EventsService = class EventsService {
     }
     async findAllPublic() {
         return this.prisma.event.findMany({
-            where: { status: 'PUBLISHED' },
-            orderBy: { startDate: 'asc' },
+            where: { status: "PUBLISHED" },
+            orderBy: { startDate: "asc" },
             include: {
                 tenant: {
                     select: {
@@ -101,9 +113,9 @@ let EventsService = class EventsService {
                         name: true,
                         logoUrl: true,
                         themeConfig: true,
-                    }
-                }
-            }
+                    },
+                },
+            },
         });
     }
     async findPublicBySlug(slug, organizerTenantId) {
@@ -111,30 +123,30 @@ let EventsService = class EventsService {
             where: {
                 slug,
                 OR: [
-                    { status: 'PUBLISHED' },
+                    { status: "PUBLISHED" },
                     ...(organizerTenantId ? [{ tenantId: organizerTenantId }] : []),
                 ],
             },
             include: {
-                activities: { orderBy: { startAt: 'asc' } },
+                activities: { orderBy: { startAt: "asc" } },
                 tenant: {
                     select: {
                         id: true,
                         name: true,
                         logoUrl: true,
                         themeConfig: true,
-                    }
+                    },
                 },
                 forms: {
-                    where: { type: 'REGISTRATION' },
+                    where: { type: "REGISTRATION" },
                     include: {
-                        fields: { orderBy: { order: 'asc' } },
+                        fields: { orderBy: { order: "asc" } },
                     },
                 },
             },
         });
         if (!event) {
-            throw new common_1.NotFoundException('Evento não encontrado.');
+            throw new common_1.NotFoundException("Evento não encontrado.");
         }
         return event;
     }
@@ -147,21 +159,23 @@ let EventsService = class EventsService {
                     ...(eventId ? { id: eventId } : {}),
                 },
                 ...(status ? { status } : {}),
-                ...(search ? {
-                    user: {
-                        OR: [
-                            { name: { contains: search, mode: 'insensitive' } },
-                            { email: { contains: search, mode: 'insensitive' } },
-                        ],
-                    },
-                } : {}),
+                ...(search
+                    ? {
+                        user: {
+                            OR: [
+                                { name: { contains: search, mode: "insensitive" } },
+                                { email: { contains: search, mode: "insensitive" } },
+                            ],
+                        },
+                    }
+                    : {}),
             },
             include: {
                 user: { select: { id: true, name: true, email: true } },
                 event: { select: { name: true } },
                 tickets: { select: { type: true, status: true } },
             },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { createdAt: "desc" },
         });
     }
     async findMyTickets(userId) {
@@ -185,7 +199,7 @@ let EventsService = class EventsService {
                 },
             },
             orderBy: {
-                createdAt: 'desc',
+                createdAt: "desc",
             },
         });
     }
@@ -199,44 +213,44 @@ let EventsService = class EventsService {
                 enrollments: {
                     include: {
                         activity: {
-                            include: { type: true }
-                        }
-                    }
+                            include: { type: true },
+                        },
+                    },
                 },
                 formResponses: {
                     include: {
                         form: { select: { name: true } },
                         answers: {
-                            include: { field: true }
-                        }
-                    }
+                            include: { field: true },
+                        },
+                    },
                 },
                 certificates: {
                     include: {
-                        template: { select: { name: true } }
-                    }
+                        template: { select: { name: true } },
+                    },
                 },
-            }
+            },
         });
         if (!reg || reg.event.tenantId !== tenantId) {
-            throw new common_1.NotFoundException('Inscrição não encontrada.');
+            throw new common_1.NotFoundException("Inscrição não encontrada.");
         }
         const history = await this.prisma.registration.findMany({
             where: {
                 userId: reg.userId,
                 event: { tenantId },
-                id: { not: registrationId }
+                id: { not: registrationId },
             },
             include: {
                 event: { select: { name: true, startDate: true } },
                 tickets: { select: { type: true, status: true } },
-                certificates: { select: { id: true, issuedAt: true } }
+                certificates: { select: { id: true, issuedAt: true } },
             },
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: "desc" },
         });
         return {
             ...reg,
-            history
+            history,
         };
     }
 };

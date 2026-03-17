@@ -1,8 +1,12 @@
-import { randomUUID } from 'crypto';
-import { Injectable } from '@nestjs/common';
-import { TicketStatus, TicketType } from '../generated/prisma';
-import { PrismaService } from '../prisma/prisma.service';
-import { PaymentContext, PaymentResult, PaymentStrategy } from './payment-strategy.interface';
+import { randomUUID } from "crypto";
+import { Injectable } from "@nestjs/common";
+import { TicketStatus, TicketType } from "../generated/prisma";
+import { PrismaService } from "../prisma/prisma.service";
+import {
+  PaymentContext,
+  PaymentResult,
+  PaymentStrategy,
+} from "./payment-strategy.interface";
 
 @Injectable()
 export class FreeTicketStrategy implements PaymentStrategy {
@@ -16,8 +20,8 @@ export class FreeTicketStrategy implements PaymentStrategy {
       data: {
         eventId: ctx.eventId,
         registrationId: ctx.registrationId,
-        type: 'FREE',
-        status: 'COMPLETED',
+        type: "FREE",
+        status: "COMPLETED",
         price: 0,
         qrCodeToken: randomUUID(),
       },
@@ -27,13 +31,13 @@ export class FreeTicketStrategy implements PaymentStrategy {
 
     // Opcional: tickets por atividade (se quisermos granularidade futura)
     if (ctx.activityIds.length > 0) {
-      for (const _ of ctx.activityIds) {
+      for (const _activityId of ctx.activityIds) {
         const activityTicket = await this.prisma.ticket.create({
           data: {
             eventId: ctx.eventId,
             registrationId: ctx.registrationId,
-            type: 'FREE',
-            status: 'COMPLETED',
+            type: "FREE",
+            status: "COMPLETED",
             price: 0,
             qrCodeToken: randomUUID(),
           },
@@ -47,10 +51,9 @@ export class FreeTicketStrategy implements PaymentStrategy {
         id: t.id,
         type: t.type as TicketType,
         status: t.status as TicketStatus,
-        price: '0.00',
+        price: "0.00",
       })),
-      totalAmount: '0.00',
+      totalAmount: "0.00",
     };
   }
 }
-

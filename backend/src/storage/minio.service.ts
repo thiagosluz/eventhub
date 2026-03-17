@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Client as MinioClient } from 'minio';
+import { Injectable } from "@nestjs/common";
+import { Client as MinioClient } from "minio";
 
 @Injectable()
 export class MinioService {
@@ -7,33 +7,33 @@ export class MinioService {
 
   constructor() {
     this.client = new MinioClient({
-      endPoint: process.env.MINIO_ENDPOINT ?? 'localhost',
+      endPoint: process.env.MINIO_ENDPOINT ?? "localhost",
       port: Number(process.env.MINIO_PORT ?? 9000),
       useSSL: false,
-      accessKey: process.env.MINIO_ACCESS_KEY ?? 'minioadmin',
-      secretKey: process.env.MINIO_SECRET_KEY ?? 'minioadmin',
+      accessKey: process.env.MINIO_ACCESS_KEY ?? "minioadmin",
+      secretKey: process.env.MINIO_SECRET_KEY ?? "minioadmin",
     });
   }
 
   async ensureBucket(bucket: string): Promise<void> {
     const exists = await this.client.bucketExists(bucket);
     if (!exists) {
-      await this.client.makeBucket(bucket, '');
+      await this.client.makeBucket(bucket, "");
     }
 
     const policy = {
-      Version: '2012-10-17',
+      Version: "2012-10-17",
       Statement: [
         {
-          Effect: 'Allow',
-          Principal: { AWS: ['*'] },
-          Action: ['s3:GetBucketLocation', 's3:ListBucket'],
+          Effect: "Allow",
+          Principal: { AWS: ["*"] },
+          Action: ["s3:GetBucketLocation", "s3:ListBucket"],
           Resource: [`arn:aws:s3:::${bucket}`],
         },
         {
-          Effect: 'Allow',
-          Principal: { AWS: ['*'] },
-          Action: ['s3:GetObject'],
+          Effect: "Allow",
+          Principal: { AWS: ["*"] },
+          Action: ["s3:GetObject"],
           Resource: [`arn:aws:s3:::${bucket}/*`],
         },
       ],
@@ -53,7 +53,7 @@ export class MinioService {
     await this.ensureBucket(bucket);
 
     await this.client.putObject(bucket, objectName, data, data.length, {
-      'Content-Type': contentType,
+      "Content-Type": contentType,
     });
 
     const host =
@@ -63,4 +63,3 @@ export class MinioService {
     return `${host}/${bucket}/${objectName}`;
   }
 }
-

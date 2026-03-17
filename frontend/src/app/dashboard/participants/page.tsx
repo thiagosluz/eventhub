@@ -25,8 +25,8 @@ export default function ParticipantsPage() {
     try {
       const data = await participantsService.list();
       setParticipants(data);
-    } catch (error) {
-      console.error("Error fetching participants:", error);
+    } catch {
+      console.error("Error fetching participants");
       toast.error("Erro ao carregar participantes.");
     } finally {
       setLoading(false);
@@ -43,7 +43,7 @@ export default function ParticipantsPage() {
       const detail = await participantsService.getDetail(id);
       setSelectedParticipant(detail);
       setIsDrawerOpen(true);
-    } catch (error) {
+    } catch {
       toast.error("Erro ao carregar detalhes do participante.");
     } finally {
       setIsDetailLoading(false);

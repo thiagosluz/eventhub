@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState, use } from 'react';
-import { activitiesService } from '@/services/activities.service';
+import { activitiesService, CreateActivityDto, UpdateActivityDto } from '@/services/activities.service';
 import { eventsService } from '@/services/events.service';
-import { Activity } from '@/types/event';
+import { Activity, Event } from '@/types/event';
 import { 
   CalendarIcon, 
   MapPinIcon, 
@@ -16,6 +16,7 @@ import {
   UserIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ActivityForm } from '@/components/dashboard/ActivityForm';
 import { DeleteConfirmationModal } from '@/components/dashboard/DeleteConfirmationModal';
 import { toast } from 'react-hot-toast';
@@ -24,7 +25,7 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
   const { id: eventId } = use(params);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
-  const [event, setEvent] = useState<any>(null);
+  const [event, setEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -53,14 +54,14 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
     }
   };
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: CreateActivityDto | UpdateActivityDto) => {
     setSubmitting(true);
     try {
       if (editingActivity) {
-        await activitiesService.updateActivity(editingActivity.id, data);
+        await activitiesService.updateActivity(editingActivity.id, data as UpdateActivityDto);
         toast.success('Atividade atualizada!');
       } else {
-        await activitiesService.createActivity(eventId, data);
+        await activitiesService.createActivity(eventId, data as CreateActivityDto);
         toast.success('Atividade criada!');
       }
       setIsModalOpen(false);
@@ -148,7 +149,7 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
                       {new Date(activity.startAt).getHours()}:{new Date(activity.startAt).getMinutes().toString().padStart(2, '0')}
                     </span>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-3 flex-1">
                     <div className="flex items-center gap-2">
                       <h3 className="text-xl font-bold group-hover:text-primary transition-colors">{activity.title}</h3>
                       {activity.type && (
@@ -185,15 +186,20 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
                     {activity.speakers && activity.speakers.length > 0 && (
                       <div className="flex flex-wrap gap-2 pt-1">
                         {activity.speakers.map((as: any) => (
-                          <div key={as.speaker.id} className="flex items-center gap-2 bg-muted/40 px-2 py-1 rounded-xl border border-border/50">
-                            <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20">
-                              {as.speaker.avatarUrl ? (
-                                <img src={as.speaker.avatarUrl} alt={as.speaker.name} className="w-full h-full object-cover" />
+                          <div key={as.speaker?.id || Math.random()} className="flex items-center gap-2 bg-muted/40 px-2 py-1 rounded-xl border border-border/50">
+                            <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20 relative">
+                              {as.speaker?.avatarUrl ? (
+                                <Image
+                                  src={as.speaker.avatarUrl}
+                                  alt={as.speaker.name || 'Speaker'}
+                                  fill
+                                  className="object-cover"
+                                />
                               ) : (
                                 <UserIcon className="w-3 h-3 text-primary" />
                               )}
                             </div>
-                            <span className="text-[11px] font-bold">{as.speaker.name}</span>
+                            <span className="text-[11px] font-bold">{as.speaker?.name || 'Palestrante Indisponível'}</span>
                             {as.role && (
                               <span className="text-[9px] font-black uppercase tracking-tighter text-muted-foreground/70 bg-muted px-1.5 rounded-md">
                                 {as.role.name}

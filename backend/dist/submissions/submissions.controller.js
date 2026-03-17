@@ -30,10 +30,10 @@ let SubmissionsController = class SubmissionsController {
         var _a;
         const authorId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
         if (!authorId) {
-            throw new Error('Missing user id on token payload.');
+            throw new Error("Missing user id on token payload.");
         }
         if (!file) {
-            throw new Error('Arquivo de submissão é obrigatório.');
+            throw new Error("Arquivo de submissão é obrigatório.");
         }
         return this.submissions.createSubmission({
             authorId,
@@ -50,7 +50,7 @@ let SubmissionsController = class SubmissionsController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         return this.submissions.listSubmissionsForEvent(tenantId, eventId);
     }
@@ -58,7 +58,7 @@ let SubmissionsController = class SubmissionsController {
         var _a;
         const reviewerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
         if (!reviewerId) {
-            throw new Error('Missing user id on token payload.');
+            throw new Error("Missing user id on token payload.");
         }
         return this.submissions.listAssignedToReviewer(reviewerId);
     }
@@ -66,7 +66,7 @@ let SubmissionsController = class SubmissionsController {
         var _a;
         const reviewerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
         if (!reviewerId) {
-            throw new Error('Missing user id on token payload.');
+            throw new Error("Missing user id on token payload.");
         }
         return this.submissions.submitReview({
             reviewerId,
@@ -80,8 +80,8 @@ let SubmissionsController = class SubmissionsController {
 exports.SubmissionsController = SubmissionsController;
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Post)('submissions'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, common_1.Post)("submissions"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("file")),
     __param(0, (0, common_1.UploadedFile)()),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
@@ -92,8 +92,8 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('events/:eventId/submissions'),
-    __param(0, (0, common_1.Param)('eventId')),
+    (0, common_1.Get)("events/:eventId/submissions"),
+    __param(0, (0, common_1.Param)("eventId")),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
@@ -101,7 +101,7 @@ __decorate([
 ], SubmissionsController.prototype, "listSubmissionsForEvent", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Get)('me/reviews'),
+    (0, common_1.Get)("me/reviews"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -109,7 +109,7 @@ __decorate([
 ], SubmissionsController.prototype, "listAssignedToMe", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Post)('reviews'),
+    (0, common_1.Post)("reviews"),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),

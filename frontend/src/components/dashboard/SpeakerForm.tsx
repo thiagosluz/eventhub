@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Speaker } from "@/types/event";
+import { Speaker, Ticket } from "@/types/event";
 import { PhotoIcon, UserIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 import { speakersService } from "@/services/speakers.service";
 
 interface SpeakerFormProps {
   initialData?: Partial<Speaker>;
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (data: Partial<Speaker>) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -50,10 +51,11 @@ export function SpeakerForm({ initialData, onSubmit, isLoading }: SpeakerFormPro
           <div className="relative group">
             <div className="w-32 h-32 rounded-full overflow-hidden bg-muted flex items-center justify-center border-4 border-card shadow-xl group-hover:border-primary/20 transition-all">
               {formData.avatarUrl ? (
-                <img 
+                <Image 
                   src={formData.avatarUrl} 
                   alt="Preview" 
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               ) : (
                 <UserIcon className="w-12 h-12 text-muted-foreground/30" />

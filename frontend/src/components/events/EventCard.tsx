@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Event } from "@/types/event";
 
@@ -15,10 +16,11 @@ export function EventCard({ event }: EventCardProps) {
     <Link href={`/events/${event.slug}`} className="group premium-card overflow-hidden block">
       <div className="aspect-[16/10] bg-muted relative overflow-hidden">
         {event.bannerUrl ? (
-          <img 
+          <Image 
             src={event.bannerUrl} 
             alt={event.name} 
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className="w-full h-full bg-emerald-500/10 flex items-center justify-center">

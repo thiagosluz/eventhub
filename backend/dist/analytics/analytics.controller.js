@@ -27,22 +27,22 @@ let AnalyticsController = class AnalyticsController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Tenant missing from request.');
+            throw new Error("Tenant missing from request.");
         }
         return this.analyticsService.getEventAnalytics(tenantId, id);
     }
 };
 exports.AnalyticsController = AnalyticsController;
 __decorate([
-    (0, common_1.Get)('events/:id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)("events/:id"),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], AnalyticsController.prototype, "getEventAnalytics", null);
 exports.AnalyticsController = AnalyticsController = __decorate([
-    (0, common_1.Controller)('analytics'),
+    (0, common_1.Controller)("analytics"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __metadata("design:paramtypes", [analytics_service_1.AnalyticsService])

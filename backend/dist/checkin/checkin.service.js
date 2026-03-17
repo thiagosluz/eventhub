@@ -58,16 +58,16 @@ let CheckinService = class CheckinService {
             include: { registration: true },
         });
         if (!ticket) {
-            throw new common_1.NotFoundException('Ingresso não encontrado.');
+            throw new common_1.NotFoundException("Ingresso não encontrado.");
         }
         if (ticket.registration.userId !== userId) {
-            throw new common_1.ForbiddenException('Ingresso não pertence ao usuário.');
+            throw new common_1.ForbiddenException("Ingresso não pertence ao usuário.");
         }
         if (!ticket.qrCodeToken) {
-            throw new common_1.NotFoundException('Ingresso sem token de QR Code.');
+            throw new common_1.NotFoundException("Ingresso sem token de QR Code.");
         }
         return QRCode.toBuffer(ticket.qrCodeToken, {
-            type: 'png',
+            type: "png",
             width: 256,
             margin: 2,
         });
@@ -75,25 +75,25 @@ let CheckinService = class CheckinService {
     async checkin(params) {
         const { qrCodeToken, activityId } = params;
         const ticket = await this.prisma.ticket.findUnique({
-            where: { qrCodeToken, status: 'COMPLETED' },
+            where: { qrCodeToken, status: "COMPLETED" },
             include: { attendances: true },
         });
         if (!ticket) {
-            throw new common_1.NotFoundException('Ingresso inválido ou não aprovado.');
+            throw new common_1.NotFoundException("Ingresso inválido ou não aprovado.");
         }
         if (activityId) {
             const activity = await this.prisma.activity.findUnique({
                 where: { id: activityId },
             });
             if (!activity || activity.eventId !== ticket.eventId) {
-                throw new common_1.NotFoundException('Atividade não pertence a este evento.');
+                throw new common_1.NotFoundException("Atividade não pertence a este evento.");
             }
             if (activity.requiresEnrollment) {
                 const enrollment = await this.prisma.activityEnrollment.findFirst({
                     where: { activityId, registrationId: ticket.registrationId },
                 });
                 if (!enrollment) {
-                    throw new common_1.ForbiddenException('Participante não está inscrito nesta atividade.');
+                    throw new common_1.ForbiddenException("Participante não está inscrito nesta atividade.");
                 }
             }
         }
@@ -115,11 +115,11 @@ let CheckinService = class CheckinService {
                 ticket: {
                     include: {
                         registration: {
-                            include: { user: true, event: true }
-                        }
-                    }
-                }
-            }
+                            include: { user: true, event: true },
+                        },
+                    },
+                },
+            },
         });
         const user = attendance.ticket.registration.user;
         const event = attendance.ticket.registration.event;
@@ -134,7 +134,7 @@ let CheckinService = class CheckinService {
             <p>Olá <strong>${user.name}</strong>,</p>
             <p>Seu check-in no evento <strong>${event.name}</strong> acaba de ser realizado.</p>
             <div style="background: #ecfdf5; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #10b981;">
-              <p style="margin: 0; color: #065f46;"><strong>Presença confirmada em:</strong> ${new Date().toLocaleString('pt-BR')}</p>
+              <p style="margin: 0; color: #065f46;"><strong>Presença confirmada em:</strong> ${new Date().toLocaleString("pt-BR")}</p>
             </div>
             <p>Desejamos que você tenha uma excelente experiência!</p>
           </div>
@@ -149,7 +149,7 @@ let CheckinService = class CheckinService {
             where: { id: eventId, tenantId },
         });
         if (!event) {
-            throw new common_1.ForbiddenException('Evento não pertence a este tenant.');
+            throw new common_1.ForbiddenException("Evento não pertence a este tenant.");
         }
         const attendances = await this.prisma.attendance.findMany({
             where: {

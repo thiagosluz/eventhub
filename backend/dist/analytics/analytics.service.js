@@ -34,22 +34,24 @@ let AnalyticsService = class AnalyticsService {
             },
         });
         if (!event) {
-            throw new common_1.NotFoundException('Evento não encontrado.');
+            throw new common_1.NotFoundException("Evento não encontrado.");
         }
         const activityParticipation = event.activities.map((activity) => {
             var _a;
             return ({
                 id: activity.id,
                 name: activity.title,
-                type: ((_a = activity.type) === null || _a === void 0 ? void 0 : _a.name) || 'Geral',
+                type: ((_a = activity.type) === null || _a === void 0 ? void 0 : _a.name) || "Geral",
                 enrolled: activity.enrollments.length,
                 capacity: activity.capacity || 0,
-                occupancyRate: activity.capacity ? (activity.enrollments.length / activity.capacity) * 100 : 0,
+                occupancyRate: activity.capacity
+                    ? (activity.enrollments.length / activity.capacity) * 100
+                    : 0,
             });
         });
         const statusCounts = event.registrations.reduce((acc, reg) => {
             var _a;
-            const status = ((_a = reg.tickets[0]) === null || _a === void 0 ? void 0 : _a.status) || 'PENDING';
+            const status = ((_a = reg.tickets[0]) === null || _a === void 0 ? void 0 : _a.status) || "PENDING";
             acc[status] = (acc[status] || 0) + 1;
             return acc;
         }, {});
@@ -57,8 +59,10 @@ let AnalyticsService = class AnalyticsService {
             name,
             value,
         }));
-        const ticketCounts = event.registrations.flatMap((r) => r.tickets).reduce((acc, ticket) => {
-            const type = ticket.type || 'N/A';
+        const ticketCounts = event.registrations
+            .flatMap((r) => r.tickets)
+            .reduce((acc, ticket) => {
+            const type = ticket.type || "N/A";
             acc[type] = (acc[type] || 0) + 1;
             return acc;
         }, {});
@@ -74,9 +78,9 @@ let AnalyticsService = class AnalyticsService {
             date.setHours(0, 0, 0, 0);
             const nextDay = new Date(date);
             nextDay.setDate(nextDay.getDate() + 1);
-            const count = event.registrations.filter(r => new Date(r.createdAt) >= date && new Date(r.createdAt) < nextDay).length;
+            const count = event.registrations.filter((r) => new Date(r.createdAt) >= date && new Date(r.createdAt) < nextDay).length;
             dailyRegistrations.push({
-                date: date.toISOString().split('T')[0],
+                date: date.toISOString().split("T")[0],
                 count,
             });
         }

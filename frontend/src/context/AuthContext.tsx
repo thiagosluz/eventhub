@@ -22,22 +22,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Load user from localStorage on init
-    const storedUser = localStorage.getItem("eventhub_user");
-    const storedToken = localStorage.getItem("eventhub_token");
+    const loadStoredAuth = () => {
+      const storedUser = localStorage.getItem("eventhub_user");
+      const storedToken = localStorage.getItem("eventhub_token");
 
-    if (storedUser && storedToken) {
-      try {
-        setUser(JSON.parse(storedUser));
-        // Ensure cookie matches for SSR
-        if (!Cookies.get("eventhub_token")) {
-          Cookies.set("eventhub_token", storedToken, { expires: 7 });
+      if (storedUser && storedToken) {
+        try {
+          setUser(JSON.parse(storedUser));
+          // Ensure cookie matches for SSR
+          if (!Cookies.get("eventhub_token")) {
+            Cookies.set("eventhub_token", storedToken, { expires: 7 });
+          }
+        } catch {
+          localStorage.removeItem("eventhub_user");
+          localStorage.removeItem("eventhub_token");
         }
-      } catch (e) {
-        localStorage.removeItem("eventhub_user");
-        localStorage.removeItem("eventhub_token");
       }
-    }
-    setIsLoading(false);
+      setIsLoading(false);
+    };
+
+    loadStoredAuth();
   }, []);
 
   const login = (authData: AuthResponse) => {

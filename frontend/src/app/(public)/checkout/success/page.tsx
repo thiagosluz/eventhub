@@ -65,7 +65,7 @@ export default function CheckoutSuccessPage() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
           <Link 
-            href="/dashboard"
+            href="/tickets"
             className="premium-button !px-8 !py-4 flex items-center justify-center gap-2 group w-full sm:w-auto"
           >
             <TicketIcon className="w-5 h-5" />

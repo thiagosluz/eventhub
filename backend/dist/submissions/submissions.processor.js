@@ -23,7 +23,7 @@ let AssignReviewsProcessor = class AssignReviewsProcessor extends bullmq_1.Worke
         const reviewers = await this.prisma.user.findMany({
             where: {
                 tenantId,
-                role: 'REVIEWER',
+                role: "REVIEWER",
             },
         });
         if (reviewers.length === 0) {
@@ -46,7 +46,7 @@ let AssignReviewsProcessor = class AssignReviewsProcessor extends bullmq_1.Worke
 };
 exports.AssignReviewsProcessor = AssignReviewsProcessor;
 exports.AssignReviewsProcessor = AssignReviewsProcessor = __decorate([
-    (0, bullmq_1.Processor)('assign-reviews'),
+    (0, bullmq_1.Processor)("assign-reviews"),
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], AssignReviewsProcessor);

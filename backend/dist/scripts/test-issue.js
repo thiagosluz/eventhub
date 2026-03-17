@@ -9,24 +9,24 @@ async function bootstrap() {
     const pdfService = app.get(certificate_pdf_service_1.CertificatePdfService);
     const prisma = app.get(prisma_service_1.PrismaService);
     const template = await prisma.certificateTemplate.findFirst({
-        where: { name: 'Certificado de Teste Premium' }
+        where: { name: "Certificado de Teste Premium" },
     });
     const registration = await prisma.registration.findFirst({
-        where: { event: { slug: 'summit-2026' } }
+        where: { event: { slug: "summit-2026" } },
     });
     if (!template || !registration) {
-        console.error('Template ou Inscrição não encontrados.');
+        console.error("Template ou Inscrição não encontrados.");
         await app.close();
         return;
     }
     console.log(`Emitindo para Template: ${template.id}, Inscrição: ${registration.id}`);
     try {
         const result = await pdfService.generateAndStore(template.id, registration.id);
-        console.log('Certificado emitido com sucesso!');
-        console.log('URL:', result.fileUrl);
+        console.log("Certificado emitido com sucesso!");
+        console.log("URL:", result.fileUrl);
     }
     catch (error) {
-        console.error('Erro na emissão:', error);
+        console.error("Erro na emissão:", error);
     }
     await app.close();
 }

@@ -1,4 +1,4 @@
-import { TicketStatus, TicketType } from '../generated/prisma';
+import { TicketStatus, TicketType } from "../generated/prisma";
 
 export interface PaymentContext {
   userId: string;
@@ -20,4 +20,3 @@ export interface PaymentResult {
 export interface PaymentStrategy {
   process(ctx: PaymentContext): Promise<PaymentResult>;
 }
-

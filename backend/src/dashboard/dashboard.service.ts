@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { DashboardStatsDto } from './dto/dashboard-stats.dto';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
+import { DashboardStatsDto } from "./dto/dashboard-stats.dto";
 
 @Injectable()
 export class DashboardService {
@@ -12,7 +12,7 @@ export class DashboardService {
       _sum: { price: true },
       where: {
         event: { tenantId },
-        status: 'COMPLETED',
+        status: "COMPLETED",
       },
     });
 
@@ -27,7 +27,7 @@ export class DashboardService {
     const activeEventsCount = await this.prisma.event.count({
       where: {
         tenantId,
-        status: 'PUBLISHED',
+        status: "PUBLISHED",
       },
     });
 
@@ -35,7 +35,7 @@ export class DashboardService {
     const ticketsSoldCount = await this.prisma.ticket.count({
       where: {
         event: { tenantId },
-        status: 'COMPLETED',
+        status: "COMPLETED",
       },
     });
 
@@ -44,7 +44,7 @@ export class DashboardService {
       this.prisma.registration.findMany({
         where: { event: { tenantId } },
         take: 3,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
         include: {
           user: { select: { name: true } },
           event: { select: { name: true } },
@@ -53,14 +53,14 @@ export class DashboardService {
       this.prisma.event.findMany({
         where: { tenantId },
         take: 2,
-        orderBy: { updatedAt: 'desc' },
+        orderBy: { updatedAt: "desc" },
         select: { id: true, name: true, updatedAt: true, status: true },
       }),
     ]);
 
     const registrationActivities = recentRegistrations.map((reg) => ({
       id: reg.id,
-      type: 'REGISTRATION',
+      type: "REGISTRATION",
       description: `${reg.user.name} inscreveu-se no evento.`,
       timestamp: reg.createdAt,
       eventTitle: reg.event.name,
@@ -68,15 +68,16 @@ export class DashboardService {
 
     const eventActivities = recentEvents.map((evt) => ({
       id: evt.id,
-      type: 'EVENT_UPDATE',
+      type: "EVENT_UPDATE",
       description: `Evento "${evt.name}" foi atualizado para ${evt.status}.`,
       timestamp: evt.updatedAt,
       eventTitle: evt.name,
     }));
 
-    const recentActivities = [...registrationActivities, ...eventActivities].sort(
-      (a, b) => b.timestamp.getTime() - a.timestamp.getTime(),
-    );
+    const recentActivities = [
+      ...registrationActivities,
+      ...eventActivities,
+    ].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
     // 6. Event Sales breakdown
     const eventsWithSales = await this.prisma.event.findMany({
@@ -86,14 +87,17 @@ export class DashboardService {
           select: { registrations: true },
         },
         tickets: {
-          where: { status: 'COMPLETED' },
+          where: { status: "COMPLETED" },
           select: { price: true },
         },
       },
     });
 
     const eventSales = eventsWithSales.map((event) => {
-      const revenue = event.tickets.reduce((sum, t) => sum + Number(t.price), 0);
+      const revenue = event.tickets.reduce(
+        (sum, t) => sum + Number(t.price),
+        0,
+      );
       return {
         name: event.name,
         sales: event._count.registrations,
@@ -130,7 +134,7 @@ export class DashboardService {
           _sum: { price: true },
           where: {
             event: { tenantId },
-            status: 'COMPLETED',
+            status: "COMPLETED",
             createdAt: { gte: date, lt: nextDay },
           },
         }),
@@ -143,7 +147,7 @@ export class DashboardService {
       ]);
 
       timeSeriesData.push({
-        date: date.toISOString().split('T')[0],
+        date: date.toISOString().split("T")[0],
         revenue: Number(revenueData._sum.price || 0),
         sales: salesCount,
       });

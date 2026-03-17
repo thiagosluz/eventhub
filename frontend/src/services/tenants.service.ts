@@ -7,13 +7,13 @@ export interface UpdateTenantDto {
   themeConfig?: {
     primaryColor?: string;
     secondaryColor?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 
 export const tenantsService = {
-  getMe: async (): Promise<Tenant & { themeConfig?: any, logoUrl?: string }> => {
-    return api.get<Tenant & { themeConfig?: any, logoUrl?: string }>('/tenants/me');
+  getMe: async (): Promise<Tenant & { themeConfig?: Record<string, unknown>, logoUrl?: string }> => {
+    return api.get<Tenant & { themeConfig?: Record<string, unknown>, logoUrl?: string }>('/tenants/me');
   },
 
   updateMe: async (data: UpdateTenantDto): Promise<Tenant> => {

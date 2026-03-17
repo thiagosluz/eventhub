@@ -2,10 +2,10 @@ import {
   ForbiddenException,
   NotFoundException,
   Injectable,
-} from '@nestjs/common';
-import * as QRCode from 'qrcode';
-import { PrismaService } from '../prisma/prisma.service';
-import { MailService } from '../mail/mail.service';
+} from "@nestjs/common";
+import * as QRCode from "qrcode";
+import { PrismaService } from "../prisma/prisma.service";
+import { MailService } from "../mail/mail.service";
 
 @Injectable()
 export class CheckinService {
@@ -21,19 +21,19 @@ export class CheckinService {
     });
 
     if (!ticket) {
-      throw new NotFoundException('Ingresso não encontrado.');
+      throw new NotFoundException("Ingresso não encontrado.");
     }
 
     if (ticket.registration.userId !== userId) {
-      throw new ForbiddenException('Ingresso não pertence ao usuário.');
+      throw new ForbiddenException("Ingresso não pertence ao usuário.");
     }
 
     if (!ticket.qrCodeToken) {
-      throw new NotFoundException('Ingresso sem token de QR Code.');
+      throw new NotFoundException("Ingresso sem token de QR Code.");
     }
 
     return QRCode.toBuffer(ticket.qrCodeToken, {
-      type: 'png',
+      type: "png",
       width: 256,
       margin: 2,
     });
@@ -46,12 +46,12 @@ export class CheckinService {
     const { qrCodeToken, activityId } = params;
 
     const ticket = await this.prisma.ticket.findUnique({
-      where: { qrCodeToken, status: 'COMPLETED' },
+      where: { qrCodeToken, status: "COMPLETED" },
       include: { attendances: true },
     });
 
     if (!ticket) {
-      throw new NotFoundException('Ingresso inválido ou não aprovado.');
+      throw new NotFoundException("Ingresso inválido ou não aprovado.");
     }
 
     if (activityId) {
@@ -59,7 +59,7 @@ export class CheckinService {
         where: { id: activityId },
       });
       if (!activity || activity.eventId !== ticket.eventId) {
-        throw new NotFoundException('Atividade não pertence a este evento.');
+        throw new NotFoundException("Atividade não pertence a este evento.");
       }
 
       if (activity.requiresEnrollment) {
@@ -67,7 +67,9 @@ export class CheckinService {
           where: { activityId, registrationId: ticket.registrationId },
         });
         if (!enrollment) {
-          throw new ForbiddenException('Participante não está inscrito nesta atividade.');
+          throw new ForbiddenException(
+            "Participante não está inscrito nesta atividade.",
+          );
         }
       }
     }
@@ -92,11 +94,11 @@ export class CheckinService {
         ticket: {
           include: {
             registration: {
-              include: { user: true, event: true }
-            }
-          }
-        }
-      }
+              include: { user: true, event: true },
+            },
+          },
+        },
+      },
     });
 
     const user = attendance.ticket.registration.user;
@@ -113,7 +115,7 @@ export class CheckinService {
             <p>Olá <strong>${user.name}</strong>,</p>
             <p>Seu check-in no evento <strong>${event.name}</strong> acaba de ser realizado.</p>
             <div style="background: #ecfdf5; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #10b981;">
-              <p style="margin: 0; color: #065f46;"><strong>Presença confirmada em:</strong> ${new Date().toLocaleString('pt-BR')}</p>
+              <p style="margin: 0; color: #065f46;"><strong>Presença confirmada em:</strong> ${new Date().toLocaleString("pt-BR")}</p>
             </div>
             <p>Desejamos que você tenha uma excelente experiência!</p>
           </div>
@@ -137,7 +139,7 @@ export class CheckinService {
     });
 
     if (!event) {
-      throw new ForbiddenException('Evento não pertence a este tenant.');
+      throw new ForbiddenException("Evento não pertence a este tenant.");
     }
 
     const attendances = await this.prisma.attendance.findMany({

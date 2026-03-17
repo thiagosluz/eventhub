@@ -21,7 +21,7 @@ let TenantsService = class TenantsService {
             where: { id },
         });
         if (!tenant)
-            throw new common_1.NotFoundException('Tenant not found');
+            throw new common_1.NotFoundException("Tenant not found");
         return tenant;
     }
     async updateTenant(id, data) {

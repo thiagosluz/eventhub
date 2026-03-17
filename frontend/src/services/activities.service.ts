@@ -1,6 +1,11 @@
 import { api } from '../lib/api';
 import { Activity } from '../types/event';
 
+export interface SpeakerAssociationDto {
+  speakerId: string;
+  roleId?: string;
+}
+
 export interface CreateActivityDto {
   title: string;
   description?: string;
@@ -8,10 +13,12 @@ export interface CreateActivityDto {
   startAt: string;
   endAt: string;
   capacity?: number;
-  speakerIds?: string[];
+  typeId?: string;
+  requiresEnrollment?: boolean;
+  speakers?: SpeakerAssociationDto[];
 }
 
-export interface UpdateActivityDto extends Partial<CreateActivityDto> {}
+export type UpdateActivityDto = Partial<CreateActivityDto>;
 
 export const activitiesService = {
   getActivitiesForEvent: async (eventId: string): Promise<Activity[]> => {
@@ -28,5 +35,13 @@ export const activitiesService = {
 
   deleteActivity: async (activityId: string): Promise<void> => {
     return api.delete(`/activities/${activityId}`);
+  },
+  
+  enrollInActivity: async (activityId: string): Promise<Activity> => {
+    return api.post<Activity>(`/activities/${activityId}/enroll`, {});
+  },
+
+  getMyEnrollments: async (eventId: string): Promise<(Activity & { isEnrolled: boolean })[]> => {
+    return api.get<(Activity & { isEnrolled: boolean })[]>(`/activities/my-enrollments/${eventId}`);
   }
 };

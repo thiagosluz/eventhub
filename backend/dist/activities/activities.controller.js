@@ -29,7 +29,7 @@ let ActivitiesController = class ActivitiesController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         return this.activities.createActivity({
             tenantId,
@@ -41,15 +41,26 @@ let ActivitiesController = class ActivitiesController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         return this.activities.listActivitiesForEvent(tenantId, eventId);
+    }
+    async getMyEnrollments(eventId, req) {
+        var _a;
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
+        if (!userId) {
+            throw new Error("Missing userId on token payload.");
+        }
+        return this.activities.getActivitiesForParticipant({
+            userId,
+            eventId,
+        });
     }
     async updateActivity(activityId, body, req) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         return this.activities.updateActivity({
             tenantId,
@@ -61,7 +72,7 @@ let ActivitiesController = class ActivitiesController {
         var _a;
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
         if (!userId) {
-            throw new Error('Missing user id on token payload.');
+            throw new Error("Missing user id on token payload.");
         }
         return this.activities.enrollInActivity({
             userId,
@@ -72,7 +83,7 @@ let ActivitiesController = class ActivitiesController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         }
         return this.activities.deleteActivity(tenantId, activityId);
     }
@@ -80,21 +91,21 @@ let ActivitiesController = class ActivitiesController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId)
-            throw new Error('Missing tenantId');
+            throw new Error("Missing tenantId");
         return this.activities.createType(tenantId, name);
     }
     async findAllTypes(req) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId)
-            throw new Error('Missing tenantId');
+            throw new Error("Missing tenantId");
         return this.activities.findAllTypes(tenantId);
     }
     async removeType(req, id) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId)
-            throw new Error('Missing tenantId');
+            throw new Error("Missing tenantId");
         return this.activities.removeType(tenantId, id);
     }
 };
@@ -102,8 +113,8 @@ exports.ActivitiesController = ActivitiesController;
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('events/:eventId/activities'),
-    __param(0, (0, common_1.Param)('eventId')),
+    (0, common_1.Post)("events/:eventId/activities"),
+    __param(0, (0, common_1.Param)("eventId")),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -113,18 +124,27 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('events/:eventId/activities'),
-    __param(0, (0, common_1.Param)('eventId')),
+    (0, common_1.Get)("events/:eventId/activities"),
+    __param(0, (0, common_1.Param)("eventId")),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ActivitiesController.prototype, "listActivitiesForEvent", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Get)("activities/my-enrollments/:eventId"),
+    __param(0, (0, common_1.Param)("eventId")),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], ActivitiesController.prototype, "getMyEnrollments", null);
+__decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Patch)('activities/:activityId'),
-    __param(0, (0, common_1.Param)('activityId')),
+    (0, common_1.Patch)("activities/:activityId"),
+    __param(0, (0, common_1.Param)("activityId")),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -133,8 +153,8 @@ __decorate([
 ], ActivitiesController.prototype, "updateActivity", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Post)('activities/:activityId/enroll'),
-    __param(0, (0, common_1.Param)('activityId')),
+    (0, common_1.Post)("activities/:activityId/enroll"),
+    __param(0, (0, common_1.Param)("activityId")),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
@@ -143,8 +163,8 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Delete)('activities/:activityId'),
-    __param(0, (0, common_1.Param)('activityId')),
+    (0, common_1.Delete)("activities/:activityId"),
+    __param(0, (0, common_1.Param)("activityId")),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
@@ -153,9 +173,9 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('activities/types'),
+    (0, common_1.Post)("activities/types"),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Body)('name')),
+    __param(1, (0, common_1.Body)("name")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
@@ -163,7 +183,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('activities/types'),
+    (0, common_1.Get)("activities/types"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -172,9 +192,9 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Delete)('activities/types/:id'),
+    (0, common_1.Delete)("activities/types/:id"),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)

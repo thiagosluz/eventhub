@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { tenantsService, UpdateTenantDto } from '@/services/tenants.service';
+import { Tenant } from '@/types/event';
+import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 
 export default function BrandingPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [tenant, setTenant] = useState<any>(null);
+  const [tenant, setTenant] = useState<Tenant | null>(null);
   const [formData, setFormData] = useState<UpdateTenantDto>({
     name: '',
     logoUrl: '',
@@ -107,8 +109,14 @@ export default function BrandingPage() {
               placeholder="https://exemplo.com/logo.png"
             />
             {formData.logoUrl && (
-              <div className="mt-4 p-4 border border-dashed border-gray-200 rounded-xl bg-gray-50 flex justify-center">
-                <img src={formData.logoUrl} alt="Logo Preview" className="h-16 object-contain" onError={(e) => (e.currentTarget.style.display = 'none')} />
+              <div className="mt-4 p-4 border border-dashed border-gray-200 rounded-xl bg-gray-50 flex justify-center relative min-h-[64px]">
+                <Image 
+                  src={formData.logoUrl} 
+                  alt="Logo Preview" 
+                  width={128}
+                  height={64}
+                  className="h-16 w-auto object-contain" 
+                />
               </div>
             )}
           </div>

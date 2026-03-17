@@ -1,8 +1,12 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
-import { PrismaService } from '../prisma/prisma.service';
-import { MinioService } from '../storage/minio.service';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import { InjectQueue } from "@nestjs/bullmq";
+import { Queue } from "bullmq";
+import { PrismaService } from "../prisma/prisma.service";
+import { MinioService } from "../storage/minio.service";
 
 interface CreateSubmissionParams {
   authorId: string;
@@ -17,7 +21,7 @@ export class SubmissionsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly minio: MinioService,
-    @InjectQueue('assign-reviews') private readonly assignReviewsQueue: Queue,
+    @InjectQueue("assign-reviews") private readonly assignReviewsQueue: Queue,
   ) {}
 
   async createSubmission(params: CreateSubmissionParams) {
@@ -29,12 +33,12 @@ export class SubmissionsService {
     });
 
     if (!event) {
-      throw new NotFoundException('Evento não encontrado.');
+      throw new NotFoundException("Evento não encontrado.");
     }
 
     const objectName = `events/${eventId}/submissions/${Date.now()}`;
     const fileUrl = await this.minio.uploadObject({
-      bucket: 'submissions',
+      bucket: "submissions",
       objectName,
       data: file.buffer,
       contentType: file.mimetype,
@@ -50,7 +54,7 @@ export class SubmissionsService {
       },
     });
 
-    await this.assignReviewsQueue.add('assign', {
+    await this.assignReviewsQueue.add("assign", {
       submissionId: submission.id,
       eventId,
       tenantId: event.tenantId,
@@ -64,7 +68,7 @@ export class SubmissionsService {
       where: { id: eventId, tenantId },
     });
     if (!event) {
-      throw new ForbiddenException('Evento não pertence a este tenant.');
+      throw new ForbiddenException("Evento não pertence a este tenant.");
     }
 
     const submissions = await this.prisma.submission.findMany({
@@ -118,14 +122,17 @@ export class SubmissionsService {
     recommendation?: string;
     comments?: string;
   }) {
-    const { reviewerId, submissionId, score, recommendation, comments } = params;
+    const { reviewerId, submissionId, score, recommendation, comments } =
+      params;
 
     const review = await this.prisma.review.findFirst({
       where: { submissionId, reviewerId },
     });
 
     if (!review) {
-      throw new ForbiddenException('Revisor não está atribuído a esta submissão.');
+      throw new ForbiddenException(
+        "Revisor não está atribuído a esta submissão.",
+      );
     }
 
     return this.prisma.review.update({
@@ -138,4 +145,3 @@ export class SubmissionsService {
     });
   }
 }
-

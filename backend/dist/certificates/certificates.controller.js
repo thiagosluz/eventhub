@@ -34,14 +34,14 @@ let CertificatesController = class CertificatesController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId)
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         return this.certificateTemplates.listByEvent(tenantId, eventId);
     }
     async createTemplate(eventId, body, req) {
         var _a, _b;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId)
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         return this.certificateTemplates.create(tenantId, eventId, {
             name: body.name,
             backgroundUrl: body.backgroundUrl,
@@ -52,34 +52,37 @@ let CertificatesController = class CertificatesController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId)
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         return this.certificateTemplates.findOne(tenantId, id);
     }
     async updateTemplate(id, body, req) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId)
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         return this.certificateTemplates.update(tenantId, id, body);
     }
     async uploadTemplateBackground(id, file, req) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId)
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         if (!(file === null || file === void 0 ? void 0 : file.buffer))
-            throw new common_1.BadRequestException('Arquivo de imagem é obrigatório.');
-        return this.certificateTemplates.uploadBackground(tenantId, id, { buffer: file.buffer, mimetype: file.mimetype });
+            throw new common_1.BadRequestException("Arquivo de imagem é obrigatório.");
+        return this.certificateTemplates.uploadBackground(tenantId, id, {
+            buffer: file.buffer,
+            mimetype: file.mimetype,
+        });
     }
     async issueBulk(templateId, body, req) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId)
-            throw new Error('Missing tenantId on token payload.');
+            throw new Error("Missing tenantId on token payload.");
         const template = await this.certificateTemplates.findOne(tenantId, templateId);
         const registrations = await this.prisma.registration.findMany({
             where: { eventId: template.eventId },
-            include: { user: true }
+            include: { user: true },
         });
         const results = [];
         for (const reg of registrations) {
@@ -88,18 +91,26 @@ let CertificatesController = class CertificatesController {
                 if (body.sendEmail && reg.user.email) {
                     await this.mail.enqueue({
                         to: reg.user.email,
-                        subject: 'Seu certificado está pronto',
+                        subject: "Seu certificado está pronto",
                         text: `Acesse seu certificado em: ${fileUrl}`,
                         html: `<p>Acesse seu certificado em: <a href="${fileUrl}">${fileUrl}</a></p>`,
                     });
                 }
-                results.push({ registrationId: reg.id, status: 'success', fileUrl });
+                results.push({ registrationId: reg.id, status: "success", fileUrl });
             }
             catch (error) {
-                results.push({ registrationId: reg.id, status: 'error', error: error.message });
+                results.push({
+                    registrationId: reg.id,
+                    status: "error",
+                    error: error.message,
+                });
             }
         }
-        return { total: registrations.length, processed: results.length, details: results };
+        return {
+            total: registrations.length,
+            processed: results.length,
+            details: results,
+        };
     }
     async issueCertificate(body) {
         const { fileUrl, issuedId } = await this.certificatePdf.generateAndStore(body.templateId, body.registrationId);
@@ -111,7 +122,7 @@ let CertificatesController = class CertificatesController {
             if (reg === null || reg === void 0 ? void 0 : reg.user.email) {
                 await this.mail.enqueue({
                     to: reg.user.email,
-                    subject: 'Seu certificado está pronto',
+                    subject: "Seu certificado está pronto",
                     text: `Acesse seu certificado em: ${fileUrl}`,
                     html: `<p>Acesse seu certificado em: <a href="${fileUrl}">${fileUrl}</a></p>`,
                 });
@@ -123,10 +134,10 @@ let CertificatesController = class CertificatesController {
         var _a;
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
         if (!userId)
-            throw new Error('Missing userId on token payload.');
+            throw new Error("Missing userId on token payload.");
         return this.prisma.issuedCertificate.findMany({
             where: {
-                registration: { userId }
+                registration: { userId },
             },
             include: {
                 template: {
@@ -135,13 +146,13 @@ let CertificatesController = class CertificatesController {
                             select: {
                                 name: true,
                                 slug: true,
-                                startDate: true
-                            }
-                        }
-                    }
-                }
+                                startDate: true,
+                            },
+                        },
+                    },
+                },
             },
-            orderBy: { issuedAt: 'desc' }
+            orderBy: { issuedAt: "desc" },
         });
     }
 };
@@ -149,8 +160,8 @@ exports.CertificatesController = CertificatesController;
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('templates/event/:eventId'),
-    __param(0, (0, common_1.Param)('eventId')),
+    (0, common_1.Get)("templates/event/:eventId"),
+    __param(0, (0, common_1.Param)("eventId")),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
@@ -159,8 +170,8 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('templates/event/:eventId'),
-    __param(0, (0, common_1.Param)('eventId')),
+    (0, common_1.Post)("templates/event/:eventId"),
+    __param(0, (0, common_1.Param)("eventId")),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -170,8 +181,8 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Get)('templates/:id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)("templates/:id"),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
@@ -180,8 +191,8 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Patch)('templates/:id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Patch)("templates/:id"),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -191,9 +202,9 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('templates/:id/background'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Post)("templates/:id/background"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("file")),
+    __param(0, (0, common_1.Param)("id")),
     __param(1, (0, common_1.UploadedFile)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -203,8 +214,8 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('templates/:templateId/issue-bulk'),
-    __param(0, (0, common_1.Param)('templateId')),
+    (0, common_1.Post)("templates/:templateId/issue-bulk"),
+    __param(0, (0, common_1.Param)("templateId")),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -214,7 +225,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
-    (0, common_1.Post)('issue'),
+    (0, common_1.Post)("issue"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -222,14 +233,14 @@ __decorate([
 ], CertificatesController.prototype, "issueCertificate", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Get)('my'),
+    (0, common_1.Get)("my"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CertificatesController.prototype, "listMyCertificates", null);
 exports.CertificatesController = CertificatesController = __decorate([
-    (0, common_1.Controller)('certificates'),
+    (0, common_1.Controller)("certificates"),
     __metadata("design:paramtypes", [certificate_pdf_service_1.CertificatePdfService,
         certificate_templates_service_1.CertificateTemplatesService,
         mail_service_1.MailService,

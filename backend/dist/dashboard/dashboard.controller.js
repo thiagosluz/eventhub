@@ -27,21 +27,21 @@ let DashboardController = class DashboardController {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
         if (!tenantId) {
-            throw new Error('Tenant missing from request.');
+            throw new Error("Tenant missing from request.");
         }
         return this.dashboardService.getStats(tenantId);
     }
 };
 exports.DashboardController = DashboardController;
 __decorate([
-    (0, common_1.Get)('stats'),
+    (0, common_1.Get)("stats"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], DashboardController.prototype, "getStats", null);
 exports.DashboardController = DashboardController = __decorate([
-    (0, common_1.Controller)('dashboard'),
+    (0, common_1.Controller)("dashboard"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __metadata("design:paramtypes", [dashboard_service_1.DashboardService])

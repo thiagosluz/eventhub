@@ -1,5 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class FormsService {
@@ -11,38 +11,42 @@ export class FormsService {
     });
 
     if (!event) {
-      throw new NotFoundException('Evento não encontrado.');
+      throw new NotFoundException("Evento não encontrado.");
     }
 
     return this.prisma.customForm.findFirst({
-      where: { eventId, type: 'REGISTRATION' },
+      where: { eventId, type: "REGISTRATION" },
       include: {
-        fields: { orderBy: { order: 'asc' } },
+        fields: { orderBy: { order: "asc" } },
       },
     });
   }
 
-  async saveRegistrationForm(tenantId: string, eventId: string, data: {
-    name: string;
-    fields: {
-      id?: string;
-      label: string;
-      type: string;
-      required: boolean;
-      order: number;
-      options?: any;
-    }[];
-  }) {
+  async saveRegistrationForm(
+    tenantId: string,
+    eventId: string,
+    data: {
+      name: string;
+      fields: {
+        id?: string;
+        label: string;
+        type: string;
+        required: boolean;
+        order: number;
+        options?: any;
+      }[];
+    },
+  ) {
     const event = await this.prisma.event.findFirst({
       where: { id: eventId, tenantId },
     });
 
     if (!event) {
-      throw new NotFoundException('Evento não encontrado.');
+      throw new NotFoundException("Evento não encontrado.");
     }
 
     let form = await this.prisma.customForm.findFirst({
-      where: { eventId, type: 'REGISTRATION' },
+      where: { eventId, type: "REGISTRATION" },
     });
 
     if (!form) {
@@ -50,7 +54,7 @@ export class FormsService {
         data: {
           eventId,
           name: data.name,
-          type: 'REGISTRATION',
+          type: "REGISTRATION",
         },
       });
     } else if (form.name !== data.name) {
@@ -65,13 +69,15 @@ export class FormsService {
       where: { formId: form.id },
     });
 
-    const incomingFieldIds = data.fields.filter(f => f.id).map(f => f.id!);
-    const fieldsToDelete = existingFields.filter(f => !incomingFieldIds.includes(f.id));
+    const incomingFieldIds = data.fields.filter((f) => f.id).map((f) => f.id!);
+    const fieldsToDelete = existingFields.filter(
+      (f) => !incomingFieldIds.includes(f.id),
+    );
 
     // Delete removed fields
     if (fieldsToDelete.length > 0) {
       await this.prisma.customFormField.deleteMany({
-        where: { id: { in: fieldsToDelete.map(f => f.id) } },
+        where: { id: { in: fieldsToDelete.map((f) => f.id) } },
       });
     }
 

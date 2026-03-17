@@ -2,6 +2,7 @@ import { eventsService } from "@/services/events.service";
 import { notFound } from "next/navigation";
 import { TicketWidget } from "@/components/events/TicketWidget";
 import Link from "next/link";
+import Image from "next/image";
 
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
@@ -31,15 +32,15 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
   const formattedTime = `${startDate.getHours().toString().padStart(2, '0')}:${startDate.getMinutes().toString().padStart(2, '0')}`;
 
-  const logoToDisplay = event.logoUrl || (event as any).tenant?.logoUrl;
+  const logoToDisplay = event.logoUrl || event.tenant?.logoUrl;
 
   return (
-    <ThemeProvider themeConfig={event.themeConfig} tenantThemeConfig={(event as any).tenant?.themeConfig}>
+    <ThemeProvider themeConfig={event.themeConfig} tenantThemeConfig={event.tenant?.themeConfig}>
       <main className="min-h-screen bg-background pb-24">
         {logoToDisplay && (
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
              <Link href="/">
-               <img src={logoToDisplay} alt="Logo" className="h-8 object-contain" />
+               <Image src={logoToDisplay} alt="Logo" width={120} height={32} className="h-8 w-auto object-contain" priority />
              </Link>
           </div>
         )}
@@ -59,10 +60,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
       {/* Event Banner */}
       <div className="relative h-[400px] w-full bg-muted overflow-hidden">
         {event.bannerUrl ? (
-          <img 
+          <Image 
             src={event.bannerUrl} 
             alt={event.name} 
-            className="w-full h-full object-cover"
+            fill
+            priority
+            className="object-cover"
           />
         ) : (
           <div className="w-full h-full emerald-gradient opacity-20" />

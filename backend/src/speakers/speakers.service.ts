@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateSpeakerDto } from './dto/create-speaker.dto';
-import { UpdateSpeakerDto } from './dto/update-speaker.dto';
-import { MinioService } from '../storage/minio.service';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
+import { CreateSpeakerDto } from "./dto/create-speaker.dto";
+import { UpdateSpeakerDto } from "./dto/update-speaker.dto";
+import { MinioService } from "../storage/minio.service";
 
 @Injectable()
 export class SpeakersService {
@@ -23,7 +23,7 @@ export class SpeakersService {
   async findAll(tenantId: string) {
     return this.prisma.speaker.findMany({
       where: { tenantId },
-      orderBy: { name: 'asc' },
+      orderBy: { name: "asc" },
     });
   }
 
@@ -60,11 +60,11 @@ export class SpeakersService {
     tenantId: string,
     file: { buffer: Buffer; mimetype: string; originalname: string },
   ) {
-    const fileExt = file.originalname.split('.').pop();
+    const fileExt = file.originalname.split(".").pop();
     const fileName = `speakers/${tenantId}/${Date.now()}.${fileExt}`;
 
     const url = await this.minio.uploadObject({
-      bucket: 'eventhub',
+      bucket: "eventhub",
       objectName: fileName,
       data: file.buffer,
       contentType: file.mimetype,
@@ -83,7 +83,7 @@ export class SpeakersService {
   async findAllRoles(tenantId: string) {
     return this.prisma.speakerRole.findMany({
       where: { tenantId },
-      orderBy: { name: 'asc' },
+      orderBy: { name: "asc" },
     });
   }
 
@@ -91,7 +91,7 @@ export class SpeakersService {
     const role = await this.prisma.speakerRole.findFirst({
       where: { id, tenantId },
     });
-    if (!role) throw new NotFoundException('Role not found');
+    if (!role) throw new NotFoundException("Role not found");
     return this.prisma.speakerRole.delete({ where: { id } });
   }
 }

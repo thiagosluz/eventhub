@@ -53,7 +53,7 @@ let MailProcessor = class MailProcessor extends bullmq_1.WorkerHost {
         if (this.transporter) {
             return this.transporter;
         }
-        const host = (_a = process.env.SMTP_HOST) !== null && _a !== void 0 ? _a : 'localhost';
+        const host = (_a = process.env.SMTP_HOST) !== null && _a !== void 0 ? _a : "localhost";
         const port = Number((_b = process.env.SMTP_PORT) !== null && _b !== void 0 ? _b : 1025);
         const user = process.env.SMTP_USER;
         const pass = process.env.SMTP_PASS;
@@ -68,7 +68,7 @@ let MailProcessor = class MailProcessor extends bullmq_1.WorkerHost {
     async process(job) {
         var _a;
         const { to, subject, text, html } = job.data;
-        const from = (_a = process.env.MAIL_FROM) !== null && _a !== void 0 ? _a : 'noreply@eventhub.local';
+        const from = (_a = process.env.MAIL_FROM) !== null && _a !== void 0 ? _a : "noreply@eventhub.local";
         await this.getTransporter().sendMail({
             from,
             to,
@@ -80,7 +80,7 @@ let MailProcessor = class MailProcessor extends bullmq_1.WorkerHost {
 };
 exports.MailProcessor = MailProcessor;
 exports.MailProcessor = MailProcessor = __decorate([
-    (0, bullmq_1.Processor)('emails'),
+    (0, bullmq_1.Processor)("emails"),
     (0, common_1.Injectable)()
 ], MailProcessor);
 //# sourceMappingURL=mail.processor.js.map

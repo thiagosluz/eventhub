@@ -9,11 +9,12 @@ import {
   CreditCardIcon, 
   Cog6ToothIcon,
   AcademicCapIcon,
-  ChevronLeftIcon,
   PlusIcon,
-  UserIcon, // Added UserIcon
-  ChartBarIcon // Added ChartBarIcon
+  UserIcon,
+  ChartBarIcon
 } from "@heroicons/react/24/outline";
+import Image from "next/image";
+import { Tenant } from "@/types/event";
 import { useAuth } from "@/context/AuthContext";
 
 const navigation = [
@@ -28,7 +29,7 @@ const navigation = [
   { name: "Configurações", href: "/dashboard/settings", icon: Cog6ToothIcon },
 ];
 
-export function Sidebar({ tenant }: { tenant?: any }) {
+export function Sidebar({ tenant }: { tenant?: Tenant | null }) {
   const pathname = usePathname();
   const { user } = useAuth();
 
@@ -45,7 +46,13 @@ export function Sidebar({ tenant }: { tenant?: any }) {
       <div className="p-6">
         <Link href="/" className="flex items-center gap-3 group">
           {tenant?.logoUrl ? (
-            <img src={tenant.logoUrl} alt={tenant.name} className="w-8 h-8 rounded-lg object-contain bg-muted p-1 shadow-md" />
+            <Image 
+              src={tenant.logoUrl} 
+              alt={tenant.name || "Tenant Logo"} 
+              width={32}
+              height={32}
+              className="rounded-lg object-contain bg-muted p-1 shadow-md" 
+            />
           ) : (
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
