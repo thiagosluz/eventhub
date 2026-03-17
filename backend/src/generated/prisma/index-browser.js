@@ -186,6 +186,8 @@ exports.Prisma.ActivityScalarFieldEnum = {
   status: 'status',
   typeId: 'typeId',
   requiresEnrollment: 'requiresEnrollment',
+  requiresConfirmation: 'requiresConfirmation',
+  confirmationDays: 'confirmationDays',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -220,6 +222,8 @@ exports.Prisma.ActivityEnrollmentScalarFieldEnum = {
   id: 'id',
   activityId: 'activityId',
   registrationId: 'registrationId',
+  status: 'status',
+  confirmedAt: 'confirmedAt',
   createdAt: 'createdAt'
 };
 
@@ -385,6 +389,12 @@ exports.ActivityStatus = exports.$Enums.ActivityStatus = {
   SCHEDULED: 'SCHEDULED',
   CANCELLED: 'CANCELLED',
   COMPLETED: 'COMPLETED'
+};
+
+exports.EnrollmentStatus = exports.$Enums.EnrollmentStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  CANCELLED: 'CANCELLED'
 };
 
 exports.TicketType = exports.$Enums.TicketType = {

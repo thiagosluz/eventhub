@@ -162,4 +162,33 @@ export class ActivitiesController {
     if (!tenantId) throw new Error("Missing tenantId");
     return this.activities.removeType(tenantId, id);
   }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get("activities/:activityId/enrollments")
+  async listEnrollments(
+    @Param("activityId") activityId: string,
+    @Req() req: AuthRequest,
+  ) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId");
+    return this.activities.listEnrollments(tenantId, activityId);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post("activities/:activityId/enrollments/:enrollmentId/confirm")
+  async confirmEnrollment(
+    @Param("activityId") activityId: string,
+    @Param("enrollmentId") enrollmentId: string,
+    @Req() req: AuthRequest,
+  ) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId");
+    return this.activities.confirmEnrollment(
+      tenantId,
+      activityId,
+      enrollmentId,
+    );
+  }
 }

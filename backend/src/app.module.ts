@@ -9,6 +9,7 @@ import { ActivitiesService } from "./activities/activities.service";
 import { SubmissionsController } from "./submissions/submissions.controller";
 import { SubmissionsService } from "./submissions/submissions.service";
 import { AssignReviewsProcessor } from "./submissions/submissions.processor";
+import { ActivitiesProcessor } from "./activities/activities.processor";
 import { CheckoutController } from "./checkout/checkout.controller";
 import { CheckoutService } from "./checkout/checkout.service";
 import { FreeTicketStrategy } from "./checkout/free-ticket.strategy";
@@ -47,7 +48,11 @@ import { UsersModule } from "./users/users.module";
         port: Number(process.env.REDIS_PORT ?? 6379),
       },
     }),
-    BullModule.registerQueue({ name: "assign-reviews" }, { name: "emails" }),
+    BullModule.registerQueue(
+      { name: "assign-reviews" },
+      { name: "emails" },
+      { name: "activities" },
+    ),
   ],
   controllers: [
     ProtectedExampleController,
@@ -63,6 +68,7 @@ import { UsersModule } from "./users/users.module";
     ActivitiesService,
     SubmissionsService,
     AssignReviewsProcessor,
+    ActivitiesProcessor,
     CheckoutService,
     FreeTicketStrategy,
     CheckinService,

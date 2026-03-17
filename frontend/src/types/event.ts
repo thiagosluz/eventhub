@@ -29,6 +29,24 @@ export interface SpeakerAssociation {
   role?: SpeakerRole;
 }
 
+export type EnrollmentStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED';
+
+export interface ActivityEnrollment {
+  id: string;
+  activityId: string;
+  registrationId: string;
+  registration: {
+    user: {
+      id: string;
+      name?: string;
+      email: string;
+    };
+  };
+  status: EnrollmentStatus;
+  confirmedAt?: string;
+  createdAt: string;
+}
+
 export interface Tenant {
   id: string;
   name: string;
@@ -50,7 +68,10 @@ export interface Activity {
   typeId?: string;
   type?: ActivityType;
   requiresEnrollment: boolean;
+  requiresConfirmation: boolean;
+  confirmationDays?: number;
   speakers?: SpeakerAssociation[];
+  enrollments?: ActivityEnrollment[];
 }
 
 export interface Ticket {

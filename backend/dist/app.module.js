@@ -19,6 +19,7 @@ const activities_service_1 = require("./activities/activities.service");
 const submissions_controller_1 = require("./submissions/submissions.controller");
 const submissions_service_1 = require("./submissions/submissions.service");
 const submissions_processor_1 = require("./submissions/submissions.processor");
+const activities_processor_1 = require("./activities/activities.processor");
 const checkout_controller_1 = require("./checkout/checkout.controller");
 const checkout_service_1 = require("./checkout/checkout.service");
 const free_ticket_strategy_1 = require("./checkout/free-ticket.strategy");
@@ -60,7 +61,7 @@ exports.AppModule = AppModule = __decorate([
                     port: Number((_b = process.env.REDIS_PORT) !== null && _b !== void 0 ? _b : 6379),
                 },
             }),
-            bullmq_1.BullModule.registerQueue({ name: "assign-reviews" }, { name: "emails" }),
+            bullmq_1.BullModule.registerQueue({ name: "assign-reviews" }, { name: "emails" }, { name: "activities" }),
         ],
         controllers: [
             protected_controller_1.ProtectedExampleController,
@@ -76,6 +77,7 @@ exports.AppModule = AppModule = __decorate([
             activities_service_1.ActivitiesService,
             submissions_service_1.SubmissionsService,
             submissions_processor_1.AssignReviewsProcessor,
+            activities_processor_1.ActivitiesProcessor,
             checkout_service_1.CheckoutService,
             free_ticket_strategy_1.FreeTicketStrategy,
             checkin_service_1.CheckinService,

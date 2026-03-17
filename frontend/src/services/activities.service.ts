@@ -15,6 +15,8 @@ export interface CreateActivityDto {
   capacity?: number;
   typeId?: string;
   requiresEnrollment?: boolean;
+  requiresConfirmation?: boolean;
+  confirmationDays?: number;
   speakers?: SpeakerAssociationDto[];
 }
 
@@ -43,5 +45,13 @@ export const activitiesService = {
 
   getMyEnrollments: async (eventId: string): Promise<(Activity & { isEnrolled: boolean })[]> => {
     return api.get<(Activity & { isEnrolled: boolean })[]>(`/activities/my-enrollments/${eventId}`);
+  },
+
+  listEnrollments: async (activityId: string): Promise<any[]> => {
+    return api.get<any[]>(`/activities/${activityId}/enrollments`);
+  },
+
+  confirmEnrollment: async (activityId: string, enrollmentId: string): Promise<any> => {
+    return api.post<any>(`/activities/${activityId}/enrollments/${enrollmentId}/confirm`, {});
   }
 };

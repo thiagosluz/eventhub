@@ -17,7 +17,9 @@ interface ActivityEnrollmentListProps {
 }
 
 export function ActivityEnrollmentList({ eventId }: ActivityEnrollmentListProps) {
-  const [activities, setActivities] = useState<(Activity & { isEnrolled: boolean })[]>([]);
+  const [activities, setActivities] = useState<
+    (Activity & { isEnrolled: boolean; enrollmentStatus?: string })[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [enrollingId, setEnrollingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -36,6 +38,7 @@ export function ActivityEnrollmentList({ eventId }: ActivityEnrollmentListProps)
 
   useEffect(() => {
     fetchActivities();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
 
   const handleEnroll = async (activityId: string) => {
@@ -44,9 +47,10 @@ export function ActivityEnrollmentList({ eventId }: ActivityEnrollmentListProps)
     try {
       await activitiesService.enrollInActivity(activityId);
       await fetchActivities(); // Refresh list to get updated status and remaining spots
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { message?: string };
       console.error("Enrollment failed", err);
-      setError(err.message || "Falha na inscrição. Verifique se há choque de horário.");
+      setError(error.message || "Falha na inscrição. Verifique se há choque de horário.");
     } finally {
       setEnrollingId(null);
     }
@@ -123,16 +127,38 @@ export function ActivityEnrollmentList({ eventId }: ActivityEnrollmentListProps)
               </div>
             </div>
 
-            <div className="shrink-0">
+            <div className="shrink-0 flex flex-col items-end gap-3">
               {activity.isEnrolled ? (
-                <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500/10 text-emerald-500 font-black text-xs uppercase tracking-widest border border-emerald-500/20">
-                  <CheckCircleIcon className="w-4 h-4" />
-                  Inscrito
-                </div>
+                <>
+                  {activity.enrollmentStatus === "PENDING" ? (
+                    <div className="flex flex-col items-end gap-1">
+                      <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-500/10 text-amber-600 font-black text-xs uppercase tracking-widest border border-amber-500/20 animate-pulse">
+                        <ClockIcon className="w-4 h-4" />
+                        Confirmação Pendente
+                      </div>
+                      <span className="text-[9px] font-bold text-amber-600/70 max-w-[180px] text-right">
+                        Sua vaga está reservada, mas requer confirmação do
+                        organizador.
+                      </span>
+                    </div>
+                  ) : activity.enrollmentStatus === "CONFIRMED" ? (
+                    <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500/10 text-emerald-500 font-black text-xs uppercase tracking-widest border border-emerald-500/20">
+                      <CheckCircleIcon className="w-4 h-4" />
+                      Inscrição Confirmada
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-destructive/10 text-destructive font-black text-xs uppercase tracking-widest border border-destructive/20">
+                      <ExclamationCircleIcon className="w-4 h-4" />
+                      Cancelada
+                    </div>
+                  )}
+                </>
               ) : activity.requiresEnrollment ? (
                 <button
                   onClick={() => handleEnroll(activity.id)}
-                  disabled={enrollingId === activity.id || activity.remainingSpots === 0}
+                  disabled={
+                    enrollingId === activity.id || activity.remainingSpots === 0
+                  }
                   className="premium-button !py-3 !px-8 !text-xs !font-black shadow-lg shadow-primary/20 disabled:opacity-50"
                 >
                   {enrollingId === activity.id ? (

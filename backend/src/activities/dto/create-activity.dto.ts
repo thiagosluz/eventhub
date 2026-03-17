@@ -12,5 +12,7 @@ export class CreateActivityDto {
   capacity?: number;
   typeId?: string;
   requiresEnrollment?: boolean;
+  requiresConfirmation?: boolean;
+  confirmationDays?: number;
   speakers?: SpeakerAssociationDto[];
 }

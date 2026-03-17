@@ -7,5 +7,7 @@ export class UpdateActivityDto {
   capacity?: number;
   typeId?: string;
   requiresEnrollment?: boolean;
+  requiresConfirmation?: boolean;
+  confirmationDays?: number;
   speakers?: { speakerId: string; roleId?: string }[];
 }

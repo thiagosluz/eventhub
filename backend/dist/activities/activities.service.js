@@ -8,13 +8,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActivitiesService = void 0;
 const common_1 = require("@nestjs/common");
+const bullmq_1 = require("@nestjs/bullmq");
+const bullmq_2 = require("bullmq");
 const prisma_service_1 = require("../prisma/prisma.service");
+const prisma_1 = require("../generated/prisma");
 let ActivitiesService = class ActivitiesService {
-    constructor(prisma) {
+    constructor(prisma, activitiesQueue) {
         this.prisma = prisma;
+        this.activitiesQueue = activitiesQueue;
+    }
+    async onModuleInit() {
+        await this.activitiesQueue.add("cleanup-expired-enrollments", {}, {
+            repeat: {
+                pattern: "0 0 * * *",
+            },
+        });
     }
     async createActivity(params) {
         const { tenantId, eventId, data } = params;
@@ -35,6 +49,8 @@ let ActivitiesService = class ActivitiesService {
                 capacity: data.capacity,
                 typeId: data.typeId,
                 requiresEnrollment: data.requiresEnrollment || false,
+                requiresConfirmation: data.requiresConfirmation || false,
+                confirmationDays: data.confirmationDays,
             },
         });
         if (data.speakers && data.speakers.length > 0) {
@@ -46,6 +62,21 @@ let ActivitiesService = class ActivitiesService {
                 })),
                 skipDuplicates: true,
             });
+        }
+        if (!activity.requiresEnrollment) {
+            const registrations = await this.prisma.registration.findMany({
+                where: { eventId },
+                select: { id: true },
+            });
+            if (registrations.length > 0) {
+                await this.prisma.activityEnrollment.createMany({
+                    data: registrations.map((r) => ({
+                        activityId: activity.id,
+                        registrationId: r.id,
+                    })),
+                    skipDuplicates: true,
+                });
+            }
         }
         return this.getActivityForTenant(tenantId, activity.id);
     }
@@ -83,6 +114,8 @@ let ActivitiesService = class ActivitiesService {
                 : null,
             type: a.type ? { id: a.type.id, name: a.type.name } : null,
             requiresEnrollment: a.requiresEnrollment,
+            requiresConfirmation: a.requiresConfirmation,
+            confirmationDays: a.confirmationDays,
             speakers: a.speakers.map((as) => ({
                 speaker: as.speaker,
                 role: as.role ? { id: as.role.id, name: as.role.name } : null,
@@ -114,25 +147,31 @@ let ActivitiesService = class ActivitiesService {
             },
             orderBy: { startAt: "asc" },
         });
-        return activities.map((a) => ({
-            id: a.id,
-            title: a.title,
-            description: a.description,
-            location: a.location,
-            startAt: a.startAt,
-            endAt: a.endAt,
-            capacity: a.capacity,
-            remainingSpots: a.capacity != null
-                ? Math.max(a.capacity - a._count.enrollments, 0)
-                : null,
-            isEnrolled: a.enrollments.length > 0,
-            requiresEnrollment: a.requiresEnrollment,
-            type: a.type ? { id: a.type.id, name: a.type.name } : null,
-            speakers: a.speakers.map((as) => ({
-                speaker: as.speaker,
-                role: as.role ? { id: as.role.id, name: as.role.name } : null,
-            })),
-        }));
+        return activities.map((a) => {
+            var _a;
+            return ({
+                id: a.id,
+                title: a.title,
+                description: a.description,
+                location: a.location,
+                startAt: a.startAt,
+                endAt: a.endAt,
+                capacity: a.capacity,
+                remainingSpots: a.capacity != null
+                    ? Math.max(a.capacity - a._count.enrollments, 0)
+                    : null,
+                isEnrolled: a.enrollments.length > 0,
+                enrollmentStatus: ((_a = a.enrollments[0]) === null || _a === void 0 ? void 0 : _a.status) || null,
+                requiresEnrollment: a.requiresEnrollment,
+                requiresConfirmation: a.requiresConfirmation,
+                confirmationDays: a.confirmationDays,
+                type: a.type ? { id: a.type.id, name: a.type.name } : null,
+                speakers: a.speakers.map((as) => ({
+                    speaker: as.speaker,
+                    role: as.role ? { id: as.role.id, name: as.role.name } : null,
+                })),
+            });
+        });
     }
     async getActivityForTenant(tenantId, activityId) {
         const activity = await this.prisma.activity.findFirst({
@@ -173,6 +212,8 @@ let ActivitiesService = class ActivitiesService {
                 ? { id: activity.type.id, name: activity.type.name }
                 : null,
             requiresEnrollment: activity.requiresEnrollment,
+            requiresConfirmation: activity.requiresConfirmation,
+            confirmationDays: activity.confirmationDays,
         };
     }
     async updateActivity(params) {
@@ -187,6 +228,8 @@ let ActivitiesService = class ActivitiesService {
             capacity: data.capacity,
             typeId: data.typeId,
             requiresEnrollment: data.requiresEnrollment,
+            requiresConfirmation: data.requiresConfirmation,
+            confirmationDays: data.confirmationDays,
         };
         await this.prisma.activity.update({
             where: { id: activityId },
@@ -204,7 +247,28 @@ let ActivitiesService = class ActivitiesService {
                 });
             }
         }
-        return this.getActivityForTenant(tenantId, activityId);
+        const updatedActivity = await this.getActivityForTenant(tenantId, activityId);
+        if (!updatedActivity.requiresEnrollment) {
+            const activityFromDb = await this.prisma.activity.findUnique({
+                where: { id: activityId },
+            });
+            if (activityFromDb) {
+                const registrations = await this.prisma.registration.findMany({
+                    where: { eventId: activityFromDb.eventId },
+                    select: { id: true },
+                });
+                if (registrations.length > 0) {
+                    await this.prisma.activityEnrollment.createMany({
+                        data: registrations.map((r) => ({
+                            activityId: activityId,
+                            registrationId: r.id,
+                        })),
+                        skipDuplicates: true,
+                    });
+                }
+            }
+        }
+        return updatedActivity;
     }
     async enrollInActivity(params) {
         const { userId, activityId } = params;
@@ -260,6 +324,10 @@ let ActivitiesService = class ActivitiesService {
             data: {
                 activityId,
                 registrationId: registration.id,
+                status: activity.requiresConfirmation
+                    ? prisma_1.EnrollmentStatus.PENDING
+                    : prisma_1.EnrollmentStatus.CONFIRMED,
+                confirmedAt: activity.requiresConfirmation ? null : new Date(),
             },
         });
         return this.prisma.activity.findUnique({
@@ -303,10 +371,45 @@ let ActivitiesService = class ActivitiesService {
             throw new common_1.NotFoundException("Type not found");
         return this.prisma.activityType.delete({ where: { id } });
     }
+    async listEnrollments(tenantId, activityId) {
+        const activity = await this.getActivityForTenant(tenantId, activityId);
+        return this.prisma.activityEnrollment.findMany({
+            where: { activityId: activity.id },
+            include: {
+                registration: {
+                    include: {
+                        user: true,
+                    },
+                },
+            },
+            orderBy: { createdAt: "desc" },
+        });
+    }
+    async confirmEnrollment(tenantId, activityId, enrollmentId) {
+        await this.getActivityForTenant(tenantId, activityId);
+        const enrollment = await this.prisma.activityEnrollment.findUnique({
+            where: { id: enrollmentId, activityId },
+        });
+        if (!enrollment) {
+            throw new common_1.NotFoundException("Inscrição não encontrada.");
+        }
+        if (enrollment.status === prisma_1.EnrollmentStatus.CONFIRMED) {
+            return enrollment;
+        }
+        return this.prisma.activityEnrollment.update({
+            where: { id: enrollmentId },
+            data: {
+                status: prisma_1.EnrollmentStatus.CONFIRMED,
+                confirmedAt: new Date(),
+            },
+        });
+    }
 };
 exports.ActivitiesService = ActivitiesService;
 exports.ActivitiesService = ActivitiesService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __param(1, (0, bullmq_1.InjectQueue)("activities")),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        bullmq_2.Queue])
 ], ActivitiesService);
 //# sourceMappingURL=activities.service.js.map

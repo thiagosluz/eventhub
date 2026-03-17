@@ -2,12 +2,31 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  OnModuleInit,
 } from "@nestjs/common";
+import { InjectQueue } from "@nestjs/bullmq";
+import { Queue } from "bullmq";
 import { PrismaService } from "../prisma/prisma.service";
+import { EnrollmentStatus } from "../generated/prisma";
 
 @Injectable()
-export class ActivitiesService {
-  constructor(private readonly prisma: PrismaService) {}
+export class ActivitiesService implements OnModuleInit {
+  constructor(
+    private readonly prisma: PrismaService,
+    @InjectQueue("activities") private readonly activitiesQueue: Queue,
+  ) {}
+
+  async onModuleInit() {
+    await this.activitiesQueue.add(
+      "cleanup-expired-enrollments",
+      {},
+      {
+        repeat: {
+          pattern: "0 0 * * *", // Run every night at midnight
+        },
+      },
+    );
+  }
 
   async createActivity(params: {
     tenantId: string;
@@ -21,6 +40,8 @@ export class ActivitiesService {
       capacity?: number;
       typeId?: string;
       requiresEnrollment?: boolean;
+      requiresConfirmation?: boolean;
+      confirmationDays?: number;
       speakers?: { speakerId: string; roleId?: string }[];
     };
   }) {
@@ -45,6 +66,8 @@ export class ActivitiesService {
         capacity: data.capacity,
         typeId: data.typeId,
         requiresEnrollment: data.requiresEnrollment || false,
+        requiresConfirmation: data.requiresConfirmation || false,
+        confirmationDays: data.confirmationDays,
       },
     });
 
@@ -57,6 +80,24 @@ export class ActivitiesService {
         })),
         skipDuplicates: true,
       });
+    }
+
+    // Auto-enroll existing participants if enrollment is not required
+    if (!activity.requiresEnrollment) {
+      const registrations = await this.prisma.registration.findMany({
+        where: { eventId },
+        select: { id: true },
+      });
+
+      if (registrations.length > 0) {
+        await this.prisma.activityEnrollment.createMany({
+          data: registrations.map((r) => ({
+            activityId: activity.id,
+            registrationId: r.id,
+          })),
+          skipDuplicates: true,
+        });
+      }
     }
 
     return this.getActivityForTenant(tenantId, activity.id);
@@ -100,6 +141,8 @@ export class ActivitiesService {
           : null,
       type: a.type ? { id: a.type.id, name: a.type.name } : null,
       requiresEnrollment: a.requiresEnrollment,
+      requiresConfirmation: a.requiresConfirmation,
+      confirmationDays: a.confirmationDays,
       speakers: a.speakers.map((as) => ({
         speaker: as.speaker,
         role: as.role ? { id: as.role.id, name: as.role.name } : null,
@@ -150,7 +193,10 @@ export class ActivitiesService {
           ? Math.max(a.capacity - a._count.enrollments, 0)
           : null,
       isEnrolled: a.enrollments.length > 0,
+      enrollmentStatus: a.enrollments[0]?.status || null,
       requiresEnrollment: a.requiresEnrollment,
+      requiresConfirmation: a.requiresConfirmation,
+      confirmationDays: a.confirmationDays,
       type: a.type ? { id: a.type.id, name: a.type.name } : null,
       speakers: a.speakers.map((as) => ({
         speaker: as.speaker,
@@ -201,6 +247,8 @@ export class ActivitiesService {
         ? { id: activity.type.id, name: activity.type.name }
         : null,
       requiresEnrollment: activity.requiresEnrollment,
+      requiresConfirmation: activity.requiresConfirmation,
+      confirmationDays: activity.confirmationDays,
     };
   }
 
@@ -216,6 +264,8 @@ export class ActivitiesService {
       capacity?: number;
       typeId?: string;
       requiresEnrollment?: boolean;
+      requiresConfirmation?: boolean;
+      confirmationDays?: number;
       speakers?: { speakerId: string; roleId?: string }[];
     };
   }) {
@@ -232,6 +282,8 @@ export class ActivitiesService {
       capacity: data.capacity,
       typeId: data.typeId,
       requiresEnrollment: data.requiresEnrollment,
+      requiresConfirmation: data.requiresConfirmation,
+      confirmationDays: data.confirmationDays,
     };
 
     await this.prisma.activity.update({
@@ -253,7 +305,35 @@ export class ActivitiesService {
       }
     }
 
-    return this.getActivityForTenant(tenantId, activityId);
+    // Auto-enroll existing participants if enrollment requirement is removed or confirmed false
+    const updatedActivity = await this.getActivityForTenant(
+      tenantId,
+      activityId,
+    );
+    if (!updatedActivity.requiresEnrollment) {
+      const activityFromDb = await this.prisma.activity.findUnique({
+        where: { id: activityId },
+      });
+
+      if (activityFromDb) {
+        const registrations = await this.prisma.registration.findMany({
+          where: { eventId: activityFromDb.eventId },
+          select: { id: true },
+        });
+
+        if (registrations.length > 0) {
+          await this.prisma.activityEnrollment.createMany({
+            data: registrations.map((r) => ({
+              activityId: activityId,
+              registrationId: r.id,
+            })),
+            skipDuplicates: true,
+          });
+        }
+      }
+    }
+
+    return updatedActivity;
   }
 
   async enrollInActivity(params: { userId: string; activityId: string }) {
@@ -330,6 +410,10 @@ export class ActivitiesService {
       data: {
         activityId,
         registrationId: registration.id,
+        status: activity.requiresConfirmation
+          ? EnrollmentStatus.PENDING
+          : EnrollmentStatus.CONFIRMED,
+        confirmedAt: activity.requiresConfirmation ? null : new Date(),
       },
     });
 
@@ -381,5 +465,50 @@ export class ActivitiesService {
     });
     if (!type) throw new NotFoundException("Type not found");
     return this.prisma.activityType.delete({ where: { id } });
+  }
+
+  // Enrollment Management
+  async listEnrollments(tenantId: string, activityId: string) {
+    const activity = await this.getActivityForTenant(tenantId, activityId);
+
+    return this.prisma.activityEnrollment.findMany({
+      where: { activityId: activity.id },
+      include: {
+        registration: {
+          include: {
+            user: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
+  async confirmEnrollment(
+    tenantId: string,
+    activityId: string,
+    enrollmentId: string,
+  ) {
+    await this.getActivityForTenant(tenantId, activityId);
+
+    const enrollment = await this.prisma.activityEnrollment.findUnique({
+      where: { id: enrollmentId, activityId },
+    });
+
+    if (!enrollment) {
+      throw new NotFoundException("Inscrição não encontrada.");
+    }
+
+    if (enrollment.status === EnrollmentStatus.CONFIRMED) {
+      return enrollment;
+    }
+
+    return this.prisma.activityEnrollment.update({
+      where: { id: enrollmentId },
+      data: {
+        status: EnrollmentStatus.CONFIRMED,
+        confirmedAt: new Date(),
+      },
+    });
   }
 }

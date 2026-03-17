@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { CalendarIcon, MapPinIcon, UsersIcon, UserIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { activityTypesService, speakerRolesService, ActivityType, SpeakerRole } from '@/services/management.service';
 import { speakersService, Speaker } from '@/services/speakers.service';
+import { activitiesService, CreateActivityDto, UpdateActivityDto } from '@/services/activities.service';
+import { Activity } from '@/types/event';
 
 interface ActivityFormProps {
-  initialData?: any;
+  initialData?: Activity | null;
   onSubmit: (data: any) => Promise<void>;
   isLoading: boolean;
 }
@@ -19,11 +21,48 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
     capacity: initialData?.capacity || '',
     typeId: initialData?.type?.id || '',
     requiresEnrollment: initialData?.requiresEnrollment || false,
+    requiresConfirmation: initialData?.requiresConfirmation || false,
+    confirmationDays: initialData?.confirmationDays || 1,
     speakers: (initialData?.speakers || []).map((s: any) => ({
       speakerId: s.speaker?.id || s.speakerId || '',
       roleId: s.role?.id || s.roleId || ''
     })) as { speakerId: string; roleId: string }[]
   });
+  
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        title: initialData.title || '',
+        description: initialData.description || '',
+        location: initialData.location || '',
+        startAt: initialData.startAt ? new Date(initialData.startAt).toISOString().slice(0, 16) : '',
+        endAt: initialData.endAt ? new Date(initialData.endAt).toISOString().slice(0, 16) : '',
+        capacity: initialData.capacity || '',
+        typeId: initialData.type?.id || '',
+        requiresEnrollment: initialData.requiresEnrollment || false,
+        requiresConfirmation: initialData.requiresConfirmation || false,
+        confirmationDays: initialData.confirmationDays || 1,
+        speakers: (initialData.speakers || []).map((s: any) => ({
+          speakerId: s.speaker?.id || s.speakerId || '',
+          roleId: s.role?.id || s.roleId || ''
+        })) as { speakerId: string; roleId: string }[]
+      });
+    } else {
+      setFormData({
+        title: '',
+        description: '',
+        location: '',
+        startAt: '',
+        endAt: '',
+        capacity: '',
+        typeId: '',
+        requiresEnrollment: false,
+        requiresConfirmation: false,
+        confirmationDays: 1,
+        speakers: []
+      });
+    }
+  }, [initialData]);
 
   const [types, setTypes] = useState<ActivityType[]>([]);
   const [roles, setRoles] = useState<SpeakerRole[]>([]);
@@ -69,7 +108,14 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
       ...formData,
       capacity: formData.capacity ? Number(formData.capacity) : undefined,
       typeId: formData.typeId || undefined,
-      speakers: formData.speakers.filter(s => s.speakerId),
+      requiresConfirmation: formData.requiresEnrollment
+        ? formData.requiresConfirmation
+        : false,
+      confirmationDays:
+        formData.requiresEnrollment && formData.requiresConfirmation
+          ? Number(formData.confirmationDays)
+          : undefined,
+      speakers: formData.speakers.filter((s) => s.speakerId),
     });
   };
 
@@ -106,12 +152,71 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
               <input
                 type="checkbox"
                 checked={formData.requiresEnrollment}
-                onChange={(e) => setFormData({ ...formData, requiresEnrollment: e.target.checked })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    requiresEnrollment: e.target.checked,
+                  })
+                }
                 className="w-5 h-5 rounded-lg border-border text-primary focus:ring-primary/20"
               />
-              <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">Requer Inscrição Prévia</span>
+              <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                Requer Inscrição Prévia
+              </span>
             </label>
           </div>
+
+          {formData.requiresEnrollment && (
+            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-primary/5 rounded-2xl border border-primary/10 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="flex flex-col justify-center">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={formData.requiresConfirmation}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        requiresConfirmation: e.target.checked,
+                      })
+                    }
+                    className="w-5 h-5 rounded-lg border-border text-primary focus:ring-primary/20"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                      Requer Confirmação do Participante
+                    </span>
+                    <span className="text-[10px] text-muted-foreground font-medium">
+                      O participante terá um prazo para confirmar a presença.
+                    </span>
+                  </div>
+                </label>
+              </div>
+
+              {formData.requiresConfirmation && (
+                <div className="space-y-2 animate-in fade-in slide-in-from-left-2 duration-300">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground px-1">
+                    Prazo para Confirmação (Dias)
+                  </label>
+                  <select
+                    value={formData.confirmationDays}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmationDays: Number(e.target.value),
+                      })
+                    }
+                    className="w-full h-10 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
+                  >
+                    {[1, 2, 3, 4, 5, 6, 7].map((d) => (
+                      <option key={d} value={d}>
+                        {d} {d === 1 ? 'dia' : 'dias'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="space-y-2">

@@ -1,4 +1,4 @@
-'use client';
+'use client'; 
 
 import { useEffect, useState, use } from 'react';
 import { activitiesService, CreateActivityDto, UpdateActivityDto } from '@/services/activities.service';
@@ -18,6 +18,7 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { ActivityForm } from '@/components/dashboard/ActivityForm';
+import { ParticipantsModal } from '@/components/dashboard/ParticipantsModal';
 import { DeleteConfirmationModal } from '@/components/dashboard/DeleteConfirmationModal';
 import { toast } from 'react-hot-toast';
 
@@ -34,6 +35,10 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [activityToDelete, setActivityToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // Participants Modal state
+  const [isParticipantsModalOpen, setIsParticipantsModalOpen] = useState(false);
+  const [selectedActivityForParticipants, setSelectedActivityForParticipants] = useState<Activity | null>(null);
 
   useEffect(() => {
     loadData();
@@ -162,6 +167,11 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
                           Requer Inscrição
                         </span>
                       )}
+                      {activity.requiresConfirmation && (
+                        <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 text-[10px] font-black uppercase tracking-widest border border-amber-500/20">
+                          Requer Confirmação
+                        </span>
+                      )}
                     </div>
                     
                     <div className="flex flex-wrap gap-4 text-xs font-bold text-muted-foreground">
@@ -178,7 +188,7 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
                       {activity.capacity && (
                         <div className="flex items-center gap-1.5">
                           <UsersIcon className="w-3.5 h-3.5" />
-                          {activity.capacity} Vagas
+                          {activity.remainingSpots !== null ? `${activity.remainingSpots} Vagas Restantes` : `${activity.capacity} Vagas`}
                         </div>
                       )}
                     </div>
@@ -211,26 +221,39 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-2 self-end md:self-start pt-2">
-                  <button
-                    onClick={() => {
-                      setEditingActivity(activity);
-                      setIsModalOpen(true);
-                    }}
-                    className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all border border-transparent hover:border-primary/20 shadow-sm"
-                  >
-                    <PencilIcon className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setActivityToDelete(activity.id);
-                      setIsDeleteModalOpen(true);
-                    }}
-                    className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all border border-transparent hover:border-destructive/20 shadow-sm"
-                  >
-                    <TrashIcon className="w-4 h-4" />
-                  </button>
-                </div>
+                  <div className="flex items-center gap-2 self-end md:self-start pt-2">
+                    {activity.requiresEnrollment && (
+                      <button
+                        onClick={() => {
+                          setSelectedActivityForParticipants(activity);
+                          setIsParticipantsModalOpen(true);
+                        }}
+                        className="p-3 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-all border border-primary/20 shadow-sm flex items-center gap-2"
+                        title="Visualizar Inscritos"
+                      >
+                        <UsersIcon className="w-4 h-4" />
+                        <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Inscritos</span>
+                      </button>
+                    )}
+                    <button
+                      onClick={() => {
+                        setEditingActivity(activity);
+                        setIsModalOpen(true);
+                      }}
+                      className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all border border-transparent hover:border-primary/20 shadow-sm"
+                    >
+                      <PencilIcon className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setActivityToDelete(activity.id);
+                        setIsDeleteModalOpen(true);
+                      }}
+                      className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all border border-transparent hover:border-destructive/20 shadow-sm"
+                    >
+                      <TrashIcon className="w-4 h-4" />
+                    </button>
+                  </div>
               </div>
             </div>
           ))
@@ -271,6 +294,18 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
         description="Esta ação não pode ser desfeita. Todos os dados de inscrições e presenças desta atividade serão permanentemente removidos."
         isLoading={isDeleting}
       />
+
+      {/* Participants Modal */}
+      {isParticipantsModalOpen && selectedActivityForParticipants && (
+        <ParticipantsModal
+          activity={selectedActivityForParticipants}
+          isOpen={isParticipantsModalOpen}
+          onClose={() => {
+            setIsParticipantsModalOpen(false);
+            setSelectedActivityForParticipants(null);
+          }}
+        />
+      )}
     </div>
   );
 }
