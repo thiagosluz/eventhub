@@ -27,13 +27,13 @@ export default async function EventsPage() {
               Encontre congressos, workshops e conferências de alto nível organizados na nossa plataforma.
             </p>
           </div>
-          
+
           {/* Search Placeholder */}
           <div className="w-full md:w-96">
             <div className="relative group">
-              <input 
-                type="text" 
-                placeholder="Buscar eventos..." 
+              <input
+                type="text"
+                placeholder="Buscar eventos..."
                 className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card shadow-sm transition-all focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none"
               />
               <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">

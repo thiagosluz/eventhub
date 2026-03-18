@@ -58,10 +58,10 @@ export function Navbar({ tenant }: { tenant?: Tenant }) {
                 </span>
               </div>
               <Link 
-                href={user?.role === 'ORGANIZER' ? '/dashboard' : user?.role === 'REVIEWER' ? '/dashboard/reviews' : '/tickets'} 
+                href={user?.role === 'ORGANIZER' ? '/dashboard' : user?.role === 'REVIEWER' ? '/dashboard/reviews' : '/profile'} 
                 className="text-sm font-black text-muted-foreground hover:text-primary transition-colors px-4 py-2 uppercase tracking-widest"
               >
-                {user?.role === 'ORGANIZER' ? 'Dashboard' : user?.role === 'REVIEWER' ? 'Avaliações' : 'Inscrições'}
+                {user?.role === 'ORGANIZER' ? 'Dashboard' : user?.role === 'REVIEWER' ? 'Avaliações' : 'Meu Perfil'}
               </Link>
               <button 
                 onClick={logout}
