@@ -8,12 +8,18 @@ import {
   UsersIcon,
   SparklesIcon,
   ArrowPathIcon,
-  XCircleIcon
+  XCircleIcon,
+  TrashIcon,
+  CheckCircleIcon,
+  ArrowDownTrayIcon,
+  EyeIcon,
+  EyeSlashIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { eventsService } from "@/services/events.service";
 import { Event } from "@/types/event";
 import confetti from "canvas-confetti";
+import { DeleteConfirmationModal } from "@/components/dashboard/DeleteConfirmationModal";
 
 export default function RaffleToolPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -22,6 +28,23 @@ export default function RaffleToolPage({ params }: { params: Promise<{ id: strin
   const [isDrawing, setIsDrawing] = useState(false);
   const [error, setError] = useState("");
   const [drawCount, setDrawCount] = useState(1);
+  const [rule, setRule] = useState<'ALL_REGISTERED' | 'ONLY_CHECKED_IN'>('ONLY_CHECKED_IN');
+  const [prizeName, setPrizeName] = useState('');
+  const [activityId, setActivityId] = useState('');
+  const [uniqueWinners, setUniqueWinners] = useState(false);
+  const [excludeStaff, setExcludeStaff] = useState(false);
+  const [history, setHistory] = useState<any[]>([]);
+  const [historyToDelete, setHistoryToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const fetchHistory = async () => {
+    try {
+      const data = await operationsService.getRaffleHistory(id);
+      setHistory(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -33,7 +56,45 @@ export default function RaffleToolPage({ params }: { params: Promise<{ id: strin
       }
     };
     fetchEvent();
+    fetchHistory();
   }, [id]);
+
+  const handleDelete = async () => {
+    if (!historyToDelete) return;
+    setIsDeleting(true);
+    try {
+      await operationsService.deleteRaffleHistory(historyToDelete);
+      fetchHistory();
+      setHistoryToDelete(null);
+    } catch (err) {
+      console.error("Erro ao deletar", err);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleExportCSV = () => {
+    if (!history.length) return;
+    const header = ["Data/Hora", "Participante", "E-mail", "Regra/Escopo", "Prêmio", "Recebeu?"];
+    const rows = history.map(h => [
+      new Date(h.drawnAt).toLocaleString('pt-BR'),
+      h.registration?.user?.name || "Desconhecido",
+      h.registration?.user?.email || "N/A",
+      h.rule === "ALL_REGISTERED" ? "Todos os Inscritos" : "Somente Check-in",
+      h.prizeName || "-",
+      h.hasReceived ? "Sim" : "Não"
+    ]);
+
+    const csvContent = [header, ...rows].map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `sorteios_${id}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const handleDraw = async () => {
     setIsDrawing(true);
@@ -43,11 +104,12 @@ export default function RaffleToolPage({ params }: { params: Promise<{ id: strin
     await new Promise(r => setTimeout(r, 2000));
 
     try {
-      const response = await operationsService.drawRaffle(id, undefined, drawCount);
+      const response = await operationsService.drawRaffle(id, activityId || undefined, drawCount, rule, prizeName, uniqueWinners, excludeStaff);
       if (response.winners.length === 0) {
-        setError("Nenhum participante elegível encontrado (precisa ter feito check-in).");
+        setError("Nenhum participante elegível encontrado.");
       } else {
         setWinners(response.winners);
+        fetchHistory();
         // Celebration!
         confetti({
           particleCount: 150,
@@ -104,6 +166,65 @@ export default function RaffleToolPage({ params }: { params: Promise<{ id: strin
              )}
              {isDrawing ? "SORTEANDO..." : "REALIZAR SORTEIO"}
            </button>
+        </div>
+      </div>
+
+      {/* Config Panel */}
+      <div className="w-full max-w-4xl mx-auto bg-white p-6 rounded-2xl border border-border shadow-sm space-y-4">
+        <h3 className="text-sm font-black text-foreground uppercase tracking-widest">Configuração do Sorteio</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+             <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Regra</label>
+             <select 
+               value={rule} 
+               onChange={(e) => setRule(e.target.value as any)}
+               className="w-full bg-slate-50 border border-border rounded-xl px-4 py-2 text-sm font-medium"
+             >
+               <option value="ONLY_CHECKED_IN">Somente Check-in (Presentes)</option>
+               <option value="ALL_REGISTERED">Todos os Inscritos</option>
+             </select>
+          </div>
+          <div>
+             <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Escopo</label>
+             <select 
+               value={activityId} 
+               onChange={(e) => setActivityId(e.target.value)}
+               className="w-full bg-slate-50 border border-border rounded-xl px-4 py-2 text-sm font-medium"
+             >
+               <option value="">Geral do Evento</option>
+               {event?.activities?.map((a: any) => (
+                 <option key={a.id} value={a.id}>{a.title}</option>
+               ))}
+             </select>
+          </div>
+          <div>
+             <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Prêmio (Opcional)</label>
+             <input 
+               type="text" 
+               placeholder="Ex: Livro, Alexa..."
+               value={prizeName} 
+               onChange={(e) => setPrizeName(e.target.value)}
+               className="w-full bg-slate-50 border border-border rounded-xl px-4 py-2 text-sm font-medium"
+             />
+          </div>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row gap-6 pt-2 border-t border-border mt-4">
+          <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground">
+            <input type="checkbox" checked={uniqueWinners} onChange={e => setUniqueWinners(e.target.checked)} className="rounded text-primary border-border focus:ring-primary w-4 h-4"/>
+            <span className="flex-1">Não repetir ganhadores <span className="text-[10px] uppercase font-black tracking-widest opacity-50 ml-1">(Justo)</span></span>
+          </label>
+          <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground">
+            <input type="checkbox" checked={excludeStaff} onChange={e => setExcludeStaff(e.target.checked)} className="rounded text-primary border-border focus:ring-primary w-4 h-4"/>
+            <span className="flex-1">Excluir Equipe/Organizadores</span>
+          </label>
+        </div>
+        
+        <div className="flex justify-end pt-2">
+           <Link href={`/raffle-display/${id}`} target="_blank" className="text-xs font-black uppercase tracking-widest text-primary hover:text-primary/80 flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-xl transition-colors">
+              <SparklesIcon className="w-4 h-4" />
+              Abrir Modo Telão
+           </Link>
         </div>
       </div>
 
@@ -180,6 +301,90 @@ export default function RaffleToolPage({ params }: { params: Promise<{ id: strin
         )}
       </div>
 
+      {/* History Area */}
+      <div className="w-full max-w-4xl mx-auto space-y-4 mt-6">
+        <div className="flex items-center justify-between">
+           <h3 className="text-xl font-black text-foreground tracking-tight">Histórico de Sorteios</h3>
+           <button onClick={handleExportCSV} className="text-xs font-black uppercase tracking-widest text-primary flex items-center gap-2 hover:bg-primary/10 px-4 py-2 rounded-xl transition-colors">
+              <ArrowDownTrayIcon className="w-4 h-4" />
+              Exportar CSV
+           </button>
+        </div>
+        
+        <div className="bg-white rounded-3xl border border-border shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm whitespace-nowrap">
+               <thead className="bg-slate-50">
+                 <tr>
+                    <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground">Data/Hora</th>
+                    <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground">Participante</th>
+                    <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground">Regra / Escopo</th>
+                    <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground">Prêmio</th>
+                    <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground text-center">Status</th>
+                    <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground text-right">Ação</th>
+                 </tr>
+               </thead>
+               <tbody className="divide-y divide-border">
+                 {history.length > 0 ? history.map(h => (
+                   <tr key={h.id} className="hover:bg-slate-50 transition-colors">
+                      <td className="px-6 py-4 font-medium text-muted-foreground">
+                        {new Date(h.drawnAt).toLocaleString('pt-BR')}
+                      </td>
+                      <td className="px-6 py-4">
+                        <p className="font-bold text-foreground">{h.registration?.user?.name}</p>
+                        <p className="text-xs text-muted-foreground">{h.registration?.user?.email}</p>
+                      </td>
+                      <td className="px-6 py-4 text-xs font-medium text-muted-foreground">
+                        {h.rule === "ALL_REGISTERED" ? "Todos os Inscritos" : "Soment. Check-in"}
+                        <br/>
+                        <span className="italic">{h.activity?.title || "Geral"}</span>
+                      </td>
+                      <td className="px-6 py-4 font-medium text-foreground">
+                        {h.prizeName || "-"}
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <button 
+                          onClick={async () => {
+                            await operationsService.markPrizeReceived(h.id, !h.hasReceived);
+                            fetchHistory();
+                          }}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-colors ${h.hasReceived ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-amber-100 text-amber-700 hover:bg-amber-200'}`}
+                        >
+                          {h.hasReceived ? <CheckCircleIcon className="w-4 h-4"/> : <SparklesIcon className="w-4 h-4" />}
+                          {h.hasReceived ? "Entregue" : "Pendente"}
+                        </button>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <button 
+                          onClick={async () => {
+                            await operationsService.setRaffleDisplayVisibility(h.id, !h.isHiddenOnDisplay);
+                            fetchHistory();
+                          }}
+                          className={`text-muted-foreground hover:text-primary transition-colors p-2 mr-2 ${h.isHiddenOnDisplay ? 'text-amber-500' : ''}`}
+                          title={h.isHiddenOnDisplay ? "Mostrar no Telão" : "Ocultar do Telão"}
+                        >
+                          {h.isHiddenOnDisplay ? <EyeSlashIcon className="w-5 h-5 inline" /> : <EyeIcon className="w-5 h-5 inline" />}
+                        </button>
+                        <button 
+                          onClick={() => setHistoryToDelete(h.id)}
+                          className="text-muted-foreground hover:text-rose-500 transition-colors p-2"
+                          title="Excluir"
+                        >
+                          <TrashIcon className="w-5 h-5 inline" />
+                        </button>
+                      </td>
+                   </tr>
+                 )) : (
+                   <tr>
+                     <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground font-medium">Nenhum sorteio realizado ainda.</td>
+                   </tr>
+                 )}
+               </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       {/* Info Footer */}
       <div className="w-full max-w-4xl mx-auto bg-primary/5 p-6 rounded-3xl border border-primary/10 flex flex-col md:flex-row items-center justify-between gap-6">
          <div className="flex items-center gap-4">
@@ -196,6 +401,15 @@ export default function RaffleToolPage({ params }: { params: Promise<{ id: strin
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
          </div>
       </div>
+
+      <DeleteConfirmationModal
+        isOpen={!!historyToDelete}
+        onClose={() => setHistoryToDelete(null)}
+        onConfirm={handleDelete}
+        title="Excluir Histórico de Sorteio"
+        description="Tem certeza que deseja excluir este sorteio do histórico? Essa ação é permanente e não poderá ser desfeita."
+        isLoading={isDeleting}
+      />
     </div>
   );
 }

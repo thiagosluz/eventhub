@@ -80,6 +80,11 @@ enum ReviewRecommendation {
   STRONG_REJECT
 }
 
+enum RaffleRule {
+  ALL_REGISTERED
+  ONLY_CHECKED_IN
+}
+
 model Tenant {
   id          String   @id @default(cuid())
   name        String
@@ -144,6 +149,7 @@ model Event {
   submissions          Submission[]
   certificateTemplates CertificateTemplate[]
   sponsorCategories    SponsorCategory[]
+  raffleHistories      RaffleHistory[]
 
   @@unique([tenantId, slug])
 }
@@ -190,9 +196,10 @@ model Activity {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  speakers    ActivitySpeaker[]
-  enrollments ActivityEnrollment[]
-  attendances Attendance[]
+  speakers        ActivitySpeaker[]
+  enrollments     ActivityEnrollment[]
+  attendances     Attendance[]
+  raffleHistories RaffleHistory[]
 }
 
 model Speaker {
@@ -235,10 +242,11 @@ model Registration {
 
   createdAt DateTime @default(now())
 
-  tickets       Ticket[]
-  enrollments   ActivityEnrollment[]
-  formResponses CustomFormResponse[]
-  certificates  IssuedCertificate[]
+  tickets         Ticket[]
+  enrollments     ActivityEnrollment[]
+  formResponses   CustomFormResponse[]
+  certificates    IssuedCertificate[]
+  raffleHistories RaffleHistory[]
 }
 
 model ActivityEnrollment {
@@ -405,8 +413,9 @@ model IssuedCertificate {
   registrationId String
   registration   Registration @relation(fields: [registrationId], references: [id])
 
-  fileUrl  String
-  issuedAt DateTime @default(now())
+  fileUrl        String
+  validationHash String   @unique @default(uuid())
+  issuedAt       DateTime @default(now())
 }
 
 enum SponsorSize {
@@ -443,4 +452,23 @@ model Sponsor {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model RaffleHistory {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
+
+  activityId String?
+  activity   Activity? @relation(fields: [activityId], references: [id])
+
+  registrationId String
+  registration   Registration @relation(fields: [registrationId], references: [id])
+
+  prizeName         String?
+  rule              RaffleRule @default(ONLY_CHECKED_IN)
+  hasReceived       Boolean    @default(false)
+  isHiddenOnDisplay Boolean    @default(false)
+
+  drawnAt DateTime @default(now())
 }

@@ -319,6 +319,7 @@ exports.Prisma.IssuedCertificateScalarFieldEnum = {
   templateId: 'templateId',
   registrationId: 'registrationId',
   fileUrl: 'fileUrl',
+  validationHash: 'validationHash',
   issuedAt: 'issuedAt'
 };
 
@@ -342,6 +343,18 @@ exports.Prisma.SponsorScalarFieldEnum = {
   displayOrder: 'displayOrder',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RaffleHistoryScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  activityId: 'activityId',
+  registrationId: 'registrationId',
+  prizeName: 'prizeName',
+  rule: 'rule',
+  hasReceived: 'hasReceived',
+  isHiddenOnDisplay: 'isHiddenOnDisplay',
+  drawnAt: 'drawnAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -447,6 +460,11 @@ exports.SponsorSize = exports.$Enums.SponsorSize = {
   LARGE: 'LARGE'
 };
 
+exports.RaffleRule = exports.$Enums.RaffleRule = {
+  ALL_REGISTERED: 'ALL_REGISTERED',
+  ONLY_CHECKED_IN: 'ONLY_CHECKED_IN'
+};
+
 exports.Prisma.ModelName = {
   Tenant: 'Tenant',
   User: 'User',
@@ -469,7 +487,8 @@ exports.Prisma.ModelName = {
   CertificateTemplate: 'CertificateTemplate',
   IssuedCertificate: 'IssuedCertificate',
   SponsorCategory: 'SponsorCategory',
-  Sponsor: 'Sponsor'
+  Sponsor: 'Sponsor',
+  RaffleHistory: 'RaffleHistory'
 };
 
 /**

@@ -11,6 +11,7 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  NotFoundException,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Request, Response } from "express";
@@ -243,5 +244,33 @@ export class CertificatesController {
       },
       orderBy: { issuedAt: "desc" },
     });
+  }
+
+  @Get("validate/:hash")
+  async validateCertificate(@Param("hash") hash: string) {
+    const certificate = await this.prisma.issuedCertificate.findUnique({
+      where: { validationHash: hash },
+      include: {
+        registration: {
+          include: { user: true, event: true },
+        },
+        template: {
+          include: { event: true },
+        },
+      },
+    });
+
+    if (!certificate) {
+      throw new NotFoundException("Certificado inválido ou não encontrado.");
+    }
+
+    return {
+      isValid: true,
+      hash: certificate.validationHash,
+      issuedAt: certificate.issuedAt,
+      fileUrl: certificate.fileUrl,
+      participantName: certificate.registration.user.name,
+      eventName: certificate.template.event.name,
+    };
   }
 }

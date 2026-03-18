@@ -167,6 +167,30 @@ let CertificatesController = class CertificatesController {
             orderBy: { issuedAt: "desc" },
         });
     }
+    async validateCertificate(hash) {
+        const certificate = await this.prisma.issuedCertificate.findUnique({
+            where: { validationHash: hash },
+            include: {
+                registration: {
+                    include: { user: true, event: true },
+                },
+                template: {
+                    include: { event: true },
+                },
+            },
+        });
+        if (!certificate) {
+            throw new common_1.NotFoundException("Certificado inválido ou não encontrado.");
+        }
+        return {
+            isValid: true,
+            hash: certificate.validationHash,
+            issuedAt: certificate.issuedAt,
+            fileUrl: certificate.fileUrl,
+            participantName: certificate.registration.user.name,
+            eventName: certificate.template.event.name,
+        };
+    }
 };
 exports.CertificatesController = CertificatesController;
 __decorate([
@@ -261,6 +285,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CertificatesController.prototype, "listMyCertificates", null);
+__decorate([
+    (0, common_1.Get)("validate/:hash"),
+    __param(0, (0, common_1.Param)("hash")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CertificatesController.prototype, "validateCertificate", null);
 exports.CertificatesController = CertificatesController = __decorate([
     (0, common_1.Controller)("certificates"),
     __metadata("design:paramtypes", [certificate_pdf_service_1.CertificatePdfService,

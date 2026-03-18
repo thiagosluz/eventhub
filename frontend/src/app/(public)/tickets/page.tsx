@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { eventsService } from "@/services/events.service";
 import { Ticket } from "@/types/event";
 import { 
@@ -58,6 +59,7 @@ function QRCodeImage({ ticketId }: { ticketId: string }) {
 }
 
 export default function MyTicketsPage() {
+  const router = useRouter();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
@@ -69,14 +71,17 @@ export default function MyTicketsPage() {
       try {
         const data = await eventsService.getMyTickets();
         setTickets(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error("Failed to fetch tickets", error);
+        if (error?.status === 401) {
+          router.push("/auth/login?redirect=/tickets");
+        }
       } finally {
         setIsLoading(false);
       }
     };
     fetchTickets();
-  }, []);
+  }, [router]);
 
   return (
     <div className="max-w-7xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">

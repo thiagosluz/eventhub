@@ -50,7 +50,48 @@ let CheckinController = class CheckinController {
             eventId: body.eventId,
             activityId: body.activityId,
             count: (_b = body.count) !== null && _b !== void 0 ? _b : 1,
+            rule: body.rule,
+            prizeName: body.prizeName,
+            uniqueWinners: body.uniqueWinners,
+            excludeStaff: body.excludeStaff,
         });
+    }
+    async getLatestRaffle(eventId, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId)
+            throw new Error("Missing tenantId");
+        const history = await this.checkinService.getEventRaffleHistory(tenantId, eventId);
+        return history.length > 0 ? history[0] : null;
+    }
+    async setRaffleDisplayVisibility(id, body, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId)
+            throw new Error("Missing tenantId");
+        await this.checkinService.setRaffleDisplayVisibility(tenantId, id, body.hide);
+        return { success: true };
+    }
+    async getRaffleHistory(eventId, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId)
+            throw new Error("Missing tenantId");
+        return this.checkinService.getEventRaffleHistory(tenantId, eventId);
+    }
+    async deleteRaffleHistory(id, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId)
+            throw new Error("Missing tenantId");
+        await this.checkinService.deleteRaffleHistory(tenantId, id);
+    }
+    async markPrizeReceived(id, body, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId)
+            throw new Error("Missing tenantId");
+        return this.checkinService.markPrizeReceived(tenantId, id, body.received);
     }
     async undoCheckin(id) {
         return this.checkinService.undoCheckin(id);
@@ -85,6 +126,59 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], CheckinController.prototype, "drawRaffle", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Get)("raffles/latest/:eventId"),
+    __param(0, (0, common_1.Param)("eventId")),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], CheckinController.prototype, "getLatestRaffle", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Post)("raffles/history/:id/hide"),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], CheckinController.prototype, "setRaffleDisplayVisibility", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Get)("raffles/history/:eventId"),
+    __param(0, (0, common_1.Param)("eventId")),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], CheckinController.prototype, "getRaffleHistory", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Delete)("raffles/history/:id"),
+    (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], CheckinController.prototype, "deleteRaffleHistory", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Post)("raffles/history/:id/receive"),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], CheckinController.prototype, "markPrizeReceived", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),

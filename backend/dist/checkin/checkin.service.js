@@ -51,6 +51,7 @@ let CheckinService = class CheckinService {
     constructor(prisma, mailService) {
         this.prisma = prisma;
         this.mailService = mailService;
+        this.hiddenRaffleIds = new Set();
     }
     async getQrCodePng(ticketId, userId) {
         const ticket = await this.prisma.ticket.findFirst({
@@ -144,44 +145,155 @@ let CheckinService = class CheckinService {
         return { alreadyCheckedIn: false, attendanceId: attendance.id };
     }
     async drawRaffle(params) {
-        const { tenantId, eventId, activityId, count = 1 } = params;
+        const { tenantId, eventId, activityId, count = 1, rule = "ONLY_CHECKED_IN", prizeName, uniqueWinners, excludeStaff } = params;
         const event = await this.prisma.event.findFirst({
             where: { id: eventId, tenantId },
         });
         if (!event) {
             throw new common_1.ForbiddenException("Evento não pertence a este tenant.");
         }
-        const attendances = await this.prisma.attendance.findMany({
-            where: {
-                ticket: { eventId },
-                ...(activityId ? { activityId } : {}),
-            },
-            include: {
-                ticket: {
-                    include: {
-                        registration: {
-                            include: { user: true },
-                        },
+        const byRegistration = new Map();
+        if (rule === "ONLY_CHECKED_IN") {
+            const attendances = await this.prisma.attendance.findMany({
+                where: {
+                    ticket: { eventId, status: "COMPLETED" },
+                    ...(activityId ? { activityId } : {}),
+                },
+                include: {
+                    ticket: {
+                        include: { registration: { include: { user: true } } },
                     },
                 },
-            },
-        });
-        const byRegistration = new Map();
-        for (const a of attendances) {
-            const reg = a.ticket.registration;
-            byRegistration.set(reg.id, {
-                registrationId: reg.id,
-                userName: reg.user.name,
             });
+            for (const a of attendances) {
+                const reg = a.ticket.registration;
+                byRegistration.set(reg.id, {
+                    registrationId: reg.id,
+                    userName: reg.user.name,
+                    role: reg.user.role,
+                });
+            }
         }
-        const pool = Array.from(byRegistration.values());
-        if (pool.length === 0) {
+        else {
+            if (activityId) {
+                const enrollments = await this.prisma.activityEnrollment.findMany({
+                    where: { activityId, status: "CONFIRMED", registration: { eventId } },
+                    include: { registration: { include: { user: true } } },
+                });
+                for (const e of enrollments) {
+                    byRegistration.set(e.registrationId, {
+                        registrationId: e.registrationId,
+                        userName: e.registration.user.name,
+                        role: e.registration.user.role,
+                    });
+                }
+            }
+            else {
+                const tickets = await this.prisma.ticket.findMany({
+                    where: { eventId, status: "COMPLETED" },
+                    include: { registration: { include: { user: true } } },
+                });
+                for (const t of tickets) {
+                    byRegistration.set(t.registrationId, {
+                        registrationId: t.registrationId,
+                        userName: t.registration.user.name,
+                        role: t.registration.user.role,
+                    });
+                }
+            }
+        }
+        let validPool = Array.from(byRegistration.values());
+        if (excludeStaff) {
+            validPool = validPool.filter(p => p.role !== "ORGANIZER");
+        }
+        if (uniqueWinners) {
+            const pastWinners = await this.prisma.raffleHistory.findMany({
+                where: { eventId },
+                select: { registrationId: true }
+            });
+            const pastSet = new Set(pastWinners.map(w => w.registrationId));
+            validPool = validPool.filter(p => !pastSet.has(p.registrationId));
+        }
+        if (validPool.length === 0) {
             return { winners: [] };
         }
-        const drawCount = Math.min(count, pool.length);
-        const shuffled = [...pool].sort(() => Math.random() - 0.5);
+        const drawCount = Math.min(count, validPool.length);
+        const shuffled = [...validPool].sort(() => Math.random() - 0.5);
         const winners = shuffled.slice(0, drawCount);
+        for (const w of winners) {
+            await this.prisma.raffleHistory.create({
+                data: {
+                    eventId,
+                    activityId: activityId || undefined,
+                    registrationId: w.registrationId,
+                    prizeName: prizeName || null,
+                    rule: rule,
+                },
+            });
+        }
         return { winners };
+    }
+    async getEventRaffleHistory(tenantId, eventId) {
+        const event = await this.prisma.event.findFirst({
+            where: { id: eventId, tenantId },
+        });
+        if (!event)
+            throw new common_1.ForbiddenException("Evento não pertence a este tenant.");
+        const history = await this.prisma.raffleHistory.findMany({
+            where: { eventId },
+            include: {
+                registration: {
+                    include: { user: { select: { name: true, email: true } } }
+                },
+                activity: { select: { title: true } }
+            },
+            orderBy: { drawnAt: 'desc' },
+        });
+        return history.map(h => ({
+            ...h,
+            isHiddenOnDisplay: this.hiddenRaffleIds.has(h.id)
+        }));
+    }
+    async setRaffleDisplayVisibility(tenantId, historyId, hide) {
+        const history = await this.prisma.raffleHistory.findUnique({
+            where: { id: historyId },
+            include: { event: true },
+        });
+        if (!history)
+            throw new common_1.NotFoundException("Histórico não encontrado.");
+        if (history.event.tenantId !== tenantId)
+            throw new common_1.ForbiddenException("Sem permissão.");
+        if (hide) {
+            this.hiddenRaffleIds.add(historyId);
+        }
+        else {
+            this.hiddenRaffleIds.delete(historyId);
+        }
+    }
+    async deleteRaffleHistory(tenantId, historyId) {
+        const history = await this.prisma.raffleHistory.findUnique({
+            where: { id: historyId },
+            include: { event: true },
+        });
+        if (!history)
+            throw new common_1.NotFoundException("Histórico não encontrado.");
+        if (history.event.tenantId !== tenantId)
+            throw new common_1.ForbiddenException("Sem permissão.");
+        await this.prisma.raffleHistory.delete({ where: { id: historyId } });
+    }
+    async markPrizeReceived(tenantId, historyId, received) {
+        const history = await this.prisma.raffleHistory.findUnique({
+            where: { id: historyId },
+            include: { event: true },
+        });
+        if (!history)
+            throw new common_1.NotFoundException("Histórico não encontrado.");
+        if (history.event.tenantId !== tenantId)
+            throw new common_1.ForbiddenException("Sem permissão.");
+        return this.prisma.raffleHistory.update({
+            where: { id: historyId },
+            data: { hasReceived: received },
+        });
     }
     async undoCheckin(attendanceId) {
         const attendance = await this.prisma.attendance.findUnique({

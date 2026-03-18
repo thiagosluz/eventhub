@@ -61,7 +61,7 @@ export class CheckinController {
   @Roles(UserRole.ORGANIZER)
   @Post("raffles")
   async drawRaffle(
-    @Body() body: { eventId: string; activityId?: string; count?: number },
+    @Body() body: { eventId: string; activityId?: string; count?: number; rule?: 'ALL_REGISTERED' | 'ONLY_CHECKED_IN'; prizeName?: string; uniqueWinners?: boolean; excludeStaff?: boolean },
     @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
@@ -74,7 +74,67 @@ export class CheckinController {
       eventId: body.eventId,
       activityId: body.activityId,
       count: body.count ?? 1,
+      rule: body.rule,
+      prizeName: body.prizeName,
+      uniqueWinners: body.uniqueWinners,
+      excludeStaff: body.excludeStaff,
     });
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get("raffles/latest/:eventId")
+  async getLatestRaffle(@Param("eventId") eventId: string, @Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId");
+    const history = await this.checkinService.getEventRaffleHistory(tenantId, eventId);
+    return history.length > 0 ? history[0] : null;
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post("raffles/history/:id/hide")
+  async setRaffleDisplayVisibility(
+    @Param("id") id: string,
+    @Body() body: { hide: boolean },
+    @Req() req: AuthRequest
+  ) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId");
+    await this.checkinService.setRaffleDisplayVisibility(tenantId, id, body.hide);
+    return { success: true };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get("raffles/history/:eventId")
+  async getRaffleHistory(@Param("eventId") eventId: string, @Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId");
+    return this.checkinService.getEventRaffleHistory(tenantId, eventId);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Delete("raffles/history/:id")
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteRaffleHistory(@Param("id") id: string, @Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId");
+    await this.checkinService.deleteRaffleHistory(tenantId, id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post("raffles/history/:id/receive")
+  async markPrizeReceived(
+    @Param("id") id: string,
+    @Body() body: { received: boolean },
+    @Req() req: AuthRequest
+  ) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId");
+    return this.checkinService.markPrizeReceived(tenantId, id, body.received);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

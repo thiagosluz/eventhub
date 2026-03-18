@@ -123,6 +123,11 @@ export type SponsorCategory = $Result.DefaultSelection<Prisma.$SponsorCategoryPa
  * 
  */
 export type Sponsor = $Result.DefaultSelection<Prisma.$SponsorPayload>
+/**
+ * Model RaffleHistory
+ * 
+ */
+export type RaffleHistory = $Result.DefaultSelection<Prisma.$RaffleHistoryPayload>
 
 /**
  * Enums
@@ -226,6 +231,14 @@ export const ReviewRecommendation: {
 export type ReviewRecommendation = (typeof ReviewRecommendation)[keyof typeof ReviewRecommendation]
 
 
+export const RaffleRule: {
+  ALL_REGISTERED: 'ALL_REGISTERED',
+  ONLY_CHECKED_IN: 'ONLY_CHECKED_IN'
+};
+
+export type RaffleRule = (typeof RaffleRule)[keyof typeof RaffleRule]
+
+
 export const SponsorSize: {
   SMALL: 'SMALL',
   MEDIUM: 'MEDIUM',
@@ -275,6 +288,10 @@ export const FormFieldType: typeof $Enums.FormFieldType
 export type ReviewRecommendation = $Enums.ReviewRecommendation
 
 export const ReviewRecommendation: typeof $Enums.ReviewRecommendation
+
+export type RaffleRule = $Enums.RaffleRule
+
+export const RaffleRule: typeof $Enums.RaffleRule
 
 export type SponsorSize = $Enums.SponsorSize
 
@@ -620,6 +637,16 @@ export class PrismaClient<
     * ```
     */
   get sponsor(): Prisma.SponsorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.raffleHistory`: Exposes CRUD operations for the **RaffleHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RaffleHistories
+    * const raffleHistories = await prisma.raffleHistory.findMany()
+    * ```
+    */
+  get raffleHistory(): Prisma.RaffleHistoryDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1075,7 +1102,8 @@ export namespace Prisma {
     CertificateTemplate: 'CertificateTemplate',
     IssuedCertificate: 'IssuedCertificate',
     SponsorCategory: 'SponsorCategory',
-    Sponsor: 'Sponsor'
+    Sponsor: 'Sponsor',
+    RaffleHistory: 'RaffleHistory'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1091,7 +1119,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor"
+      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2723,6 +2751,80 @@ export namespace Prisma {
           }
         }
       }
+      RaffleHistory: {
+        payload: Prisma.$RaffleHistoryPayload<ExtArgs>
+        fields: Prisma.RaffleHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RaffleHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RaffleHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.RaffleHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RaffleHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.RaffleHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.RaffleHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.RaffleHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RaffleHistoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload>[]
+          }
+          delete: {
+            args: Prisma.RaffleHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload>
+          }
+          update: {
+            args: Prisma.RaffleHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.RaffleHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RaffleHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RaffleHistoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.RaffleHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RaffleHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.RaffleHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRaffleHistory>
+          }
+          groupBy: {
+            args: Prisma.RaffleHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RaffleHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RaffleHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<RaffleHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2853,6 +2955,7 @@ export namespace Prisma {
     issuedCertificate?: IssuedCertificateOmit
     sponsorCategory?: SponsorCategoryOmit
     sponsor?: SponsorOmit
+    raffleHistory?: RaffleHistoryOmit
   }
 
   /* Types for Logging */
@@ -3056,6 +3159,7 @@ export namespace Prisma {
     submissions: number
     certificateTemplates: number
     sponsorCategories: number
+    raffleHistories: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3066,6 +3170,7 @@ export namespace Prisma {
     submissions?: boolean | EventCountOutputTypeCountSubmissionsArgs
     certificateTemplates?: boolean | EventCountOutputTypeCountCertificateTemplatesArgs
     sponsorCategories?: boolean | EventCountOutputTypeCountSponsorCategoriesArgs
+    raffleHistories?: boolean | EventCountOutputTypeCountRaffleHistoriesArgs
   }
 
   // Custom InputTypes
@@ -3126,6 +3231,13 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountSponsorCategoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SponsorCategoryWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountRaffleHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RaffleHistoryWhereInput
   }
 
 
@@ -3199,12 +3311,14 @@ export namespace Prisma {
     speakers: number
     enrollments: number
     attendances: number
+    raffleHistories: number
   }
 
   export type ActivityCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     speakers?: boolean | ActivityCountOutputTypeCountSpeakersArgs
     enrollments?: boolean | ActivityCountOutputTypeCountEnrollmentsArgs
     attendances?: boolean | ActivityCountOutputTypeCountAttendancesArgs
+    raffleHistories?: boolean | ActivityCountOutputTypeCountRaffleHistoriesArgs
   }
 
   // Custom InputTypes
@@ -3237,6 +3351,13 @@ export namespace Prisma {
    */
   export type ActivityCountOutputTypeCountAttendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AttendanceWhereInput
+  }
+
+  /**
+   * ActivityCountOutputType without action
+   */
+  export type ActivityCountOutputTypeCountRaffleHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RaffleHistoryWhereInput
   }
 
 
@@ -3280,6 +3401,7 @@ export namespace Prisma {
     enrollments: number
     formResponses: number
     certificates: number
+    raffleHistories: number
   }
 
   export type RegistrationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3287,6 +3409,7 @@ export namespace Prisma {
     enrollments?: boolean | RegistrationCountOutputTypeCountEnrollmentsArgs
     formResponses?: boolean | RegistrationCountOutputTypeCountFormResponsesArgs
     certificates?: boolean | RegistrationCountOutputTypeCountCertificatesArgs
+    raffleHistories?: boolean | RegistrationCountOutputTypeCountRaffleHistoriesArgs
   }
 
   // Custom InputTypes
@@ -3326,6 +3449,13 @@ export namespace Prisma {
    */
   export type RegistrationCountOutputTypeCountCertificatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: IssuedCertificateWhereInput
+  }
+
+  /**
+   * RegistrationCountOutputType without action
+   */
+  export type RegistrationCountOutputTypeCountRaffleHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RaffleHistoryWhereInput
   }
 
 
@@ -6247,6 +6377,7 @@ export namespace Prisma {
     submissions?: boolean | Event$submissionsArgs<ExtArgs>
     certificateTemplates?: boolean | Event$certificateTemplatesArgs<ExtArgs>
     sponsorCategories?: boolean | Event$sponsorCategoriesArgs<ExtArgs>
+    raffleHistories?: boolean | Event$raffleHistoriesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -6319,6 +6450,7 @@ export namespace Prisma {
     submissions?: boolean | Event$submissionsArgs<ExtArgs>
     certificateTemplates?: boolean | Event$certificateTemplatesArgs<ExtArgs>
     sponsorCategories?: boolean | Event$sponsorCategoriesArgs<ExtArgs>
+    raffleHistories?: boolean | Event$raffleHistoriesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6339,6 +6471,7 @@ export namespace Prisma {
       submissions: Prisma.$SubmissionPayload<ExtArgs>[]
       certificateTemplates: Prisma.$CertificateTemplatePayload<ExtArgs>[]
       sponsorCategories: Prisma.$SponsorCategoryPayload<ExtArgs>[]
+      raffleHistories: Prisma.$RaffleHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6759,6 +6892,7 @@ export namespace Prisma {
     submissions<T extends Event$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, Event$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     certificateTemplates<T extends Event$certificateTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Event$certificateTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CertificateTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sponsorCategories<T extends Event$sponsorCategoriesArgs<ExtArgs> = {}>(args?: Subset<T, Event$sponsorCategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SponsorCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    raffleHistories<T extends Event$raffleHistoriesArgs<ExtArgs> = {}>(args?: Subset<T, Event$raffleHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7370,6 +7504,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SponsorCategoryScalarFieldEnum | SponsorCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * Event.raffleHistories
+   */
+  export type Event$raffleHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    where?: RaffleHistoryWhereInput
+    orderBy?: RaffleHistoryOrderByWithRelationInput | RaffleHistoryOrderByWithRelationInput[]
+    cursor?: RaffleHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RaffleHistoryScalarFieldEnum | RaffleHistoryScalarFieldEnum[]
   }
 
   /**
@@ -9812,6 +9970,7 @@ export namespace Prisma {
     speakers?: boolean | Activity$speakersArgs<ExtArgs>
     enrollments?: boolean | Activity$enrollmentsArgs<ExtArgs>
     attendances?: boolean | Activity$attendancesArgs<ExtArgs>
+    raffleHistories?: boolean | Activity$raffleHistoriesArgs<ExtArgs>
     _count?: boolean | ActivityCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["activity"]>
 
@@ -9880,6 +10039,7 @@ export namespace Prisma {
     speakers?: boolean | Activity$speakersArgs<ExtArgs>
     enrollments?: boolean | Activity$enrollmentsArgs<ExtArgs>
     attendances?: boolean | Activity$attendancesArgs<ExtArgs>
+    raffleHistories?: boolean | Activity$raffleHistoriesArgs<ExtArgs>
     _count?: boolean | ActivityCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ActivityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9899,6 +10059,7 @@ export namespace Prisma {
       speakers: Prisma.$ActivitySpeakerPayload<ExtArgs>[]
       enrollments: Prisma.$ActivityEnrollmentPayload<ExtArgs>[]
       attendances: Prisma.$AttendancePayload<ExtArgs>[]
+      raffleHistories: Prisma.$RaffleHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10315,6 +10476,7 @@ export namespace Prisma {
     speakers<T extends Activity$speakersArgs<ExtArgs> = {}>(args?: Subset<T, Activity$speakersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivitySpeakerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     enrollments<T extends Activity$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, Activity$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     attendances<T extends Activity$attendancesArgs<ExtArgs> = {}>(args?: Subset<T, Activity$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    raffleHistories<T extends Activity$raffleHistoriesArgs<ExtArgs> = {}>(args?: Subset<T, Activity$raffleHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10848,6 +11010,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AttendanceScalarFieldEnum | AttendanceScalarFieldEnum[]
+  }
+
+  /**
+   * Activity.raffleHistories
+   */
+  export type Activity$raffleHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    where?: RaffleHistoryWhereInput
+    orderBy?: RaffleHistoryOrderByWithRelationInput | RaffleHistoryOrderByWithRelationInput[]
+    cursor?: RaffleHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RaffleHistoryScalarFieldEnum | RaffleHistoryScalarFieldEnum[]
   }
 
   /**
@@ -13261,6 +13447,7 @@ export namespace Prisma {
     enrollments?: boolean | Registration$enrollmentsArgs<ExtArgs>
     formResponses?: boolean | Registration$formResponsesArgs<ExtArgs>
     certificates?: boolean | Registration$certificatesArgs<ExtArgs>
+    raffleHistories?: boolean | Registration$raffleHistoriesArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["registration"]>
 
@@ -13297,6 +13484,7 @@ export namespace Prisma {
     enrollments?: boolean | Registration$enrollmentsArgs<ExtArgs>
     formResponses?: boolean | Registration$formResponsesArgs<ExtArgs>
     certificates?: boolean | Registration$certificatesArgs<ExtArgs>
+    raffleHistories?: boolean | Registration$raffleHistoriesArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RegistrationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13317,6 +13505,7 @@ export namespace Prisma {
       enrollments: Prisma.$ActivityEnrollmentPayload<ExtArgs>[]
       formResponses: Prisma.$CustomFormResponsePayload<ExtArgs>[]
       certificates: Prisma.$IssuedCertificatePayload<ExtArgs>[]
+      raffleHistories: Prisma.$RaffleHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13723,6 +13912,7 @@ export namespace Prisma {
     enrollments<T extends Registration$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, Registration$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     formResponses<T extends Registration$formResponsesArgs<ExtArgs> = {}>(args?: Subset<T, Registration$formResponsesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomFormResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     certificates<T extends Registration$certificatesArgs<ExtArgs> = {}>(args?: Subset<T, Registration$certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IssuedCertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    raffleHistories<T extends Registration$raffleHistoriesArgs<ExtArgs> = {}>(args?: Subset<T, Registration$raffleHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14250,6 +14440,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: IssuedCertificateScalarFieldEnum | IssuedCertificateScalarFieldEnum[]
+  }
+
+  /**
+   * Registration.raffleHistories
+   */
+  export type Registration$raffleHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    where?: RaffleHistoryWhereInput
+    orderBy?: RaffleHistoryOrderByWithRelationInput | RaffleHistoryOrderByWithRelationInput[]
+    cursor?: RaffleHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RaffleHistoryScalarFieldEnum | RaffleHistoryScalarFieldEnum[]
   }
 
   /**
@@ -25575,6 +25789,7 @@ export namespace Prisma {
     templateId: string | null
     registrationId: string | null
     fileUrl: string | null
+    validationHash: string | null
     issuedAt: Date | null
   }
 
@@ -25583,6 +25798,7 @@ export namespace Prisma {
     templateId: string | null
     registrationId: string | null
     fileUrl: string | null
+    validationHash: string | null
     issuedAt: Date | null
   }
 
@@ -25591,6 +25807,7 @@ export namespace Prisma {
     templateId: number
     registrationId: number
     fileUrl: number
+    validationHash: number
     issuedAt: number
     _all: number
   }
@@ -25601,6 +25818,7 @@ export namespace Prisma {
     templateId?: true
     registrationId?: true
     fileUrl?: true
+    validationHash?: true
     issuedAt?: true
   }
 
@@ -25609,6 +25827,7 @@ export namespace Prisma {
     templateId?: true
     registrationId?: true
     fileUrl?: true
+    validationHash?: true
     issuedAt?: true
   }
 
@@ -25617,6 +25836,7 @@ export namespace Prisma {
     templateId?: true
     registrationId?: true
     fileUrl?: true
+    validationHash?: true
     issuedAt?: true
     _all?: true
   }
@@ -25698,6 +25918,7 @@ export namespace Prisma {
     templateId: string
     registrationId: string
     fileUrl: string
+    validationHash: string
     issuedAt: Date
     _count: IssuedCertificateCountAggregateOutputType | null
     _min: IssuedCertificateMinAggregateOutputType | null
@@ -25723,6 +25944,7 @@ export namespace Prisma {
     templateId?: boolean
     registrationId?: boolean
     fileUrl?: boolean
+    validationHash?: boolean
     issuedAt?: boolean
     template?: boolean | CertificateTemplateDefaultArgs<ExtArgs>
     registration?: boolean | RegistrationDefaultArgs<ExtArgs>
@@ -25733,6 +25955,7 @@ export namespace Prisma {
     templateId?: boolean
     registrationId?: boolean
     fileUrl?: boolean
+    validationHash?: boolean
     issuedAt?: boolean
     template?: boolean | CertificateTemplateDefaultArgs<ExtArgs>
     registration?: boolean | RegistrationDefaultArgs<ExtArgs>
@@ -25743,6 +25966,7 @@ export namespace Prisma {
     templateId?: boolean
     registrationId?: boolean
     fileUrl?: boolean
+    validationHash?: boolean
     issuedAt?: boolean
     template?: boolean | CertificateTemplateDefaultArgs<ExtArgs>
     registration?: boolean | RegistrationDefaultArgs<ExtArgs>
@@ -25753,10 +25977,11 @@ export namespace Prisma {
     templateId?: boolean
     registrationId?: boolean
     fileUrl?: boolean
+    validationHash?: boolean
     issuedAt?: boolean
   }
 
-  export type IssuedCertificateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "templateId" | "registrationId" | "fileUrl" | "issuedAt", ExtArgs["result"]["issuedCertificate"]>
+  export type IssuedCertificateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "templateId" | "registrationId" | "fileUrl" | "validationHash" | "issuedAt", ExtArgs["result"]["issuedCertificate"]>
   export type IssuedCertificateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     template?: boolean | CertificateTemplateDefaultArgs<ExtArgs>
     registration?: boolean | RegistrationDefaultArgs<ExtArgs>
@@ -25781,6 +26006,7 @@ export namespace Prisma {
       templateId: string
       registrationId: string
       fileUrl: string
+      validationHash: string
       issuedAt: Date
     }, ExtArgs["result"]["issuedCertificate"]>
     composites: {}
@@ -26211,6 +26437,7 @@ export namespace Prisma {
     readonly templateId: FieldRef<"IssuedCertificate", 'String'>
     readonly registrationId: FieldRef<"IssuedCertificate", 'String'>
     readonly fileUrl: FieldRef<"IssuedCertificate", 'String'>
+    readonly validationHash: FieldRef<"IssuedCertificate", 'String'>
     readonly issuedAt: FieldRef<"IssuedCertificate", 'DateTime'>
   }
     
@@ -28934,6 +29161,1156 @@ export namespace Prisma {
 
 
   /**
+   * Model RaffleHistory
+   */
+
+  export type AggregateRaffleHistory = {
+    _count: RaffleHistoryCountAggregateOutputType | null
+    _min: RaffleHistoryMinAggregateOutputType | null
+    _max: RaffleHistoryMaxAggregateOutputType | null
+  }
+
+  export type RaffleHistoryMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    activityId: string | null
+    registrationId: string | null
+    prizeName: string | null
+    rule: $Enums.RaffleRule | null
+    hasReceived: boolean | null
+    isHiddenOnDisplay: boolean | null
+    drawnAt: Date | null
+  }
+
+  export type RaffleHistoryMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    activityId: string | null
+    registrationId: string | null
+    prizeName: string | null
+    rule: $Enums.RaffleRule | null
+    hasReceived: boolean | null
+    isHiddenOnDisplay: boolean | null
+    drawnAt: Date | null
+  }
+
+  export type RaffleHistoryCountAggregateOutputType = {
+    id: number
+    eventId: number
+    activityId: number
+    registrationId: number
+    prizeName: number
+    rule: number
+    hasReceived: number
+    isHiddenOnDisplay: number
+    drawnAt: number
+    _all: number
+  }
+
+
+  export type RaffleHistoryMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    activityId?: true
+    registrationId?: true
+    prizeName?: true
+    rule?: true
+    hasReceived?: true
+    isHiddenOnDisplay?: true
+    drawnAt?: true
+  }
+
+  export type RaffleHistoryMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    activityId?: true
+    registrationId?: true
+    prizeName?: true
+    rule?: true
+    hasReceived?: true
+    isHiddenOnDisplay?: true
+    drawnAt?: true
+  }
+
+  export type RaffleHistoryCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    activityId?: true
+    registrationId?: true
+    prizeName?: true
+    rule?: true
+    hasReceived?: true
+    isHiddenOnDisplay?: true
+    drawnAt?: true
+    _all?: true
+  }
+
+  export type RaffleHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RaffleHistory to aggregate.
+     */
+    where?: RaffleHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RaffleHistories to fetch.
+     */
+    orderBy?: RaffleHistoryOrderByWithRelationInput | RaffleHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RaffleHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RaffleHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RaffleHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RaffleHistories
+    **/
+    _count?: true | RaffleHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RaffleHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RaffleHistoryMaxAggregateInputType
+  }
+
+  export type GetRaffleHistoryAggregateType<T extends RaffleHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateRaffleHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRaffleHistory[P]>
+      : GetScalarType<T[P], AggregateRaffleHistory[P]>
+  }
+
+
+
+
+  export type RaffleHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RaffleHistoryWhereInput
+    orderBy?: RaffleHistoryOrderByWithAggregationInput | RaffleHistoryOrderByWithAggregationInput[]
+    by: RaffleHistoryScalarFieldEnum[] | RaffleHistoryScalarFieldEnum
+    having?: RaffleHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RaffleHistoryCountAggregateInputType | true
+    _min?: RaffleHistoryMinAggregateInputType
+    _max?: RaffleHistoryMaxAggregateInputType
+  }
+
+  export type RaffleHistoryGroupByOutputType = {
+    id: string
+    eventId: string
+    activityId: string | null
+    registrationId: string
+    prizeName: string | null
+    rule: $Enums.RaffleRule
+    hasReceived: boolean
+    isHiddenOnDisplay: boolean
+    drawnAt: Date
+    _count: RaffleHistoryCountAggregateOutputType | null
+    _min: RaffleHistoryMinAggregateOutputType | null
+    _max: RaffleHistoryMaxAggregateOutputType | null
+  }
+
+  type GetRaffleHistoryGroupByPayload<T extends RaffleHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RaffleHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RaffleHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RaffleHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], RaffleHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RaffleHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    activityId?: boolean
+    registrationId?: boolean
+    prizeName?: boolean
+    rule?: boolean
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    activity?: boolean | RaffleHistory$activityArgs<ExtArgs>
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["raffleHistory"]>
+
+  export type RaffleHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    activityId?: boolean
+    registrationId?: boolean
+    prizeName?: boolean
+    rule?: boolean
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    activity?: boolean | RaffleHistory$activityArgs<ExtArgs>
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["raffleHistory"]>
+
+  export type RaffleHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    activityId?: boolean
+    registrationId?: boolean
+    prizeName?: boolean
+    rule?: boolean
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    activity?: boolean | RaffleHistory$activityArgs<ExtArgs>
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["raffleHistory"]>
+
+  export type RaffleHistorySelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    activityId?: boolean
+    registrationId?: boolean
+    prizeName?: boolean
+    rule?: boolean
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: boolean
+  }
+
+  export type RaffleHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "activityId" | "registrationId" | "prizeName" | "rule" | "hasReceived" | "isHiddenOnDisplay" | "drawnAt", ExtArgs["result"]["raffleHistory"]>
+  export type RaffleHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    activity?: boolean | RaffleHistory$activityArgs<ExtArgs>
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }
+  export type RaffleHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    activity?: boolean | RaffleHistory$activityArgs<ExtArgs>
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }
+  export type RaffleHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    activity?: boolean | RaffleHistory$activityArgs<ExtArgs>
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }
+
+  export type $RaffleHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RaffleHistory"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      activity: Prisma.$ActivityPayload<ExtArgs> | null
+      registration: Prisma.$RegistrationPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      activityId: string | null
+      registrationId: string
+      prizeName: string | null
+      rule: $Enums.RaffleRule
+      hasReceived: boolean
+      isHiddenOnDisplay: boolean
+      drawnAt: Date
+    }, ExtArgs["result"]["raffleHistory"]>
+    composites: {}
+  }
+
+  type RaffleHistoryGetPayload<S extends boolean | null | undefined | RaffleHistoryDefaultArgs> = $Result.GetResult<Prisma.$RaffleHistoryPayload, S>
+
+  type RaffleHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RaffleHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RaffleHistoryCountAggregateInputType | true
+    }
+
+  export interface RaffleHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RaffleHistory'], meta: { name: 'RaffleHistory' } }
+    /**
+     * Find zero or one RaffleHistory that matches the filter.
+     * @param {RaffleHistoryFindUniqueArgs} args - Arguments to find a RaffleHistory
+     * @example
+     * // Get one RaffleHistory
+     * const raffleHistory = await prisma.raffleHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RaffleHistoryFindUniqueArgs>(args: SelectSubset<T, RaffleHistoryFindUniqueArgs<ExtArgs>>): Prisma__RaffleHistoryClient<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RaffleHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RaffleHistoryFindUniqueOrThrowArgs} args - Arguments to find a RaffleHistory
+     * @example
+     * // Get one RaffleHistory
+     * const raffleHistory = await prisma.raffleHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RaffleHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, RaffleHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RaffleHistoryClient<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RaffleHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RaffleHistoryFindFirstArgs} args - Arguments to find a RaffleHistory
+     * @example
+     * // Get one RaffleHistory
+     * const raffleHistory = await prisma.raffleHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RaffleHistoryFindFirstArgs>(args?: SelectSubset<T, RaffleHistoryFindFirstArgs<ExtArgs>>): Prisma__RaffleHistoryClient<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RaffleHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RaffleHistoryFindFirstOrThrowArgs} args - Arguments to find a RaffleHistory
+     * @example
+     * // Get one RaffleHistory
+     * const raffleHistory = await prisma.raffleHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RaffleHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, RaffleHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__RaffleHistoryClient<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RaffleHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RaffleHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RaffleHistories
+     * const raffleHistories = await prisma.raffleHistory.findMany()
+     * 
+     * // Get first 10 RaffleHistories
+     * const raffleHistories = await prisma.raffleHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const raffleHistoryWithIdOnly = await prisma.raffleHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RaffleHistoryFindManyArgs>(args?: SelectSubset<T, RaffleHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RaffleHistory.
+     * @param {RaffleHistoryCreateArgs} args - Arguments to create a RaffleHistory.
+     * @example
+     * // Create one RaffleHistory
+     * const RaffleHistory = await prisma.raffleHistory.create({
+     *   data: {
+     *     // ... data to create a RaffleHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends RaffleHistoryCreateArgs>(args: SelectSubset<T, RaffleHistoryCreateArgs<ExtArgs>>): Prisma__RaffleHistoryClient<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RaffleHistories.
+     * @param {RaffleHistoryCreateManyArgs} args - Arguments to create many RaffleHistories.
+     * @example
+     * // Create many RaffleHistories
+     * const raffleHistory = await prisma.raffleHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RaffleHistoryCreateManyArgs>(args?: SelectSubset<T, RaffleHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RaffleHistories and returns the data saved in the database.
+     * @param {RaffleHistoryCreateManyAndReturnArgs} args - Arguments to create many RaffleHistories.
+     * @example
+     * // Create many RaffleHistories
+     * const raffleHistory = await prisma.raffleHistory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RaffleHistories and only return the `id`
+     * const raffleHistoryWithIdOnly = await prisma.raffleHistory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RaffleHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, RaffleHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RaffleHistory.
+     * @param {RaffleHistoryDeleteArgs} args - Arguments to delete one RaffleHistory.
+     * @example
+     * // Delete one RaffleHistory
+     * const RaffleHistory = await prisma.raffleHistory.delete({
+     *   where: {
+     *     // ... filter to delete one RaffleHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RaffleHistoryDeleteArgs>(args: SelectSubset<T, RaffleHistoryDeleteArgs<ExtArgs>>): Prisma__RaffleHistoryClient<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RaffleHistory.
+     * @param {RaffleHistoryUpdateArgs} args - Arguments to update one RaffleHistory.
+     * @example
+     * // Update one RaffleHistory
+     * const raffleHistory = await prisma.raffleHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RaffleHistoryUpdateArgs>(args: SelectSubset<T, RaffleHistoryUpdateArgs<ExtArgs>>): Prisma__RaffleHistoryClient<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RaffleHistories.
+     * @param {RaffleHistoryDeleteManyArgs} args - Arguments to filter RaffleHistories to delete.
+     * @example
+     * // Delete a few RaffleHistories
+     * const { count } = await prisma.raffleHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RaffleHistoryDeleteManyArgs>(args?: SelectSubset<T, RaffleHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RaffleHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RaffleHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RaffleHistories
+     * const raffleHistory = await prisma.raffleHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RaffleHistoryUpdateManyArgs>(args: SelectSubset<T, RaffleHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RaffleHistories and returns the data updated in the database.
+     * @param {RaffleHistoryUpdateManyAndReturnArgs} args - Arguments to update many RaffleHistories.
+     * @example
+     * // Update many RaffleHistories
+     * const raffleHistory = await prisma.raffleHistory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RaffleHistories and only return the `id`
+     * const raffleHistoryWithIdOnly = await prisma.raffleHistory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RaffleHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, RaffleHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RaffleHistory.
+     * @param {RaffleHistoryUpsertArgs} args - Arguments to update or create a RaffleHistory.
+     * @example
+     * // Update or create a RaffleHistory
+     * const raffleHistory = await prisma.raffleHistory.upsert({
+     *   create: {
+     *     // ... data to create a RaffleHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RaffleHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RaffleHistoryUpsertArgs>(args: SelectSubset<T, RaffleHistoryUpsertArgs<ExtArgs>>): Prisma__RaffleHistoryClient<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RaffleHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RaffleHistoryCountArgs} args - Arguments to filter RaffleHistories to count.
+     * @example
+     * // Count the number of RaffleHistories
+     * const count = await prisma.raffleHistory.count({
+     *   where: {
+     *     // ... the filter for the RaffleHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends RaffleHistoryCountArgs>(
+      args?: Subset<T, RaffleHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RaffleHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RaffleHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RaffleHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RaffleHistoryAggregateArgs>(args: Subset<T, RaffleHistoryAggregateArgs>): Prisma.PrismaPromise<GetRaffleHistoryAggregateType<T>>
+
+    /**
+     * Group by RaffleHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RaffleHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RaffleHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RaffleHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: RaffleHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RaffleHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRaffleHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RaffleHistory model
+   */
+  readonly fields: RaffleHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RaffleHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RaffleHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    activity<T extends RaffleHistory$activityArgs<ExtArgs> = {}>(args?: Subset<T, RaffleHistory$activityArgs<ExtArgs>>): Prisma__ActivityClient<$Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    registration<T extends RegistrationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegistrationDefaultArgs<ExtArgs>>): Prisma__RegistrationClient<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RaffleHistory model
+   */
+  interface RaffleHistoryFieldRefs {
+    readonly id: FieldRef<"RaffleHistory", 'String'>
+    readonly eventId: FieldRef<"RaffleHistory", 'String'>
+    readonly activityId: FieldRef<"RaffleHistory", 'String'>
+    readonly registrationId: FieldRef<"RaffleHistory", 'String'>
+    readonly prizeName: FieldRef<"RaffleHistory", 'String'>
+    readonly rule: FieldRef<"RaffleHistory", 'RaffleRule'>
+    readonly hasReceived: FieldRef<"RaffleHistory", 'Boolean'>
+    readonly isHiddenOnDisplay: FieldRef<"RaffleHistory", 'Boolean'>
+    readonly drawnAt: FieldRef<"RaffleHistory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RaffleHistory findUnique
+   */
+  export type RaffleHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RaffleHistory to fetch.
+     */
+    where: RaffleHistoryWhereUniqueInput
+  }
+
+  /**
+   * RaffleHistory findUniqueOrThrow
+   */
+  export type RaffleHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RaffleHistory to fetch.
+     */
+    where: RaffleHistoryWhereUniqueInput
+  }
+
+  /**
+   * RaffleHistory findFirst
+   */
+  export type RaffleHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RaffleHistory to fetch.
+     */
+    where?: RaffleHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RaffleHistories to fetch.
+     */
+    orderBy?: RaffleHistoryOrderByWithRelationInput | RaffleHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RaffleHistories.
+     */
+    cursor?: RaffleHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RaffleHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RaffleHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RaffleHistories.
+     */
+    distinct?: RaffleHistoryScalarFieldEnum | RaffleHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * RaffleHistory findFirstOrThrow
+   */
+  export type RaffleHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RaffleHistory to fetch.
+     */
+    where?: RaffleHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RaffleHistories to fetch.
+     */
+    orderBy?: RaffleHistoryOrderByWithRelationInput | RaffleHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RaffleHistories.
+     */
+    cursor?: RaffleHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RaffleHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RaffleHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RaffleHistories.
+     */
+    distinct?: RaffleHistoryScalarFieldEnum | RaffleHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * RaffleHistory findMany
+   */
+  export type RaffleHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RaffleHistories to fetch.
+     */
+    where?: RaffleHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RaffleHistories to fetch.
+     */
+    orderBy?: RaffleHistoryOrderByWithRelationInput | RaffleHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RaffleHistories.
+     */
+    cursor?: RaffleHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RaffleHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RaffleHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RaffleHistories.
+     */
+    distinct?: RaffleHistoryScalarFieldEnum | RaffleHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * RaffleHistory create
+   */
+  export type RaffleHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RaffleHistory.
+     */
+    data: XOR<RaffleHistoryCreateInput, RaffleHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * RaffleHistory createMany
+   */
+  export type RaffleHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RaffleHistories.
+     */
+    data: RaffleHistoryCreateManyInput | RaffleHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RaffleHistory createManyAndReturn
+   */
+  export type RaffleHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many RaffleHistories.
+     */
+    data: RaffleHistoryCreateManyInput | RaffleHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RaffleHistory update
+   */
+  export type RaffleHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RaffleHistory.
+     */
+    data: XOR<RaffleHistoryUpdateInput, RaffleHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which RaffleHistory to update.
+     */
+    where: RaffleHistoryWhereUniqueInput
+  }
+
+  /**
+   * RaffleHistory updateMany
+   */
+  export type RaffleHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RaffleHistories.
+     */
+    data: XOR<RaffleHistoryUpdateManyMutationInput, RaffleHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which RaffleHistories to update
+     */
+    where?: RaffleHistoryWhereInput
+    /**
+     * Limit how many RaffleHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RaffleHistory updateManyAndReturn
+   */
+  export type RaffleHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to update RaffleHistories.
+     */
+    data: XOR<RaffleHistoryUpdateManyMutationInput, RaffleHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which RaffleHistories to update
+     */
+    where?: RaffleHistoryWhereInput
+    /**
+     * Limit how many RaffleHistories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RaffleHistory upsert
+   */
+  export type RaffleHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RaffleHistory to update in case it exists.
+     */
+    where: RaffleHistoryWhereUniqueInput
+    /**
+     * In case the RaffleHistory found by the `where` argument doesn't exist, create a new RaffleHistory with this data.
+     */
+    create: XOR<RaffleHistoryCreateInput, RaffleHistoryUncheckedCreateInput>
+    /**
+     * In case the RaffleHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RaffleHistoryUpdateInput, RaffleHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * RaffleHistory delete
+   */
+  export type RaffleHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which RaffleHistory to delete.
+     */
+    where: RaffleHistoryWhereUniqueInput
+  }
+
+  /**
+   * RaffleHistory deleteMany
+   */
+  export type RaffleHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RaffleHistories to delete
+     */
+    where?: RaffleHistoryWhereInput
+    /**
+     * Limit how many RaffleHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RaffleHistory.activity
+   */
+  export type RaffleHistory$activityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Activity
+     */
+    select?: ActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Activity
+     */
+    omit?: ActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActivityInclude<ExtArgs> | null
+    where?: ActivityWhereInput
+  }
+
+  /**
+   * RaffleHistory without action
+   */
+  export type RaffleHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RaffleHistory
+     */
+    select?: RaffleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RaffleHistory
+     */
+    omit?: RaffleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RaffleHistoryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -29203,6 +30580,7 @@ export namespace Prisma {
     templateId: 'templateId',
     registrationId: 'registrationId',
     fileUrl: 'fileUrl',
+    validationHash: 'validationHash',
     issuedAt: 'issuedAt'
   };
 
@@ -29235,6 +30613,21 @@ export namespace Prisma {
   };
 
   export type SponsorScalarFieldEnum = (typeof SponsorScalarFieldEnum)[keyof typeof SponsorScalarFieldEnum]
+
+
+  export const RaffleHistoryScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    activityId: 'activityId',
+    registrationId: 'registrationId',
+    prizeName: 'prizeName',
+    rule: 'rule',
+    hasReceived: 'hasReceived',
+    isHiddenOnDisplay: 'isHiddenOnDisplay',
+    drawnAt: 'drawnAt'
+  };
+
+  export type RaffleHistoryScalarFieldEnum = (typeof RaffleHistoryScalarFieldEnum)[keyof typeof RaffleHistoryScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -29522,6 +30915,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'RaffleRule'
+   */
+  export type EnumRaffleRuleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RaffleRule'>
+    
+
+
+  /**
+   * Reference to a field of type 'RaffleRule[]'
+   */
+  export type ListEnumRaffleRuleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RaffleRule[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -29732,6 +31139,7 @@ export namespace Prisma {
     submissions?: SubmissionListRelationFilter
     certificateTemplates?: CertificateTemplateListRelationFilter
     sponsorCategories?: SponsorCategoryListRelationFilter
+    raffleHistories?: RaffleHistoryListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -29759,6 +31167,7 @@ export namespace Prisma {
     submissions?: SubmissionOrderByRelationAggregateInput
     certificateTemplates?: CertificateTemplateOrderByRelationAggregateInput
     sponsorCategories?: SponsorCategoryOrderByRelationAggregateInput
+    raffleHistories?: RaffleHistoryOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -29790,6 +31199,7 @@ export namespace Prisma {
     submissions?: SubmissionListRelationFilter
     certificateTemplates?: CertificateTemplateListRelationFilter
     sponsorCategories?: SponsorCategoryListRelationFilter
+    raffleHistories?: RaffleHistoryListRelationFilter
   }, "id" | "tenantId_slug">
 
   export type EventOrderByWithAggregationInput = {
@@ -29958,6 +31368,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerListRelationFilter
     enrollments?: ActivityEnrollmentListRelationFilter
     attendances?: AttendanceListRelationFilter
+    raffleHistories?: RaffleHistoryListRelationFilter
   }
 
   export type ActivityOrderByWithRelationInput = {
@@ -29981,6 +31392,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerOrderByRelationAggregateInput
     enrollments?: ActivityEnrollmentOrderByRelationAggregateInput
     attendances?: AttendanceOrderByRelationAggregateInput
+    raffleHistories?: RaffleHistoryOrderByRelationAggregateInput
   }
 
   export type ActivityWhereUniqueInput = Prisma.AtLeast<{
@@ -30007,6 +31419,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerListRelationFilter
     enrollments?: ActivityEnrollmentListRelationFilter
     attendances?: AttendanceListRelationFilter
+    raffleHistories?: RaffleHistoryListRelationFilter
   }, "id">
 
   export type ActivityOrderByWithAggregationInput = {
@@ -30202,6 +31615,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentListRelationFilter
     formResponses?: CustomFormResponseListRelationFilter
     certificates?: IssuedCertificateListRelationFilter
+    raffleHistories?: RaffleHistoryListRelationFilter
   }
 
   export type RegistrationOrderByWithRelationInput = {
@@ -30215,6 +31629,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentOrderByRelationAggregateInput
     formResponses?: CustomFormResponseOrderByRelationAggregateInput
     certificates?: IssuedCertificateOrderByRelationAggregateInput
+    raffleHistories?: RaffleHistoryOrderByRelationAggregateInput
   }
 
   export type RegistrationWhereUniqueInput = Prisma.AtLeast<{
@@ -30231,6 +31646,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentListRelationFilter
     formResponses?: CustomFormResponseListRelationFilter
     certificates?: IssuedCertificateListRelationFilter
+    raffleHistories?: RaffleHistoryListRelationFilter
   }, "id">
 
   export type RegistrationOrderByWithAggregationInput = {
@@ -30945,6 +32361,7 @@ export namespace Prisma {
     templateId?: StringFilter<"IssuedCertificate"> | string
     registrationId?: StringFilter<"IssuedCertificate"> | string
     fileUrl?: StringFilter<"IssuedCertificate"> | string
+    validationHash?: StringFilter<"IssuedCertificate"> | string
     issuedAt?: DateTimeFilter<"IssuedCertificate"> | Date | string
     template?: XOR<CertificateTemplateScalarRelationFilter, CertificateTemplateWhereInput>
     registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
@@ -30955,6 +32372,7 @@ export namespace Prisma {
     templateId?: SortOrder
     registrationId?: SortOrder
     fileUrl?: SortOrder
+    validationHash?: SortOrder
     issuedAt?: SortOrder
     template?: CertificateTemplateOrderByWithRelationInput
     registration?: RegistrationOrderByWithRelationInput
@@ -30962,6 +32380,7 @@ export namespace Prisma {
 
   export type IssuedCertificateWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    validationHash?: string
     AND?: IssuedCertificateWhereInput | IssuedCertificateWhereInput[]
     OR?: IssuedCertificateWhereInput[]
     NOT?: IssuedCertificateWhereInput | IssuedCertificateWhereInput[]
@@ -30971,13 +32390,14 @@ export namespace Prisma {
     issuedAt?: DateTimeFilter<"IssuedCertificate"> | Date | string
     template?: XOR<CertificateTemplateScalarRelationFilter, CertificateTemplateWhereInput>
     registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
-  }, "id">
+  }, "id" | "validationHash">
 
   export type IssuedCertificateOrderByWithAggregationInput = {
     id?: SortOrder
     templateId?: SortOrder
     registrationId?: SortOrder
     fileUrl?: SortOrder
+    validationHash?: SortOrder
     issuedAt?: SortOrder
     _count?: IssuedCertificateCountOrderByAggregateInput
     _max?: IssuedCertificateMaxOrderByAggregateInput
@@ -30992,6 +32412,7 @@ export namespace Prisma {
     templateId?: StringWithAggregatesFilter<"IssuedCertificate"> | string
     registrationId?: StringWithAggregatesFilter<"IssuedCertificate"> | string
     fileUrl?: StringWithAggregatesFilter<"IssuedCertificate"> | string
+    validationHash?: StringWithAggregatesFilter<"IssuedCertificate"> | string
     issuedAt?: DateTimeWithAggregatesFilter<"IssuedCertificate"> | Date | string
   }
 
@@ -31140,6 +32561,87 @@ export namespace Prisma {
     displayOrder?: IntWithAggregatesFilter<"Sponsor"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Sponsor"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Sponsor"> | Date | string
+  }
+
+  export type RaffleHistoryWhereInput = {
+    AND?: RaffleHistoryWhereInput | RaffleHistoryWhereInput[]
+    OR?: RaffleHistoryWhereInput[]
+    NOT?: RaffleHistoryWhereInput | RaffleHistoryWhereInput[]
+    id?: StringFilter<"RaffleHistory"> | string
+    eventId?: StringFilter<"RaffleHistory"> | string
+    activityId?: StringNullableFilter<"RaffleHistory"> | string | null
+    registrationId?: StringFilter<"RaffleHistory"> | string
+    prizeName?: StringNullableFilter<"RaffleHistory"> | string | null
+    rule?: EnumRaffleRuleFilter<"RaffleHistory"> | $Enums.RaffleRule
+    hasReceived?: BoolFilter<"RaffleHistory"> | boolean
+    isHiddenOnDisplay?: BoolFilter<"RaffleHistory"> | boolean
+    drawnAt?: DateTimeFilter<"RaffleHistory"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    activity?: XOR<ActivityNullableScalarRelationFilter, ActivityWhereInput> | null
+    registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+  }
+
+  export type RaffleHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    activityId?: SortOrderInput | SortOrder
+    registrationId?: SortOrder
+    prizeName?: SortOrderInput | SortOrder
+    rule?: SortOrder
+    hasReceived?: SortOrder
+    isHiddenOnDisplay?: SortOrder
+    drawnAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    activity?: ActivityOrderByWithRelationInput
+    registration?: RegistrationOrderByWithRelationInput
+  }
+
+  export type RaffleHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RaffleHistoryWhereInput | RaffleHistoryWhereInput[]
+    OR?: RaffleHistoryWhereInput[]
+    NOT?: RaffleHistoryWhereInput | RaffleHistoryWhereInput[]
+    eventId?: StringFilter<"RaffleHistory"> | string
+    activityId?: StringNullableFilter<"RaffleHistory"> | string | null
+    registrationId?: StringFilter<"RaffleHistory"> | string
+    prizeName?: StringNullableFilter<"RaffleHistory"> | string | null
+    rule?: EnumRaffleRuleFilter<"RaffleHistory"> | $Enums.RaffleRule
+    hasReceived?: BoolFilter<"RaffleHistory"> | boolean
+    isHiddenOnDisplay?: BoolFilter<"RaffleHistory"> | boolean
+    drawnAt?: DateTimeFilter<"RaffleHistory"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    activity?: XOR<ActivityNullableScalarRelationFilter, ActivityWhereInput> | null
+    registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+  }, "id">
+
+  export type RaffleHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    activityId?: SortOrderInput | SortOrder
+    registrationId?: SortOrder
+    prizeName?: SortOrderInput | SortOrder
+    rule?: SortOrder
+    hasReceived?: SortOrder
+    isHiddenOnDisplay?: SortOrder
+    drawnAt?: SortOrder
+    _count?: RaffleHistoryCountOrderByAggregateInput
+    _max?: RaffleHistoryMaxOrderByAggregateInput
+    _min?: RaffleHistoryMinOrderByAggregateInput
+  }
+
+  export type RaffleHistoryScalarWhereWithAggregatesInput = {
+    AND?: RaffleHistoryScalarWhereWithAggregatesInput | RaffleHistoryScalarWhereWithAggregatesInput[]
+    OR?: RaffleHistoryScalarWhereWithAggregatesInput[]
+    NOT?: RaffleHistoryScalarWhereWithAggregatesInput | RaffleHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RaffleHistory"> | string
+    eventId?: StringWithAggregatesFilter<"RaffleHistory"> | string
+    activityId?: StringNullableWithAggregatesFilter<"RaffleHistory"> | string | null
+    registrationId?: StringWithAggregatesFilter<"RaffleHistory"> | string
+    prizeName?: StringNullableWithAggregatesFilter<"RaffleHistory"> | string | null
+    rule?: EnumRaffleRuleWithAggregatesFilter<"RaffleHistory"> | $Enums.RaffleRule
+    hasReceived?: BoolWithAggregatesFilter<"RaffleHistory"> | boolean
+    isHiddenOnDisplay?: BoolWithAggregatesFilter<"RaffleHistory"> | boolean
+    drawnAt?: DateTimeWithAggregatesFilter<"RaffleHistory"> | Date | string
   }
 
   export type TenantCreateInput = {
@@ -31358,6 +32860,7 @@ export namespace Prisma {
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -31384,6 +32887,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -31410,6 +32914,7 @@ export namespace Prisma {
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -31436,6 +32941,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -31603,6 +33109,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
     attendances?: AttendanceCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityUncheckedCreateInput = {
@@ -31624,6 +33131,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutActivityInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityUpdateInput = {
@@ -31645,6 +33153,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutActivityNestedInput
   }
 
   export type ActivityUncheckedUpdateInput = {
@@ -31666,6 +33175,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutActivityNestedInput
   }
 
   export type ActivityCreateManyInput = {
@@ -31863,6 +33373,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateInput = {
@@ -31874,6 +33385,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseUncheckedCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateUncheckedCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUpdateInput = {
@@ -31885,6 +33397,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateInput = {
@@ -31896,6 +33409,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUncheckedUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUncheckedUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationCreateManyInput = {
@@ -32606,6 +34120,7 @@ export namespace Prisma {
   export type IssuedCertificateCreateInput = {
     id?: string
     fileUrl: string
+    validationHash?: string
     issuedAt?: Date | string
     template: CertificateTemplateCreateNestedOneWithoutIssuedCertificatesInput
     registration: RegistrationCreateNestedOneWithoutCertificatesInput
@@ -32616,12 +34131,14 @@ export namespace Prisma {
     templateId: string
     registrationId: string
     fileUrl: string
+    validationHash?: string
     issuedAt?: Date | string
   }
 
   export type IssuedCertificateUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
+    validationHash?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     template?: CertificateTemplateUpdateOneRequiredWithoutIssuedCertificatesNestedInput
     registration?: RegistrationUpdateOneRequiredWithoutCertificatesNestedInput
@@ -32632,6 +34149,7 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     registrationId?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
+    validationHash?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -32640,12 +34158,14 @@ export namespace Prisma {
     templateId: string
     registrationId: string
     fileUrl: string
+    validationHash?: string
     issuedAt?: Date | string
   }
 
   export type IssuedCertificateUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
+    validationHash?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -32654,6 +34174,7 @@ export namespace Prisma {
     templateId?: StringFieldUpdateOperationsInput | string
     registrationId?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
+    validationHash?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -32811,6 +34332,87 @@ export namespace Prisma {
     displayOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RaffleHistoryCreateInput = {
+    id?: string
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
+    event: EventCreateNestedOneWithoutRaffleHistoriesInput
+    activity?: ActivityCreateNestedOneWithoutRaffleHistoriesInput
+    registration: RegistrationCreateNestedOneWithoutRaffleHistoriesInput
+  }
+
+  export type RaffleHistoryUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    activityId?: string | null
+    registrationId: string
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
+  }
+
+  export type RaffleHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutRaffleHistoriesNestedInput
+    activity?: ActivityUpdateOneWithoutRaffleHistoriesNestedInput
+    registration?: RegistrationUpdateOneRequiredWithoutRaffleHistoriesNestedInput
+  }
+
+  export type RaffleHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    activityId?: NullableStringFieldUpdateOperationsInput | string | null
+    registrationId?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RaffleHistoryCreateManyInput = {
+    id?: string
+    eventId: string
+    activityId?: string | null
+    registrationId: string
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
+  }
+
+  export type RaffleHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RaffleHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    activityId?: NullableStringFieldUpdateOperationsInput | string | null
+    registrationId?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -33164,6 +34766,12 @@ export namespace Prisma {
     none?: SponsorCategoryWhereInput
   }
 
+  export type RaffleHistoryListRelationFilter = {
+    every?: RaffleHistoryWhereInput
+    some?: RaffleHistoryWhereInput
+    none?: RaffleHistoryWhereInput
+  }
+
   export type ActivityOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -33181,6 +34789,10 @@ export namespace Prisma {
   }
 
   export type SponsorCategoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RaffleHistoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -34214,6 +35826,7 @@ export namespace Prisma {
     templateId?: SortOrder
     registrationId?: SortOrder
     fileUrl?: SortOrder
+    validationHash?: SortOrder
     issuedAt?: SortOrder
   }
 
@@ -34222,6 +35835,7 @@ export namespace Prisma {
     templateId?: SortOrder
     registrationId?: SortOrder
     fileUrl?: SortOrder
+    validationHash?: SortOrder
     issuedAt?: SortOrder
   }
 
@@ -34230,6 +35844,7 @@ export namespace Prisma {
     templateId?: SortOrder
     registrationId?: SortOrder
     fileUrl?: SortOrder
+    validationHash?: SortOrder
     issuedAt?: SortOrder
   }
 
@@ -34345,6 +35960,59 @@ export namespace Prisma {
 
   export type SponsorSumOrderByAggregateInput = {
     displayOrder?: SortOrder
+  }
+
+  export type EnumRaffleRuleFilter<$PrismaModel = never> = {
+    equals?: $Enums.RaffleRule | EnumRaffleRuleFieldRefInput<$PrismaModel>
+    in?: $Enums.RaffleRule[] | ListEnumRaffleRuleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RaffleRule[] | ListEnumRaffleRuleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRaffleRuleFilter<$PrismaModel> | $Enums.RaffleRule
+  }
+
+  export type RaffleHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    activityId?: SortOrder
+    registrationId?: SortOrder
+    prizeName?: SortOrder
+    rule?: SortOrder
+    hasReceived?: SortOrder
+    isHiddenOnDisplay?: SortOrder
+    drawnAt?: SortOrder
+  }
+
+  export type RaffleHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    activityId?: SortOrder
+    registrationId?: SortOrder
+    prizeName?: SortOrder
+    rule?: SortOrder
+    hasReceived?: SortOrder
+    isHiddenOnDisplay?: SortOrder
+    drawnAt?: SortOrder
+  }
+
+  export type RaffleHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    activityId?: SortOrder
+    registrationId?: SortOrder
+    prizeName?: SortOrder
+    rule?: SortOrder
+    hasReceived?: SortOrder
+    isHiddenOnDisplay?: SortOrder
+    drawnAt?: SortOrder
+  }
+
+  export type EnumRaffleRuleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RaffleRule | EnumRaffleRuleFieldRefInput<$PrismaModel>
+    in?: $Enums.RaffleRule[] | ListEnumRaffleRuleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RaffleRule[] | ListEnumRaffleRuleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRaffleRuleWithAggregatesFilter<$PrismaModel> | $Enums.RaffleRule
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRaffleRuleFilter<$PrismaModel>
+    _max?: NestedEnumRaffleRuleFilter<$PrismaModel>
   }
 
   export type UserCreateNestedManyWithoutTenantInput = {
@@ -34768,6 +36436,13 @@ export namespace Prisma {
     connect?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
   }
 
+  export type RaffleHistoryCreateNestedManyWithoutEventInput = {
+    create?: XOR<RaffleHistoryCreateWithoutEventInput, RaffleHistoryUncheckedCreateWithoutEventInput> | RaffleHistoryCreateWithoutEventInput[] | RaffleHistoryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutEventInput | RaffleHistoryCreateOrConnectWithoutEventInput[]
+    createMany?: RaffleHistoryCreateManyEventInputEnvelope
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+  }
+
   export type ActivityUncheckedCreateNestedManyWithoutEventInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -34815,6 +36490,13 @@ export namespace Prisma {
     connectOrCreate?: SponsorCategoryCreateOrConnectWithoutEventInput | SponsorCategoryCreateOrConnectWithoutEventInput[]
     createMany?: SponsorCategoryCreateManyEventInputEnvelope
     connect?: SponsorCategoryWhereUniqueInput | SponsorCategoryWhereUniqueInput[]
+  }
+
+  export type RaffleHistoryUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<RaffleHistoryCreateWithoutEventInput, RaffleHistoryUncheckedCreateWithoutEventInput> | RaffleHistoryCreateWithoutEventInput[] | RaffleHistoryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutEventInput | RaffleHistoryCreateOrConnectWithoutEventInput[]
+    createMany?: RaffleHistoryCreateManyEventInputEnvelope
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
   }
 
   export type EnumEventStatusFieldUpdateOperationsInput = {
@@ -34927,6 +36609,20 @@ export namespace Prisma {
     deleteMany?: SponsorCategoryScalarWhereInput | SponsorCategoryScalarWhereInput[]
   }
 
+  export type RaffleHistoryUpdateManyWithoutEventNestedInput = {
+    create?: XOR<RaffleHistoryCreateWithoutEventInput, RaffleHistoryUncheckedCreateWithoutEventInput> | RaffleHistoryCreateWithoutEventInput[] | RaffleHistoryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutEventInput | RaffleHistoryCreateOrConnectWithoutEventInput[]
+    upsert?: RaffleHistoryUpsertWithWhereUniqueWithoutEventInput | RaffleHistoryUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: RaffleHistoryCreateManyEventInputEnvelope
+    set?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    disconnect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    delete?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    update?: RaffleHistoryUpdateWithWhereUniqueWithoutEventInput | RaffleHistoryUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: RaffleHistoryUpdateManyWithWhereWithoutEventInput | RaffleHistoryUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: RaffleHistoryScalarWhereInput | RaffleHistoryScalarWhereInput[]
+  }
+
   export type ActivityUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -35023,6 +36719,20 @@ export namespace Prisma {
     update?: SponsorCategoryUpdateWithWhereUniqueWithoutEventInput | SponsorCategoryUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: SponsorCategoryUpdateManyWithWhereWithoutEventInput | SponsorCategoryUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: SponsorCategoryScalarWhereInput | SponsorCategoryScalarWhereInput[]
+  }
+
+  export type RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<RaffleHistoryCreateWithoutEventInput, RaffleHistoryUncheckedCreateWithoutEventInput> | RaffleHistoryCreateWithoutEventInput[] | RaffleHistoryUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutEventInput | RaffleHistoryCreateOrConnectWithoutEventInput[]
+    upsert?: RaffleHistoryUpsertWithWhereUniqueWithoutEventInput | RaffleHistoryUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: RaffleHistoryCreateManyEventInputEnvelope
+    set?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    disconnect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    delete?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    update?: RaffleHistoryUpdateWithWhereUniqueWithoutEventInput | RaffleHistoryUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: RaffleHistoryUpdateManyWithWhereWithoutEventInput | RaffleHistoryUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: RaffleHistoryScalarWhereInput | RaffleHistoryScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutActivityTypesInput = {
@@ -35170,6 +36880,13 @@ export namespace Prisma {
     connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
   }
 
+  export type RaffleHistoryCreateNestedManyWithoutActivityInput = {
+    create?: XOR<RaffleHistoryCreateWithoutActivityInput, RaffleHistoryUncheckedCreateWithoutActivityInput> | RaffleHistoryCreateWithoutActivityInput[] | RaffleHistoryUncheckedCreateWithoutActivityInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutActivityInput | RaffleHistoryCreateOrConnectWithoutActivityInput[]
+    createMany?: RaffleHistoryCreateManyActivityInputEnvelope
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+  }
+
   export type ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput = {
     create?: XOR<ActivitySpeakerCreateWithoutActivityInput, ActivitySpeakerUncheckedCreateWithoutActivityInput> | ActivitySpeakerCreateWithoutActivityInput[] | ActivitySpeakerUncheckedCreateWithoutActivityInput[]
     connectOrCreate?: ActivitySpeakerCreateOrConnectWithoutActivityInput | ActivitySpeakerCreateOrConnectWithoutActivityInput[]
@@ -35189,6 +36906,13 @@ export namespace Prisma {
     connectOrCreate?: AttendanceCreateOrConnectWithoutActivityInput | AttendanceCreateOrConnectWithoutActivityInput[]
     createMany?: AttendanceCreateManyActivityInputEnvelope
     connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+  }
+
+  export type RaffleHistoryUncheckedCreateNestedManyWithoutActivityInput = {
+    create?: XOR<RaffleHistoryCreateWithoutActivityInput, RaffleHistoryUncheckedCreateWithoutActivityInput> | RaffleHistoryCreateWithoutActivityInput[] | RaffleHistoryUncheckedCreateWithoutActivityInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutActivityInput | RaffleHistoryCreateOrConnectWithoutActivityInput[]
+    createMany?: RaffleHistoryCreateManyActivityInputEnvelope
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -35267,6 +36991,20 @@ export namespace Prisma {
     deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
   }
 
+  export type RaffleHistoryUpdateManyWithoutActivityNestedInput = {
+    create?: XOR<RaffleHistoryCreateWithoutActivityInput, RaffleHistoryUncheckedCreateWithoutActivityInput> | RaffleHistoryCreateWithoutActivityInput[] | RaffleHistoryUncheckedCreateWithoutActivityInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutActivityInput | RaffleHistoryCreateOrConnectWithoutActivityInput[]
+    upsert?: RaffleHistoryUpsertWithWhereUniqueWithoutActivityInput | RaffleHistoryUpsertWithWhereUniqueWithoutActivityInput[]
+    createMany?: RaffleHistoryCreateManyActivityInputEnvelope
+    set?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    disconnect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    delete?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    update?: RaffleHistoryUpdateWithWhereUniqueWithoutActivityInput | RaffleHistoryUpdateWithWhereUniqueWithoutActivityInput[]
+    updateMany?: RaffleHistoryUpdateManyWithWhereWithoutActivityInput | RaffleHistoryUpdateManyWithWhereWithoutActivityInput[]
+    deleteMany?: RaffleHistoryScalarWhereInput | RaffleHistoryScalarWhereInput[]
+  }
+
   export type ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput = {
     create?: XOR<ActivitySpeakerCreateWithoutActivityInput, ActivitySpeakerUncheckedCreateWithoutActivityInput> | ActivitySpeakerCreateWithoutActivityInput[] | ActivitySpeakerUncheckedCreateWithoutActivityInput[]
     connectOrCreate?: ActivitySpeakerCreateOrConnectWithoutActivityInput | ActivitySpeakerCreateOrConnectWithoutActivityInput[]
@@ -35307,6 +37045,20 @@ export namespace Prisma {
     update?: AttendanceUpdateWithWhereUniqueWithoutActivityInput | AttendanceUpdateWithWhereUniqueWithoutActivityInput[]
     updateMany?: AttendanceUpdateManyWithWhereWithoutActivityInput | AttendanceUpdateManyWithWhereWithoutActivityInput[]
     deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+  }
+
+  export type RaffleHistoryUncheckedUpdateManyWithoutActivityNestedInput = {
+    create?: XOR<RaffleHistoryCreateWithoutActivityInput, RaffleHistoryUncheckedCreateWithoutActivityInput> | RaffleHistoryCreateWithoutActivityInput[] | RaffleHistoryUncheckedCreateWithoutActivityInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutActivityInput | RaffleHistoryCreateOrConnectWithoutActivityInput[]
+    upsert?: RaffleHistoryUpsertWithWhereUniqueWithoutActivityInput | RaffleHistoryUpsertWithWhereUniqueWithoutActivityInput[]
+    createMany?: RaffleHistoryCreateManyActivityInputEnvelope
+    set?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    disconnect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    delete?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    update?: RaffleHistoryUpdateWithWhereUniqueWithoutActivityInput | RaffleHistoryUpdateWithWhereUniqueWithoutActivityInput[]
+    updateMany?: RaffleHistoryUpdateManyWithWhereWithoutActivityInput | RaffleHistoryUpdateManyWithWhereWithoutActivityInput[]
+    deleteMany?: RaffleHistoryScalarWhereInput | RaffleHistoryScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutSpeakersInput = {
@@ -35449,6 +37201,13 @@ export namespace Prisma {
     connect?: IssuedCertificateWhereUniqueInput | IssuedCertificateWhereUniqueInput[]
   }
 
+  export type RaffleHistoryCreateNestedManyWithoutRegistrationInput = {
+    create?: XOR<RaffleHistoryCreateWithoutRegistrationInput, RaffleHistoryUncheckedCreateWithoutRegistrationInput> | RaffleHistoryCreateWithoutRegistrationInput[] | RaffleHistoryUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutRegistrationInput | RaffleHistoryCreateOrConnectWithoutRegistrationInput[]
+    createMany?: RaffleHistoryCreateManyRegistrationInputEnvelope
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+  }
+
   export type TicketUncheckedCreateNestedManyWithoutRegistrationInput = {
     create?: XOR<TicketCreateWithoutRegistrationInput, TicketUncheckedCreateWithoutRegistrationInput> | TicketCreateWithoutRegistrationInput[] | TicketUncheckedCreateWithoutRegistrationInput[]
     connectOrCreate?: TicketCreateOrConnectWithoutRegistrationInput | TicketCreateOrConnectWithoutRegistrationInput[]
@@ -35475,6 +37234,13 @@ export namespace Prisma {
     connectOrCreate?: IssuedCertificateCreateOrConnectWithoutRegistrationInput | IssuedCertificateCreateOrConnectWithoutRegistrationInput[]
     createMany?: IssuedCertificateCreateManyRegistrationInputEnvelope
     connect?: IssuedCertificateWhereUniqueInput | IssuedCertificateWhereUniqueInput[]
+  }
+
+  export type RaffleHistoryUncheckedCreateNestedManyWithoutRegistrationInput = {
+    create?: XOR<RaffleHistoryCreateWithoutRegistrationInput, RaffleHistoryUncheckedCreateWithoutRegistrationInput> | RaffleHistoryCreateWithoutRegistrationInput[] | RaffleHistoryUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutRegistrationInput | RaffleHistoryCreateOrConnectWithoutRegistrationInput[]
+    createMany?: RaffleHistoryCreateManyRegistrationInputEnvelope
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
   }
 
   export type EventUpdateOneRequiredWithoutRegistrationsNestedInput = {
@@ -35549,6 +37315,20 @@ export namespace Prisma {
     deleteMany?: IssuedCertificateScalarWhereInput | IssuedCertificateScalarWhereInput[]
   }
 
+  export type RaffleHistoryUpdateManyWithoutRegistrationNestedInput = {
+    create?: XOR<RaffleHistoryCreateWithoutRegistrationInput, RaffleHistoryUncheckedCreateWithoutRegistrationInput> | RaffleHistoryCreateWithoutRegistrationInput[] | RaffleHistoryUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutRegistrationInput | RaffleHistoryCreateOrConnectWithoutRegistrationInput[]
+    upsert?: RaffleHistoryUpsertWithWhereUniqueWithoutRegistrationInput | RaffleHistoryUpsertWithWhereUniqueWithoutRegistrationInput[]
+    createMany?: RaffleHistoryCreateManyRegistrationInputEnvelope
+    set?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    disconnect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    delete?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    update?: RaffleHistoryUpdateWithWhereUniqueWithoutRegistrationInput | RaffleHistoryUpdateWithWhereUniqueWithoutRegistrationInput[]
+    updateMany?: RaffleHistoryUpdateManyWithWhereWithoutRegistrationInput | RaffleHistoryUpdateManyWithWhereWithoutRegistrationInput[]
+    deleteMany?: RaffleHistoryScalarWhereInput | RaffleHistoryScalarWhereInput[]
+  }
+
   export type TicketUncheckedUpdateManyWithoutRegistrationNestedInput = {
     create?: XOR<TicketCreateWithoutRegistrationInput, TicketUncheckedCreateWithoutRegistrationInput> | TicketCreateWithoutRegistrationInput[] | TicketUncheckedCreateWithoutRegistrationInput[]
     connectOrCreate?: TicketCreateOrConnectWithoutRegistrationInput | TicketCreateOrConnectWithoutRegistrationInput[]
@@ -35603,6 +37383,20 @@ export namespace Prisma {
     update?: IssuedCertificateUpdateWithWhereUniqueWithoutRegistrationInput | IssuedCertificateUpdateWithWhereUniqueWithoutRegistrationInput[]
     updateMany?: IssuedCertificateUpdateManyWithWhereWithoutRegistrationInput | IssuedCertificateUpdateManyWithWhereWithoutRegistrationInput[]
     deleteMany?: IssuedCertificateScalarWhereInput | IssuedCertificateScalarWhereInput[]
+  }
+
+  export type RaffleHistoryUncheckedUpdateManyWithoutRegistrationNestedInput = {
+    create?: XOR<RaffleHistoryCreateWithoutRegistrationInput, RaffleHistoryUncheckedCreateWithoutRegistrationInput> | RaffleHistoryCreateWithoutRegistrationInput[] | RaffleHistoryUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: RaffleHistoryCreateOrConnectWithoutRegistrationInput | RaffleHistoryCreateOrConnectWithoutRegistrationInput[]
+    upsert?: RaffleHistoryUpsertWithWhereUniqueWithoutRegistrationInput | RaffleHistoryUpsertWithWhereUniqueWithoutRegistrationInput[]
+    createMany?: RaffleHistoryCreateManyRegistrationInputEnvelope
+    set?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    disconnect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    delete?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    connect?: RaffleHistoryWhereUniqueInput | RaffleHistoryWhereUniqueInput[]
+    update?: RaffleHistoryUpdateWithWhereUniqueWithoutRegistrationInput | RaffleHistoryUpdateWithWhereUniqueWithoutRegistrationInput[]
+    updateMany?: RaffleHistoryUpdateManyWithWhereWithoutRegistrationInput | RaffleHistoryUpdateManyWithWhereWithoutRegistrationInput[]
+    deleteMany?: RaffleHistoryScalarWhereInput | RaffleHistoryScalarWhereInput[]
   }
 
   export type ActivityCreateNestedOneWithoutEnrollmentsInput = {
@@ -36349,6 +38143,54 @@ export namespace Prisma {
     update?: XOR<XOR<SponsorCategoryUpdateToOneWithWhereWithoutSponsorsInput, SponsorCategoryUpdateWithoutSponsorsInput>, SponsorCategoryUncheckedUpdateWithoutSponsorsInput>
   }
 
+  export type EventCreateNestedOneWithoutRaffleHistoriesInput = {
+    create?: XOR<EventCreateWithoutRaffleHistoriesInput, EventUncheckedCreateWithoutRaffleHistoriesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutRaffleHistoriesInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type ActivityCreateNestedOneWithoutRaffleHistoriesInput = {
+    create?: XOR<ActivityCreateWithoutRaffleHistoriesInput, ActivityUncheckedCreateWithoutRaffleHistoriesInput>
+    connectOrCreate?: ActivityCreateOrConnectWithoutRaffleHistoriesInput
+    connect?: ActivityWhereUniqueInput
+  }
+
+  export type RegistrationCreateNestedOneWithoutRaffleHistoriesInput = {
+    create?: XOR<RegistrationCreateWithoutRaffleHistoriesInput, RegistrationUncheckedCreateWithoutRaffleHistoriesInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutRaffleHistoriesInput
+    connect?: RegistrationWhereUniqueInput
+  }
+
+  export type EnumRaffleRuleFieldUpdateOperationsInput = {
+    set?: $Enums.RaffleRule
+  }
+
+  export type EventUpdateOneRequiredWithoutRaffleHistoriesNestedInput = {
+    create?: XOR<EventCreateWithoutRaffleHistoriesInput, EventUncheckedCreateWithoutRaffleHistoriesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutRaffleHistoriesInput
+    upsert?: EventUpsertWithoutRaffleHistoriesInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutRaffleHistoriesInput, EventUpdateWithoutRaffleHistoriesInput>, EventUncheckedUpdateWithoutRaffleHistoriesInput>
+  }
+
+  export type ActivityUpdateOneWithoutRaffleHistoriesNestedInput = {
+    create?: XOR<ActivityCreateWithoutRaffleHistoriesInput, ActivityUncheckedCreateWithoutRaffleHistoriesInput>
+    connectOrCreate?: ActivityCreateOrConnectWithoutRaffleHistoriesInput
+    upsert?: ActivityUpsertWithoutRaffleHistoriesInput
+    disconnect?: ActivityWhereInput | boolean
+    delete?: ActivityWhereInput | boolean
+    connect?: ActivityWhereUniqueInput
+    update?: XOR<XOR<ActivityUpdateToOneWithWhereWithoutRaffleHistoriesInput, ActivityUpdateWithoutRaffleHistoriesInput>, ActivityUncheckedUpdateWithoutRaffleHistoriesInput>
+  }
+
+  export type RegistrationUpdateOneRequiredWithoutRaffleHistoriesNestedInput = {
+    create?: XOR<RegistrationCreateWithoutRaffleHistoriesInput, RegistrationUncheckedCreateWithoutRaffleHistoriesInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutRaffleHistoriesInput
+    upsert?: RegistrationUpsertWithoutRaffleHistoriesInput
+    connect?: RegistrationWhereUniqueInput
+    update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutRaffleHistoriesInput, RegistrationUpdateWithoutRaffleHistoriesInput>, RegistrationUncheckedUpdateWithoutRaffleHistoriesInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -36810,6 +38652,23 @@ export namespace Prisma {
     _max?: NestedEnumSponsorSizeFilter<$PrismaModel>
   }
 
+  export type NestedEnumRaffleRuleFilter<$PrismaModel = never> = {
+    equals?: $Enums.RaffleRule | EnumRaffleRuleFieldRefInput<$PrismaModel>
+    in?: $Enums.RaffleRule[] | ListEnumRaffleRuleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RaffleRule[] | ListEnumRaffleRuleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRaffleRuleFilter<$PrismaModel> | $Enums.RaffleRule
+  }
+
+  export type NestedEnumRaffleRuleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RaffleRule | EnumRaffleRuleFieldRefInput<$PrismaModel>
+    in?: $Enums.RaffleRule[] | ListEnumRaffleRuleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RaffleRule[] | ListEnumRaffleRuleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRaffleRuleWithAggregatesFilter<$PrismaModel> | $Enums.RaffleRule
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRaffleRuleFilter<$PrismaModel>
+    _max?: NestedEnumRaffleRuleFilter<$PrismaModel>
+  }
+
   export type UserCreateWithoutTenantInput = {
     id?: string
     email: string
@@ -36873,6 +38732,7 @@ export namespace Prisma {
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTenantInput = {
@@ -36898,6 +38758,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTenantInput = {
@@ -37183,6 +39044,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutUserInput = {
@@ -37193,6 +39055,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseUncheckedCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateUncheckedCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutUserInput = {
@@ -37445,6 +39308,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
     attendances?: AttendanceCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityUncheckedCreateWithoutEventInput = {
@@ -37465,6 +39329,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutActivityInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityCreateOrConnectWithoutEventInput = {
@@ -37485,6 +39350,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutEventInput = {
@@ -37495,6 +39361,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseUncheckedCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateUncheckedCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutEventInput = {
@@ -37666,6 +39533,38 @@ export namespace Prisma {
 
   export type SponsorCategoryCreateManyEventInputEnvelope = {
     data: SponsorCategoryCreateManyEventInput | SponsorCategoryCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RaffleHistoryCreateWithoutEventInput = {
+    id?: string
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
+    activity?: ActivityCreateNestedOneWithoutRaffleHistoriesInput
+    registration: RegistrationCreateNestedOneWithoutRaffleHistoriesInput
+  }
+
+  export type RaffleHistoryUncheckedCreateWithoutEventInput = {
+    id?: string
+    activityId?: string | null
+    registrationId: string
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
+  }
+
+  export type RaffleHistoryCreateOrConnectWithoutEventInput = {
+    where: RaffleHistoryWhereUniqueInput
+    create: XOR<RaffleHistoryCreateWithoutEventInput, RaffleHistoryUncheckedCreateWithoutEventInput>
+  }
+
+  export type RaffleHistoryCreateManyEventInputEnvelope = {
+    data: RaffleHistoryCreateManyEventInput | RaffleHistoryCreateManyEventInput[]
     skipDuplicates?: boolean
   }
 
@@ -37895,6 +39794,37 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"SponsorCategory"> | Date | string
   }
 
+  export type RaffleHistoryUpsertWithWhereUniqueWithoutEventInput = {
+    where: RaffleHistoryWhereUniqueInput
+    update: XOR<RaffleHistoryUpdateWithoutEventInput, RaffleHistoryUncheckedUpdateWithoutEventInput>
+    create: XOR<RaffleHistoryCreateWithoutEventInput, RaffleHistoryUncheckedCreateWithoutEventInput>
+  }
+
+  export type RaffleHistoryUpdateWithWhereUniqueWithoutEventInput = {
+    where: RaffleHistoryWhereUniqueInput
+    data: XOR<RaffleHistoryUpdateWithoutEventInput, RaffleHistoryUncheckedUpdateWithoutEventInput>
+  }
+
+  export type RaffleHistoryUpdateManyWithWhereWithoutEventInput = {
+    where: RaffleHistoryScalarWhereInput
+    data: XOR<RaffleHistoryUpdateManyMutationInput, RaffleHistoryUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type RaffleHistoryScalarWhereInput = {
+    AND?: RaffleHistoryScalarWhereInput | RaffleHistoryScalarWhereInput[]
+    OR?: RaffleHistoryScalarWhereInput[]
+    NOT?: RaffleHistoryScalarWhereInput | RaffleHistoryScalarWhereInput[]
+    id?: StringFilter<"RaffleHistory"> | string
+    eventId?: StringFilter<"RaffleHistory"> | string
+    activityId?: StringNullableFilter<"RaffleHistory"> | string | null
+    registrationId?: StringFilter<"RaffleHistory"> | string
+    prizeName?: StringNullableFilter<"RaffleHistory"> | string | null
+    rule?: EnumRaffleRuleFilter<"RaffleHistory"> | $Enums.RaffleRule
+    hasReceived?: BoolFilter<"RaffleHistory"> | boolean
+    isHiddenOnDisplay?: BoolFilter<"RaffleHistory"> | boolean
+    drawnAt?: DateTimeFilter<"RaffleHistory"> | Date | string
+  }
+
   export type TenantCreateWithoutActivityTypesInput = {
     id?: string
     name: string
@@ -37946,6 +39876,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
     attendances?: AttendanceCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityUncheckedCreateWithoutTypeInput = {
@@ -37966,6 +39897,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutActivityInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityCreateOrConnectWithoutTypeInput = {
@@ -38173,6 +40105,7 @@ export namespace Prisma {
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutActivitiesInput = {
@@ -38198,6 +40131,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutActivitiesInput = {
@@ -38290,6 +40224,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type RaffleHistoryCreateWithoutActivityInput = {
+    id?: string
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
+    event: EventCreateNestedOneWithoutRaffleHistoriesInput
+    registration: RegistrationCreateNestedOneWithoutRaffleHistoriesInput
+  }
+
+  export type RaffleHistoryUncheckedCreateWithoutActivityInput = {
+    id?: string
+    eventId: string
+    registrationId: string
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
+  }
+
+  export type RaffleHistoryCreateOrConnectWithoutActivityInput = {
+    where: RaffleHistoryWhereUniqueInput
+    create: XOR<RaffleHistoryCreateWithoutActivityInput, RaffleHistoryUncheckedCreateWithoutActivityInput>
+  }
+
+  export type RaffleHistoryCreateManyActivityInputEnvelope = {
+    data: RaffleHistoryCreateManyActivityInput | RaffleHistoryCreateManyActivityInput[]
+    skipDuplicates?: boolean
+  }
+
   export type EventUpsertWithoutActivitiesInput = {
     update: XOR<EventUpdateWithoutActivitiesInput, EventUncheckedUpdateWithoutActivitiesInput>
     create: XOR<EventCreateWithoutActivitiesInput, EventUncheckedCreateWithoutActivitiesInput>
@@ -38324,6 +40290,7 @@ export namespace Prisma {
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutActivitiesInput = {
@@ -38349,6 +40316,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityTypeUpsertWithoutActivitiesInput = {
@@ -38442,6 +40410,22 @@ export namespace Prisma {
     ticketId?: StringFilter<"Attendance"> | string
     activityId?: StringNullableFilter<"Attendance"> | string | null
     checkedAt?: DateTimeFilter<"Attendance"> | Date | string
+  }
+
+  export type RaffleHistoryUpsertWithWhereUniqueWithoutActivityInput = {
+    where: RaffleHistoryWhereUniqueInput
+    update: XOR<RaffleHistoryUpdateWithoutActivityInput, RaffleHistoryUncheckedUpdateWithoutActivityInput>
+    create: XOR<RaffleHistoryCreateWithoutActivityInput, RaffleHistoryUncheckedCreateWithoutActivityInput>
+  }
+
+  export type RaffleHistoryUpdateWithWhereUniqueWithoutActivityInput = {
+    where: RaffleHistoryWhereUniqueInput
+    data: XOR<RaffleHistoryUpdateWithoutActivityInput, RaffleHistoryUncheckedUpdateWithoutActivityInput>
+  }
+
+  export type RaffleHistoryUpdateManyWithWhereWithoutActivityInput = {
+    where: RaffleHistoryScalarWhereInput
+    data: XOR<RaffleHistoryUpdateManyMutationInput, RaffleHistoryUncheckedUpdateManyWithoutActivityInput>
   }
 
   export type TenantCreateWithoutSpeakersInput = {
@@ -38570,6 +40554,7 @@ export namespace Prisma {
     type?: ActivityTypeCreateNestedOneWithoutActivitiesInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
     attendances?: AttendanceCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityUncheckedCreateWithoutSpeakersInput = {
@@ -38590,6 +40575,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutActivityInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityCreateOrConnectWithoutSpeakersInput = {
@@ -38674,6 +40660,7 @@ export namespace Prisma {
     type?: ActivityTypeUpdateOneWithoutActivitiesNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutActivityNestedInput
   }
 
   export type ActivityUncheckedUpdateWithoutSpeakersInput = {
@@ -38694,6 +40681,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutActivityNestedInput
   }
 
   export type SpeakerUpsertWithoutActivitiesInput = {
@@ -38779,6 +40767,7 @@ export namespace Prisma {
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -38804,6 +40793,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -38935,6 +40925,7 @@ export namespace Prisma {
   export type IssuedCertificateCreateWithoutRegistrationInput = {
     id?: string
     fileUrl: string
+    validationHash?: string
     issuedAt?: Date | string
     template: CertificateTemplateCreateNestedOneWithoutIssuedCertificatesInput
   }
@@ -38943,6 +40934,7 @@ export namespace Prisma {
     id?: string
     templateId: string
     fileUrl: string
+    validationHash?: string
     issuedAt?: Date | string
   }
 
@@ -38953,6 +40945,38 @@ export namespace Prisma {
 
   export type IssuedCertificateCreateManyRegistrationInputEnvelope = {
     data: IssuedCertificateCreateManyRegistrationInput | IssuedCertificateCreateManyRegistrationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RaffleHistoryCreateWithoutRegistrationInput = {
+    id?: string
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
+    event: EventCreateNestedOneWithoutRaffleHistoriesInput
+    activity?: ActivityCreateNestedOneWithoutRaffleHistoriesInput
+  }
+
+  export type RaffleHistoryUncheckedCreateWithoutRegistrationInput = {
+    id?: string
+    eventId: string
+    activityId?: string | null
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
+  }
+
+  export type RaffleHistoryCreateOrConnectWithoutRegistrationInput = {
+    where: RaffleHistoryWhereUniqueInput
+    create: XOR<RaffleHistoryCreateWithoutRegistrationInput, RaffleHistoryUncheckedCreateWithoutRegistrationInput>
+  }
+
+  export type RaffleHistoryCreateManyRegistrationInputEnvelope = {
+    data: RaffleHistoryCreateManyRegistrationInput | RaffleHistoryCreateManyRegistrationInput[]
     skipDuplicates?: boolean
   }
 
@@ -38990,6 +41014,7 @@ export namespace Prisma {
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -39015,6 +41040,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutRegistrationsInput = {
@@ -39141,7 +41167,24 @@ export namespace Prisma {
     templateId?: StringFilter<"IssuedCertificate"> | string
     registrationId?: StringFilter<"IssuedCertificate"> | string
     fileUrl?: StringFilter<"IssuedCertificate"> | string
+    validationHash?: StringFilter<"IssuedCertificate"> | string
     issuedAt?: DateTimeFilter<"IssuedCertificate"> | Date | string
+  }
+
+  export type RaffleHistoryUpsertWithWhereUniqueWithoutRegistrationInput = {
+    where: RaffleHistoryWhereUniqueInput
+    update: XOR<RaffleHistoryUpdateWithoutRegistrationInput, RaffleHistoryUncheckedUpdateWithoutRegistrationInput>
+    create: XOR<RaffleHistoryCreateWithoutRegistrationInput, RaffleHistoryUncheckedCreateWithoutRegistrationInput>
+  }
+
+  export type RaffleHistoryUpdateWithWhereUniqueWithoutRegistrationInput = {
+    where: RaffleHistoryWhereUniqueInput
+    data: XOR<RaffleHistoryUpdateWithoutRegistrationInput, RaffleHistoryUncheckedUpdateWithoutRegistrationInput>
+  }
+
+  export type RaffleHistoryUpdateManyWithWhereWithoutRegistrationInput = {
+    where: RaffleHistoryScalarWhereInput
+    data: XOR<RaffleHistoryUpdateManyMutationInput, RaffleHistoryUncheckedUpdateManyWithoutRegistrationInput>
   }
 
   export type ActivityCreateWithoutEnrollmentsInput = {
@@ -39162,6 +41205,7 @@ export namespace Prisma {
     type?: ActivityTypeCreateNestedOneWithoutActivitiesInput
     speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
     attendances?: AttendanceCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityUncheckedCreateWithoutEnrollmentsInput = {
@@ -39182,6 +41226,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityCreateOrConnectWithoutEnrollmentsInput = {
@@ -39197,6 +41242,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutEnrollmentsInput = {
@@ -39207,6 +41253,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseUncheckedCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateUncheckedCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutEnrollmentsInput = {
@@ -39243,6 +41290,7 @@ export namespace Prisma {
     type?: ActivityTypeUpdateOneWithoutActivitiesNestedInput
     speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutActivityNestedInput
   }
 
   export type ActivityUncheckedUpdateWithoutEnrollmentsInput = {
@@ -39263,6 +41311,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutActivityNestedInput
   }
 
   export type RegistrationUpsertWithoutEnrollmentsInput = {
@@ -39284,6 +41333,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutEnrollmentsInput = {
@@ -39294,6 +41344,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUncheckedUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUncheckedUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type EventCreateWithoutTicketsInput = {
@@ -39319,6 +41370,7 @@ export namespace Prisma {
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTicketsInput = {
@@ -39344,6 +41396,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTicketsInput = {
@@ -39359,6 +41412,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutTicketsInput = {
@@ -39369,6 +41423,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseUncheckedCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateUncheckedCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutTicketsInput = {
@@ -39432,6 +41487,7 @@ export namespace Prisma {
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTicketsInput = {
@@ -39457,6 +41513,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutTicketsInput = {
@@ -39478,6 +41535,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutTicketsInput = {
@@ -39488,6 +41546,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUncheckedUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUncheckedUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type AttendanceUpsertWithWhereUniqueWithoutTicketInput = {
@@ -39529,6 +41588,7 @@ export namespace Prisma {
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutFormsInput = {
@@ -39554,6 +41614,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutFormsInput = {
@@ -39655,6 +41716,7 @@ export namespace Prisma {
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutFormsInput = {
@@ -39680,6 +41742,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type CustomFormFieldUpsertWithWhereUniqueWithoutFormInput = {
@@ -39866,6 +41929,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutRegistrationInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutFormResponsesInput = {
@@ -39876,6 +41940,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutRegistrationInput
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutRegistrationInput
     certificates?: IssuedCertificateUncheckedCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutFormResponsesInput = {
@@ -39986,6 +42051,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutRegistrationNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutFormResponsesInput = {
@@ -39996,6 +42062,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutRegistrationNestedInput
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUncheckedUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type SubmissionUpsertWithoutFormResponsesInput = {
@@ -40186,6 +42253,7 @@ export namespace Prisma {
     forms?: CustomFormCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionsInput = {
@@ -40211,6 +42279,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionsInput = {
@@ -40341,6 +42410,7 @@ export namespace Prisma {
     forms?: CustomFormUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionsInput = {
@@ -40366,6 +42436,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutSubmissionsInput = {
@@ -40632,6 +42703,7 @@ export namespace Prisma {
     type?: ActivityTypeCreateNestedOneWithoutActivitiesInput
     speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityUncheckedCreateWithoutAttendancesInput = {
@@ -40652,6 +42724,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutActivityInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutActivityInput
   }
 
   export type ActivityCreateOrConnectWithoutAttendancesInput = {
@@ -40723,6 +42796,7 @@ export namespace Prisma {
     type?: ActivityTypeUpdateOneWithoutActivitiesNestedInput
     speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutActivityNestedInput
   }
 
   export type ActivityUncheckedUpdateWithoutAttendancesInput = {
@@ -40743,6 +42817,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutActivityNestedInput
   }
 
   export type EventCreateWithoutCertificateTemplatesInput = {
@@ -40768,6 +42843,7 @@ export namespace Prisma {
     forms?: CustomFormCreateNestedManyWithoutEventInput
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutCertificateTemplatesInput = {
@@ -40793,6 +42869,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutCertificateTemplatesInput = {
@@ -40803,6 +42880,7 @@ export namespace Prisma {
   export type IssuedCertificateCreateWithoutTemplateInput = {
     id?: string
     fileUrl: string
+    validationHash?: string
     issuedAt?: Date | string
     registration: RegistrationCreateNestedOneWithoutCertificatesInput
   }
@@ -40811,6 +42889,7 @@ export namespace Prisma {
     id?: string
     registrationId: string
     fileUrl: string
+    validationHash?: string
     issuedAt?: Date | string
   }
 
@@ -40858,6 +42937,7 @@ export namespace Prisma {
     forms?: CustomFormUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutCertificateTemplatesInput = {
@@ -40883,6 +42963,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type IssuedCertificateUpsertWithWhereUniqueWithoutTemplateInput = {
@@ -40934,6 +43015,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutRegistrationInput
     enrollments?: ActivityEnrollmentCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutCertificatesInput = {
@@ -40944,6 +43026,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutRegistrationInput
     enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutRegistrationInput
     formResponses?: CustomFormResponseUncheckedCreateNestedManyWithoutRegistrationInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutCertificatesInput = {
@@ -41001,6 +43084,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutRegistrationNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutCertificatesInput = {
@@ -41011,6 +43095,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutRegistrationNestedInput
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUncheckedUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type EventCreateWithoutSponsorCategoriesInput = {
@@ -41036,6 +43121,7 @@ export namespace Prisma {
     forms?: CustomFormCreateNestedManyWithoutEventInput
     submissions?: SubmissionCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSponsorCategoriesInput = {
@@ -41061,6 +43147,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
     certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSponsorCategoriesInput = {
@@ -41132,6 +43219,7 @@ export namespace Prisma {
     forms?: CustomFormUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSponsorCategoriesInput = {
@@ -41157,6 +43245,7 @@ export namespace Prisma {
     forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SponsorUpsertWithWhereUniqueWithoutCategoryInput = {
@@ -41247,6 +43336,286 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventCreateWithoutRaffleHistoriesInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutEventsInput
+    activities?: ActivityCreateNestedManyWithoutEventInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    tickets?: TicketCreateNestedManyWithoutEventInput
+    forms?: CustomFormCreateNestedManyWithoutEventInput
+    submissions?: SubmissionCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutRaffleHistoriesInput = {
+    id?: string
+    tenantId: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutRaffleHistoriesInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutRaffleHistoriesInput, EventUncheckedCreateWithoutRaffleHistoriesInput>
+  }
+
+  export type ActivityCreateWithoutRaffleHistoriesInput = {
+    id?: string
+    title: string
+    description?: string | null
+    location?: string | null
+    startAt: Date | string
+    endAt: Date | string
+    capacity?: number | null
+    status?: $Enums.ActivityStatus
+    requiresEnrollment?: boolean
+    requiresConfirmation?: boolean
+    confirmationDays?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutActivitiesInput
+    type?: ActivityTypeCreateNestedOneWithoutActivitiesInput
+    speakers?: ActivitySpeakerCreateNestedManyWithoutActivityInput
+    enrollments?: ActivityEnrollmentCreateNestedManyWithoutActivityInput
+    attendances?: AttendanceCreateNestedManyWithoutActivityInput
+  }
+
+  export type ActivityUncheckedCreateWithoutRaffleHistoriesInput = {
+    id?: string
+    eventId: string
+    title: string
+    description?: string | null
+    location?: string | null
+    startAt: Date | string
+    endAt: Date | string
+    capacity?: number | null
+    status?: $Enums.ActivityStatus
+    typeId?: string | null
+    requiresEnrollment?: boolean
+    requiresConfirmation?: boolean
+    confirmationDays?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    speakers?: ActivitySpeakerUncheckedCreateNestedManyWithoutActivityInput
+    enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutActivityInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutActivityInput
+  }
+
+  export type ActivityCreateOrConnectWithoutRaffleHistoriesInput = {
+    where: ActivityWhereUniqueInput
+    create: XOR<ActivityCreateWithoutRaffleHistoriesInput, ActivityUncheckedCreateWithoutRaffleHistoriesInput>
+  }
+
+  export type RegistrationCreateWithoutRaffleHistoriesInput = {
+    id?: string
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutRegistrationsInput
+    user: UserCreateNestedOneWithoutRegistrationsInput
+    tickets?: TicketCreateNestedManyWithoutRegistrationInput
+    enrollments?: ActivityEnrollmentCreateNestedManyWithoutRegistrationInput
+    formResponses?: CustomFormResponseCreateNestedManyWithoutRegistrationInput
+    certificates?: IssuedCertificateCreateNestedManyWithoutRegistrationInput
+  }
+
+  export type RegistrationUncheckedCreateWithoutRaffleHistoriesInput = {
+    id?: string
+    eventId: string
+    userId: string
+    createdAt?: Date | string
+    tickets?: TicketUncheckedCreateNestedManyWithoutRegistrationInput
+    enrollments?: ActivityEnrollmentUncheckedCreateNestedManyWithoutRegistrationInput
+    formResponses?: CustomFormResponseUncheckedCreateNestedManyWithoutRegistrationInput
+    certificates?: IssuedCertificateUncheckedCreateNestedManyWithoutRegistrationInput
+  }
+
+  export type RegistrationCreateOrConnectWithoutRaffleHistoriesInput = {
+    where: RegistrationWhereUniqueInput
+    create: XOR<RegistrationCreateWithoutRaffleHistoriesInput, RegistrationUncheckedCreateWithoutRaffleHistoriesInput>
+  }
+
+  export type EventUpsertWithoutRaffleHistoriesInput = {
+    update: XOR<EventUpdateWithoutRaffleHistoriesInput, EventUncheckedUpdateWithoutRaffleHistoriesInput>
+    create: XOR<EventCreateWithoutRaffleHistoriesInput, EventUncheckedCreateWithoutRaffleHistoriesInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutRaffleHistoriesInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutRaffleHistoriesInput, EventUncheckedUpdateWithoutRaffleHistoriesInput>
+  }
+
+  export type EventUpdateWithoutRaffleHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
+    activities?: ActivityUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    tickets?: TicketUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutRaffleHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type ActivityUpsertWithoutRaffleHistoriesInput = {
+    update: XOR<ActivityUpdateWithoutRaffleHistoriesInput, ActivityUncheckedUpdateWithoutRaffleHistoriesInput>
+    create: XOR<ActivityCreateWithoutRaffleHistoriesInput, ActivityUncheckedCreateWithoutRaffleHistoriesInput>
+    where?: ActivityWhereInput
+  }
+
+  export type ActivityUpdateToOneWithWhereWithoutRaffleHistoriesInput = {
+    where?: ActivityWhereInput
+    data: XOR<ActivityUpdateWithoutRaffleHistoriesInput, ActivityUncheckedUpdateWithoutRaffleHistoriesInput>
+  }
+
+  export type ActivityUpdateWithoutRaffleHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
+    requiresConfirmation?: BoolFieldUpdateOperationsInput | boolean
+    confirmationDays?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutActivitiesNestedInput
+    type?: ActivityTypeUpdateOneWithoutActivitiesNestedInput
+    speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
+    enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
+    attendances?: AttendanceUpdateManyWithoutActivityNestedInput
+  }
+
+  export type ActivityUncheckedUpdateWithoutRaffleHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumActivityStatusFieldUpdateOperationsInput | $Enums.ActivityStatus
+    typeId?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresEnrollment?: BoolFieldUpdateOperationsInput | boolean
+    requiresConfirmation?: BoolFieldUpdateOperationsInput | boolean
+    confirmationDays?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
+    enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutActivityNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutActivityNestedInput
+  }
+
+  export type RegistrationUpsertWithoutRaffleHistoriesInput = {
+    update: XOR<RegistrationUpdateWithoutRaffleHistoriesInput, RegistrationUncheckedUpdateWithoutRaffleHistoriesInput>
+    create: XOR<RegistrationCreateWithoutRaffleHistoriesInput, RegistrationUncheckedCreateWithoutRaffleHistoriesInput>
+    where?: RegistrationWhereInput
+  }
+
+  export type RegistrationUpdateToOneWithWhereWithoutRaffleHistoriesInput = {
+    where?: RegistrationWhereInput
+    data: XOR<RegistrationUpdateWithoutRaffleHistoriesInput, RegistrationUncheckedUpdateWithoutRaffleHistoriesInput>
+  }
+
+  export type RegistrationUpdateWithoutRaffleHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+    user?: UserUpdateOneRequiredWithoutRegistrationsNestedInput
+    tickets?: TicketUpdateManyWithoutRegistrationNestedInput
+    enrollments?: ActivityEnrollmentUpdateManyWithoutRegistrationNestedInput
+    formResponses?: CustomFormResponseUpdateManyWithoutRegistrationNestedInput
+    certificates?: IssuedCertificateUpdateManyWithoutRegistrationNestedInput
+  }
+
+  export type RegistrationUncheckedUpdateWithoutRaffleHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tickets?: TicketUncheckedUpdateManyWithoutRegistrationNestedInput
+    enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutRegistrationNestedInput
+    formResponses?: CustomFormResponseUncheckedUpdateManyWithoutRegistrationNestedInput
+    certificates?: IssuedCertificateUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type UserCreateManyTenantInput = {
@@ -41366,6 +43735,7 @@ export namespace Prisma {
     submissions?: SubmissionUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTenantInput = {
@@ -41391,6 +43761,7 @@ export namespace Prisma {
     submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
     certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutTenantInput = {
@@ -41517,6 +43888,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutUserInput = {
@@ -41527,6 +43899,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUncheckedUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUncheckedUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateManyWithoutUserInput = {
@@ -41671,6 +44044,17 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type RaffleHistoryCreateManyEventInput = {
+    id?: string
+    activityId?: string | null
+    registrationId: string
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
+  }
+
   export type ActivityUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -41689,6 +44073,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutActivityNestedInput
   }
 
   export type ActivityUncheckedUpdateWithoutEventInput = {
@@ -41709,6 +44094,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutActivityNestedInput
   }
 
   export type ActivityUncheckedUpdateManyWithoutEventInput = {
@@ -41736,6 +44122,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutEventInput = {
@@ -41746,6 +44133,7 @@ export namespace Prisma {
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutRegistrationNestedInput
     formResponses?: CustomFormResponseUncheckedUpdateManyWithoutRegistrationNestedInput
     certificates?: IssuedCertificateUncheckedUpdateManyWithoutRegistrationNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateManyWithoutEventInput = {
@@ -41915,6 +44303,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RaffleHistoryUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activity?: ActivityUpdateOneWithoutRaffleHistoriesNestedInput
+    registration?: RegistrationUpdateOneRequiredWithoutRaffleHistoriesNestedInput
+  }
+
+  export type RaffleHistoryUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    activityId?: NullableStringFieldUpdateOperationsInput | string | null
+    registrationId?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RaffleHistoryUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    activityId?: NullableStringFieldUpdateOperationsInput | string | null
+    registrationId?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ActivityCreateManyTypeInput = {
     id?: string
     eventId: string
@@ -41950,6 +44371,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutActivityNestedInput
   }
 
   export type ActivityUncheckedUpdateWithoutTypeInput = {
@@ -41970,6 +44392,7 @@ export namespace Prisma {
     speakers?: ActivitySpeakerUncheckedUpdateManyWithoutActivityNestedInput
     enrollments?: ActivityEnrollmentUncheckedUpdateManyWithoutActivityNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutActivityNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutActivityNestedInput
   }
 
   export type ActivityUncheckedUpdateManyWithoutTypeInput = {
@@ -42026,6 +44449,17 @@ export namespace Prisma {
     id?: string
     ticketId: string
     checkedAt?: Date | string
+  }
+
+  export type RaffleHistoryCreateManyActivityInput = {
+    id?: string
+    eventId: string
+    registrationId: string
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
   }
 
   export type ActivitySpeakerUpdateWithoutActivityInput = {
@@ -42085,6 +44519,39 @@ export namespace Prisma {
     checkedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RaffleHistoryUpdateWithoutActivityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutRaffleHistoriesNestedInput
+    registration?: RegistrationUpdateOneRequiredWithoutRaffleHistoriesNestedInput
+  }
+
+  export type RaffleHistoryUncheckedUpdateWithoutActivityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    registrationId?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RaffleHistoryUncheckedUpdateManyWithoutActivityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    registrationId?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ActivitySpeakerCreateManySpeakerInput = {
     activityId: string
     roleId?: string | null
@@ -42135,7 +44602,19 @@ export namespace Prisma {
     id?: string
     templateId: string
     fileUrl: string
+    validationHash?: string
     issuedAt?: Date | string
+  }
+
+  export type RaffleHistoryCreateManyRegistrationInput = {
+    id?: string
+    eventId: string
+    activityId?: string | null
+    prizeName?: string | null
+    rule?: $Enums.RaffleRule
+    hasReceived?: boolean
+    isHiddenOnDisplay?: boolean
+    drawnAt?: Date | string
   }
 
   export type TicketUpdateWithoutRegistrationInput = {
@@ -42223,6 +44702,7 @@ export namespace Prisma {
   export type IssuedCertificateUpdateWithoutRegistrationInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
+    validationHash?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     template?: CertificateTemplateUpdateOneRequiredWithoutIssuedCertificatesNestedInput
   }
@@ -42231,6 +44711,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
+    validationHash?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -42238,7 +44719,41 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
+    validationHash?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RaffleHistoryUpdateWithoutRegistrationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutRaffleHistoriesNestedInput
+    activity?: ActivityUpdateOneWithoutRaffleHistoriesNestedInput
+  }
+
+  export type RaffleHistoryUncheckedUpdateWithoutRegistrationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    activityId?: NullableStringFieldUpdateOperationsInput | string | null
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RaffleHistoryUncheckedUpdateManyWithoutRegistrationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    activityId?: NullableStringFieldUpdateOperationsInput | string | null
+    prizeName?: NullableStringFieldUpdateOperationsInput | string | null
+    rule?: EnumRaffleRuleFieldUpdateOperationsInput | $Enums.RaffleRule
+    hasReceived?: BoolFieldUpdateOperationsInput | boolean
+    isHiddenOnDisplay?: BoolFieldUpdateOperationsInput | boolean
+    drawnAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AttendanceCreateManyTicketInput = {
@@ -42459,12 +44974,14 @@ export namespace Prisma {
     id?: string
     registrationId: string
     fileUrl: string
+    validationHash?: string
     issuedAt?: Date | string
   }
 
   export type IssuedCertificateUpdateWithoutTemplateInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
+    validationHash?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     registration?: RegistrationUpdateOneRequiredWithoutCertificatesNestedInput
   }
@@ -42473,6 +44990,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     registrationId?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
+    validationHash?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -42480,6 +44998,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     registrationId?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
+    validationHash?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

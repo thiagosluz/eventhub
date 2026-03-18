@@ -19,8 +19,36 @@ export const operationsService = {
     return api.post<CheckinResponse>('/checkin', { qrCodeToken, activityId });
   },
 
-  drawRaffle: async (eventId: string, activityId?: string, count: number = 1): Promise<RaffleResponse> => {
-    return api.post<RaffleResponse>('/raffles', { eventId, activityId, count });
+  drawRaffle: async (
+    eventId: string, 
+    activityId?: string, 
+    count: number = 1,
+    rule: 'ALL_REGISTERED' | 'ONLY_CHECKED_IN' = 'ONLY_CHECKED_IN',
+    prizeName?: string,
+    uniqueWinners?: boolean,
+    excludeStaff?: boolean
+  ): Promise<RaffleResponse> => {
+    return api.post<RaffleResponse>('/raffles', { eventId, activityId, count, rule, prizeName, uniqueWinners, excludeStaff });
+  },
+
+  getLatestRaffle: async (eventId: string): Promise<any> => {
+    return api.get<any>(`/raffles/latest/${eventId}`);
+  },
+
+  getRaffleHistory: async (eventId: string): Promise<any[]> => {
+    return api.get<any[]>(`/raffles/history/${eventId}`);
+  },
+
+  deleteRaffleHistory: async (historyId: string): Promise<void> => {
+    return api.delete(`/raffles/history/${historyId}`);
+  },
+
+  markPrizeReceived: async (historyId: string, received: boolean): Promise<void> => {
+    return api.post(`/raffles/history/${historyId}/receive`, { received });
+  },
+
+  setRaffleDisplayVisibility: async (historyId: string, hide: boolean): Promise<void> => {
+    return api.post(`/raffles/history/${historyId}/hide`, { hide });
   },
 
   undoCheckin: async (attendanceId: string): Promise<void> => {
