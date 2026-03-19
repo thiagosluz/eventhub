@@ -87,6 +87,17 @@ let ActivitiesController = class ActivitiesController {
         }
         return this.activities.deleteActivity(tenantId, activityId);
     }
+    async unrollFromActivity(activityId, req) {
+        var _a;
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.sub;
+        if (!userId) {
+            throw new Error("Missing user id on token payload.");
+        }
+        return this.activities.unrollFromActivity({
+            userId,
+            activityId,
+        });
+    }
     async createType(req, name) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
@@ -184,6 +195,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ActivitiesController.prototype, "deleteActivity", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Delete)("activities/:activityId/unroll"),
+    __param(0, (0, common_1.Param)("activityId")),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], ActivitiesController.prototype, "unrollFromActivity", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),

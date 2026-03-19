@@ -43,8 +43,12 @@ export const activitiesService = {
     return api.post<Activity>(`/activities/${activityId}/enroll`, {});
   },
 
-  getMyEnrollments: async (eventId: string): Promise<(Activity & { isEnrolled: boolean })[]> => {
-    return api.get<(Activity & { isEnrolled: boolean })[]>(`/activities/my-enrollments/${eventId}`);
+  unrollFromActivity: async (activityId: string): Promise<void> => {
+    return api.delete(`/activities/${activityId}/unroll`);
+  },
+
+  getMyEnrollments: async (eventId: string): Promise<(Activity & { isEnrolled: boolean, enrollmentStatus?: string })[]> => {
+    return api.get<(Activity & { isEnrolled: boolean, enrollmentStatus?: string })[]>(`/activities/my-enrollments/${eventId}`);
   },
 
   listEnrollments: async (activityId: string): Promise<any[]> => {

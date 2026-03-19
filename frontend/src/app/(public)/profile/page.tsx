@@ -284,9 +284,20 @@ function ProfileContent() {
                             <h3 className="text-2xl md:text-3xl font-black text-white drop-shadow-md">Sua Credencial Digital</h3>
                             <p className="text-white/80 font-medium">Compartilhe com sua rede que você estará presente no evento <strong className="text-white">{tickets[0]?.event?.name}</strong>!</p>
                           </div>
-                          <button onClick={handleShareBadge} className="inline-flex items-center gap-2 bg-white text-purple-600 px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-white/90 transition-colors shadow-xl">
-                            <ShareIcon className="w-4 h-4" /> Compartilhar Presença
-                          </button>
+                          <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                            <button onClick={handleShareBadge} className="inline-flex items-center gap-2 bg-white text-purple-600 px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-white/90 transition-colors shadow-xl">
+                              <ShareIcon className="w-4 h-4" /> Compartilhar
+                            </button>
+                            <button 
+                              onClick={() => {
+                                setActiveTab('tickets');
+                                setViewingActivitiesEvent({ id: tickets[0].eventId, name: tickets[0].event?.name || "" });
+                              }} 
+                              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white border border-white/20 px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-white/20 transition-colors shadow-xl"
+                            >
+                              <CalendarIcon className="w-4 h-4" /> Escolher Atividades
+                            </button>
+                          </div>
                        </div>
                     </div>
                  </div>
@@ -395,7 +406,7 @@ function ProfileContent() {
                                  <QrCodeIcon className="w-4 h-4" /> QR
                                </button>
                                <button onClick={() => setViewingActivitiesEvent({ id: ticket.eventId, name: ticket.event?.name || "" })} className="flex-1 px-4 py-2 rounded-xl border-2 border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest hover:bg-primary/5 transition-all flex items-center justify-center gap-1">
-                                 <CalendarIcon className="w-4 h-4" /> Grade
+                                 <CalendarIcon className="w-4 h-4" /> Atividades
                                </button>
                                <Link href={`/events/${ticket.event?.slug}`} className="p-2 rounded-xl border border-border hover:bg-muted transition-colors text-muted-foreground"><ChevronRightIcon className="w-4 h-4" /></Link>
                              </div>

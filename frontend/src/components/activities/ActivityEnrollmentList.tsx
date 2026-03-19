@@ -12,6 +12,8 @@ import {
   LockClosedIcon
 } from "@heroicons/react/24/outline";
 
+import { ConfirmationModal } from "@/components/common/ConfirmationModal";
+
 interface ActivityEnrollmentListProps {
   eventId: string;
 }
@@ -23,6 +25,7 @@ export function ActivityEnrollmentList({ eventId }: ActivityEnrollmentListProps)
   const [loading, setLoading] = useState(true);
   const [enrollingId, setEnrollingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [unrollConfirmId, setUnrollConfirmId] = useState<string | null>(null);
 
   const fetchActivities = async () => {
     try {
@@ -51,6 +54,29 @@ export function ActivityEnrollmentList({ eventId }: ActivityEnrollmentListProps)
       const error = err as { message?: string };
       console.error("Enrollment failed", err);
       setError(error.message || "Falha na inscrição. Verifique se há choque de horário.");
+    } finally {
+      setEnrollingId(null);
+    }
+  };
+
+  const handleUnrollRequest = (activityId: string) => {
+    setUnrollConfirmId(activityId);
+  };
+
+  const handleUnrollConfirm = async () => {
+    if (!unrollConfirmId) return;
+    
+    const activityId = unrollConfirmId;
+    setUnrollConfirmId(null);
+    setEnrollingId(activityId);
+    setError(null);
+    try {
+      await activitiesService.unrollFromActivity(activityId);
+      await fetchActivities();
+    } catch (err: unknown) {
+      const error = err as { message?: string };
+      console.error("Unroll failed", err);
+      setError(error.message || "Falha ao cancelar inscrição.");
     } finally {
       setEnrollingId(null);
     }
@@ -132,19 +158,42 @@ export function ActivityEnrollmentList({ eventId }: ActivityEnrollmentListProps)
                 <>
                   {activity.enrollmentStatus === "PENDING" ? (
                     <div className="flex flex-col items-end gap-1">
-                      <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-500/10 text-amber-600 font-black text-xs uppercase tracking-widest border border-amber-500/20 animate-pulse">
-                        <ClockIcon className="w-4 h-4" />
-                        Confirmação Pendente
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-500/10 text-amber-600 font-black text-xs uppercase tracking-widest border border-amber-500/20 animate-pulse">
+                          <ClockIcon className="w-4 h-4" />
+                          Confirmação Pendente
+                        </div>
+                        {activity.requiresEnrollment && (
+                          <button 
+                            onClick={() => handleUnrollRequest(activity.id)}
+                            disabled={enrollingId === activity.id}
+                            className="p-3 rounded-xl border border-destructive/20 text-destructive hover:bg-destructive/5 transition-colors"
+                            title="Cancelar Inscrição"
+                          >
+                            <ExclamationCircleIcon className="w-5 h-5" />
+                          </button>
+                        )}
                       </div>
                       <span className="text-[9px] font-bold text-amber-600/70 max-w-[180px] text-right">
-                        Sua vaga está reservada, mas requer confirmação do
-                        organizador.
+                        Sua vaga está reservada, mas requer confirmação do explorador.
                       </span>
                     </div>
                   ) : activity.enrollmentStatus === "CONFIRMED" ? (
-                    <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500/10 text-emerald-500 font-black text-xs uppercase tracking-widest border border-emerald-500/20">
-                      <CheckCircleIcon className="w-4 h-4" />
-                      Inscrição Confirmada
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500/10 text-emerald-500 font-black text-xs uppercase tracking-widest border border-emerald-500/20">
+                        <CheckCircleIcon className="w-4 h-4" />
+                        Inscrição Confirmada
+                      </div>
+                      {activity.requiresEnrollment && (
+                        <button 
+                          onClick={() => handleUnrollRequest(activity.id)}
+                          disabled={enrollingId === activity.id}
+                          className="p-3 rounded-xl border border-destructive/20 text-destructive hover:bg-destructive/5 transition-colors"
+                          title="Cancelar Inscrição"
+                        >
+                           <ExclamationCircleIcon className="w-5 h-5" />
+                        </button>
+                      )}
                     </div>
                   ) : (
                     <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-destructive/10 text-destructive font-black text-xs uppercase tracking-widest border border-destructive/20">
@@ -186,6 +235,16 @@ export function ActivityEnrollmentList({ eventId }: ActivityEnrollmentListProps)
           </div>
         )}
       </div>
+      {/* Unroll Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={!!unrollConfirmId}
+        onClose={() => setUnrollConfirmId(null)}
+        onConfirm={handleUnrollConfirm}
+        title="Cancelar Inscrição"
+        description="Tem certeza que deseja cancelar sua inscrição nesta atividade? Sua vaga será liberada para outros participantes."
+        confirmText="Confirmar Cancelamento"
+        variant="danger"
+      />
     </div>
   );
 }

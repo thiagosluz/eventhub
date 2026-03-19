@@ -352,6 +352,36 @@ let ActivitiesService = class ActivitiesService {
             where: { id: activityId },
         });
     }
+    async unrollFromActivity(params) {
+        const { userId, activityId } = params;
+        const activity = await this.prisma.activity.findUnique({
+            where: { id: activityId },
+        });
+        if (!activity) {
+            throw new common_1.NotFoundException("Atividade não encontrada.");
+        }
+        const registration = await this.prisma.registration.findFirst({
+            where: {
+                eventId: activity.eventId,
+                userId,
+            },
+        });
+        if (!registration) {
+            throw new common_1.ForbiddenException("Você não está inscrito no evento desta atividade.");
+        }
+        const enrollment = await this.prisma.activityEnrollment.findFirst({
+            where: {
+                activityId,
+                registrationId: registration.id,
+            },
+        });
+        if (!enrollment) {
+            throw new common_1.NotFoundException("Inscrição na atividade não encontrada.");
+        }
+        return this.prisma.activityEnrollment.delete({
+            where: { id: enrollment.id },
+        });
+    }
     async createType(tenantId, name) {
         return this.prisma.activityType.create({
             data: { tenantId, name },

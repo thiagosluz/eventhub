@@ -445,6 +445,51 @@ export class ActivitiesService implements OnModuleInit {
     });
   }
 
+  async unrollFromActivity(params: { userId: string; activityId: string }) {
+    const { userId, activityId } = params;
+
+    const activity = await this.prisma.activity.findUnique({
+      where: { id: activityId },
+    });
+
+    if (!activity) {
+      throw new NotFoundException("Atividade não encontrada.");
+    }
+
+    const registration = await this.prisma.registration.findFirst({
+      where: {
+        eventId: activity.eventId,
+        userId,
+      },
+    });
+
+    if (!registration) {
+      throw new ForbiddenException(
+        "Você não está inscrito no evento desta atividade.",
+      );
+    }
+
+    const enrollment = await this.prisma.activityEnrollment.findFirst({
+      where: {
+        activityId,
+        registrationId: registration.id,
+      },
+    });
+
+    if (!enrollment) {
+      throw new NotFoundException("Inscrição na atividade não encontrada.");
+    }
+
+    // We allow unrolling regardless of status, as long as it's not an automated enrollment
+    // If the activity doesn't require enrollment, everyone registered for the event is "enrolled"
+    // but the actual ActivityEnrollment records are created by createMany in create/update activity.
+    // For manual enrollments (requiresEnrollment: true), the user should be allowed to unroll.
+    
+    return this.prisma.activityEnrollment.delete({
+      where: { id: enrollment.id },
+    });
+  }
+
   // Activity Types
   async createType(tenantId: string, name: string) {
     return this.prisma.activityType.create({

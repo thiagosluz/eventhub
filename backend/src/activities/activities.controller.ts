@@ -135,6 +135,23 @@ export class ActivitiesController {
     return this.activities.deleteActivity(tenantId, activityId);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Delete("activities/:activityId/unroll")
+  async unrollFromActivity(
+    @Param("activityId") activityId: string,
+    @Req() req: AuthRequest,
+  ) {
+    const userId = req.user?.sub;
+    if (!userId) {
+      throw new Error("Missing user id on token payload.");
+    }
+
+    return this.activities.unrollFromActivity({
+      userId,
+      activityId,
+    });
+  }
+
   // Activity Types
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
