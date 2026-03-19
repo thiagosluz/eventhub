@@ -41,4 +41,8 @@ export const eventsService = {
   getMyTickets: async (): Promise<Ticket[]> => {
     return api.get<Ticket[]>('/my-tickets');
   },
+  
+  deleteEvent: async (id: string): Promise<void> => {
+    return api.delete(`/events/${id}`);
+  },
 };

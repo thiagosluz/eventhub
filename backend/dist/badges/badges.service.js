@@ -196,7 +196,10 @@ let BadgesService = class BadgesService {
                 const eventCount = await this.prisma.registration.count({
                     where: {
                         userId,
-                        event: { tenantId: badge.tenantId }
+                        event: { tenantId: badge.tenantId },
+                        tickets: {
+                            some: { status: 'COMPLETED' }
+                        }
                     }
                 });
                 if (eventCount < (badge.minRequirement || 1))
@@ -206,7 +209,7 @@ let BadgesService = class BadgesService {
                 const user = await this.prisma.user.findUnique({
                     where: { id: userId }
                 });
-                if (!(user === null || user === void 0 ? void 0 : user.bio) || !(user === null || user === void 0 ? void 0 : user.avatarUrl))
+                if (!(user === null || user === void 0 ? void 0 : user.bio) || user.bio.length < 50 || !(user === null || user === void 0 ? void 0 : user.avatarUrl))
                     continue;
             }
             const targetEventId = badge.eventId || eventId;
@@ -239,19 +242,19 @@ let BadgesService = class BadgesService {
         if (!badge)
             throw new common_1.NotFoundException('Conquista não encontrada');
         if (badge.triggerRule !== 'MANUAL')
-            throw new Error('Esta conquista não pode ser resgatada manualmente');
+            throw new common_1.BadRequestException('Esta conquista não pode ser resgatada manualmente');
         if (badge.manualDeliveryMode === 'GLOBAL_CODE') {
             if (badge.claimCode && badge.claimCode !== claimCode)
-                throw new Error('Código de resgate inválido');
+                throw new common_1.BadRequestException('Código de resgate inválido');
         }
         else if (badge.manualDeliveryMode === 'UNIQUE_CODES') {
             const uniqueCode = await this.prisma.badgeClaimCode.findFirst({
                 where: { badgeId: badge.id, code: claimCode }
             });
             if (!uniqueCode)
-                throw new Error('Código inexistente');
+                throw new common_1.BadRequestException('Código inexistente');
             if (uniqueCode.isUsed)
-                throw new Error('Este código já foi utilizado');
+                throw new common_1.BadRequestException('Este código já foi utilizado');
             await this.prisma.badgeClaimCode.update({
                 where: { id: uniqueCode.id },
                 data: { isUsed: true, userId, usedAt: new Date() }
@@ -271,7 +274,7 @@ let BadgesService = class BadgesService {
         });
         if (existing) {
             if (badge.manualDeliveryMode === 'GLOBAL_CODE')
-                throw new Error('Você já possui esta conquista');
+                throw new common_1.BadRequestException('Você já possui esta conquista');
             return existing;
         }
         return this.prisma.userBadge.create({

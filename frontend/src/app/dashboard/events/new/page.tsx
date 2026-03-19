@@ -53,6 +53,10 @@ export default function NewEventPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (step < 3) {
+      nextStep();
+      return;
+    }
     setIsLoading(true);
     setError("");
 

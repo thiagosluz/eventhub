@@ -137,6 +137,8 @@ export interface Event {
   bannerUrl?: string;
   logoUrl?: string;
   themeConfig?: Record<string, unknown>;
+  seoTitle?: string;
+  seoDescription?: string;
   activities?: Activity[];
   tickets?: Ticket[];
   forms?: Form[];

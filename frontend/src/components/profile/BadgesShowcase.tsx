@@ -6,6 +6,8 @@ import { TrophyIcon, SparklesIcon, ShareIcon, XMarkIcon } from "@heroicons/react
 import { Badge3D } from "./Badge3D";
 import confetti from "canvas-confetti";
 import { toast } from "react-hot-toast";
+import { toPng } from "html-to-image";
+import { useRef as reactUseRef } from "react";
 
 export function BadgesShowcase() {
   const [availableBadges, setAvailableBadges] = useState<Badge[]>([]);
@@ -14,6 +16,7 @@ export function BadgesShowcase() {
   const [claimingBadge, setClaimingBadge] = useState<Badge | null>(null);
   const [claimCode, setClaimCode] = useState("");
   const [isSubmittingClaim, setIsSubmittingClaim] = useState(false);
+  const badgeRef = reactUseRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchData();
@@ -71,6 +74,16 @@ export function BadgesShowcase() {
     } finally {
       setIsSubmittingClaim(false);
     }
+  };
+
+  const getUnlockTip = (badge: Badge) => {
+    if (badge.triggerRule === 'MANUAL') return "Clique para resgatar com seu código!";
+    if (badge.triggerRule === 'EVENT_COUNT') return `Participe de pelo menos ${badge.minRequirement || 1} eventos para desbloquear.`;
+    if (badge.triggerRule === 'ACTIVITY_HOURS') return `Participe de ${badge.minRequirement || 0} horas de atividades para desbloquear.`;
+    if (badge.triggerRule === 'PROFILE_COMPLETED') return "Complete seu perfil (Bio de 50+ caracteres e Foto) para desbloquear.";
+    if (badge.triggerRule === 'CHECKIN_STREAK') return `Faça check-in em ${badge.minRequirement || 1} atividades para desbloquear.`;
+    if (badge.triggerRule === 'EARLY_BIRD') return "Seja um dos primeiros a se inscrever no evento!";
+    return "Mistério... continue participando para descobrir como ganhar!";
   };
 
   const earned = availableBadges.filter(b => b.isEarned);
@@ -142,7 +155,7 @@ export function BadgesShowcase() {
               <Badge3D 
                 key={badge.id}
                 name={badge.name}
-                description={badge.triggerRule === 'MANUAL' ? "Clique para resgatar com seu código!" : "Mistério... participe das atividades para descobrir como ganhar!"}
+                description={getUnlockTip(badge)}
                 color={badge.color}
                 iconUrl={undefined}
                 eventName={badge.event?.name}
@@ -201,51 +214,67 @@ export function BadgesShowcase() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300">
           <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-xl" onClick={() => setSelectedBadge(null)} />
           
-          <div className="relative w-full max-w-lg bg-slate-900 border border-white/10 rounded-[2.5rem] p-10 text-center space-y-8 shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden">
-             {/* Background glow shadow */}
-             <div className="absolute -top-24 -left-24 w-64 h-64 bg-fuchsia-600/20 blur-[100px] rounded-full" />
-             <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-600/20 blur-[100px] rounded-full" />
-
+          <div className="relative w-full max-w-lg text-center shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden">
              <button 
                onClick={() => setSelectedBadge(null)}
-               className="absolute top-6 right-6 p-2 rounded-full bg-white/5 text-white/40 hover:text-white transition-colors"
+               className="absolute top-6 right-6 p-2 rounded-full bg-white/5 text-white/40 hover:text-white transition-colors z-20"
              >
                <XMarkIcon className="w-6 h-6" />
              </button>
 
-             <div className="space-y-4 relative z-10">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                   <SparklesIcon className="w-3 h-3" /> Conquista Desbloqueada
+             <div ref={badgeRef} className="p-10 space-y-8 bg-slate-900 rounded-[2.5rem] relative overflow-hidden">
+                {/* Background glows for the captured image */}
+                <div className="absolute -top-24 -left-24 w-64 h-64 bg-fuchsia-600/20 blur-[100px] rounded-full" />
+                <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-600/20 blur-[100px] rounded-full" />
+
+                <div className="space-y-4 relative z-10">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[10px] font-black uppercase tracking-[0.2em]">
+                      <SparklesIcon className="w-3 h-3" /> Conquista Desbloqueada
+                    </div>
+                    <h2 className="text-4xl font-black text-white tracking-tight leading-none px-4">
+                      Parabéns!
+                    </h2>
+                    <p className="text-slate-400 font-medium max-w-xs mx-auto">
+                      Você conquistou <strong className="text-white">"{selectedBadge.name}"</strong> no evento {selectedBadge.event?.name}.
+                    </p>
                 </div>
-                <h2 className="text-4xl font-black text-white tracking-tight leading-none px-4">
-                   Parabéns!
-                </h2>
-                <p className="text-slate-400 font-medium max-w-xs mx-auto">
-                   Você conquistou <strong className="text-white">"{selectedBadge.name}"</strong> no evento {selectedBadge.event?.name}.
-                </p>
+
+                <div className="flex justify-center scale-110 pointer-events-none pb-8 pt-4">
+                    <Badge3D 
+                      name={selectedBadge.name}
+                      description={selectedBadge.description}
+                      color={selectedBadge.color}
+                      iconUrl={selectedBadge.iconUrl}
+                      isEarned={true}
+                      eventName={selectedBadge.event?.name}
+                      forceGlow={true}
+                    />
+                </div>
              </div>
 
-             <div className="flex justify-center scale-110 pointer-events-none">
-                <Badge3D 
-                  name={selectedBadge.name}
-                  description={selectedBadge.description}
-                  color={selectedBadge.color}
-                  iconUrl={selectedBadge.iconUrl}
-                  isEarned={true}
-                  eventName={selectedBadge.event?.name}
-                />
-             </div>
-
-             <div className="space-y-4 pt-4 relative z-10">
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Compartilhar no Stories / LinkedIn</p>
-                <div className="flex flex-wrap items-center justify-center gap-4">
-                   <button className="flex-1 min-w-[140px] bg-[#0077B5] text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-[#0077B5]/20">
-                     <ShareIcon className="w-4 h-4" /> LinkedIn
-                   </button>
-                   <button className="flex-1 min-w-[140px] bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-pink-500/20">
-                     <ShareIcon className="w-4 h-4" /> Stories
-                   </button>
-                </div>
+             <div className="space-y-4 pt-4 relative z-10 w-full px-10">
+                <button 
+                  onClick={async () => {
+                    if (badgeRef.current) {
+                      try {
+                        const dataUrl = await toPng(badgeRef.current, {
+                          cacheBust: true,
+                          style: { borderRadius: '2.5rem' }
+                        });
+                        const link = document.createElement('a');
+                        link.download = `medalha-${selectedBadge.name.toLowerCase()}.png`;
+                        link.href = dataUrl;
+                        link.click();
+                        toast.success("Imagem baixada!");
+                      } catch (err) {
+                        toast.error("Erro ao gerar imagem.");
+                      }
+                    }
+                  }}
+                  className="w-full bg-primary text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-primary/20"
+                >
+                  <TrophyIcon className="w-4 h-4" /> Baixar Medalha (PNG)
+                </button>
              </div>
           </div>
         </div>

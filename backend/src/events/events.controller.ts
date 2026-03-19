@@ -12,6 +12,7 @@ import {
   UseGuards,
   UseInterceptors,
   Query,
+  Delete,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Request, Response } from "express";
@@ -108,6 +109,18 @@ export class EventsController {
       eventId: id,
       data: body,
     });
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Delete("events/:id")
+  async deleteEvent(@Param("id") id: string, @Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) {
+      throw new Error("Missing tenantId on token payload.");
+    }
+
+    return this.eventsService.deleteEvent(tenantId, id);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

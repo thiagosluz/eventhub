@@ -21,6 +21,8 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { SecureDeleteModal } from "@/components/dashboard/SecureDeleteModal";
+import toast from "react-hot-toast";
 
 export default function EventManagementPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -44,6 +46,8 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
     status: "DRAFT" as "DRAFT" | "PUBLISHED" | "ARCHIVED",
     primaryColor: "#6366f1"
   });
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -131,6 +135,19 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
       setError(`Erro ao apagar o ${type}.`);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteEvent = async () => {
+    try {
+      setIsDeleting(true);
+      await eventsService.deleteEvent(id);
+      toast.success("Evento excluído com sucesso!");
+      router.push("/dashboard/events");
+    } catch (err: any) {
+      setError(err.message || "Erro ao excluir evento.");
+      setIsDeleting(false);
+      setIsDeleteModalOpen(false);
     }
   };
 
@@ -260,6 +277,31 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
                 <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Título SEO</label>
+                  <input 
+                    name="seoTitle" 
+                    value={formData.seoTitle} 
+                    onChange={handleChange} 
+                    type="text" 
+                    placeholder="Título para o Google e Redes Sociais"
+                    className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm" 
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Descrição SEO</label>
+                  <textarea 
+                    name="seoDescription" 
+                    value={formData.seoDescription} 
+                    onChange={handleChange} 
+                    rows={1}
+                    placeholder="Breve resumo para buscadores..."
+                    className="w-full h-12 p-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm resize-none" 
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
+                <div className="space-y-2">
                   <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Data Início</label>
                   <div className="relative">
                     <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -275,7 +317,18 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-border flex justify-end">
+              <div className="pt-6 border-t border-border flex items-center justify-between">
+                {event?.status === "DRAFT" ? (
+                  <button 
+                    type="button" 
+                    onClick={() => setIsDeleteModalOpen(true)}
+                    className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-destructive hover:bg-destructive/10 px-6 py-3 rounded-xl transition-all"
+                  >
+                    <TrashIcon className="w-4 h-4" />
+                    Excluir Rascunho
+                  </button>
+                ) : <div />}
+
                 <button 
                   type="submit" 
                   disabled={isSaving}
@@ -290,6 +343,14 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
               </div>
             </form>
           </div>
+
+          <SecureDeleteModal 
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+            onConfirm={handleDeleteEvent}
+            title={event?.name || ""}
+            isLoading={isDeleting}
+          />
         </div>
 
         {/* Sidebar: Media & SEO */}

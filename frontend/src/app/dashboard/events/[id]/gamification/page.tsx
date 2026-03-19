@@ -20,7 +20,7 @@ import { SuccessModal } from "@/components/dashboard/SuccessModal";
 import { toast } from "react-hot-toast";
 
 const BADGE_COLORS = [
-  { id: "emerald", name: "Sucesso (Verde)", bg: "bg-emerald-500", text: "text-emerald-500", border: "border-emerald-500/20" },
+  { id: "emerald", name: "Comum (Verde)", bg: "bg-emerald-500", text: "text-emerald-500", border: "border-emerald-500/20" },
   { id: "blue", name: "Raro (Azul)", bg: "bg-blue-500", text: "text-blue-500", border: "border-blue-500/20" },
   { id: "purple", name: "Épico (Roxo)", bg: "bg-purple-500", text: "text-purple-500", border: "border-purple-500/20" },
   { id: "gold", name: "Lendário (Dourado)", bg: "bg-amber-500", text: "text-amber-500", border: "border-amber-500/20" },

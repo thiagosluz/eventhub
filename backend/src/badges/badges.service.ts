@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -207,7 +207,10 @@ export class BadgesService {
         const eventCount = await this.prisma.registration.count({
           where: { 
             userId,
-            event: { tenantId: badge.tenantId }
+            event: { tenantId: badge.tenantId },
+            tickets: {
+              some: { status: 'COMPLETED' }
+            }
           }
         });
         
@@ -219,7 +222,7 @@ export class BadgesService {
           where: { id: userId }
         });
         
-        if (!user?.bio || !user?.avatarUrl) continue;
+        if (!user?.bio || user.bio.length < 50 || !user?.avatarUrl) continue;
       }
 
       const targetEventId = badge.eventId || eventId;
@@ -255,18 +258,18 @@ export class BadgesService {
     });
 
     if (!badge) throw new NotFoundException('Conquista não encontrada');
-    if (badge.triggerRule !== 'MANUAL') throw new Error('Esta conquista não pode ser resgatada manualmente');
+    if (badge.triggerRule !== 'MANUAL') throw new BadRequestException('Esta conquista não pode ser resgatada manualmente');
 
     // Validation based on delivery mode
     if (badge.manualDeliveryMode === 'GLOBAL_CODE') {
-      if (badge.claimCode && badge.claimCode !== claimCode) throw new Error('Código de resgate inválido');
+      if (badge.claimCode && badge.claimCode !== claimCode) throw new BadRequestException('Código de resgate inválido');
     } else if (badge.manualDeliveryMode === 'UNIQUE_CODES') {
       const uniqueCode = await this.prisma.badgeClaimCode.findFirst({
         where: { badgeId: badge.id, code: claimCode }
       });
 
-      if (!uniqueCode) throw new Error('Código inexistente');
-      if (uniqueCode.isUsed) throw new Error('Este código já foi utilizado');
+      if (!uniqueCode) throw new BadRequestException('Código inexistente');
+      if (uniqueCode.isUsed) throw new BadRequestException('Este código já foi utilizado');
 
       // Mark as used
       await this.prisma.badgeClaimCode.update({
@@ -289,7 +292,7 @@ export class BadgesService {
 
     if (existing) {
       // Se for código único, o erro acima já deu, mas se for global...
-      if (badge.manualDeliveryMode === 'GLOBAL_CODE') throw new Error('Você já possui esta conquista');
+      if (badge.manualDeliveryMode === 'GLOBAL_CODE') throw new BadRequestException('Você já possui esta conquista');
       return existing; 
     }
 

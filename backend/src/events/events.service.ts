@@ -305,4 +305,22 @@ export class EventsService {
       history,
     };
   }
+
+  async deleteEvent(tenantId: string, eventId: string) {
+    const event = await this.prisma.event.findFirst({
+      where: { id: eventId, tenantId },
+    });
+
+    if (!event) {
+      throw new NotFoundException("Evento não encontrado.");
+    }
+
+    if (event.status !== "DRAFT") {
+      throw new Error("Apenas eventos em rascunho podem ser excluídos.");
+    }
+
+    return this.prisma.event.delete({
+      where: { id: eventId },
+    });
+  }
 }

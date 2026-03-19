@@ -182,7 +182,7 @@ model SpeakerRole {
 model Activity {
   id      String @id @default(cuid())
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   title       String
   description String?
@@ -230,8 +230,8 @@ model ActivitySpeaker {
   speakerId  String
   roleId     String?
 
-  activity Activity     @relation(fields: [activityId], references: [id])
-  speaker  Speaker      @relation(fields: [speakerId], references: [id])
+  activity Activity     @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  speaker  Speaker      @relation(fields: [speakerId], references: [id], onDelete: Cascade)
   role     SpeakerRole? @relation(fields: [roleId], references: [id])
 
   @@id([activityId, speakerId])
@@ -240,7 +240,7 @@ model ActivitySpeaker {
 model Registration {
   id      String @id @default(cuid())
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -257,10 +257,10 @@ model Registration {
 model ActivityEnrollment {
   id         String   @id @default(cuid())
   activityId String
-  activity   Activity @relation(fields: [activityId], references: [id])
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
 
   registrationId String
-  registration   Registration @relation(fields: [registrationId], references: [id])
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 
   status      EnrollmentStatus @default(CONFIRMED)
   confirmedAt DateTime?
@@ -271,10 +271,10 @@ model ActivityEnrollment {
 model Ticket {
   id      String @id @default(cuid())
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   registrationId String
-  registration   Registration @relation(fields: [registrationId], references: [id])
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 
   type   TicketType   @default(FREE)
   status TicketStatus @default(PENDING)
@@ -291,7 +291,7 @@ model Ticket {
 model CustomForm {
   id      String @id @default(cuid())
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   name String
   type FormType
@@ -299,14 +299,14 @@ model CustomForm {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  fields    CustomFormField[]
   responses CustomFormResponse[]
+  fields    CustomFormField[]
 }
 
 model CustomFormField {
   id     String     @id @default(cuid())
   formId String
-  form   CustomForm @relation(fields: [formId], references: [id])
+  form   CustomForm @relation(fields: [formId], references: [id], onDelete: Cascade)
 
   label    String
   type     FormFieldType
@@ -323,13 +323,13 @@ model CustomFormField {
 model CustomFormResponse {
   id     String     @id @default(cuid())
   formId String
-  form   CustomForm @relation(fields: [formId], references: [id])
+  form   CustomForm @relation(fields: [formId], references: [id], onDelete: Cascade)
 
   registrationId String?
-  registration   Registration? @relation(fields: [registrationId], references: [id])
+  registration   Registration? @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 
   submissionId String?
-  submission   Submission? @relation(fields: [submissionId], references: [id])
+  submission   Submission? @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
@@ -339,10 +339,10 @@ model CustomFormResponse {
 model CustomFormAnswer {
   id         String             @id @default(cuid())
   responseId String
-  response   CustomFormResponse @relation(fields: [responseId], references: [id])
+  response   CustomFormResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
 
   fieldId String
-  field   CustomFormField @relation(fields: [fieldId], references: [id])
+  field   CustomFormField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
 
   value String
 }
@@ -350,7 +350,7 @@ model CustomFormAnswer {
 model Submission {
   id      String @id @default(cuid())
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   authorId String
   author   User   @relation("SubmissionAuthor", fields: [authorId], references: [id])
@@ -386,10 +386,10 @@ model Attendance {
   id String @id @default(cuid())
 
   ticketId String
-  ticket   Ticket @relation(fields: [ticketId], references: [id])
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   activityId String?
-  activity   Activity? @relation(fields: [activityId], references: [id])
+  activity   Activity? @relation(fields: [activityId], references: [id], onDelete: Cascade)
 
   checkedAt DateTime @default(now())
 }
@@ -397,7 +397,7 @@ model Attendance {
 model CertificateTemplate {
   id      String @id @default(cuid())
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   name          String
   backgroundUrl String
@@ -416,7 +416,7 @@ model IssuedCertificate {
   template   CertificateTemplate @relation(fields: [templateId], references: [id])
 
   registrationId String
-  registration   Registration @relation(fields: [registrationId], references: [id])
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 
   fileUrl        String
   validationHash String   @unique @default(uuid())
@@ -432,7 +432,7 @@ enum SponsorSize {
 model SponsorCategory {
   id      String @id @default(cuid())
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   name         String
   displayOrder Int         @default(0)
@@ -448,7 +448,7 @@ model SponsorCategory {
 model Sponsor {
   id         String          @id @default(cuid())
   categoryId String
-  category   SponsorCategory @relation(fields: [categoryId], references: [id])
+  category   SponsorCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   name         String
   logoUrl      String
@@ -462,13 +462,13 @@ model Sponsor {
 model RaffleHistory {
   id      String @id @default(cuid())
   eventId String
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   activityId String?
-  activity   Activity? @relation(fields: [activityId], references: [id])
+  activity   Activity? @relation(fields: [activityId], references: [id], onDelete: Cascade)
 
   registrationId String
-  registration   Registration @relation(fields: [registrationId], references: [id])
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 
   prizeName   String?
   rule        RaffleRule @default(ONLY_CHECKED_IN)
@@ -498,7 +498,7 @@ model Badge {
   tenantId String
   tenant   Tenant  @relation(fields: [tenantId], references: [id])
   eventId  String?
-  event    Event?  @relation(fields: [eventId], references: [id])
+  event    Event?  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   name               String
   description        String?
@@ -540,7 +540,7 @@ model UserBadge {
   badgeId  String
   badge    Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
   eventId  String?
-  event    Event?   @relation(fields: [eventId], references: [id])
+  event    Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
   earnedAt DateTime @default(now())
 
   // Garante que o usuário só ganhe a mesma badge 1 vez por evento

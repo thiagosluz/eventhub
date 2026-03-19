@@ -77,6 +77,14 @@ let EventsController = class EventsController {
             data: body,
         });
     }
+    async deleteEvent(id, req) {
+        var _a;
+        const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
+        if (!tenantId) {
+            throw new Error("Missing tenantId on token payload.");
+        }
+        return this.eventsService.deleteEvent(tenantId, id);
+    }
     async exportParticipants(req, res, eventId, search) {
         var _a;
         const tenantId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.tenantId;
@@ -228,6 +236,16 @@ __decorate([
     __metadata("design:paramtypes", [String, update_event_dto_1.UpdateEventDto, Object]),
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "updateEvent", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, common_1.Delete)("events/:id"),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], EventsController.prototype, "deleteEvent", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),

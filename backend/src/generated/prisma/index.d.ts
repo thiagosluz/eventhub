@@ -3843,13 +3843,13 @@ export namespace Prisma {
    */
 
   export type CustomFormCountOutputType = {
-    fields: number
     responses: number
+    fields: number
   }
 
   export type CustomFormCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    fields?: boolean | CustomFormCountOutputTypeCountFieldsArgs
     responses?: boolean | CustomFormCountOutputTypeCountResponsesArgs
+    fields?: boolean | CustomFormCountOutputTypeCountFieldsArgs
   }
 
   // Custom InputTypes
@@ -3866,15 +3866,15 @@ export namespace Prisma {
   /**
    * CustomFormCountOutputType without action
    */
-  export type CustomFormCountOutputTypeCountFieldsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CustomFormFieldWhereInput
+  export type CustomFormCountOutputTypeCountResponsesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomFormResponseWhereInput
   }
 
   /**
    * CustomFormCountOutputType without action
    */
-  export type CustomFormCountOutputTypeCountResponsesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CustomFormResponseWhereInput
+  export type CustomFormCountOutputTypeCountFieldsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomFormFieldWhereInput
   }
 
 
@@ -17457,8 +17457,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
-    fields?: boolean | CustomForm$fieldsArgs<ExtArgs>
     responses?: boolean | CustomForm$responsesArgs<ExtArgs>
+    fields?: boolean | CustomForm$fieldsArgs<ExtArgs>
     _count?: boolean | CustomFormCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["customForm"]>
 
@@ -17494,8 +17494,8 @@ export namespace Prisma {
   export type CustomFormOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "name" | "type" | "createdAt" | "updatedAt", ExtArgs["result"]["customForm"]>
   export type CustomFormInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
-    fields?: boolean | CustomForm$fieldsArgs<ExtArgs>
     responses?: boolean | CustomForm$responsesArgs<ExtArgs>
+    fields?: boolean | CustomForm$fieldsArgs<ExtArgs>
     _count?: boolean | CustomFormCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CustomFormIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17509,8 +17509,8 @@ export namespace Prisma {
     name: "CustomForm"
     objects: {
       event: Prisma.$EventPayload<ExtArgs>
-      fields: Prisma.$CustomFormFieldPayload<ExtArgs>[]
       responses: Prisma.$CustomFormResponsePayload<ExtArgs>[]
+      fields: Prisma.$CustomFormFieldPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17914,8 +17914,8 @@ export namespace Prisma {
   export interface Prisma__CustomFormClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    fields<T extends CustomForm$fieldsArgs<ExtArgs> = {}>(args?: Subset<T, CustomForm$fieldsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomFormFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     responses<T extends CustomForm$responsesArgs<ExtArgs> = {}>(args?: Subset<T, CustomForm$responsesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomFormResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    fields<T extends CustomForm$fieldsArgs<ExtArgs> = {}>(args?: Subset<T, CustomForm$fieldsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomFormFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18352,30 +18352,6 @@ export namespace Prisma {
   }
 
   /**
-   * CustomForm.fields
-   */
-  export type CustomForm$fieldsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CustomFormField
-     */
-    select?: CustomFormFieldSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CustomFormField
-     */
-    omit?: CustomFormFieldOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CustomFormFieldInclude<ExtArgs> | null
-    where?: CustomFormFieldWhereInput
-    orderBy?: CustomFormFieldOrderByWithRelationInput | CustomFormFieldOrderByWithRelationInput[]
-    cursor?: CustomFormFieldWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CustomFormFieldScalarFieldEnum | CustomFormFieldScalarFieldEnum[]
-  }
-
-  /**
    * CustomForm.responses
    */
   export type CustomForm$responsesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18397,6 +18373,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CustomFormResponseScalarFieldEnum | CustomFormResponseScalarFieldEnum[]
+  }
+
+  /**
+   * CustomForm.fields
+   */
+  export type CustomForm$fieldsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomFormField
+     */
+    select?: CustomFormFieldSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomFormField
+     */
+    omit?: CustomFormFieldOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomFormFieldInclude<ExtArgs> | null
+    where?: CustomFormFieldWhereInput
+    orderBy?: CustomFormFieldOrderByWithRelationInput | CustomFormFieldOrderByWithRelationInput[]
+    cursor?: CustomFormFieldWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CustomFormFieldScalarFieldEnum | CustomFormFieldScalarFieldEnum[]
   }
 
   /**
@@ -35926,8 +35926,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"CustomForm"> | Date | string
     updatedAt?: DateTimeFilter<"CustomForm"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
-    fields?: CustomFormFieldListRelationFilter
     responses?: CustomFormResponseListRelationFilter
+    fields?: CustomFormFieldListRelationFilter
   }
 
   export type CustomFormOrderByWithRelationInput = {
@@ -35938,8 +35938,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     event?: EventOrderByWithRelationInput
-    fields?: CustomFormFieldOrderByRelationAggregateInput
     responses?: CustomFormResponseOrderByRelationAggregateInput
+    fields?: CustomFormFieldOrderByRelationAggregateInput
   }
 
   export type CustomFormWhereUniqueInput = Prisma.AtLeast<{
@@ -35953,8 +35953,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"CustomForm"> | Date | string
     updatedAt?: DateTimeFilter<"CustomForm"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
-    fields?: CustomFormFieldListRelationFilter
     responses?: CustomFormResponseListRelationFilter
+    fields?: CustomFormFieldListRelationFilter
   }, "id">
 
   export type CustomFormOrderByWithAggregationInput = {
@@ -37936,8 +37936,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutFormsInput
-    fields?: CustomFormFieldCreateNestedManyWithoutFormInput
     responses?: CustomFormResponseCreateNestedManyWithoutFormInput
+    fields?: CustomFormFieldCreateNestedManyWithoutFormInput
   }
 
   export type CustomFormUncheckedCreateInput = {
@@ -37947,8 +37947,8 @@ export namespace Prisma {
     type: $Enums.FormType
     createdAt?: Date | string
     updatedAt?: Date | string
-    fields?: CustomFormFieldUncheckedCreateNestedManyWithoutFormInput
     responses?: CustomFormResponseUncheckedCreateNestedManyWithoutFormInput
+    fields?: CustomFormFieldUncheckedCreateNestedManyWithoutFormInput
   }
 
   export type CustomFormUpdateInput = {
@@ -37958,8 +37958,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutFormsNestedInput
-    fields?: CustomFormFieldUpdateManyWithoutFormNestedInput
     responses?: CustomFormResponseUpdateManyWithoutFormNestedInput
+    fields?: CustomFormFieldUpdateManyWithoutFormNestedInput
   }
 
   export type CustomFormUncheckedUpdateInput = {
@@ -37969,8 +37969,8 @@ export namespace Prisma {
     type?: EnumFormTypeFieldUpdateOperationsInput | $Enums.FormType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    fields?: CustomFormFieldUncheckedUpdateManyWithoutFormNestedInput
     responses?: CustomFormResponseUncheckedUpdateManyWithoutFormNestedInput
+    fields?: CustomFormFieldUncheckedUpdateManyWithoutFormNestedInput
   }
 
   export type CustomFormCreateManyInput = {
@@ -42512,13 +42512,6 @@ export namespace Prisma {
     connect?: EventWhereUniqueInput
   }
 
-  export type CustomFormFieldCreateNestedManyWithoutFormInput = {
-    create?: XOR<CustomFormFieldCreateWithoutFormInput, CustomFormFieldUncheckedCreateWithoutFormInput> | CustomFormFieldCreateWithoutFormInput[] | CustomFormFieldUncheckedCreateWithoutFormInput[]
-    connectOrCreate?: CustomFormFieldCreateOrConnectWithoutFormInput | CustomFormFieldCreateOrConnectWithoutFormInput[]
-    createMany?: CustomFormFieldCreateManyFormInputEnvelope
-    connect?: CustomFormFieldWhereUniqueInput | CustomFormFieldWhereUniqueInput[]
-  }
-
   export type CustomFormResponseCreateNestedManyWithoutFormInput = {
     create?: XOR<CustomFormResponseCreateWithoutFormInput, CustomFormResponseUncheckedCreateWithoutFormInput> | CustomFormResponseCreateWithoutFormInput[] | CustomFormResponseUncheckedCreateWithoutFormInput[]
     connectOrCreate?: CustomFormResponseCreateOrConnectWithoutFormInput | CustomFormResponseCreateOrConnectWithoutFormInput[]
@@ -42526,7 +42519,7 @@ export namespace Prisma {
     connect?: CustomFormResponseWhereUniqueInput | CustomFormResponseWhereUniqueInput[]
   }
 
-  export type CustomFormFieldUncheckedCreateNestedManyWithoutFormInput = {
+  export type CustomFormFieldCreateNestedManyWithoutFormInput = {
     create?: XOR<CustomFormFieldCreateWithoutFormInput, CustomFormFieldUncheckedCreateWithoutFormInput> | CustomFormFieldCreateWithoutFormInput[] | CustomFormFieldUncheckedCreateWithoutFormInput[]
     connectOrCreate?: CustomFormFieldCreateOrConnectWithoutFormInput | CustomFormFieldCreateOrConnectWithoutFormInput[]
     createMany?: CustomFormFieldCreateManyFormInputEnvelope
@@ -42540,6 +42533,13 @@ export namespace Prisma {
     connect?: CustomFormResponseWhereUniqueInput | CustomFormResponseWhereUniqueInput[]
   }
 
+  export type CustomFormFieldUncheckedCreateNestedManyWithoutFormInput = {
+    create?: XOR<CustomFormFieldCreateWithoutFormInput, CustomFormFieldUncheckedCreateWithoutFormInput> | CustomFormFieldCreateWithoutFormInput[] | CustomFormFieldUncheckedCreateWithoutFormInput[]
+    connectOrCreate?: CustomFormFieldCreateOrConnectWithoutFormInput | CustomFormFieldCreateOrConnectWithoutFormInput[]
+    createMany?: CustomFormFieldCreateManyFormInputEnvelope
+    connect?: CustomFormFieldWhereUniqueInput | CustomFormFieldWhereUniqueInput[]
+  }
+
   export type EnumFormTypeFieldUpdateOperationsInput = {
     set?: $Enums.FormType
   }
@@ -42550,20 +42550,6 @@ export namespace Prisma {
     upsert?: EventUpsertWithoutFormsInput
     connect?: EventWhereUniqueInput
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutFormsInput, EventUpdateWithoutFormsInput>, EventUncheckedUpdateWithoutFormsInput>
-  }
-
-  export type CustomFormFieldUpdateManyWithoutFormNestedInput = {
-    create?: XOR<CustomFormFieldCreateWithoutFormInput, CustomFormFieldUncheckedCreateWithoutFormInput> | CustomFormFieldCreateWithoutFormInput[] | CustomFormFieldUncheckedCreateWithoutFormInput[]
-    connectOrCreate?: CustomFormFieldCreateOrConnectWithoutFormInput | CustomFormFieldCreateOrConnectWithoutFormInput[]
-    upsert?: CustomFormFieldUpsertWithWhereUniqueWithoutFormInput | CustomFormFieldUpsertWithWhereUniqueWithoutFormInput[]
-    createMany?: CustomFormFieldCreateManyFormInputEnvelope
-    set?: CustomFormFieldWhereUniqueInput | CustomFormFieldWhereUniqueInput[]
-    disconnect?: CustomFormFieldWhereUniqueInput | CustomFormFieldWhereUniqueInput[]
-    delete?: CustomFormFieldWhereUniqueInput | CustomFormFieldWhereUniqueInput[]
-    connect?: CustomFormFieldWhereUniqueInput | CustomFormFieldWhereUniqueInput[]
-    update?: CustomFormFieldUpdateWithWhereUniqueWithoutFormInput | CustomFormFieldUpdateWithWhereUniqueWithoutFormInput[]
-    updateMany?: CustomFormFieldUpdateManyWithWhereWithoutFormInput | CustomFormFieldUpdateManyWithWhereWithoutFormInput[]
-    deleteMany?: CustomFormFieldScalarWhereInput | CustomFormFieldScalarWhereInput[]
   }
 
   export type CustomFormResponseUpdateManyWithoutFormNestedInput = {
@@ -42580,7 +42566,7 @@ export namespace Prisma {
     deleteMany?: CustomFormResponseScalarWhereInput | CustomFormResponseScalarWhereInput[]
   }
 
-  export type CustomFormFieldUncheckedUpdateManyWithoutFormNestedInput = {
+  export type CustomFormFieldUpdateManyWithoutFormNestedInput = {
     create?: XOR<CustomFormFieldCreateWithoutFormInput, CustomFormFieldUncheckedCreateWithoutFormInput> | CustomFormFieldCreateWithoutFormInput[] | CustomFormFieldUncheckedCreateWithoutFormInput[]
     connectOrCreate?: CustomFormFieldCreateOrConnectWithoutFormInput | CustomFormFieldCreateOrConnectWithoutFormInput[]
     upsert?: CustomFormFieldUpsertWithWhereUniqueWithoutFormInput | CustomFormFieldUpsertWithWhereUniqueWithoutFormInput[]
@@ -42606,6 +42592,20 @@ export namespace Prisma {
     update?: CustomFormResponseUpdateWithWhereUniqueWithoutFormInput | CustomFormResponseUpdateWithWhereUniqueWithoutFormInput[]
     updateMany?: CustomFormResponseUpdateManyWithWhereWithoutFormInput | CustomFormResponseUpdateManyWithWhereWithoutFormInput[]
     deleteMany?: CustomFormResponseScalarWhereInput | CustomFormResponseScalarWhereInput[]
+  }
+
+  export type CustomFormFieldUncheckedUpdateManyWithoutFormNestedInput = {
+    create?: XOR<CustomFormFieldCreateWithoutFormInput, CustomFormFieldUncheckedCreateWithoutFormInput> | CustomFormFieldCreateWithoutFormInput[] | CustomFormFieldUncheckedCreateWithoutFormInput[]
+    connectOrCreate?: CustomFormFieldCreateOrConnectWithoutFormInput | CustomFormFieldCreateOrConnectWithoutFormInput[]
+    upsert?: CustomFormFieldUpsertWithWhereUniqueWithoutFormInput | CustomFormFieldUpsertWithWhereUniqueWithoutFormInput[]
+    createMany?: CustomFormFieldCreateManyFormInputEnvelope
+    set?: CustomFormFieldWhereUniqueInput | CustomFormFieldWhereUniqueInput[]
+    disconnect?: CustomFormFieldWhereUniqueInput | CustomFormFieldWhereUniqueInput[]
+    delete?: CustomFormFieldWhereUniqueInput | CustomFormFieldWhereUniqueInput[]
+    connect?: CustomFormFieldWhereUniqueInput | CustomFormFieldWhereUniqueInput[]
+    update?: CustomFormFieldUpdateWithWhereUniqueWithoutFormInput | CustomFormFieldUpdateWithWhereUniqueWithoutFormInput[]
+    updateMany?: CustomFormFieldUpdateManyWithWhereWithoutFormInput | CustomFormFieldUpdateManyWithWhereWithoutFormInput[]
+    deleteMany?: CustomFormFieldScalarWhereInput | CustomFormFieldScalarWhereInput[]
   }
 
   export type CustomFormCreateNestedOneWithoutFieldsInput = {
@@ -44830,8 +44830,8 @@ export namespace Prisma {
     type: $Enums.FormType
     createdAt?: Date | string
     updatedAt?: Date | string
-    fields?: CustomFormFieldCreateNestedManyWithoutFormInput
     responses?: CustomFormResponseCreateNestedManyWithoutFormInput
+    fields?: CustomFormFieldCreateNestedManyWithoutFormInput
   }
 
   export type CustomFormUncheckedCreateWithoutEventInput = {
@@ -44840,8 +44840,8 @@ export namespace Prisma {
     type: $Enums.FormType
     createdAt?: Date | string
     updatedAt?: Date | string
-    fields?: CustomFormFieldUncheckedCreateNestedManyWithoutFormInput
     responses?: CustomFormResponseUncheckedCreateNestedManyWithoutFormInput
+    fields?: CustomFormFieldUncheckedCreateNestedManyWithoutFormInput
   }
 
   export type CustomFormCreateOrConnectWithoutEventInput = {
@@ -47181,6 +47181,32 @@ export namespace Prisma {
     create: XOR<EventCreateWithoutFormsInput, EventUncheckedCreateWithoutFormsInput>
   }
 
+  export type CustomFormResponseCreateWithoutFormInput = {
+    id?: string
+    createdAt?: Date | string
+    registration?: RegistrationCreateNestedOneWithoutFormResponsesInput
+    submission?: SubmissionCreateNestedOneWithoutFormResponsesInput
+    answers?: CustomFormAnswerCreateNestedManyWithoutResponseInput
+  }
+
+  export type CustomFormResponseUncheckedCreateWithoutFormInput = {
+    id?: string
+    registrationId?: string | null
+    submissionId?: string | null
+    createdAt?: Date | string
+    answers?: CustomFormAnswerUncheckedCreateNestedManyWithoutResponseInput
+  }
+
+  export type CustomFormResponseCreateOrConnectWithoutFormInput = {
+    where: CustomFormResponseWhereUniqueInput
+    create: XOR<CustomFormResponseCreateWithoutFormInput, CustomFormResponseUncheckedCreateWithoutFormInput>
+  }
+
+  export type CustomFormResponseCreateManyFormInputEnvelope = {
+    data: CustomFormResponseCreateManyFormInput | CustomFormResponseCreateManyFormInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CustomFormFieldCreateWithoutFormInput = {
     id?: string
     label: string
@@ -47212,32 +47238,6 @@ export namespace Prisma {
 
   export type CustomFormFieldCreateManyFormInputEnvelope = {
     data: CustomFormFieldCreateManyFormInput | CustomFormFieldCreateManyFormInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CustomFormResponseCreateWithoutFormInput = {
-    id?: string
-    createdAt?: Date | string
-    registration?: RegistrationCreateNestedOneWithoutFormResponsesInput
-    submission?: SubmissionCreateNestedOneWithoutFormResponsesInput
-    answers?: CustomFormAnswerCreateNestedManyWithoutResponseInput
-  }
-
-  export type CustomFormResponseUncheckedCreateWithoutFormInput = {
-    id?: string
-    registrationId?: string | null
-    submissionId?: string | null
-    createdAt?: Date | string
-    answers?: CustomFormAnswerUncheckedCreateNestedManyWithoutResponseInput
-  }
-
-  export type CustomFormResponseCreateOrConnectWithoutFormInput = {
-    where: CustomFormResponseWhereUniqueInput
-    create: XOR<CustomFormResponseCreateWithoutFormInput, CustomFormResponseUncheckedCreateWithoutFormInput>
-  }
-
-  export type CustomFormResponseCreateManyFormInputEnvelope = {
-    data: CustomFormResponseCreateManyFormInput | CustomFormResponseCreateManyFormInput[]
     skipDuplicates?: boolean
   }
 
@@ -47308,6 +47308,22 @@ export namespace Prisma {
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
   }
 
+  export type CustomFormResponseUpsertWithWhereUniqueWithoutFormInput = {
+    where: CustomFormResponseWhereUniqueInput
+    update: XOR<CustomFormResponseUpdateWithoutFormInput, CustomFormResponseUncheckedUpdateWithoutFormInput>
+    create: XOR<CustomFormResponseCreateWithoutFormInput, CustomFormResponseUncheckedCreateWithoutFormInput>
+  }
+
+  export type CustomFormResponseUpdateWithWhereUniqueWithoutFormInput = {
+    where: CustomFormResponseWhereUniqueInput
+    data: XOR<CustomFormResponseUpdateWithoutFormInput, CustomFormResponseUncheckedUpdateWithoutFormInput>
+  }
+
+  export type CustomFormResponseUpdateManyWithWhereWithoutFormInput = {
+    where: CustomFormResponseScalarWhereInput
+    data: XOR<CustomFormResponseUpdateManyMutationInput, CustomFormResponseUncheckedUpdateManyWithoutFormInput>
+  }
+
   export type CustomFormFieldUpsertWithWhereUniqueWithoutFormInput = {
     where: CustomFormFieldWhereUniqueInput
     update: XOR<CustomFormFieldUpdateWithoutFormInput, CustomFormFieldUncheckedUpdateWithoutFormInput>
@@ -47337,22 +47353,6 @@ export namespace Prisma {
     options?: JsonNullableFilter<"CustomFormField">
     createdAt?: DateTimeFilter<"CustomFormField"> | Date | string
     updatedAt?: DateTimeFilter<"CustomFormField"> | Date | string
-  }
-
-  export type CustomFormResponseUpsertWithWhereUniqueWithoutFormInput = {
-    where: CustomFormResponseWhereUniqueInput
-    update: XOR<CustomFormResponseUpdateWithoutFormInput, CustomFormResponseUncheckedUpdateWithoutFormInput>
-    create: XOR<CustomFormResponseCreateWithoutFormInput, CustomFormResponseUncheckedCreateWithoutFormInput>
-  }
-
-  export type CustomFormResponseUpdateWithWhereUniqueWithoutFormInput = {
-    where: CustomFormResponseWhereUniqueInput
-    data: XOR<CustomFormResponseUpdateWithoutFormInput, CustomFormResponseUncheckedUpdateWithoutFormInput>
-  }
-
-  export type CustomFormResponseUpdateManyWithWhereWithoutFormInput = {
-    where: CustomFormResponseScalarWhereInput
-    data: XOR<CustomFormResponseUpdateManyMutationInput, CustomFormResponseUncheckedUpdateManyWithoutFormInput>
   }
 
   export type CustomFormCreateWithoutFieldsInput = {
@@ -50703,8 +50703,8 @@ export namespace Prisma {
     type?: EnumFormTypeFieldUpdateOperationsInput | $Enums.FormType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    fields?: CustomFormFieldUpdateManyWithoutFormNestedInput
     responses?: CustomFormResponseUpdateManyWithoutFormNestedInput
+    fields?: CustomFormFieldUpdateManyWithoutFormNestedInput
   }
 
   export type CustomFormUncheckedUpdateWithoutEventInput = {
@@ -50713,8 +50713,8 @@ export namespace Prisma {
     type?: EnumFormTypeFieldUpdateOperationsInput | $Enums.FormType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    fields?: CustomFormFieldUncheckedUpdateManyWithoutFormNestedInput
     responses?: CustomFormResponseUncheckedUpdateManyWithoutFormNestedInput
+    fields?: CustomFormFieldUncheckedUpdateManyWithoutFormNestedInput
   }
 
   export type CustomFormUncheckedUpdateManyWithoutEventInput = {
@@ -51359,6 +51359,13 @@ export namespace Prisma {
     checkedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CustomFormResponseCreateManyFormInput = {
+    id?: string
+    registrationId?: string | null
+    submissionId?: string | null
+    createdAt?: Date | string
+  }
+
   export type CustomFormFieldCreateManyFormInput = {
     id?: string
     label: string
@@ -51370,11 +51377,27 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type CustomFormResponseCreateManyFormInput = {
-    id?: string
-    registrationId?: string | null
-    submissionId?: string | null
-    createdAt?: Date | string
+  export type CustomFormResponseUpdateWithoutFormInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    registration?: RegistrationUpdateOneWithoutFormResponsesNestedInput
+    submission?: SubmissionUpdateOneWithoutFormResponsesNestedInput
+    answers?: CustomFormAnswerUpdateManyWithoutResponseNestedInput
+  }
+
+  export type CustomFormResponseUncheckedUpdateWithoutFormInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registrationId?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    answers?: CustomFormAnswerUncheckedUpdateManyWithoutResponseNestedInput
+  }
+
+  export type CustomFormResponseUncheckedUpdateManyWithoutFormInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registrationId?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CustomFormFieldUpdateWithoutFormInput = {
@@ -51410,29 +51433,6 @@ export namespace Prisma {
     options?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CustomFormResponseUpdateWithoutFormInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    registration?: RegistrationUpdateOneWithoutFormResponsesNestedInput
-    submission?: SubmissionUpdateOneWithoutFormResponsesNestedInput
-    answers?: CustomFormAnswerUpdateManyWithoutResponseNestedInput
-  }
-
-  export type CustomFormResponseUncheckedUpdateWithoutFormInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    registrationId?: NullableStringFieldUpdateOperationsInput | string | null
-    submissionId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    answers?: CustomFormAnswerUncheckedUpdateManyWithoutResponseNestedInput
-  }
-
-  export type CustomFormResponseUncheckedUpdateManyWithoutFormInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    registrationId?: NullableStringFieldUpdateOperationsInput | string | null
-    submissionId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CustomFormAnswerCreateManyFieldInput = {
