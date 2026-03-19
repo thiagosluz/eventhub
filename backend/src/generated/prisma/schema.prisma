@@ -99,6 +99,7 @@ model Tenant {
   speakers      Speaker[]
   activityTypes ActivityType[]
   speakerRoles  SpeakerRole[]
+  badges        Badge[]
 }
 
 model User {
@@ -118,6 +119,7 @@ model User {
   registrations Registration[]
   reviews       Review[]
   submissions   Submission[]   @relation("SubmissionAuthor")
+  userBadges    UserBadge[]
 }
 
 model Event {
@@ -150,6 +152,8 @@ model Event {
   certificateTemplates CertificateTemplate[]
   sponsorCategories    SponsorCategory[]
   raffleHistories      RaffleHistory[]
+  badges               Badge[]
+  userBadges           UserBadge[]
 
   @@unique([tenantId, slug])
 }
@@ -465,10 +469,49 @@ model RaffleHistory {
   registrationId String
   registration   Registration @relation(fields: [registrationId], references: [id])
 
-  prizeName         String?
-  rule              RaffleRule @default(ONLY_CHECKED_IN)
-  hasReceived       Boolean    @default(false)
-  isHiddenOnDisplay Boolean    @default(false)
+  prizeName   String?
+  rule        RaffleRule @default(ONLY_CHECKED_IN)
+  hasReceived Boolean    @default(false)
 
   drawnAt DateTime @default(now())
+}
+
+enum BadgeTrigger {
+  MANUAL
+  RAFFLE_WINNER
+  EARLY_BIRD
+  CHECKIN_STREAK
+}
+
+model Badge {
+  id       String  @id @default(cuid())
+  tenantId String
+  tenant   Tenant  @relation(fields: [tenantId], references: [id])
+  eventId  String?
+  event    Event?  @relation(fields: [eventId], references: [id])
+
+  name        String
+  description String?
+  iconUrl     String? // Pode ser Emoji ou URL SVG
+  color       String       @default("blue") // blue, purple, gold, emerald
+  triggerRule BadgeTrigger @default(MANUAL)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userBadges UserBadge[]
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id])
+  badgeId  String
+  badge    Badge    @relation(fields: [badgeId], references: [id])
+  eventId  String?
+  event    Event?   @relation(fields: [eventId], references: [id])
+  earnedAt DateTime @default(now())
+
+  // Garante que o usuário só ganhe a mesma badge 1 vez por evento
+  @@unique([userId, badgeId, eventId])
 }

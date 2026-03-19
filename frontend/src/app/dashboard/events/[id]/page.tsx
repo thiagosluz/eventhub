@@ -16,7 +16,8 @@ import {
   AcademicCapIcon,
   QrCodeIcon,
   SparklesIcon,
-  ChartBarIcon
+  ChartBarIcon,
+  TrophyIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -425,6 +426,18 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
             >
               <SparklesIcon className="w-4 h-4" />
               GERENCIAR PATROCÍNIO
+            </Link>
+          </div>
+
+          <div className="premium-card p-6 bg-fuchsia-500/5 border-fuchsia-500/10 space-y-4">
+            <h3 className="text-sm font-black uppercase tracking-tight text-fuchsia-600">Gamificação (Badges)</h3>
+            <p className="text-xs text-muted-foreground font-medium">Crie conquistas e badges para engajar os participantes.</p>
+            <Link 
+              href={`/dashboard/events/${id}/gamification`} 
+              className="premium-button !bg-fuchsia-600 hover:!bg-fuchsia-700 !shadow-fuchsia-200 !py-2.5 !text-[10px] !font-black flex items-center justify-center gap-2"
+            >
+              <TrophyIcon className="w-4 h-4" />
+              SISTEMA DE CONQUISTAS
             </Link>
           </div>
 

@@ -47,10 +47,12 @@ const common_1 = require("@nestjs/common");
 const QRCode = __importStar(require("qrcode"));
 const prisma_service_1 = require("../prisma/prisma.service");
 const mail_service_1 = require("../mail/mail.service");
+const badges_service_1 = require("../badges/badges.service");
 let CheckinService = class CheckinService {
-    constructor(prisma, mailService) {
+    constructor(prisma, mailService, badgesService) {
         this.prisma = prisma;
         this.mailService = mailService;
+        this.badgesService = badgesService;
         this.hiddenRaffleIds = new Set();
     }
     async getQrCodePng(ticketId, userId) {
@@ -284,16 +286,20 @@ let CheckinService = class CheckinService {
     async markPrizeReceived(tenantId, historyId, received) {
         const history = await this.prisma.raffleHistory.findUnique({
             where: { id: historyId },
-            include: { event: true },
+            include: { event: true, registration: true },
         });
         if (!history)
             throw new common_1.NotFoundException("Histórico não encontrado.");
         if (history.event.tenantId !== tenantId)
             throw new common_1.ForbiddenException("Sem permissão.");
-        return this.prisma.raffleHistory.update({
+        const updated = await this.prisma.raffleHistory.update({
             where: { id: historyId },
             data: { hasReceived: received },
         });
+        if (received) {
+            await this.badgesService.checkAndAwardBadge(history.registration.userId, history.eventId, 'RAFFLE_WINNER');
+        }
+        return updated;
     }
     async undoCheckin(attendanceId) {
         const attendance = await this.prisma.attendance.findUnique({
@@ -311,6 +317,7 @@ exports.CheckinService = CheckinService;
 exports.CheckinService = CheckinService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        mail_service_1.MailService])
+        mail_service_1.MailService,
+        badges_service_1.BadgesService])
 ], CheckinService);
 //# sourceMappingURL=checkin.service.js.map

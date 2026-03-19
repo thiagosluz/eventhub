@@ -6,6 +6,7 @@ import {
 import * as QRCode from "qrcode";
 import { PrismaService } from "../prisma/prisma.service";
 import { MailService } from "../mail/mail.service";
+import { BadgesService } from "../badges/badges.service";
 
 @Injectable()
 export class CheckinService {
@@ -14,6 +15,7 @@ export class CheckinService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly mailService: MailService,
+    private readonly badgesService: BadgesService,
   ) {}
 
   async getQrCodePng(ticketId: string, userId: string): Promise<Buffer> {
@@ -291,15 +293,25 @@ export class CheckinService {
   async markPrizeReceived(tenantId: string, historyId: string, received: boolean) {
     const history = await this.prisma.raffleHistory.findUnique({
       where: { id: historyId },
-      include: { event: true },
+      include: { event: true, registration: true },
     });
     if (!history) throw new NotFoundException("Histórico não encontrado.");
     if (history.event.tenantId !== tenantId) throw new ForbiddenException("Sem permissão.");
 
-    return this.prisma.raffleHistory.update({
+    const updated = await this.prisma.raffleHistory.update({
       where: { id: historyId },
       data: { hasReceived: received },
     });
+
+    if (received) {
+      await this.badgesService.checkAndAwardBadge(
+        history.registration.userId, 
+        history.eventId, 
+        'RAFFLE_WINNER'
+      );
+    }
+
+    return updated;
   }
 
   async undoCheckin(attendanceId: string): Promise<void> {

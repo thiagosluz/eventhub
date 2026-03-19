@@ -89,95 +89,99 @@ model Tenant {
   id          String   @id @default(cuid())
   name        String
   slug        String   @unique
-  logoUrl       String?
-  themeConfig   Json?
+  logoUrl     String?
+  themeConfig Json?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  users       User[]
-  events      Event[]
-  speakers    Speaker[]
+  users         User[]
+  events        Event[]
+  speakers      Speaker[]
   activityTypes ActivityType[]
   speakerRoles  SpeakerRole[]
+  badges        Badge[]
 }
 
 model User {
-  id          String    @id @default(cuid())
-  email       String    @unique
-  password    String
-  name        String
-  role        UserRole
-  avatarUrl   String?
-  bio         String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole
+  avatarUrl String?
+  bio       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  tenantId    String
-  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
 
   registrations Registration[]
-  reviews        Review[]
-  submissions    Submission[] @relation("SubmissionAuthor")
+  reviews       Review[]
+  submissions   Submission[]   @relation("SubmissionAuthor")
+  userBadges    UserBadge[]
 }
 
 model Event {
-  id            String       @id @default(cuid())
-  tenantId      String
-  tenant        Tenant       @relation(fields: [tenantId], references: [id])
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
 
-  name          String
-  slug          String
-  description   String?
-  location      String?
-  startDate     DateTime
-  endDate       DateTime
-  status        EventStatus  @default(DRAFT)
+  name        String
+  slug        String
+  description String?
+  location    String?
+  startDate   DateTime
+  endDate     DateTime
+  status      EventStatus @default(DRAFT)
 
-  bannerUrl     String?
-  logoUrl       String?
-  themeConfig   Json?
-  seoTitle      String?
+  bannerUrl      String?
+  logoUrl        String?
+  themeConfig    Json?
+  seoTitle       String?
   seoDescription String?
 
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  activities    Activity[]
-  registrations Registration[]
-  tickets       Ticket[]
-  forms         CustomForm[]
-  submissions   Submission[]
+  activities           Activity[]
+  registrations        Registration[]
+  tickets              Ticket[]
+  forms                CustomForm[]
+  submissions          Submission[]
   certificateTemplates CertificateTemplate[]
-  sponsorCategories SponsorCategory[]
-  raffleHistories RaffleHistory[]
+  sponsorCategories    SponsorCategory[]
+  raffleHistories      RaffleHistory[]
+  badges               Badge[]
+  userBadges           UserBadge[]
 
   @@unique([tenantId, slug])
 }
 
 model ActivityType {
-  id        String   @id @default(cuid())
-  tenantId  String
-  tenant    Tenant   @relation(fields: [tenantId], references: [id])
-  name      String
+  id         String     @id @default(cuid())
+  tenantId   String
+  tenant     Tenant     @relation(fields: [tenantId], references: [id])
+  name       String
   activities Activity[]
 
   @@unique([tenantId, name])
 }
 
 model SpeakerRole {
-  id        String   @id @default(cuid())
-  tenantId  String
-  tenant    Tenant   @relation(fields: [tenantId], references: [id])
-  name      String
+  id               String            @id @default(cuid())
+  tenantId         String
+  tenant           Tenant            @relation(fields: [tenantId], references: [id])
+  name             String
   activitySpeakers ActivitySpeaker[]
 
   @@unique([tenantId, name])
 }
 
 model Activity {
-  id          String        @id @default(cuid())
-  eventId     String
-  event       Event         @relation(fields: [eventId], references: [id])
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
 
   title       String
   description String?
@@ -187,25 +191,25 @@ model Activity {
   capacity    Int?
   status      ActivityStatus @default(SCHEDULED)
 
-  typeId              String?
-  type                ActivityType? @relation(fields: [typeId], references: [id])
-  requiresEnrollment  Boolean       @default(false)
+  typeId               String?
+  type                 ActivityType? @relation(fields: [typeId], references: [id])
+  requiresEnrollment   Boolean       @default(false)
   requiresConfirmation Boolean       @default(false)
-  confirmationDays    Int?
+  confirmationDays     Int?
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  speakers    ActivitySpeaker[]
-  enrollments ActivityEnrollment[]
-  attendances Attendance[]
+  speakers        ActivitySpeaker[]
+  enrollments     ActivityEnrollment[]
+  attendances     Attendance[]
   raffleHistories RaffleHistory[]
 }
 
 model Speaker {
-  id          String   @id @default(cuid())
-  tenantId    String
-  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
 
   name        String
   email       String?
@@ -214,10 +218,10 @@ model Speaker {
   linkedinUrl String?
   websiteUrl  String?
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  activities  ActivitySpeaker[]
+  activities ActivitySpeaker[]
 }
 
 model ActivitySpeaker {
@@ -225,198 +229,199 @@ model ActivitySpeaker {
   speakerId  String
   roleId     String?
 
-  activity   Activity @relation(fields: [activityId], references: [id])
-  speaker    Speaker  @relation(fields: [speakerId], references: [id])
-  role       SpeakerRole? @relation(fields: [roleId], references: [id])
+  activity Activity     @relation(fields: [activityId], references: [id])
+  speaker  Speaker      @relation(fields: [speakerId], references: [id])
+  role     SpeakerRole? @relation(fields: [roleId], references: [id])
 
   @@id([activityId, speakerId])
 }
 
 model Registration {
-  id          String   @id @default(cuid())
-  eventId     String
-  event       Event    @relation(fields: [eventId], references: [id])
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
 
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  createdAt   DateTime @default(now())
+  createdAt DateTime @default(now())
 
-  tickets     Ticket[]
-  enrollments ActivityEnrollment[]
-  formResponses CustomFormResponse[]
-  certificates IssuedCertificate[]
+  tickets         Ticket[]
+  enrollments     ActivityEnrollment[]
+  formResponses   CustomFormResponse[]
+  certificates    IssuedCertificate[]
   raffleHistories RaffleHistory[]
 }
 
 model ActivityEnrollment {
-  id             String      @id @default(cuid())
-  activityId     String
-  activity       Activity    @relation(fields: [activityId], references: [id])
+  id         String   @id @default(cuid())
+  activityId String
+  activity   Activity @relation(fields: [activityId], references: [id])
 
   registrationId String
   registration   Registration @relation(fields: [registrationId], references: [id])
 
-  status         EnrollmentStatus @default(CONFIRMED)
-  confirmedAt    DateTime?
+  status      EnrollmentStatus @default(CONFIRMED)
+  confirmedAt DateTime?
 
-  createdAt      DateTime    @default(now())
+  createdAt DateTime @default(now())
 }
 
 model Ticket {
-  id             String       @id @default(cuid())
-  eventId        String
-  event          Event        @relation(fields: [eventId], references: [id])
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
 
   registrationId String
   registration   Registration @relation(fields: [registrationId], references: [id])
 
-  type           TicketType   @default(FREE)
-  status         TicketStatus @default(PENDING)
-  price          Decimal      @default(0)
+  type   TicketType   @default(FREE)
+  status TicketStatus @default(PENDING)
+  price  Decimal      @default(0)
 
-  qrCodeToken    String?      @unique
+  qrCodeToken String? @unique
 
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  attendances    Attendance[]
+  attendances Attendance[]
 }
 
 model CustomForm {
-  id          String      @id @default(cuid())
-  eventId     String
-  event       Event       @relation(fields: [eventId], references: [id])
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
 
-  name        String
-  type        FormType
+  name String
+  type FormType
 
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  fields      CustomFormField[]
-  responses   CustomFormResponse[]
+  fields    CustomFormField[]
+  responses CustomFormResponse[]
 }
 
 model CustomFormField {
-  id          String        @id @default(cuid())
-  formId      String
-  form        CustomForm    @relation(fields: [formId], references: [id])
+  id     String     @id @default(cuid())
+  formId String
+  form   CustomForm @relation(fields: [formId], references: [id])
 
-  label       String
-  type        FormFieldType
-  required    Boolean       @default(false)
-  order       Int
-  options     Json?
+  label    String
+  type     FormFieldType
+  required Boolean       @default(false)
+  order    Int
+  options  Json?
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  answers     CustomFormAnswer[]
+  answers CustomFormAnswer[]
 }
 
 model CustomFormResponse {
-  id             String           @id @default(cuid())
-  formId         String
-  form           CustomForm       @relation(fields: [formId], references: [id])
+  id     String     @id @default(cuid())
+  formId String
+  form   CustomForm @relation(fields: [formId], references: [id])
 
   registrationId String?
-  registration   Registration?    @relation(fields: [registrationId], references: [id])
+  registration   Registration? @relation(fields: [registrationId], references: [id])
 
-  submissionId   String?
-  submission     Submission?      @relation(fields: [submissionId], references: [id])
+  submissionId String?
+  submission   Submission? @relation(fields: [submissionId], references: [id])
 
-  createdAt      DateTime         @default(now())
+  createdAt DateTime @default(now())
 
-  answers        CustomFormAnswer[]
+  answers CustomFormAnswer[]
 }
 
 model CustomFormAnswer {
-  id          String           @id @default(cuid())
-  responseId  String
-  response    CustomFormResponse @relation(fields: [responseId], references: [id])
+  id         String             @id @default(cuid())
+  responseId String
+  response   CustomFormResponse @relation(fields: [responseId], references: [id])
 
-  fieldId     String
-  field       CustomFormField @relation(fields: [fieldId], references: [id])
+  fieldId String
+  field   CustomFormField @relation(fields: [fieldId], references: [id])
 
-  value       String
+  value String
 }
 
 model Submission {
-  id             String            @id @default(cuid())
-  eventId        String
-  event          Event             @relation(fields: [eventId], references: [id])
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
 
-  authorId       String
-  author         User              @relation("SubmissionAuthor", fields: [authorId], references: [id])
+  authorId String
+  author   User   @relation("SubmissionAuthor", fields: [authorId], references: [id])
 
-  title          String
-  abstract       String?
-  fileUrl        String
-  status         SubmissionStatus  @default(SUBMITTED)
+  title    String
+  abstract String?
+  fileUrl  String
+  status   SubmissionStatus @default(SUBMITTED)
 
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  reviews        Review[]
-  formResponses  CustomFormResponse[]
+  reviews       Review[]
+  formResponses CustomFormResponse[]
 }
 
 model Review {
-  id             String              @id @default(cuid())
-  submissionId   String
-  submission     Submission          @relation(fields: [submissionId], references: [id])
+  id           String     @id @default(cuid())
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id])
 
-  reviewerId     String
-  reviewer       User                @relation(fields: [reviewerId], references: [id])
+  reviewerId String
+  reviewer   User   @relation(fields: [reviewerId], references: [id])
 
   score          Int?
   recommendation ReviewRecommendation?
   comments       String?
 
-  createdAt      DateTime            @default(now())
+  createdAt DateTime @default(now())
 }
 
 model Attendance {
-  id          String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  ticketId    String
-  ticket      Ticket   @relation(fields: [ticketId], references: [id])
+  ticketId String
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
 
-  activityId  String?
-  activity    Activity? @relation(fields: [activityId], references: [id])
+  activityId String?
+  activity   Activity? @relation(fields: [activityId], references: [id])
 
-  checkedAt   DateTime @default(now())
+  checkedAt DateTime @default(now())
 }
 
 model CertificateTemplate {
-  id              String   @id @default(cuid())
-  eventId         String
-  event           Event    @relation(fields: [eventId], references: [id])
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
 
-  name            String
-  backgroundUrl   String
-  layoutConfig    Json     // Coordenadas e estilos vindos do frontend
+  name          String
+  backgroundUrl String
+  layoutConfig  Json // Coordenadas e estilos vindos do frontend
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   issuedCertificates IssuedCertificate[]
 }
 
 model IssuedCertificate {
-  id              String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  templateId      String
-  template        CertificateTemplate @relation(fields: [templateId], references: [id])
+  templateId String
+  template   CertificateTemplate @relation(fields: [templateId], references: [id])
 
-  registrationId  String
-  registration    Registration @relation(fields: [registrationId], references: [id])
+  registrationId String
+  registration   Registration @relation(fields: [registrationId], references: [id])
 
-  fileUrl         String
-  validationHash  String   @unique @default(uuid())
-  issuedAt        DateTime @default(now())
+  fileUrl        String
+  validationHash String   @unique @default(uuid())
+  issuedAt       DateTime @default(now())
 }
+
 enum SponsorSize {
   SMALL
   MEDIUM
@@ -424,49 +429,89 @@ enum SponsorSize {
 }
 
 model SponsorCategory {
-  id            String       @id @default(cuid())
-  eventId       String
-  event         Event        @relation(fields: [eventId], references: [id])
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
 
-  name          String
-  displayOrder  Int          @default(0)
-  size          SponsorSize  @default(MEDIUM)
-  color         String?      // Hex color for the category (e.g., Gold)
+  name         String
+  displayOrder Int         @default(0)
+  size         SponsorSize @default(MEDIUM)
+  color        String? // Hex color for the category (e.g., Gold)
 
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  sponsors      Sponsor[]
+  sponsors Sponsor[]
 }
 
 model Sponsor {
-  id                String          @id @default(cuid())
-  categoryId        String
-  category          SponsorCategory @relation(fields: [categoryId], references: [id])
+  id         String          @id @default(cuid())
+  categoryId String
+  category   SponsorCategory @relation(fields: [categoryId], references: [id])
 
-  name              String
-  logoUrl           String
-  websiteUrl        String?
-  displayOrder      Int             @default(0)
+  name         String
+  logoUrl      String
+  websiteUrl   String?
+  displayOrder Int     @default(0)
 
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model RaffleHistory {
-  id             String       @id @default(cuid())
-  eventId        String
-  event          Event        @relation(fields: [eventId], references: [id])
-  
-  activityId     String?
-  activity       Activity?    @relation(fields: [activityId], references: [id])
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
+
+  activityId String?
+  activity   Activity? @relation(fields: [activityId], references: [id])
 
   registrationId String
   registration   Registration @relation(fields: [registrationId], references: [id])
 
-  prizeName      String?
-  rule           RaffleRule   @default(ONLY_CHECKED_IN)
-  hasReceived    Boolean      @default(false)
+  prizeName   String?
+  rule        RaffleRule @default(ONLY_CHECKED_IN)
+  hasReceived Boolean    @default(false)
 
-  drawnAt        DateTime     @default(now())
+  drawnAt DateTime @default(now())
+}
+
+enum BadgeTrigger {
+  MANUAL
+  RAFFLE_WINNER
+  EARLY_BIRD
+  CHECKIN_STREAK
+}
+
+model Badge {
+  id       String  @id @default(cuid())
+  tenantId String
+  tenant   Tenant  @relation(fields: [tenantId], references: [id])
+  eventId  String?
+  event    Event?  @relation(fields: [eventId], references: [id])
+
+  name        String
+  description String?
+  iconUrl     String? // Pode ser Emoji ou URL SVG
+  color       String       @default("blue") // blue, purple, gold, emerald
+  triggerRule BadgeTrigger @default(MANUAL)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userBadges UserBadge[]
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id])
+  badgeId  String
+  badge    Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  eventId  String?
+  event    Event?   @relation(fields: [eventId], references: [id])
+  earnedAt DateTime @default(now())
+
+  // Garante que o usuário só ganhe a mesma badge 1 vez por evento
+  @@unique([userId, badgeId, eventId])
 }

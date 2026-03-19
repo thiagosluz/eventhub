@@ -39,6 +39,7 @@ const storage_module_1 = require("./storage/storage.module");
 const analytics_module_1 = require("./analytics/analytics.module");
 const sponsors_module_1 = require("./sponsors/sponsors.module");
 const users_module_1 = require("./users/users.module");
+const badges_module_1 = require("./badges/badges.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -55,6 +56,7 @@ exports.AppModule = AppModule = __decorate([
             analytics_module_1.AnalyticsModule,
             sponsors_module_1.SponsorsModule,
             users_module_1.UsersModule,
+            badges_module_1.BadgesModule,
             bullmq_1.BullModule.forRoot({
                 connection: {
                     host: (_a = process.env.REDIS_HOST) !== null && _a !== void 0 ? _a : "localhost",

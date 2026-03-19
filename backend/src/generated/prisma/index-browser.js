@@ -353,8 +353,28 @@ exports.Prisma.RaffleHistoryScalarFieldEnum = {
   prizeName: 'prizeName',
   rule: 'rule',
   hasReceived: 'hasReceived',
-  isHiddenOnDisplay: 'isHiddenOnDisplay',
   drawnAt: 'drawnAt'
+};
+
+exports.Prisma.BadgeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventId: 'eventId',
+  name: 'name',
+  description: 'description',
+  iconUrl: 'iconUrl',
+  color: 'color',
+  triggerRule: 'triggerRule',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserBadgeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  badgeId: 'badgeId',
+  eventId: 'eventId',
+  earnedAt: 'earnedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -465,6 +485,13 @@ exports.RaffleRule = exports.$Enums.RaffleRule = {
   ONLY_CHECKED_IN: 'ONLY_CHECKED_IN'
 };
 
+exports.BadgeTrigger = exports.$Enums.BadgeTrigger = {
+  MANUAL: 'MANUAL',
+  RAFFLE_WINNER: 'RAFFLE_WINNER',
+  EARLY_BIRD: 'EARLY_BIRD',
+  CHECKIN_STREAK: 'CHECKIN_STREAK'
+};
+
 exports.Prisma.ModelName = {
   Tenant: 'Tenant',
   User: 'User',
@@ -488,7 +515,9 @@ exports.Prisma.ModelName = {
   IssuedCertificate: 'IssuedCertificate',
   SponsorCategory: 'SponsorCategory',
   Sponsor: 'Sponsor',
-  RaffleHistory: 'RaffleHistory'
+  RaffleHistory: 'RaffleHistory',
+  Badge: 'Badge',
+  UserBadge: 'UserBadge'
 };
 
 /**
