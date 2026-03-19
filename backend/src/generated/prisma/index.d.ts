@@ -134,6 +134,11 @@ export type RaffleHistory = $Result.DefaultSelection<Prisma.$RaffleHistoryPayloa
  */
 export type Badge = $Result.DefaultSelection<Prisma.$BadgePayload>
 /**
+ * Model BadgeClaimCode
+ * 
+ */
+export type BadgeClaimCode = $Result.DefaultSelection<Prisma.$BadgeClaimCodePayload>
+/**
  * Model UserBadge
  * 
  */
@@ -267,6 +272,15 @@ export const BadgeTrigger: {
 
 export type BadgeTrigger = (typeof BadgeTrigger)[keyof typeof BadgeTrigger]
 
+
+export const ManualDeliveryMode: {
+  SCAN: 'SCAN',
+  UNIQUE_CODES: 'UNIQUE_CODES',
+  GLOBAL_CODE: 'GLOBAL_CODE'
+};
+
+export type ManualDeliveryMode = (typeof ManualDeliveryMode)[keyof typeof ManualDeliveryMode]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -320,6 +334,10 @@ export const SponsorSize: typeof $Enums.SponsorSize
 export type BadgeTrigger = $Enums.BadgeTrigger
 
 export const BadgeTrigger: typeof $Enums.BadgeTrigger
+
+export type ManualDeliveryMode = $Enums.ManualDeliveryMode
+
+export const ManualDeliveryMode: typeof $Enums.ManualDeliveryMode
 
 /**
  * ##  Prisma Client ʲˢ
@@ -681,6 +699,16 @@ export class PrismaClient<
     * ```
     */
   get badge(): Prisma.BadgeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.badgeClaimCode`: Exposes CRUD operations for the **BadgeClaimCode** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BadgeClaimCodes
+    * const badgeClaimCodes = await prisma.badgeClaimCode.findMany()
+    * ```
+    */
+  get badgeClaimCode(): Prisma.BadgeClaimCodeDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.userBadge`: Exposes CRUD operations for the **UserBadge** model.
@@ -1149,6 +1177,7 @@ export namespace Prisma {
     Sponsor: 'Sponsor',
     RaffleHistory: 'RaffleHistory',
     Badge: 'Badge',
+    BadgeClaimCode: 'BadgeClaimCode',
     UserBadge: 'UserBadge'
   };
 
@@ -1165,7 +1194,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "userBadge"
+      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2945,6 +2974,80 @@ export namespace Prisma {
           }
         }
       }
+      BadgeClaimCode: {
+        payload: Prisma.$BadgeClaimCodePayload<ExtArgs>
+        fields: Prisma.BadgeClaimCodeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BadgeClaimCodeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BadgeClaimCodeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload>
+          }
+          findFirst: {
+            args: Prisma.BadgeClaimCodeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BadgeClaimCodeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload>
+          }
+          findMany: {
+            args: Prisma.BadgeClaimCodeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload>[]
+          }
+          create: {
+            args: Prisma.BadgeClaimCodeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload>
+          }
+          createMany: {
+            args: Prisma.BadgeClaimCodeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BadgeClaimCodeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload>[]
+          }
+          delete: {
+            args: Prisma.BadgeClaimCodeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload>
+          }
+          update: {
+            args: Prisma.BadgeClaimCodeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload>
+          }
+          deleteMany: {
+            args: Prisma.BadgeClaimCodeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BadgeClaimCodeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BadgeClaimCodeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload>[]
+          }
+          upsert: {
+            args: Prisma.BadgeClaimCodeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BadgeClaimCodePayload>
+          }
+          aggregate: {
+            args: Prisma.BadgeClaimCodeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBadgeClaimCode>
+          }
+          groupBy: {
+            args: Prisma.BadgeClaimCodeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BadgeClaimCodeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BadgeClaimCodeCountArgs<ExtArgs>
+            result: $Utils.Optional<BadgeClaimCodeCountAggregateOutputType> | number
+          }
+        }
+      }
       UserBadge: {
         payload: Prisma.$UserBadgePayload<ExtArgs>
         fields: Prisma.UserBadgeFieldRefs
@@ -3151,6 +3254,7 @@ export namespace Prisma {
     sponsor?: SponsorOmit
     raffleHistory?: RaffleHistoryOmit
     badge?: BadgeOmit
+    badgeClaimCode?: BadgeClaimCodeOmit
     userBadge?: UserBadgeOmit
   }
 
@@ -3312,6 +3416,7 @@ export namespace Prisma {
     reviews: number
     submissions: number
     userBadges: number
+    claimCodes: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3319,6 +3424,7 @@ export namespace Prisma {
     reviews?: boolean | UserCountOutputTypeCountReviewsArgs
     submissions?: boolean | UserCountOutputTypeCountSubmissionsArgs
     userBadges?: boolean | UserCountOutputTypeCountUserBadgesArgs
+    claimCodes?: boolean | UserCountOutputTypeCountClaimCodesArgs
   }
 
   // Custom InputTypes
@@ -3358,6 +3464,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountUserBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserBadgeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountClaimCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BadgeClaimCodeWhereInput
   }
 
 
@@ -3932,10 +4045,12 @@ export namespace Prisma {
 
   export type BadgeCountOutputType = {
     userBadges: number
+    claimCodes: number
   }
 
   export type BadgeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userBadges?: boolean | BadgeCountOutputTypeCountUserBadgesArgs
+    claimCodes?: boolean | BadgeCountOutputTypeCountClaimCodesArgs
   }
 
   // Custom InputTypes
@@ -3954,6 +4069,13 @@ export namespace Prisma {
    */
   export type BadgeCountOutputTypeCountUserBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserBadgeWhereInput
+  }
+
+  /**
+   * BadgeCountOutputType without action
+   */
+  export type BadgeCountOutputTypeCountClaimCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BadgeClaimCodeWhereInput
   }
 
 
@@ -5407,6 +5529,7 @@ export namespace Prisma {
     reviews?: boolean | User$reviewsArgs<ExtArgs>
     submissions?: boolean | User$submissionsArgs<ExtArgs>
     userBadges?: boolean | User$userBadgesArgs<ExtArgs>
+    claimCodes?: boolean | User$claimCodesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5458,6 +5581,7 @@ export namespace Prisma {
     reviews?: boolean | User$reviewsArgs<ExtArgs>
     submissions?: boolean | User$submissionsArgs<ExtArgs>
     userBadges?: boolean | User$userBadgesArgs<ExtArgs>
+    claimCodes?: boolean | User$claimCodesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5475,6 +5599,7 @@ export namespace Prisma {
       reviews: Prisma.$ReviewPayload<ExtArgs>[]
       submissions: Prisma.$SubmissionPayload<ExtArgs>[]
       userBadges: Prisma.$UserBadgePayload<ExtArgs>[]
+      claimCodes: Prisma.$BadgeClaimCodePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5886,6 +6011,7 @@ export namespace Prisma {
     reviews<T extends User$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     submissions<T extends User$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, User$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userBadges<T extends User$userBadgesArgs<ExtArgs> = {}>(args?: Subset<T, User$userBadgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    claimCodes<T extends User$claimCodesArgs<ExtArgs> = {}>(args?: Subset<T, User$claimCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6419,6 +6545,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserBadgeScalarFieldEnum | UserBadgeScalarFieldEnum[]
+  }
+
+  /**
+   * User.claimCodes
+   */
+  export type User$claimCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    where?: BadgeClaimCodeWhereInput
+    orderBy?: BadgeClaimCodeOrderByWithRelationInput | BadgeClaimCodeOrderByWithRelationInput[]
+    cursor?: BadgeClaimCodeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BadgeClaimCodeScalarFieldEnum | BadgeClaimCodeScalarFieldEnum[]
   }
 
   /**
@@ -30678,8 +30828,18 @@ export namespace Prisma {
 
   export type AggregateBadge = {
     _count: BadgeCountAggregateOutputType | null
+    _avg: BadgeAvgAggregateOutputType | null
+    _sum: BadgeSumAggregateOutputType | null
     _min: BadgeMinAggregateOutputType | null
     _max: BadgeMaxAggregateOutputType | null
+  }
+
+  export type BadgeAvgAggregateOutputType = {
+    minRequirement: number | null
+  }
+
+  export type BadgeSumAggregateOutputType = {
+    minRequirement: number | null
   }
 
   export type BadgeMinAggregateOutputType = {
@@ -30691,6 +30851,9 @@ export namespace Prisma {
     iconUrl: string | null
     color: string | null
     triggerRule: $Enums.BadgeTrigger | null
+    manualDeliveryMode: $Enums.ManualDeliveryMode | null
+    minRequirement: number | null
+    claimCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -30704,6 +30867,9 @@ export namespace Prisma {
     iconUrl: string | null
     color: string | null
     triggerRule: $Enums.BadgeTrigger | null
+    manualDeliveryMode: $Enums.ManualDeliveryMode | null
+    minRequirement: number | null
+    claimCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -30717,11 +30883,22 @@ export namespace Prisma {
     iconUrl: number
     color: number
     triggerRule: number
+    manualDeliveryMode: number
+    minRequirement: number
+    claimCode: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
+
+  export type BadgeAvgAggregateInputType = {
+    minRequirement?: true
+  }
+
+  export type BadgeSumAggregateInputType = {
+    minRequirement?: true
+  }
 
   export type BadgeMinAggregateInputType = {
     id?: true
@@ -30732,6 +30909,9 @@ export namespace Prisma {
     iconUrl?: true
     color?: true
     triggerRule?: true
+    manualDeliveryMode?: true
+    minRequirement?: true
+    claimCode?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -30745,6 +30925,9 @@ export namespace Prisma {
     iconUrl?: true
     color?: true
     triggerRule?: true
+    manualDeliveryMode?: true
+    minRequirement?: true
+    claimCode?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -30758,6 +30941,9 @@ export namespace Prisma {
     iconUrl?: true
     color?: true
     triggerRule?: true
+    manualDeliveryMode?: true
+    minRequirement?: true
+    claimCode?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -30801,6 +30987,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: BadgeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BadgeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BadgeMinAggregateInputType
@@ -30831,6 +31029,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: BadgeCountAggregateInputType | true
+    _avg?: BadgeAvgAggregateInputType
+    _sum?: BadgeSumAggregateInputType
     _min?: BadgeMinAggregateInputType
     _max?: BadgeMaxAggregateInputType
   }
@@ -30844,9 +31044,14 @@ export namespace Prisma {
     iconUrl: string | null
     color: string
     triggerRule: $Enums.BadgeTrigger
+    manualDeliveryMode: $Enums.ManualDeliveryMode
+    minRequirement: number | null
+    claimCode: string | null
     createdAt: Date
     updatedAt: Date
     _count: BadgeCountAggregateOutputType | null
+    _avg: BadgeAvgAggregateOutputType | null
+    _sum: BadgeSumAggregateOutputType | null
     _min: BadgeMinAggregateOutputType | null
     _max: BadgeMaxAggregateOutputType | null
   }
@@ -30874,11 +31079,15 @@ export namespace Prisma {
     iconUrl?: boolean
     color?: boolean
     triggerRule?: boolean
+    manualDeliveryMode?: boolean
+    minRequirement?: boolean
+    claimCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     event?: boolean | Badge$eventArgs<ExtArgs>
     userBadges?: boolean | Badge$userBadgesArgs<ExtArgs>
+    claimCodes?: boolean | Badge$claimCodesArgs<ExtArgs>
     _count?: boolean | BadgeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["badge"]>
 
@@ -30891,6 +31100,9 @@ export namespace Prisma {
     iconUrl?: boolean
     color?: boolean
     triggerRule?: boolean
+    manualDeliveryMode?: boolean
+    minRequirement?: boolean
+    claimCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
@@ -30906,6 +31118,9 @@ export namespace Prisma {
     iconUrl?: boolean
     color?: boolean
     triggerRule?: boolean
+    manualDeliveryMode?: boolean
+    minRequirement?: boolean
+    claimCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
@@ -30921,15 +31136,19 @@ export namespace Prisma {
     iconUrl?: boolean
     color?: boolean
     triggerRule?: boolean
+    manualDeliveryMode?: boolean
+    minRequirement?: boolean
+    claimCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BadgeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "eventId" | "name" | "description" | "iconUrl" | "color" | "triggerRule" | "createdAt" | "updatedAt", ExtArgs["result"]["badge"]>
+  export type BadgeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "eventId" | "name" | "description" | "iconUrl" | "color" | "triggerRule" | "manualDeliveryMode" | "minRequirement" | "claimCode" | "createdAt" | "updatedAt", ExtArgs["result"]["badge"]>
   export type BadgeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     event?: boolean | Badge$eventArgs<ExtArgs>
     userBadges?: boolean | Badge$userBadgesArgs<ExtArgs>
+    claimCodes?: boolean | Badge$claimCodesArgs<ExtArgs>
     _count?: boolean | BadgeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BadgeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -30947,6 +31166,7 @@ export namespace Prisma {
       tenant: Prisma.$TenantPayload<ExtArgs>
       event: Prisma.$EventPayload<ExtArgs> | null
       userBadges: Prisma.$UserBadgePayload<ExtArgs>[]
+      claimCodes: Prisma.$BadgeClaimCodePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -30957,6 +31177,9 @@ export namespace Prisma {
       iconUrl: string | null
       color: string
       triggerRule: $Enums.BadgeTrigger
+      manualDeliveryMode: $Enums.ManualDeliveryMode
+      minRequirement: number | null
+      claimCode: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["badge"]>
@@ -31356,6 +31579,7 @@ export namespace Prisma {
     tenant<T extends TenantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TenantDefaultArgs<ExtArgs>>): Prisma__TenantClient<$Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     event<T extends Badge$eventArgs<ExtArgs> = {}>(args?: Subset<T, Badge$eventArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     userBadges<T extends Badge$userBadgesArgs<ExtArgs> = {}>(args?: Subset<T, Badge$userBadgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    claimCodes<T extends Badge$claimCodesArgs<ExtArgs> = {}>(args?: Subset<T, Badge$claimCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -31393,6 +31617,9 @@ export namespace Prisma {
     readonly iconUrl: FieldRef<"Badge", 'String'>
     readonly color: FieldRef<"Badge", 'String'>
     readonly triggerRule: FieldRef<"Badge", 'BadgeTrigger'>
+    readonly manualDeliveryMode: FieldRef<"Badge", 'ManualDeliveryMode'>
+    readonly minRequirement: FieldRef<"Badge", 'Int'>
+    readonly claimCode: FieldRef<"Badge", 'String'>
     readonly createdAt: FieldRef<"Badge", 'DateTime'>
     readonly updatedAt: FieldRef<"Badge", 'DateTime'>
   }
@@ -31839,6 +32066,30 @@ export namespace Prisma {
   }
 
   /**
+   * Badge.claimCodes
+   */
+  export type Badge$claimCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    where?: BadgeClaimCodeWhereInput
+    orderBy?: BadgeClaimCodeOrderByWithRelationInput | BadgeClaimCodeOrderByWithRelationInput[]
+    cursor?: BadgeClaimCodeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BadgeClaimCodeScalarFieldEnum | BadgeClaimCodeScalarFieldEnum[]
+  }
+
+  /**
    * Badge without action
    */
   export type BadgeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -31854,6 +32105,1122 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: BadgeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BadgeClaimCode
+   */
+
+  export type AggregateBadgeClaimCode = {
+    _count: BadgeClaimCodeCountAggregateOutputType | null
+    _min: BadgeClaimCodeMinAggregateOutputType | null
+    _max: BadgeClaimCodeMaxAggregateOutputType | null
+  }
+
+  export type BadgeClaimCodeMinAggregateOutputType = {
+    id: string | null
+    badgeId: string | null
+    code: string | null
+    isUsed: boolean | null
+    userId: string | null
+    usedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type BadgeClaimCodeMaxAggregateOutputType = {
+    id: string | null
+    badgeId: string | null
+    code: string | null
+    isUsed: boolean | null
+    userId: string | null
+    usedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type BadgeClaimCodeCountAggregateOutputType = {
+    id: number
+    badgeId: number
+    code: number
+    isUsed: number
+    userId: number
+    usedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type BadgeClaimCodeMinAggregateInputType = {
+    id?: true
+    badgeId?: true
+    code?: true
+    isUsed?: true
+    userId?: true
+    usedAt?: true
+    createdAt?: true
+  }
+
+  export type BadgeClaimCodeMaxAggregateInputType = {
+    id?: true
+    badgeId?: true
+    code?: true
+    isUsed?: true
+    userId?: true
+    usedAt?: true
+    createdAt?: true
+  }
+
+  export type BadgeClaimCodeCountAggregateInputType = {
+    id?: true
+    badgeId?: true
+    code?: true
+    isUsed?: true
+    userId?: true
+    usedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type BadgeClaimCodeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BadgeClaimCode to aggregate.
+     */
+    where?: BadgeClaimCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BadgeClaimCodes to fetch.
+     */
+    orderBy?: BadgeClaimCodeOrderByWithRelationInput | BadgeClaimCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BadgeClaimCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BadgeClaimCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BadgeClaimCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BadgeClaimCodes
+    **/
+    _count?: true | BadgeClaimCodeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BadgeClaimCodeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BadgeClaimCodeMaxAggregateInputType
+  }
+
+  export type GetBadgeClaimCodeAggregateType<T extends BadgeClaimCodeAggregateArgs> = {
+        [P in keyof T & keyof AggregateBadgeClaimCode]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBadgeClaimCode[P]>
+      : GetScalarType<T[P], AggregateBadgeClaimCode[P]>
+  }
+
+
+
+
+  export type BadgeClaimCodeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BadgeClaimCodeWhereInput
+    orderBy?: BadgeClaimCodeOrderByWithAggregationInput | BadgeClaimCodeOrderByWithAggregationInput[]
+    by: BadgeClaimCodeScalarFieldEnum[] | BadgeClaimCodeScalarFieldEnum
+    having?: BadgeClaimCodeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BadgeClaimCodeCountAggregateInputType | true
+    _min?: BadgeClaimCodeMinAggregateInputType
+    _max?: BadgeClaimCodeMaxAggregateInputType
+  }
+
+  export type BadgeClaimCodeGroupByOutputType = {
+    id: string
+    badgeId: string
+    code: string
+    isUsed: boolean
+    userId: string | null
+    usedAt: Date | null
+    createdAt: Date
+    _count: BadgeClaimCodeCountAggregateOutputType | null
+    _min: BadgeClaimCodeMinAggregateOutputType | null
+    _max: BadgeClaimCodeMaxAggregateOutputType | null
+  }
+
+  type GetBadgeClaimCodeGroupByPayload<T extends BadgeClaimCodeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BadgeClaimCodeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BadgeClaimCodeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BadgeClaimCodeGroupByOutputType[P]>
+            : GetScalarType<T[P], BadgeClaimCodeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BadgeClaimCodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    badgeId?: boolean
+    code?: boolean
+    isUsed?: boolean
+    userId?: boolean
+    usedAt?: boolean
+    createdAt?: boolean
+    badge?: boolean | BadgeDefaultArgs<ExtArgs>
+    user?: boolean | BadgeClaimCode$userArgs<ExtArgs>
+  }, ExtArgs["result"]["badgeClaimCode"]>
+
+  export type BadgeClaimCodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    badgeId?: boolean
+    code?: boolean
+    isUsed?: boolean
+    userId?: boolean
+    usedAt?: boolean
+    createdAt?: boolean
+    badge?: boolean | BadgeDefaultArgs<ExtArgs>
+    user?: boolean | BadgeClaimCode$userArgs<ExtArgs>
+  }, ExtArgs["result"]["badgeClaimCode"]>
+
+  export type BadgeClaimCodeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    badgeId?: boolean
+    code?: boolean
+    isUsed?: boolean
+    userId?: boolean
+    usedAt?: boolean
+    createdAt?: boolean
+    badge?: boolean | BadgeDefaultArgs<ExtArgs>
+    user?: boolean | BadgeClaimCode$userArgs<ExtArgs>
+  }, ExtArgs["result"]["badgeClaimCode"]>
+
+  export type BadgeClaimCodeSelectScalar = {
+    id?: boolean
+    badgeId?: boolean
+    code?: boolean
+    isUsed?: boolean
+    userId?: boolean
+    usedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type BadgeClaimCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "badgeId" | "code" | "isUsed" | "userId" | "usedAt" | "createdAt", ExtArgs["result"]["badgeClaimCode"]>
+  export type BadgeClaimCodeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    badge?: boolean | BadgeDefaultArgs<ExtArgs>
+    user?: boolean | BadgeClaimCode$userArgs<ExtArgs>
+  }
+  export type BadgeClaimCodeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    badge?: boolean | BadgeDefaultArgs<ExtArgs>
+    user?: boolean | BadgeClaimCode$userArgs<ExtArgs>
+  }
+  export type BadgeClaimCodeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    badge?: boolean | BadgeDefaultArgs<ExtArgs>
+    user?: boolean | BadgeClaimCode$userArgs<ExtArgs>
+  }
+
+  export type $BadgeClaimCodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BadgeClaimCode"
+    objects: {
+      badge: Prisma.$BadgePayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      badgeId: string
+      code: string
+      isUsed: boolean
+      userId: string | null
+      usedAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["badgeClaimCode"]>
+    composites: {}
+  }
+
+  type BadgeClaimCodeGetPayload<S extends boolean | null | undefined | BadgeClaimCodeDefaultArgs> = $Result.GetResult<Prisma.$BadgeClaimCodePayload, S>
+
+  type BadgeClaimCodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BadgeClaimCodeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BadgeClaimCodeCountAggregateInputType | true
+    }
+
+  export interface BadgeClaimCodeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BadgeClaimCode'], meta: { name: 'BadgeClaimCode' } }
+    /**
+     * Find zero or one BadgeClaimCode that matches the filter.
+     * @param {BadgeClaimCodeFindUniqueArgs} args - Arguments to find a BadgeClaimCode
+     * @example
+     * // Get one BadgeClaimCode
+     * const badgeClaimCode = await prisma.badgeClaimCode.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BadgeClaimCodeFindUniqueArgs>(args: SelectSubset<T, BadgeClaimCodeFindUniqueArgs<ExtArgs>>): Prisma__BadgeClaimCodeClient<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BadgeClaimCode that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BadgeClaimCodeFindUniqueOrThrowArgs} args - Arguments to find a BadgeClaimCode
+     * @example
+     * // Get one BadgeClaimCode
+     * const badgeClaimCode = await prisma.badgeClaimCode.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BadgeClaimCodeFindUniqueOrThrowArgs>(args: SelectSubset<T, BadgeClaimCodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BadgeClaimCodeClient<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BadgeClaimCode that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeClaimCodeFindFirstArgs} args - Arguments to find a BadgeClaimCode
+     * @example
+     * // Get one BadgeClaimCode
+     * const badgeClaimCode = await prisma.badgeClaimCode.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BadgeClaimCodeFindFirstArgs>(args?: SelectSubset<T, BadgeClaimCodeFindFirstArgs<ExtArgs>>): Prisma__BadgeClaimCodeClient<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BadgeClaimCode that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeClaimCodeFindFirstOrThrowArgs} args - Arguments to find a BadgeClaimCode
+     * @example
+     * // Get one BadgeClaimCode
+     * const badgeClaimCode = await prisma.badgeClaimCode.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BadgeClaimCodeFindFirstOrThrowArgs>(args?: SelectSubset<T, BadgeClaimCodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__BadgeClaimCodeClient<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BadgeClaimCodes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeClaimCodeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BadgeClaimCodes
+     * const badgeClaimCodes = await prisma.badgeClaimCode.findMany()
+     * 
+     * // Get first 10 BadgeClaimCodes
+     * const badgeClaimCodes = await prisma.badgeClaimCode.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const badgeClaimCodeWithIdOnly = await prisma.badgeClaimCode.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BadgeClaimCodeFindManyArgs>(args?: SelectSubset<T, BadgeClaimCodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BadgeClaimCode.
+     * @param {BadgeClaimCodeCreateArgs} args - Arguments to create a BadgeClaimCode.
+     * @example
+     * // Create one BadgeClaimCode
+     * const BadgeClaimCode = await prisma.badgeClaimCode.create({
+     *   data: {
+     *     // ... data to create a BadgeClaimCode
+     *   }
+     * })
+     * 
+     */
+    create<T extends BadgeClaimCodeCreateArgs>(args: SelectSubset<T, BadgeClaimCodeCreateArgs<ExtArgs>>): Prisma__BadgeClaimCodeClient<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BadgeClaimCodes.
+     * @param {BadgeClaimCodeCreateManyArgs} args - Arguments to create many BadgeClaimCodes.
+     * @example
+     * // Create many BadgeClaimCodes
+     * const badgeClaimCode = await prisma.badgeClaimCode.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BadgeClaimCodeCreateManyArgs>(args?: SelectSubset<T, BadgeClaimCodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BadgeClaimCodes and returns the data saved in the database.
+     * @param {BadgeClaimCodeCreateManyAndReturnArgs} args - Arguments to create many BadgeClaimCodes.
+     * @example
+     * // Create many BadgeClaimCodes
+     * const badgeClaimCode = await prisma.badgeClaimCode.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BadgeClaimCodes and only return the `id`
+     * const badgeClaimCodeWithIdOnly = await prisma.badgeClaimCode.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BadgeClaimCodeCreateManyAndReturnArgs>(args?: SelectSubset<T, BadgeClaimCodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BadgeClaimCode.
+     * @param {BadgeClaimCodeDeleteArgs} args - Arguments to delete one BadgeClaimCode.
+     * @example
+     * // Delete one BadgeClaimCode
+     * const BadgeClaimCode = await prisma.badgeClaimCode.delete({
+     *   where: {
+     *     // ... filter to delete one BadgeClaimCode
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BadgeClaimCodeDeleteArgs>(args: SelectSubset<T, BadgeClaimCodeDeleteArgs<ExtArgs>>): Prisma__BadgeClaimCodeClient<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BadgeClaimCode.
+     * @param {BadgeClaimCodeUpdateArgs} args - Arguments to update one BadgeClaimCode.
+     * @example
+     * // Update one BadgeClaimCode
+     * const badgeClaimCode = await prisma.badgeClaimCode.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BadgeClaimCodeUpdateArgs>(args: SelectSubset<T, BadgeClaimCodeUpdateArgs<ExtArgs>>): Prisma__BadgeClaimCodeClient<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BadgeClaimCodes.
+     * @param {BadgeClaimCodeDeleteManyArgs} args - Arguments to filter BadgeClaimCodes to delete.
+     * @example
+     * // Delete a few BadgeClaimCodes
+     * const { count } = await prisma.badgeClaimCode.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BadgeClaimCodeDeleteManyArgs>(args?: SelectSubset<T, BadgeClaimCodeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BadgeClaimCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeClaimCodeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BadgeClaimCodes
+     * const badgeClaimCode = await prisma.badgeClaimCode.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BadgeClaimCodeUpdateManyArgs>(args: SelectSubset<T, BadgeClaimCodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BadgeClaimCodes and returns the data updated in the database.
+     * @param {BadgeClaimCodeUpdateManyAndReturnArgs} args - Arguments to update many BadgeClaimCodes.
+     * @example
+     * // Update many BadgeClaimCodes
+     * const badgeClaimCode = await prisma.badgeClaimCode.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BadgeClaimCodes and only return the `id`
+     * const badgeClaimCodeWithIdOnly = await prisma.badgeClaimCode.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BadgeClaimCodeUpdateManyAndReturnArgs>(args: SelectSubset<T, BadgeClaimCodeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BadgeClaimCode.
+     * @param {BadgeClaimCodeUpsertArgs} args - Arguments to update or create a BadgeClaimCode.
+     * @example
+     * // Update or create a BadgeClaimCode
+     * const badgeClaimCode = await prisma.badgeClaimCode.upsert({
+     *   create: {
+     *     // ... data to create a BadgeClaimCode
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BadgeClaimCode we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BadgeClaimCodeUpsertArgs>(args: SelectSubset<T, BadgeClaimCodeUpsertArgs<ExtArgs>>): Prisma__BadgeClaimCodeClient<$Result.GetResult<Prisma.$BadgeClaimCodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BadgeClaimCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeClaimCodeCountArgs} args - Arguments to filter BadgeClaimCodes to count.
+     * @example
+     * // Count the number of BadgeClaimCodes
+     * const count = await prisma.badgeClaimCode.count({
+     *   where: {
+     *     // ... the filter for the BadgeClaimCodes we want to count
+     *   }
+     * })
+    **/
+    count<T extends BadgeClaimCodeCountArgs>(
+      args?: Subset<T, BadgeClaimCodeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BadgeClaimCodeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BadgeClaimCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeClaimCodeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BadgeClaimCodeAggregateArgs>(args: Subset<T, BadgeClaimCodeAggregateArgs>): Prisma.PrismaPromise<GetBadgeClaimCodeAggregateType<T>>
+
+    /**
+     * Group by BadgeClaimCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BadgeClaimCodeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BadgeClaimCodeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BadgeClaimCodeGroupByArgs['orderBy'] }
+        : { orderBy?: BadgeClaimCodeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BadgeClaimCodeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBadgeClaimCodeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BadgeClaimCode model
+   */
+  readonly fields: BadgeClaimCodeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BadgeClaimCode.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BadgeClaimCodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    badge<T extends BadgeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BadgeDefaultArgs<ExtArgs>>): Prisma__BadgeClient<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends BadgeClaimCode$userArgs<ExtArgs> = {}>(args?: Subset<T, BadgeClaimCode$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BadgeClaimCode model
+   */
+  interface BadgeClaimCodeFieldRefs {
+    readonly id: FieldRef<"BadgeClaimCode", 'String'>
+    readonly badgeId: FieldRef<"BadgeClaimCode", 'String'>
+    readonly code: FieldRef<"BadgeClaimCode", 'String'>
+    readonly isUsed: FieldRef<"BadgeClaimCode", 'Boolean'>
+    readonly userId: FieldRef<"BadgeClaimCode", 'String'>
+    readonly usedAt: FieldRef<"BadgeClaimCode", 'DateTime'>
+    readonly createdAt: FieldRef<"BadgeClaimCode", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BadgeClaimCode findUnique
+   */
+  export type BadgeClaimCodeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which BadgeClaimCode to fetch.
+     */
+    where: BadgeClaimCodeWhereUniqueInput
+  }
+
+  /**
+   * BadgeClaimCode findUniqueOrThrow
+   */
+  export type BadgeClaimCodeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which BadgeClaimCode to fetch.
+     */
+    where: BadgeClaimCodeWhereUniqueInput
+  }
+
+  /**
+   * BadgeClaimCode findFirst
+   */
+  export type BadgeClaimCodeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which BadgeClaimCode to fetch.
+     */
+    where?: BadgeClaimCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BadgeClaimCodes to fetch.
+     */
+    orderBy?: BadgeClaimCodeOrderByWithRelationInput | BadgeClaimCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BadgeClaimCodes.
+     */
+    cursor?: BadgeClaimCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BadgeClaimCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BadgeClaimCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BadgeClaimCodes.
+     */
+    distinct?: BadgeClaimCodeScalarFieldEnum | BadgeClaimCodeScalarFieldEnum[]
+  }
+
+  /**
+   * BadgeClaimCode findFirstOrThrow
+   */
+  export type BadgeClaimCodeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which BadgeClaimCode to fetch.
+     */
+    where?: BadgeClaimCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BadgeClaimCodes to fetch.
+     */
+    orderBy?: BadgeClaimCodeOrderByWithRelationInput | BadgeClaimCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BadgeClaimCodes.
+     */
+    cursor?: BadgeClaimCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BadgeClaimCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BadgeClaimCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BadgeClaimCodes.
+     */
+    distinct?: BadgeClaimCodeScalarFieldEnum | BadgeClaimCodeScalarFieldEnum[]
+  }
+
+  /**
+   * BadgeClaimCode findMany
+   */
+  export type BadgeClaimCodeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which BadgeClaimCodes to fetch.
+     */
+    where?: BadgeClaimCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BadgeClaimCodes to fetch.
+     */
+    orderBy?: BadgeClaimCodeOrderByWithRelationInput | BadgeClaimCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BadgeClaimCodes.
+     */
+    cursor?: BadgeClaimCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BadgeClaimCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BadgeClaimCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BadgeClaimCodes.
+     */
+    distinct?: BadgeClaimCodeScalarFieldEnum | BadgeClaimCodeScalarFieldEnum[]
+  }
+
+  /**
+   * BadgeClaimCode create
+   */
+  export type BadgeClaimCodeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BadgeClaimCode.
+     */
+    data: XOR<BadgeClaimCodeCreateInput, BadgeClaimCodeUncheckedCreateInput>
+  }
+
+  /**
+   * BadgeClaimCode createMany
+   */
+  export type BadgeClaimCodeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BadgeClaimCodes.
+     */
+    data: BadgeClaimCodeCreateManyInput | BadgeClaimCodeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BadgeClaimCode createManyAndReturn
+   */
+  export type BadgeClaimCodeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * The data used to create many BadgeClaimCodes.
+     */
+    data: BadgeClaimCodeCreateManyInput | BadgeClaimCodeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BadgeClaimCode update
+   */
+  export type BadgeClaimCodeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BadgeClaimCode.
+     */
+    data: XOR<BadgeClaimCodeUpdateInput, BadgeClaimCodeUncheckedUpdateInput>
+    /**
+     * Choose, which BadgeClaimCode to update.
+     */
+    where: BadgeClaimCodeWhereUniqueInput
+  }
+
+  /**
+   * BadgeClaimCode updateMany
+   */
+  export type BadgeClaimCodeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BadgeClaimCodes.
+     */
+    data: XOR<BadgeClaimCodeUpdateManyMutationInput, BadgeClaimCodeUncheckedUpdateManyInput>
+    /**
+     * Filter which BadgeClaimCodes to update
+     */
+    where?: BadgeClaimCodeWhereInput
+    /**
+     * Limit how many BadgeClaimCodes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BadgeClaimCode updateManyAndReturn
+   */
+  export type BadgeClaimCodeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * The data used to update BadgeClaimCodes.
+     */
+    data: XOR<BadgeClaimCodeUpdateManyMutationInput, BadgeClaimCodeUncheckedUpdateManyInput>
+    /**
+     * Filter which BadgeClaimCodes to update
+     */
+    where?: BadgeClaimCodeWhereInput
+    /**
+     * Limit how many BadgeClaimCodes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BadgeClaimCode upsert
+   */
+  export type BadgeClaimCodeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BadgeClaimCode to update in case it exists.
+     */
+    where: BadgeClaimCodeWhereUniqueInput
+    /**
+     * In case the BadgeClaimCode found by the `where` argument doesn't exist, create a new BadgeClaimCode with this data.
+     */
+    create: XOR<BadgeClaimCodeCreateInput, BadgeClaimCodeUncheckedCreateInput>
+    /**
+     * In case the BadgeClaimCode was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BadgeClaimCodeUpdateInput, BadgeClaimCodeUncheckedUpdateInput>
+  }
+
+  /**
+   * BadgeClaimCode delete
+   */
+  export type BadgeClaimCodeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
+    /**
+     * Filter which BadgeClaimCode to delete.
+     */
+    where: BadgeClaimCodeWhereUniqueInput
+  }
+
+  /**
+   * BadgeClaimCode deleteMany
+   */
+  export type BadgeClaimCodeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BadgeClaimCodes to delete
+     */
+    where?: BadgeClaimCodeWhereInput
+    /**
+     * Limit how many BadgeClaimCodes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BadgeClaimCode.user
+   */
+  export type BadgeClaimCode$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * BadgeClaimCode without action
+   */
+  export type BadgeClaimCodeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BadgeClaimCode
+     */
+    select?: BadgeClaimCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BadgeClaimCode
+     */
+    omit?: BadgeClaimCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BadgeClaimCodeInclude<ExtArgs> | null
   }
 
 
@@ -33283,11 +34650,27 @@ export namespace Prisma {
     iconUrl: 'iconUrl',
     color: 'color',
     triggerRule: 'triggerRule',
+    manualDeliveryMode: 'manualDeliveryMode',
+    minRequirement: 'minRequirement',
+    claimCode: 'claimCode',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type BadgeScalarFieldEnum = (typeof BadgeScalarFieldEnum)[keyof typeof BadgeScalarFieldEnum]
+
+
+  export const BadgeClaimCodeScalarFieldEnum: {
+    id: 'id',
+    badgeId: 'badgeId',
+    code: 'code',
+    isUsed: 'isUsed',
+    userId: 'userId',
+    usedAt: 'usedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type BadgeClaimCodeScalarFieldEnum = (typeof BadgeClaimCodeScalarFieldEnum)[keyof typeof BadgeClaimCodeScalarFieldEnum]
 
 
   export const UserBadgeScalarFieldEnum: {
@@ -33614,6 +34997,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'ManualDeliveryMode'
+   */
+  export type EnumManualDeliveryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ManualDeliveryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'ManualDeliveryMode[]'
+   */
+  export type ListEnumManualDeliveryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ManualDeliveryMode[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -33729,6 +35126,7 @@ export namespace Prisma {
     reviews?: ReviewListRelationFilter
     submissions?: SubmissionListRelationFilter
     userBadges?: UserBadgeListRelationFilter
+    claimCodes?: BadgeClaimCodeListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -33747,6 +35145,7 @@ export namespace Prisma {
     reviews?: ReviewOrderByRelationAggregateInput
     submissions?: SubmissionOrderByRelationAggregateInput
     userBadges?: UserBadgeOrderByRelationAggregateInput
+    claimCodes?: BadgeClaimCodeOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -33768,6 +35167,7 @@ export namespace Prisma {
     reviews?: ReviewListRelationFilter
     submissions?: SubmissionListRelationFilter
     userBadges?: UserBadgeListRelationFilter
+    claimCodes?: BadgeClaimCodeListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -35348,11 +36748,15 @@ export namespace Prisma {
     iconUrl?: StringNullableFilter<"Badge"> | string | null
     color?: StringFilter<"Badge"> | string
     triggerRule?: EnumBadgeTriggerFilter<"Badge"> | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFilter<"Badge"> | $Enums.ManualDeliveryMode
+    minRequirement?: IntNullableFilter<"Badge"> | number | null
+    claimCode?: StringNullableFilter<"Badge"> | string | null
     createdAt?: DateTimeFilter<"Badge"> | Date | string
     updatedAt?: DateTimeFilter<"Badge"> | Date | string
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
     event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
     userBadges?: UserBadgeListRelationFilter
+    claimCodes?: BadgeClaimCodeListRelationFilter
   }
 
   export type BadgeOrderByWithRelationInput = {
@@ -35364,11 +36768,15 @@ export namespace Prisma {
     iconUrl?: SortOrderInput | SortOrder
     color?: SortOrder
     triggerRule?: SortOrder
+    manualDeliveryMode?: SortOrder
+    minRequirement?: SortOrderInput | SortOrder
+    claimCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tenant?: TenantOrderByWithRelationInput
     event?: EventOrderByWithRelationInput
     userBadges?: UserBadgeOrderByRelationAggregateInput
+    claimCodes?: BadgeClaimCodeOrderByRelationAggregateInput
   }
 
   export type BadgeWhereUniqueInput = Prisma.AtLeast<{
@@ -35383,11 +36791,15 @@ export namespace Prisma {
     iconUrl?: StringNullableFilter<"Badge"> | string | null
     color?: StringFilter<"Badge"> | string
     triggerRule?: EnumBadgeTriggerFilter<"Badge"> | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFilter<"Badge"> | $Enums.ManualDeliveryMode
+    minRequirement?: IntNullableFilter<"Badge"> | number | null
+    claimCode?: StringNullableFilter<"Badge"> | string | null
     createdAt?: DateTimeFilter<"Badge"> | Date | string
     updatedAt?: DateTimeFilter<"Badge"> | Date | string
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
     event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
     userBadges?: UserBadgeListRelationFilter
+    claimCodes?: BadgeClaimCodeListRelationFilter
   }, "id">
 
   export type BadgeOrderByWithAggregationInput = {
@@ -35399,11 +36811,16 @@ export namespace Prisma {
     iconUrl?: SortOrderInput | SortOrder
     color?: SortOrder
     triggerRule?: SortOrder
+    manualDeliveryMode?: SortOrder
+    minRequirement?: SortOrderInput | SortOrder
+    claimCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: BadgeCountOrderByAggregateInput
+    _avg?: BadgeAvgOrderByAggregateInput
     _max?: BadgeMaxOrderByAggregateInput
     _min?: BadgeMinOrderByAggregateInput
+    _sum?: BadgeSumOrderByAggregateInput
   }
 
   export type BadgeScalarWhereWithAggregatesInput = {
@@ -35418,8 +36835,79 @@ export namespace Prisma {
     iconUrl?: StringNullableWithAggregatesFilter<"Badge"> | string | null
     color?: StringWithAggregatesFilter<"Badge"> | string
     triggerRule?: EnumBadgeTriggerWithAggregatesFilter<"Badge"> | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeWithAggregatesFilter<"Badge"> | $Enums.ManualDeliveryMode
+    minRequirement?: IntNullableWithAggregatesFilter<"Badge"> | number | null
+    claimCode?: StringNullableWithAggregatesFilter<"Badge"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Badge"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Badge"> | Date | string
+  }
+
+  export type BadgeClaimCodeWhereInput = {
+    AND?: BadgeClaimCodeWhereInput | BadgeClaimCodeWhereInput[]
+    OR?: BadgeClaimCodeWhereInput[]
+    NOT?: BadgeClaimCodeWhereInput | BadgeClaimCodeWhereInput[]
+    id?: StringFilter<"BadgeClaimCode"> | string
+    badgeId?: StringFilter<"BadgeClaimCode"> | string
+    code?: StringFilter<"BadgeClaimCode"> | string
+    isUsed?: BoolFilter<"BadgeClaimCode"> | boolean
+    userId?: StringNullableFilter<"BadgeClaimCode"> | string | null
+    usedAt?: DateTimeNullableFilter<"BadgeClaimCode"> | Date | string | null
+    createdAt?: DateTimeFilter<"BadgeClaimCode"> | Date | string
+    badge?: XOR<BadgeScalarRelationFilter, BadgeWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type BadgeClaimCodeOrderByWithRelationInput = {
+    id?: SortOrder
+    badgeId?: SortOrder
+    code?: SortOrder
+    isUsed?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    usedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    badge?: BadgeOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type BadgeClaimCodeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    code?: string
+    AND?: BadgeClaimCodeWhereInput | BadgeClaimCodeWhereInput[]
+    OR?: BadgeClaimCodeWhereInput[]
+    NOT?: BadgeClaimCodeWhereInput | BadgeClaimCodeWhereInput[]
+    badgeId?: StringFilter<"BadgeClaimCode"> | string
+    isUsed?: BoolFilter<"BadgeClaimCode"> | boolean
+    userId?: StringNullableFilter<"BadgeClaimCode"> | string | null
+    usedAt?: DateTimeNullableFilter<"BadgeClaimCode"> | Date | string | null
+    createdAt?: DateTimeFilter<"BadgeClaimCode"> | Date | string
+    badge?: XOR<BadgeScalarRelationFilter, BadgeWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "code">
+
+  export type BadgeClaimCodeOrderByWithAggregationInput = {
+    id?: SortOrder
+    badgeId?: SortOrder
+    code?: SortOrder
+    isUsed?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    usedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: BadgeClaimCodeCountOrderByAggregateInput
+    _max?: BadgeClaimCodeMaxOrderByAggregateInput
+    _min?: BadgeClaimCodeMinOrderByAggregateInput
+  }
+
+  export type BadgeClaimCodeScalarWhereWithAggregatesInput = {
+    AND?: BadgeClaimCodeScalarWhereWithAggregatesInput | BadgeClaimCodeScalarWhereWithAggregatesInput[]
+    OR?: BadgeClaimCodeScalarWhereWithAggregatesInput[]
+    NOT?: BadgeClaimCodeScalarWhereWithAggregatesInput | BadgeClaimCodeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BadgeClaimCode"> | string
+    badgeId?: StringWithAggregatesFilter<"BadgeClaimCode"> | string
+    code?: StringWithAggregatesFilter<"BadgeClaimCode"> | string
+    isUsed?: BoolWithAggregatesFilter<"BadgeClaimCode"> | boolean
+    userId?: StringNullableWithAggregatesFilter<"BadgeClaimCode"> | string | null
+    usedAt?: DateTimeNullableWithAggregatesFilter<"BadgeClaimCode"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"BadgeClaimCode"> | Date | string
   }
 
   export type UserBadgeWhereInput = {
@@ -35593,6 +37081,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionCreateNestedManyWithoutAuthorInput
     userBadges?: UserBadgeCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -35610,6 +37099,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -35627,6 +37117,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
     userBadges?: UserBadgeUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -35644,6 +37135,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -37271,11 +38763,15 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutBadgesInput
     event?: EventCreateNestedOneWithoutBadgesInput
     userBadges?: UserBadgeCreateNestedManyWithoutBadgeInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutBadgeInput
   }
 
   export type BadgeUncheckedCreateInput = {
@@ -37287,9 +38783,13 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutBadgeInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutBadgeInput
   }
 
   export type BadgeUpdateInput = {
@@ -37299,11 +38799,15 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutBadgesNestedInput
     event?: EventUpdateOneWithoutBadgesNestedInput
     userBadges?: UserBadgeUpdateManyWithoutBadgeNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutBadgeNestedInput
   }
 
   export type BadgeUncheckedUpdateInput = {
@@ -37315,9 +38819,13 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userBadges?: UserBadgeUncheckedUpdateManyWithoutBadgeNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutBadgeNestedInput
   }
 
   export type BadgeCreateManyInput = {
@@ -37329,6 +38837,9 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -37340,6 +38851,9 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -37353,8 +38867,79 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeClaimCodeCreateInput = {
+    id?: string
+    code: string
+    isUsed?: boolean
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    badge: BadgeCreateNestedOneWithoutClaimCodesInput
+    user?: UserCreateNestedOneWithoutClaimCodesInput
+  }
+
+  export type BadgeClaimCodeUncheckedCreateInput = {
+    id?: string
+    badgeId: string
+    code: string
+    isUsed?: boolean
+    userId?: string | null
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type BadgeClaimCodeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badge?: BadgeUpdateOneRequiredWithoutClaimCodesNestedInput
+    user?: UserUpdateOneWithoutClaimCodesNestedInput
+  }
+
+  export type BadgeClaimCodeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    badgeId?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeClaimCodeCreateManyInput = {
+    id?: string
+    badgeId: string
+    code: string
+    isUsed?: boolean
+    userId?: string | null
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type BadgeClaimCodeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeClaimCodeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    badgeId?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserBadgeCreateInput = {
@@ -37679,6 +39264,12 @@ export namespace Prisma {
     none?: UserBadgeWhereInput
   }
 
+  export type BadgeClaimCodeListRelationFilter = {
+    every?: BadgeClaimCodeWhereInput
+    some?: BadgeClaimCodeWhereInput
+    none?: BadgeClaimCodeWhereInput
+  }
+
   export type RegistrationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -37692,6 +39283,10 @@ export namespace Prisma {
   }
 
   export type UserBadgeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BadgeClaimCodeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -39034,6 +40629,13 @@ export namespace Prisma {
     not?: NestedEnumBadgeTriggerFilter<$PrismaModel> | $Enums.BadgeTrigger
   }
 
+  export type EnumManualDeliveryModeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ManualDeliveryMode | EnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ManualDeliveryMode[] | ListEnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ManualDeliveryMode[] | ListEnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumManualDeliveryModeFilter<$PrismaModel> | $Enums.ManualDeliveryMode
+  }
+
   export type EventNullableScalarRelationFilter = {
     is?: EventWhereInput | null
     isNot?: EventWhereInput | null
@@ -39048,8 +40650,15 @@ export namespace Prisma {
     iconUrl?: SortOrder
     color?: SortOrder
     triggerRule?: SortOrder
+    manualDeliveryMode?: SortOrder
+    minRequirement?: SortOrder
+    claimCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type BadgeAvgOrderByAggregateInput = {
+    minRequirement?: SortOrder
   }
 
   export type BadgeMaxOrderByAggregateInput = {
@@ -39061,6 +40670,9 @@ export namespace Prisma {
     iconUrl?: SortOrder
     color?: SortOrder
     triggerRule?: SortOrder
+    manualDeliveryMode?: SortOrder
+    minRequirement?: SortOrder
+    claimCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -39074,8 +40686,15 @@ export namespace Prisma {
     iconUrl?: SortOrder
     color?: SortOrder
     triggerRule?: SortOrder
+    manualDeliveryMode?: SortOrder
+    minRequirement?: SortOrder
+    claimCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type BadgeSumOrderByAggregateInput = {
+    minRequirement?: SortOrder
   }
 
   export type EnumBadgeTriggerWithAggregatesFilter<$PrismaModel = never> = {
@@ -39088,9 +40707,54 @@ export namespace Prisma {
     _max?: NestedEnumBadgeTriggerFilter<$PrismaModel>
   }
 
+  export type EnumManualDeliveryModeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ManualDeliveryMode | EnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ManualDeliveryMode[] | ListEnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ManualDeliveryMode[] | ListEnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumManualDeliveryModeWithAggregatesFilter<$PrismaModel> | $Enums.ManualDeliveryMode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumManualDeliveryModeFilter<$PrismaModel>
+    _max?: NestedEnumManualDeliveryModeFilter<$PrismaModel>
+  }
+
   export type BadgeScalarRelationFilter = {
     is?: BadgeWhereInput
     isNot?: BadgeWhereInput
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type BadgeClaimCodeCountOrderByAggregateInput = {
+    id?: SortOrder
+    badgeId?: SortOrder
+    code?: SortOrder
+    isUsed?: SortOrder
+    userId?: SortOrder
+    usedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BadgeClaimCodeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    badgeId?: SortOrder
+    code?: SortOrder
+    isUsed?: SortOrder
+    userId?: SortOrder
+    usedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BadgeClaimCodeMinOrderByAggregateInput = {
+    id?: SortOrder
+    badgeId?: SortOrder
+    code?: SortOrder
+    isUsed?: SortOrder
+    userId?: SortOrder
+    usedAt?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type UserBadgeUserIdBadgeIdEventIdCompoundUniqueInput = {
@@ -39421,6 +41085,13 @@ export namespace Prisma {
     connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
   }
 
+  export type BadgeClaimCodeCreateNestedManyWithoutUserInput = {
+    create?: XOR<BadgeClaimCodeCreateWithoutUserInput, BadgeClaimCodeUncheckedCreateWithoutUserInput> | BadgeClaimCodeCreateWithoutUserInput[] | BadgeClaimCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BadgeClaimCodeCreateOrConnectWithoutUserInput | BadgeClaimCodeCreateOrConnectWithoutUserInput[]
+    createMany?: BadgeClaimCodeCreateManyUserInputEnvelope
+    connect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+  }
+
   export type RegistrationUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<RegistrationCreateWithoutUserInput, RegistrationUncheckedCreateWithoutUserInput> | RegistrationCreateWithoutUserInput[] | RegistrationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutUserInput | RegistrationCreateOrConnectWithoutUserInput[]
@@ -39447,6 +41118,13 @@ export namespace Prisma {
     connectOrCreate?: UserBadgeCreateOrConnectWithoutUserInput | UserBadgeCreateOrConnectWithoutUserInput[]
     createMany?: UserBadgeCreateManyUserInputEnvelope
     connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+  }
+
+  export type BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<BadgeClaimCodeCreateWithoutUserInput, BadgeClaimCodeUncheckedCreateWithoutUserInput> | BadgeClaimCodeCreateWithoutUserInput[] | BadgeClaimCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BadgeClaimCodeCreateOrConnectWithoutUserInput | BadgeClaimCodeCreateOrConnectWithoutUserInput[]
+    createMany?: BadgeClaimCodeCreateManyUserInputEnvelope
+    connect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
   }
 
   export type EnumUserRoleFieldUpdateOperationsInput = {
@@ -39517,6 +41195,20 @@ export namespace Prisma {
     deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
   }
 
+  export type BadgeClaimCodeUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BadgeClaimCodeCreateWithoutUserInput, BadgeClaimCodeUncheckedCreateWithoutUserInput> | BadgeClaimCodeCreateWithoutUserInput[] | BadgeClaimCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BadgeClaimCodeCreateOrConnectWithoutUserInput | BadgeClaimCodeCreateOrConnectWithoutUserInput[]
+    upsert?: BadgeClaimCodeUpsertWithWhereUniqueWithoutUserInput | BadgeClaimCodeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BadgeClaimCodeCreateManyUserInputEnvelope
+    set?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    disconnect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    delete?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    connect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    update?: BadgeClaimCodeUpdateWithWhereUniqueWithoutUserInput | BadgeClaimCodeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BadgeClaimCodeUpdateManyWithWhereWithoutUserInput | BadgeClaimCodeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BadgeClaimCodeScalarWhereInput | BadgeClaimCodeScalarWhereInput[]
+  }
+
   export type RegistrationUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<RegistrationCreateWithoutUserInput, RegistrationUncheckedCreateWithoutUserInput> | RegistrationCreateWithoutUserInput[] | RegistrationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutUserInput | RegistrationCreateOrConnectWithoutUserInput[]
@@ -39571,6 +41263,20 @@ export namespace Prisma {
     update?: UserBadgeUpdateWithWhereUniqueWithoutUserInput | UserBadgeUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserBadgeUpdateManyWithWhereWithoutUserInput | UserBadgeUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
+  }
+
+  export type BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BadgeClaimCodeCreateWithoutUserInput, BadgeClaimCodeUncheckedCreateWithoutUserInput> | BadgeClaimCodeCreateWithoutUserInput[] | BadgeClaimCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BadgeClaimCodeCreateOrConnectWithoutUserInput | BadgeClaimCodeCreateOrConnectWithoutUserInput[]
+    upsert?: BadgeClaimCodeUpsertWithWhereUniqueWithoutUserInput | BadgeClaimCodeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BadgeClaimCodeCreateManyUserInputEnvelope
+    set?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    disconnect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    delete?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    connect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    update?: BadgeClaimCodeUpdateWithWhereUniqueWithoutUserInput | BadgeClaimCodeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BadgeClaimCodeUpdateManyWithWhereWithoutUserInput | BadgeClaimCodeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BadgeClaimCodeScalarWhereInput | BadgeClaimCodeScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutEventsInput = {
@@ -41486,6 +43192,13 @@ export namespace Prisma {
     connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
   }
 
+  export type BadgeClaimCodeCreateNestedManyWithoutBadgeInput = {
+    create?: XOR<BadgeClaimCodeCreateWithoutBadgeInput, BadgeClaimCodeUncheckedCreateWithoutBadgeInput> | BadgeClaimCodeCreateWithoutBadgeInput[] | BadgeClaimCodeUncheckedCreateWithoutBadgeInput[]
+    connectOrCreate?: BadgeClaimCodeCreateOrConnectWithoutBadgeInput | BadgeClaimCodeCreateOrConnectWithoutBadgeInput[]
+    createMany?: BadgeClaimCodeCreateManyBadgeInputEnvelope
+    connect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+  }
+
   export type UserBadgeUncheckedCreateNestedManyWithoutBadgeInput = {
     create?: XOR<UserBadgeCreateWithoutBadgeInput, UserBadgeUncheckedCreateWithoutBadgeInput> | UserBadgeCreateWithoutBadgeInput[] | UserBadgeUncheckedCreateWithoutBadgeInput[]
     connectOrCreate?: UserBadgeCreateOrConnectWithoutBadgeInput | UserBadgeCreateOrConnectWithoutBadgeInput[]
@@ -41493,8 +43206,19 @@ export namespace Prisma {
     connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
   }
 
+  export type BadgeClaimCodeUncheckedCreateNestedManyWithoutBadgeInput = {
+    create?: XOR<BadgeClaimCodeCreateWithoutBadgeInput, BadgeClaimCodeUncheckedCreateWithoutBadgeInput> | BadgeClaimCodeCreateWithoutBadgeInput[] | BadgeClaimCodeUncheckedCreateWithoutBadgeInput[]
+    connectOrCreate?: BadgeClaimCodeCreateOrConnectWithoutBadgeInput | BadgeClaimCodeCreateOrConnectWithoutBadgeInput[]
+    createMany?: BadgeClaimCodeCreateManyBadgeInputEnvelope
+    connect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+  }
+
   export type EnumBadgeTriggerFieldUpdateOperationsInput = {
     set?: $Enums.BadgeTrigger
+  }
+
+  export type EnumManualDeliveryModeFieldUpdateOperationsInput = {
+    set?: $Enums.ManualDeliveryMode
   }
 
   export type TenantUpdateOneRequiredWithoutBadgesNestedInput = {
@@ -41529,6 +43253,20 @@ export namespace Prisma {
     deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
   }
 
+  export type BadgeClaimCodeUpdateManyWithoutBadgeNestedInput = {
+    create?: XOR<BadgeClaimCodeCreateWithoutBadgeInput, BadgeClaimCodeUncheckedCreateWithoutBadgeInput> | BadgeClaimCodeCreateWithoutBadgeInput[] | BadgeClaimCodeUncheckedCreateWithoutBadgeInput[]
+    connectOrCreate?: BadgeClaimCodeCreateOrConnectWithoutBadgeInput | BadgeClaimCodeCreateOrConnectWithoutBadgeInput[]
+    upsert?: BadgeClaimCodeUpsertWithWhereUniqueWithoutBadgeInput | BadgeClaimCodeUpsertWithWhereUniqueWithoutBadgeInput[]
+    createMany?: BadgeClaimCodeCreateManyBadgeInputEnvelope
+    set?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    disconnect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    delete?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    connect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    update?: BadgeClaimCodeUpdateWithWhereUniqueWithoutBadgeInput | BadgeClaimCodeUpdateWithWhereUniqueWithoutBadgeInput[]
+    updateMany?: BadgeClaimCodeUpdateManyWithWhereWithoutBadgeInput | BadgeClaimCodeUpdateManyWithWhereWithoutBadgeInput[]
+    deleteMany?: BadgeClaimCodeScalarWhereInput | BadgeClaimCodeScalarWhereInput[]
+  }
+
   export type UserBadgeUncheckedUpdateManyWithoutBadgeNestedInput = {
     create?: XOR<UserBadgeCreateWithoutBadgeInput, UserBadgeUncheckedCreateWithoutBadgeInput> | UserBadgeCreateWithoutBadgeInput[] | UserBadgeUncheckedCreateWithoutBadgeInput[]
     connectOrCreate?: UserBadgeCreateOrConnectWithoutBadgeInput | UserBadgeCreateOrConnectWithoutBadgeInput[]
@@ -41541,6 +43279,50 @@ export namespace Prisma {
     update?: UserBadgeUpdateWithWhereUniqueWithoutBadgeInput | UserBadgeUpdateWithWhereUniqueWithoutBadgeInput[]
     updateMany?: UserBadgeUpdateManyWithWhereWithoutBadgeInput | UserBadgeUpdateManyWithWhereWithoutBadgeInput[]
     deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
+  }
+
+  export type BadgeClaimCodeUncheckedUpdateManyWithoutBadgeNestedInput = {
+    create?: XOR<BadgeClaimCodeCreateWithoutBadgeInput, BadgeClaimCodeUncheckedCreateWithoutBadgeInput> | BadgeClaimCodeCreateWithoutBadgeInput[] | BadgeClaimCodeUncheckedCreateWithoutBadgeInput[]
+    connectOrCreate?: BadgeClaimCodeCreateOrConnectWithoutBadgeInput | BadgeClaimCodeCreateOrConnectWithoutBadgeInput[]
+    upsert?: BadgeClaimCodeUpsertWithWhereUniqueWithoutBadgeInput | BadgeClaimCodeUpsertWithWhereUniqueWithoutBadgeInput[]
+    createMany?: BadgeClaimCodeCreateManyBadgeInputEnvelope
+    set?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    disconnect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    delete?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    connect?: BadgeClaimCodeWhereUniqueInput | BadgeClaimCodeWhereUniqueInput[]
+    update?: BadgeClaimCodeUpdateWithWhereUniqueWithoutBadgeInput | BadgeClaimCodeUpdateWithWhereUniqueWithoutBadgeInput[]
+    updateMany?: BadgeClaimCodeUpdateManyWithWhereWithoutBadgeInput | BadgeClaimCodeUpdateManyWithWhereWithoutBadgeInput[]
+    deleteMany?: BadgeClaimCodeScalarWhereInput | BadgeClaimCodeScalarWhereInput[]
+  }
+
+  export type BadgeCreateNestedOneWithoutClaimCodesInput = {
+    create?: XOR<BadgeCreateWithoutClaimCodesInput, BadgeUncheckedCreateWithoutClaimCodesInput>
+    connectOrCreate?: BadgeCreateOrConnectWithoutClaimCodesInput
+    connect?: BadgeWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutClaimCodesInput = {
+    create?: XOR<UserCreateWithoutClaimCodesInput, UserUncheckedCreateWithoutClaimCodesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutClaimCodesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BadgeUpdateOneRequiredWithoutClaimCodesNestedInput = {
+    create?: XOR<BadgeCreateWithoutClaimCodesInput, BadgeUncheckedCreateWithoutClaimCodesInput>
+    connectOrCreate?: BadgeCreateOrConnectWithoutClaimCodesInput
+    upsert?: BadgeUpsertWithoutClaimCodesInput
+    connect?: BadgeWhereUniqueInput
+    update?: XOR<XOR<BadgeUpdateToOneWithWhereWithoutClaimCodesInput, BadgeUpdateWithoutClaimCodesInput>, BadgeUncheckedUpdateWithoutClaimCodesInput>
+  }
+
+  export type UserUpdateOneWithoutClaimCodesNestedInput = {
+    create?: XOR<UserCreateWithoutClaimCodesInput, UserUncheckedCreateWithoutClaimCodesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutClaimCodesInput
+    upsert?: UserUpsertWithoutClaimCodesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutClaimCodesInput, UserUpdateWithoutClaimCodesInput>, UserUncheckedUpdateWithoutClaimCodesInput>
   }
 
   export type UserCreateNestedOneWithoutUserBadgesInput = {
@@ -42072,6 +43854,13 @@ export namespace Prisma {
     not?: NestedEnumBadgeTriggerFilter<$PrismaModel> | $Enums.BadgeTrigger
   }
 
+  export type NestedEnumManualDeliveryModeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ManualDeliveryMode | EnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ManualDeliveryMode[] | ListEnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ManualDeliveryMode[] | ListEnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumManualDeliveryModeFilter<$PrismaModel> | $Enums.ManualDeliveryMode
+  }
+
   export type NestedEnumBadgeTriggerWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.BadgeTrigger | EnumBadgeTriggerFieldRefInput<$PrismaModel>
     in?: $Enums.BadgeTrigger[] | ListEnumBadgeTriggerFieldRefInput<$PrismaModel>
@@ -42080,6 +43869,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBadgeTriggerFilter<$PrismaModel>
     _max?: NestedEnumBadgeTriggerFilter<$PrismaModel>
+  }
+
+  export type NestedEnumManualDeliveryModeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ManualDeliveryMode | EnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    in?: $Enums.ManualDeliveryMode[] | ListEnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ManualDeliveryMode[] | ListEnumManualDeliveryModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumManualDeliveryModeWithAggregatesFilter<$PrismaModel> | $Enums.ManualDeliveryMode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumManualDeliveryModeFilter<$PrismaModel>
+    _max?: NestedEnumManualDeliveryModeFilter<$PrismaModel>
   }
 
   export type UserCreateWithoutTenantInput = {
@@ -42096,6 +43895,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionCreateNestedManyWithoutAuthorInput
     userBadges?: UserBadgeCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTenantInput = {
@@ -42112,6 +43912,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTenantInput = {
@@ -42277,10 +44078,14 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     event?: EventCreateNestedOneWithoutBadgesInput
     userBadges?: UserBadgeCreateNestedManyWithoutBadgeInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutBadgeInput
   }
 
   export type BadgeUncheckedCreateWithoutTenantInput = {
@@ -42291,9 +44096,13 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutBadgeInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutBadgeInput
   }
 
   export type BadgeCreateOrConnectWithoutTenantInput = {
@@ -42486,6 +44295,9 @@ export namespace Prisma {
     iconUrl?: StringNullableFilter<"Badge"> | string | null
     color?: StringFilter<"Badge"> | string
     triggerRule?: EnumBadgeTriggerFilter<"Badge"> | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFilter<"Badge"> | $Enums.ManualDeliveryMode
+    minRequirement?: IntNullableFilter<"Badge"> | number | null
+    claimCode?: StringNullableFilter<"Badge"> | string | null
     createdAt?: DateTimeFilter<"Badge"> | Date | string
     updatedAt?: DateTimeFilter<"Badge"> | Date | string
   }
@@ -42645,6 +44457,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BadgeClaimCodeCreateWithoutUserInput = {
+    id?: string
+    code: string
+    isUsed?: boolean
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    badge: BadgeCreateNestedOneWithoutClaimCodesInput
+  }
+
+  export type BadgeClaimCodeUncheckedCreateWithoutUserInput = {
+    id?: string
+    badgeId: string
+    code: string
+    isUsed?: boolean
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type BadgeClaimCodeCreateOrConnectWithoutUserInput = {
+    where: BadgeClaimCodeWhereUniqueInput
+    create: XOR<BadgeClaimCodeCreateWithoutUserInput, BadgeClaimCodeUncheckedCreateWithoutUserInput>
+  }
+
+  export type BadgeClaimCodeCreateManyUserInputEnvelope = {
+    data: BadgeClaimCodeCreateManyUserInput | BadgeClaimCodeCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TenantUpsertWithoutUsersInput = {
     update: XOR<TenantUpdateWithoutUsersInput, TenantUncheckedUpdateWithoutUsersInput>
     create: XOR<TenantCreateWithoutUsersInput, TenantUncheckedCreateWithoutUsersInput>
@@ -42797,6 +44637,35 @@ export namespace Prisma {
     badgeId?: StringFilter<"UserBadge"> | string
     eventId?: StringNullableFilter<"UserBadge"> | string | null
     earnedAt?: DateTimeFilter<"UserBadge"> | Date | string
+  }
+
+  export type BadgeClaimCodeUpsertWithWhereUniqueWithoutUserInput = {
+    where: BadgeClaimCodeWhereUniqueInput
+    update: XOR<BadgeClaimCodeUpdateWithoutUserInput, BadgeClaimCodeUncheckedUpdateWithoutUserInput>
+    create: XOR<BadgeClaimCodeCreateWithoutUserInput, BadgeClaimCodeUncheckedCreateWithoutUserInput>
+  }
+
+  export type BadgeClaimCodeUpdateWithWhereUniqueWithoutUserInput = {
+    where: BadgeClaimCodeWhereUniqueInput
+    data: XOR<BadgeClaimCodeUpdateWithoutUserInput, BadgeClaimCodeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type BadgeClaimCodeUpdateManyWithWhereWithoutUserInput = {
+    where: BadgeClaimCodeScalarWhereInput
+    data: XOR<BadgeClaimCodeUpdateManyMutationInput, BadgeClaimCodeUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type BadgeClaimCodeScalarWhereInput = {
+    AND?: BadgeClaimCodeScalarWhereInput | BadgeClaimCodeScalarWhereInput[]
+    OR?: BadgeClaimCodeScalarWhereInput[]
+    NOT?: BadgeClaimCodeScalarWhereInput | BadgeClaimCodeScalarWhereInput[]
+    id?: StringFilter<"BadgeClaimCode"> | string
+    badgeId?: StringFilter<"BadgeClaimCode"> | string
+    code?: StringFilter<"BadgeClaimCode"> | string
+    isUsed?: BoolFilter<"BadgeClaimCode"> | boolean
+    userId?: StringNullableFilter<"BadgeClaimCode"> | string | null
+    usedAt?: DateTimeNullableFilter<"BadgeClaimCode"> | Date | string | null
+    createdAt?: DateTimeFilter<"BadgeClaimCode"> | Date | string
   }
 
   export type TenantCreateWithoutEventsInput = {
@@ -43117,10 +44986,14 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutBadgesInput
     userBadges?: UserBadgeCreateNestedManyWithoutBadgeInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutBadgeInput
   }
 
   export type BadgeUncheckedCreateWithoutEventInput = {
@@ -43131,9 +45004,13 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutBadgeInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutBadgeInput
   }
 
   export type BadgeCreateOrConnectWithoutEventInput = {
@@ -44472,6 +46349,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionCreateNestedManyWithoutAuthorInput
     userBadges?: UserBadgeCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRegistrationsInput = {
@@ -44488,6 +46366,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRegistrationsInput = {
@@ -44729,6 +46608,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
     userBadges?: UserBadgeUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRegistrationsInput = {
@@ -44745,6 +46625,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TicketUpsertWithWhereUniqueWithoutRegistrationInput = {
@@ -45984,6 +47865,7 @@ export namespace Prisma {
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
     userBadges?: UserBadgeCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubmissionsInput = {
@@ -46000,6 +47882,7 @@ export namespace Prisma {
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubmissionsInput = {
@@ -46153,6 +48036,7 @@ export namespace Prisma {
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
     userBadges?: UserBadgeUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubmissionsInput = {
@@ -46169,6 +48053,7 @@ export namespace Prisma {
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReviewUpsertWithWhereUniqueWithoutSubmissionInput = {
@@ -46248,6 +48133,7 @@ export namespace Prisma {
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     submissions?: SubmissionCreateNestedManyWithoutAuthorInput
     userBadges?: UserBadgeCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReviewsInput = {
@@ -46264,6 +48150,7 @@ export namespace Prisma {
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReviewsInput = {
@@ -46333,6 +48220,7 @@ export namespace Prisma {
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
     userBadges?: UserBadgeUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -46349,6 +48237,7 @@ export namespace Prisma {
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TicketCreateWithoutAttendancesInput = {
@@ -47457,6 +49346,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BadgeClaimCodeCreateWithoutBadgeInput = {
+    id?: string
+    code: string
+    isUsed?: boolean
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    user?: UserCreateNestedOneWithoutClaimCodesInput
+  }
+
+  export type BadgeClaimCodeUncheckedCreateWithoutBadgeInput = {
+    id?: string
+    code: string
+    isUsed?: boolean
+    userId?: string | null
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type BadgeClaimCodeCreateOrConnectWithoutBadgeInput = {
+    where: BadgeClaimCodeWhereUniqueInput
+    create: XOR<BadgeClaimCodeCreateWithoutBadgeInput, BadgeClaimCodeUncheckedCreateWithoutBadgeInput>
+  }
+
+  export type BadgeClaimCodeCreateManyBadgeInputEnvelope = {
+    data: BadgeClaimCodeCreateManyBadgeInput | BadgeClaimCodeCreateManyBadgeInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TenantUpsertWithoutBadgesInput = {
     update: XOR<TenantUpdateWithoutBadgesInput, TenantUncheckedUpdateWithoutBadgesInput>
     create: XOR<TenantCreateWithoutBadgesInput, TenantUncheckedCreateWithoutBadgesInput>
@@ -47581,6 +49498,190 @@ export namespace Prisma {
     data: XOR<UserBadgeUpdateManyMutationInput, UserBadgeUncheckedUpdateManyWithoutBadgeInput>
   }
 
+  export type BadgeClaimCodeUpsertWithWhereUniqueWithoutBadgeInput = {
+    where: BadgeClaimCodeWhereUniqueInput
+    update: XOR<BadgeClaimCodeUpdateWithoutBadgeInput, BadgeClaimCodeUncheckedUpdateWithoutBadgeInput>
+    create: XOR<BadgeClaimCodeCreateWithoutBadgeInput, BadgeClaimCodeUncheckedCreateWithoutBadgeInput>
+  }
+
+  export type BadgeClaimCodeUpdateWithWhereUniqueWithoutBadgeInput = {
+    where: BadgeClaimCodeWhereUniqueInput
+    data: XOR<BadgeClaimCodeUpdateWithoutBadgeInput, BadgeClaimCodeUncheckedUpdateWithoutBadgeInput>
+  }
+
+  export type BadgeClaimCodeUpdateManyWithWhereWithoutBadgeInput = {
+    where: BadgeClaimCodeScalarWhereInput
+    data: XOR<BadgeClaimCodeUpdateManyMutationInput, BadgeClaimCodeUncheckedUpdateManyWithoutBadgeInput>
+  }
+
+  export type BadgeCreateWithoutClaimCodesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    iconUrl?: string | null
+    color?: string
+    triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutBadgesInput
+    event?: EventCreateNestedOneWithoutBadgesInput
+    userBadges?: UserBadgeCreateNestedManyWithoutBadgeInput
+  }
+
+  export type BadgeUncheckedCreateWithoutClaimCodesInput = {
+    id?: string
+    tenantId: string
+    eventId?: string | null
+    name: string
+    description?: string | null
+    iconUrl?: string | null
+    color?: string
+    triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutBadgeInput
+  }
+
+  export type BadgeCreateOrConnectWithoutClaimCodesInput = {
+    where: BadgeWhereUniqueInput
+    create: XOR<BadgeCreateWithoutClaimCodesInput, BadgeUncheckedCreateWithoutClaimCodesInput>
+  }
+
+  export type UserCreateWithoutClaimCodesInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutUsersInput
+    registrations?: RegistrationCreateNestedManyWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutReviewerInput
+    submissions?: SubmissionCreateNestedManyWithoutAuthorInput
+    userBadges?: UserBadgeCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutClaimCodesInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenantId: string
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutClaimCodesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutClaimCodesInput, UserUncheckedCreateWithoutClaimCodesInput>
+  }
+
+  export type BadgeUpsertWithoutClaimCodesInput = {
+    update: XOR<BadgeUpdateWithoutClaimCodesInput, BadgeUncheckedUpdateWithoutClaimCodesInput>
+    create: XOR<BadgeCreateWithoutClaimCodesInput, BadgeUncheckedCreateWithoutClaimCodesInput>
+    where?: BadgeWhereInput
+  }
+
+  export type BadgeUpdateToOneWithWhereWithoutClaimCodesInput = {
+    where?: BadgeWhereInput
+    data: XOR<BadgeUpdateWithoutClaimCodesInput, BadgeUncheckedUpdateWithoutClaimCodesInput>
+  }
+
+  export type BadgeUpdateWithoutClaimCodesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: StringFieldUpdateOperationsInput | string
+    triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutBadgesNestedInput
+    event?: EventUpdateOneWithoutBadgesNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutBadgeNestedInput
+  }
+
+  export type BadgeUncheckedUpdateWithoutClaimCodesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: StringFieldUpdateOperationsInput | string
+    triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutBadgeNestedInput
+  }
+
+  export type UserUpsertWithoutClaimCodesInput = {
+    update: XOR<UserUpdateWithoutClaimCodesInput, UserUncheckedUpdateWithoutClaimCodesInput>
+    create: XOR<UserCreateWithoutClaimCodesInput, UserUncheckedCreateWithoutClaimCodesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutClaimCodesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutClaimCodesInput, UserUncheckedUpdateWithoutClaimCodesInput>
+  }
+
+  export type UserUpdateWithoutClaimCodesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
+    registrations?: RegistrationUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutReviewerNestedInput
+    submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutClaimCodesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutUserBadgesInput = {
     id?: string
     email: string
@@ -47595,6 +49696,7 @@ export namespace Prisma {
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionCreateNestedManyWithoutAuthorInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserBadgesInput = {
@@ -47611,6 +49713,7 @@ export namespace Prisma {
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserBadgesInput = {
@@ -47625,10 +49728,14 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutBadgesInput
     event?: EventCreateNestedOneWithoutBadgesInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutBadgeInput
   }
 
   export type BadgeUncheckedCreateWithoutUserBadgesInput = {
@@ -47640,8 +49747,12 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutBadgeInput
   }
 
   export type BadgeCreateOrConnectWithoutUserBadgesInput = {
@@ -47735,6 +49846,7 @@ export namespace Prisma {
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserBadgesInput = {
@@ -47751,6 +49863,7 @@ export namespace Prisma {
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BadgeUpsertWithoutUserBadgesInput = {
@@ -47771,10 +49884,14 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutBadgesNestedInput
     event?: EventUpdateOneWithoutBadgesNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutBadgeNestedInput
   }
 
   export type BadgeUncheckedUpdateWithoutUserBadgesInput = {
@@ -47786,8 +49903,12 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutBadgeNestedInput
   }
 
   export type EventUpsertWithoutUserBadgesInput = {
@@ -47917,6 +50038,9 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -47935,6 +50059,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
     userBadges?: UserBadgeUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTenantInput = {
@@ -47951,6 +50076,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTenantInput = {
@@ -48118,10 +50244,14 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneWithoutBadgesNestedInput
     userBadges?: UserBadgeUpdateManyWithoutBadgeNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutBadgeNestedInput
   }
 
   export type BadgeUncheckedUpdateWithoutTenantInput = {
@@ -48132,9 +50262,13 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userBadges?: UserBadgeUncheckedUpdateManyWithoutBadgeNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutBadgeNestedInput
   }
 
   export type BadgeUncheckedUpdateManyWithoutTenantInput = {
@@ -48145,6 +50279,9 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -48180,6 +50317,15 @@ export namespace Prisma {
     badgeId: string
     eventId?: string | null
     earnedAt?: Date | string
+  }
+
+  export type BadgeClaimCodeCreateManyUserInput = {
+    id?: string
+    badgeId: string
+    code: string
+    isUsed?: boolean
+    usedAt?: Date | string | null
+    createdAt?: Date | string
   }
 
   export type RegistrationUpdateWithoutUserInput = {
@@ -48295,6 +50441,33 @@ export namespace Prisma {
     earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type BadgeClaimCodeUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    badge?: BadgeUpdateOneRequiredWithoutClaimCodesNestedInput
+  }
+
+  export type BadgeClaimCodeUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    badgeId?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeClaimCodeUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    badgeId?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ActivityCreateManyEventInput = {
     id?: string
     title: string
@@ -48385,6 +50558,9 @@ export namespace Prisma {
     iconUrl?: string | null
     color?: string
     triggerRule?: $Enums.BadgeTrigger
+    manualDeliveryMode?: $Enums.ManualDeliveryMode
+    minRequirement?: number | null
+    claimCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -48681,10 +50857,14 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutBadgesNestedInput
     userBadges?: UserBadgeUpdateManyWithoutBadgeNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutBadgeNestedInput
   }
 
   export type BadgeUncheckedUpdateWithoutEventInput = {
@@ -48695,9 +50875,13 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userBadges?: UserBadgeUncheckedUpdateManyWithoutBadgeNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutBadgeNestedInput
   }
 
   export type BadgeUncheckedUpdateManyWithoutEventInput = {
@@ -48708,6 +50892,9 @@ export namespace Prisma {
     iconUrl?: NullableStringFieldUpdateOperationsInput | string | null
     color?: StringFieldUpdateOperationsInput | string
     triggerRule?: EnumBadgeTriggerFieldUpdateOperationsInput | $Enums.BadgeTrigger
+    manualDeliveryMode?: EnumManualDeliveryModeFieldUpdateOperationsInput | $Enums.ManualDeliveryMode
+    minRequirement?: NullableIntFieldUpdateOperationsInput | number | null
+    claimCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -49438,6 +51625,15 @@ export namespace Prisma {
     earnedAt?: Date | string
   }
 
+  export type BadgeClaimCodeCreateManyBadgeInput = {
+    id?: string
+    code: string
+    isUsed?: boolean
+    userId?: string | null
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
   export type UserBadgeUpdateWithoutBadgeInput = {
     id?: StringFieldUpdateOperationsInput | string
     earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49457,6 +51653,33 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     eventId?: NullableStringFieldUpdateOperationsInput | string | null
     earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeClaimCodeUpdateWithoutBadgeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutClaimCodesNestedInput
+  }
+
+  export type BadgeClaimCodeUncheckedUpdateWithoutBadgeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BadgeClaimCodeUncheckedUpdateManyWithoutBadgeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

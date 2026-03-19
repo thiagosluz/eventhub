@@ -41,6 +41,25 @@ export class BadgesController {
     return this.badgesService.updateBadge(req.user.tenantId, id, body);
   }
 
+  @Post('claim/:id')
+  claim(@Req() req: any, @Param('id') id: string, @Body('claimCode') claimCode: string) {
+    return this.badgesService.claimBadge(req.user.sub, id, claimCode);
+  }
+
+  @Post(':id/award-scan')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  awardByScan(@Req() req: any, @Param('id') id: string, @Body('ticketToken') ticketToken: string) {
+    return this.badgesService.awardBadgeByScan(req.user.tenantId, id, ticketToken);
+  }
+
+  @Get(':id/claim-codes')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  getClaimCodes(@Req() req: any, @Param('id') id: string) {
+    return this.badgesService.getBadgeClaimCodes(req.user.tenantId, id);
+  }
+
   @Delete(':id')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ORGANIZER)

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
-import { badgesService, Badge } from "@/services/badges.service";
+import { useEffect, useState, use, useRef } from "react";
+import { badgesService, Badge, BadgeClaimCode } from "@/services/badges.service";
+import { Html5Qrcode } from "html5-qrcode";
 import { eventsService } from "@/services/events.service";
 import Link from "next/link";
 import { 
@@ -11,7 +12,8 @@ import {
   ChevronLeftIcon,
   SparklesIcon,
   FireIcon,
-  CheckBadgeIcon
+  CheckBadgeIcon,
+  QrCodeIcon
 } from "@heroicons/react/24/outline";
 import { DeleteConfirmationModal } from "@/components/dashboard/DeleteConfirmationModal";
 
@@ -58,43 +60,115 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
     description: "",
     color: "blue",
     triggerRule: "MANUAL",
+    manualDeliveryMode: "GLOBAL_CODE" as "SCAN" | "UNIQUE_CODES" | "GLOBAL_CODE",
     iconUrl: "🏆", // Default icon
-    customIconUrl: ""
+    customIconUrl: "",
+    minRequirement: 0,
+    claimCode: "",
+    codesCount: 10
   });
 
+  const [managingCodesBadge, setManagingCodesBadge] = useState<Badge | null>(null);
+  const [claimCodes, setClaimCodes] = useState<BadgeClaimCode[]>([]);
+  const [loadingCodes, setLoadingCodes] = useState(false);
+  const [isScanning, setIsScanning] = useState<Badge | null>(null);
+  const scannerRef = useRef<Html5Qrcode | null>(null);
+
   useEffect(() => {
-    fetchData();
+    fetchEventData();
+    fetchBadges();
   }, [id]);
 
-  const fetchData = async () => {
+  const fetchEventData = async () => {
     try {
-      const [_event, _badges] = await Promise.all([
-        eventsService.getOrganizerEventById(id),
-        badgesService.getEventBadges(id)
-      ]);
+      const _event = await eventsService.getOrganizerEventById(id);
       setEvent(_event);
-      setBadges(_badges);
     } catch (err) {
-      console.error(err);
+      console.error("Failed to load event", err);
+    }
+  };
+
+  const fetchBadges = async () => {
+    try {
+      const data = await badgesService.getEventBadges(id);
+      setBadges(data);
+    } catch (err) {
+      console.error("Failed to load badges", err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleCreate = async (e: React.FormEvent) => {
+  const handleCreateBadge = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const data = {
         ...formData,
-        iconUrl: formData.customIconUrl || formData.iconUrl
+        iconUrl: formData.customIconUrl || formData.iconUrl,
+        minRequirement: formData.minRequirement,
+        claimCode: formData.claimCode,
+        manualDeliveryMode: formData.manualDeliveryMode,
+        codesCount: formData.codesCount
       };
       await badgesService.createBadge(id, data);
       setIsCreating(false);
-      setFormData({ name: "", description: "", color: "blue", triggerRule: "MANUAL", iconUrl: "🏆", customIconUrl: "" });
-      await fetchData();
+      setFormData({ 
+        name: "", 
+        description: "", 
+        color: "blue", 
+        triggerRule: "MANUAL", 
+        manualDeliveryMode: "GLOBAL_CODE",
+        iconUrl: "🏆", 
+        customIconUrl: "", 
+        minRequirement: 0, 
+        claimCode: "",
+        codesCount: 10
+      });
+      await fetchBadges();
     } catch (err) {
       alert("Erro ao criar a conquista.");
     }
+  };
+
+  const handleOpenCodes = async (badge: Badge) => {
+    setManagingCodesBadge(badge);
+    setLoadingCodes(true);
+    try {
+      const codes = await badgesService.getClaimCodes(badge.id);
+      setClaimCodes(codes);
+    } catch (err) {
+      alert("Erro ao carregar códigos.");
+    } finally {
+      setLoadingCodes(false);
+    }
+  };
+
+  const handleStartScanner = async (badge: Badge) => {
+    setIsScanning(badge);
+    setTimeout(() => {
+      const reader = new Html5Qrcode("badge-scanner-reader");
+      scannerRef.current = reader;
+      reader.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        async (decodedText) => {
+          try {
+            await badgesService.awardByScan(badge.id, decodedText);
+            alert("Sucesso! Medalha entregue.");
+          } catch (err: any) {
+            alert(err.response?.data?.message || "Erro ao entregar");
+          }
+        },
+        () => {}
+      ).catch(err => console.error("Scanner error", err));
+    }, 100);
+  };
+
+  const stopScanner = async () => {
+    if (scannerRef.current && scannerRef.current.isScanning) {
+      await scannerRef.current.stop();
+    }
+    setIsScanning(null);
   };
 
   const handleDelete = (badgeId: string) => {
@@ -105,7 +179,8 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
     if (!badgeToDelete) return;
     try {
       await badgesService.deleteBadge(badgeToDelete);
-      await fetchData();
+      setBadgeToDelete(null);
+      await fetchBadges();
     } catch (err) {
       alert("Erro ao deletar badge.");
     } finally {
@@ -124,7 +199,7 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
     <div className="max-w-5xl mx-auto space-y-8 pb-24 fade-in">
       <div className="flex items-center justify-between">
          <div className="flex items-center gap-4">
-            <Link 
+            <Link
               href={`/dashboard/events/${id}`}
               className="p-3 rounded-2xl border border-border bg-card text-muted-foreground hover:bg-muted transition-colors shadow-sm"
             >
@@ -138,7 +213,7 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
               <p className="text-xs font-bold uppercase tracking-widest text-primary italic leading-none mt-1">{event?.name}</p>
             </div>
          </div>
-         <button 
+         <button
            onClick={() => setIsCreating(!isCreating)}
            className="premium-button !bg-fuchsia-600 hover:!bg-fuchsia-700 !shadow-fuchsia-200 flex items-center gap-2"
          >
@@ -149,16 +224,16 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
 
       {isCreating && (
         <div className="premium-card p-6 bg-card border-fuchsia-500/20 shadow-xl shadow-fuchsia-500/5 animate-in slide-in-from-top-4">
-           <form onSubmit={handleCreate} className="space-y-6">
+           <form onSubmit={handleCreateBadge} className="p-8 space-y-8 animate-in zoom-in-95 duration-300">
               <div className="flex items-center gap-2 border-b border-border pb-4">
                  <SparklesIcon className="w-5 h-5 text-fuchsia-500" />
                  <h2 className="text-lg font-black uppercase tracking-tight">Criar Nova Badge</h2>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Nome da Badge</label>
-                    <input 
+                    <input
                       required
                       value={formData.name}
                       onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -168,7 +243,7 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
                  </div>
                  <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Regra (Gatilho)</label>
-                    <select 
+                    <select
                       value={formData.triggerRule}
                       onChange={e => setFormData({ ...formData, triggerRule: e.target.value })}
                       className="w-full h-12 px-4 rounded-xl border border-border bg-muted/30 focus:border-fuchsia-500 outline-none font-bold text-sm transition-colors"
@@ -182,7 +257,7 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
 
               <div className="space-y-2">
                  <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Descrição</label>
-                 <textarea 
+                 <textarea
                    value={formData.description}
                    onChange={e => setFormData({ ...formData, description: e.target.value })}
                    placeholder="Conta um pouco sobre como conseguir isso..."
@@ -200,7 +275,7 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
                   </div>
 
                   {formData.customIconUrl ? (
-                    <input 
+                    <input
                       value={formData.customIconUrl}
                       onChange={e => setFormData({ ...formData, customIconUrl: e.target.value })}
                       placeholder="https://exemplo.com/badge.svg"
@@ -214,8 +289,8 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
                            type="button"
                            onClick={() => setFormData({ ...formData, iconUrl: item.icon })}
                            className={`w-10 h-10 flex items-center justify-center rounded-xl text-xl transition-all ${
-                             formData.iconUrl === item.icon 
-                               ? 'bg-fuchsia-500 text-white shadow-lg scale-110' 
+                             formData.iconUrl === item.icon
+                               ? 'bg-fuchsia-500 text-white shadow-lg scale-110'
                                : 'bg-white hover:bg-slate-50 border border-border'
                            }`}
                          >
@@ -235,8 +310,8 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
                          type="button"
                          onClick={() => setFormData({ ...formData, color: color.id })}
                          className={`relative flex items-center gap-2 px-4 py-2 rounded-xl border-2 transition-all ${
-                           formData.color === color.id 
-                             ? `${color.border} bg-white shadow-md scale-105 z-10` 
+                           formData.color === color.id
+                             ? `${color.border} bg-white shadow-md scale-105 z-10`
                              : 'border-transparent bg-muted/50 hover:bg-muted text-muted-foreground'
                          }`}
                        >
@@ -249,8 +324,81 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
                  </div>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 {(formData.triggerRule === 'EARLY_BIRD' || formData.triggerRule === 'CHECKIN_STREAK') && (
+                   <div className="space-y-2 animate-in slide-in-from-left-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                        {formData.triggerRule === 'EARLY_BIRD' ? 'Nº de Pioneiros' : 'Mínimo de Check-ins'}
+                      </label>
+                      <input
+                        type="number"
+                        min={1}
+                        value={formData.minRequirement}
+                        onChange={e => setFormData({ ...formData, minRequirement: parseInt(e.target.value) })}
+                        className="w-full h-12 px-4 rounded-xl border border-border bg-muted/30 focus:border-fuchsia-500 outline-none font-bold text-sm transition-colors"
+                      />
+                   </div>
+                 )}
+
+                 {formData.triggerRule === 'MANUAL' && (
+                   <div className="space-y-4 pt-4 border-t border-border/50">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground block">Modo de Entrega Manual</label>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                         {[
+                           { id: 'GLOBAL_CODE', label: 'Código Global', desc: 'Um código que todos usam' },
+                           { id: 'UNIQUE_CODES', label: 'Lote de Códigos', desc: 'Vários códigos de uso único' },
+                           { id: 'SCAN', label: 'Scan Inverso', desc: 'Você escaneia o participante' }
+                         ].map((mode) => (
+                           <button
+                             key={mode.id}
+                             type="button"
+                             onClick={() => setFormData({ ...formData, manualDeliveryMode: mode.id as any })}
+                             className={`p-4 rounded-2xl border text-left transition-all ${
+                               formData.manualDeliveryMode === mode.id
+                               ? 'border-fuchsia-500 bg-fuchsia-500/5 ring-1 ring-fuchsia-500'
+                               : 'border-border bg-muted/20 hover:border-fuchsia-500/50'
+                             }`}
+                           >
+                             <div className={`text-xs font-black uppercase tracking-widest mb-1 ${formData.manualDeliveryMode === mode.id ? 'text-fuchsia-600' : 'text-foreground'}`}>
+                               {mode.label}
+                             </div>
+                             <p className="text-[10px] font-medium text-muted-foreground leading-tight">{mode.desc}</p>
+                           </button>
+                         ))}
+                      </div>
+
+                      {formData.manualDeliveryMode === 'GLOBAL_CODE' && (
+                        <div className="space-y-2 animate-in slide-in-from-top-2">
+                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Código de Resgate</label>
+                           <input
+                             value={formData.claimCode}
+                             onChange={e => setFormData({ ...formData, claimCode: e.target.value.toUpperCase() })}
+                             placeholder="Ex: EVENTHUB2026"
+                             className="w-full h-12 px-4 rounded-xl border border-border bg-muted/30 focus:border-fuchsia-500 outline-none font-bold text-sm transition-colors"
+                           />
+                        </div>
+                      )}
+
+                      {formData.manualDeliveryMode === 'UNIQUE_CODES' && (
+                        <div className="space-y-2 animate-in slide-in-from-top-2">
+                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Quantidade de Códigos a Gerar</label>
+                           <input
+                             type="number"
+                             min={1}
+                             max={500}
+                             value={formData.codesCount}
+                             onChange={e => setFormData({ ...formData, codesCount: parseInt(e.target.value) })}
+                             className="w-full h-12 px-4 rounded-xl border border-border bg-muted/30 focus:border-fuchsia-500 outline-none font-bold text-sm transition-colors"
+                           />
+                           <p className="text-[10px] font-bold text-muted-foreground italic px-1">O sistema gerará códigos únicos e rastreáveis automaticamente.</p>
+                        </div>
+                      )}
+                   </div>
+                 )}
+              </div>
+
               <div className="flex justify-end pt-4 border-t border-border">
-                 <button 
+                 <button
                    type="submit"
                    className="premium-button !bg-fuchsia-600 hover:!bg-fuchsia-700 !py-3 !px-8"
                  >
@@ -272,7 +420,7 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
                Dê aos seus participantes motivos para engajar. Crie badges para sorteios, interações e check-in.
              </p>
            </div>
-           <button 
+           <button
              onClick={() => setIsCreating(true)}
              className="text-fuchsia-600 font-bold hover:underline flex items-center justify-center gap-1 w-full"
            >
@@ -295,7 +443,7 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
                          <span>{badge.iconUrl || "🏆"}</span>
                        )}
                     </div>
-                    <button 
+                    <button
                       onClick={() => handleDelete(badge.id)}
                       className="p-2 rounded-xl text-muted-foreground hover:bg-rose-50 hover:text-rose-500 transition-colors"
                       title="Excluir"
@@ -303,20 +451,135 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
                       <TrashIcon className="w-4 h-4" />
                     </button>
                  </div>
-                 
+
                  <div className="space-y-1 mt-auto">
                     <p className={`text-[10px] font-black uppercase tracking-widest ${scheme.text}`}>{scheme.name}</p>
                     <h3 className="text-lg font-black">{badge.name}</h3>
                     <p className="text-xs text-muted-foreground font-medium line-clamp-2" title={badge.description}>{badge.description || "Sem descrição."}</p>
                  </div>
 
-                 <div className="mt-4 pt-4 border-t border-border flex items-center gap-2">
-                    <SparklesIcon className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{trigger}</span>
-                 </div>
+                  <div className="mt-4 pt-4 border-t border-border space-y-2">
+                     <div className="flex items-center gap-2">
+                        <SparklesIcon className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{trigger}</span>
+                     </div>
+
+                     {badge.triggerRule === 'MANUAL' && badge.claimCode && (
+                       <div className="bg-slate-50 p-2 rounded-lg border border-slate-100 flex items-center justify-between">
+                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Código:</span>
+                         <span className="text-[10px] font-black text-slate-900 tracking-widest">{badge.claimCode}</span>
+                       </div>
+                     )}
+
+                      {(badge.triggerRule === 'EARLY_BIRD' || badge.triggerRule === 'CHECKIN_STREAK') && (
+                        <div className="flex items-center justify-between px-1">
+                          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                            {badge.triggerRule === 'EARLY_BIRD' ? 'Vagas:' : 'Meta:'}
+                          </span>
+                          <span className="text-xs font-black text-slate-900">{badge.minRequirement || 0}</span>
+                        </div>
+                      )}
+
+                      {badge.triggerRule === 'MANUAL' && (
+                        <div className="flex gap-2 pt-2">
+                           {badge.manualDeliveryMode === 'UNIQUE_CODES' && (
+                             <button
+                               onClick={() => handleOpenCodes(badge)}
+                               className="flex-1 py-2 bg-slate-900 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-colors"
+                             >
+                               Ver Códigos
+                             </button>
+                           )}
+                           {badge.manualDeliveryMode === 'SCAN' && (
+                             <button
+                               onClick={() => handleStartScanner(badge)}
+                               className="flex-1 py-2 bg-fuchsia-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-fuchsia-700 transition-colors flex items-center justify-center gap-2"
+                             >
+                               <QrCodeIcon className="w-3 h-3" /> Scanner
+                             </button>
+                           )}
+                        </div>
+                      )}
+                   </div>
                </div>
-             );
-           })}
+              );
+            })}
+         </div>
+      )}
+
+      {/* Manage Codes Modal */}
+      {managingCodesBadge && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300">
+           <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={() => setManagingCodesBadge(null)} />
+           <div className="relative w-full max-w-2xl bg-card border border-border rounded-[2.5rem] p-8 space-y-6 shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden">
+              <div className="flex items-center justify-between">
+                 <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-fuchsia-500/10 text-fuchsia-500 rounded-xl flex items-center justify-center text-xl">
+                       {managingCodesBadge.iconUrl}
+                    </div>
+                    <div>
+                       <h3 className="text-lg font-black tracking-tight">{managingCodesBadge.name}</h3>
+                       <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Gestão de Códigos Únicos</p>
+                    </div>
+                 </div>
+                 <button onClick={() => setManagingCodesBadge(null)} className="p-2 hover:bg-muted rounded-full transition-colors">
+                    <TrashIcon className="w-5 h-5" />
+                 </button>
+              </div>
+
+              <div className="max-h-[400px] overflow-y-auto border border-border rounded-2xl">
+                 <table className="w-full text-left">
+                    <thead className="bg-muted/30 sticky top-0">
+                       <tr className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                          <th className="px-6 py-4">Código</th>
+                          <th className="px-6 py-4">Status</th>
+                          <th className="px-6 py-4">Utilizado Por</th>
+                          <th className="px-6 py-4">Data</th>
+                       </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                       {loadingCodes ? (
+                         <tr><td colSpan={4} className="p-12 text-center text-xs font-bold text-muted-foreground animate-pulse">Carregando códigos...</td></tr>
+                       ) : claimCodes.map(c => (
+                         <tr key={c.id} className="text-xs font-medium">
+                            <td className="px-6 py-4 font-black tracking-widest text-fuchsia-600 font-mono">{c.code}</td>
+                            <td className="px-6 py-4">
+                               {c.isUsed 
+                               ? <span className="bg-rose-100 text-rose-600 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest">Usado</span>
+                               : <span className="bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest">Livre</span>}
+                            </td>
+                            <td className="px-6 py-4">{c.user?.name || '-'}</td>
+                            <td className="px-6 py-4 text-muted-foreground">{c.usedAt ? new Date(c.usedAt).toLocaleDateString() : '-'}</td>
+                         </tr>
+                       ))}
+                    </tbody>
+                 </table>
+              </div>
+           </div>
+        </div>
+      )}
+
+      {/* Scanner Modal */}
+      {isScanning && (
+        <div className="fixed inset-0 z-[110] flex flex-col items-center justify-center p-4 animate-in fade-in duration-300">
+           <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-2xl" />
+           <div className="relative w-full max-w-lg space-y-8 text-center pb-12">
+              <div className="space-y-2">
+                 <h2 className="text-3xl font-black text-white tracking-tight">Escanear Participante</h2>
+                 <p className="text-slate-400 font-medium">Aponte para o QR Code do ingresso para entregar: <strong className="text-white">"{isScanning.name}"</strong></p>
+              </div>
+
+              <div className="premium-card bg-white overflow-hidden aspect-square max-w-[320px] mx-auto shadow-2xl shadow-fuchsia-500/20">
+                 <div id="badge-scanner-reader" className="w-full h-full" />
+              </div>
+
+              <button 
+                onClick={stopScanner}
+                className="bg-white/10 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white/20 transition-all"
+              >
+                Cancelar Scanner
+              </button>
+           </div>
         </div>
       )}
 

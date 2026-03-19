@@ -120,6 +120,7 @@ model User {
   reviews       Review[]
   submissions   Submission[]   @relation("SubmissionAuthor")
   userBadges    UserBadge[]
+  claimCodes    BadgeClaimCode[]
 }
 
 model Event {
@@ -483,6 +484,12 @@ enum BadgeTrigger {
   CHECKIN_STREAK
 }
 
+enum ManualDeliveryMode {
+  SCAN
+  UNIQUE_CODES
+  GLOBAL_CODE
+}
+
 model Badge {
   id       String  @id @default(cuid())
   tenantId String
@@ -495,11 +502,32 @@ model Badge {
   iconUrl     String? // Pode ser Emoji ou URL SVG
   color       String       @default("blue") // blue, purple, gold, emerald
   triggerRule BadgeTrigger @default(MANUAL)
+  manualDeliveryMode ManualDeliveryMode @default(GLOBAL_CODE)
+  minRequirement Int?      @default(0) // Quantidade para Early Bird ou Check-in Streak
+  claimCode      String?   // Código secreto para reivindicação manual (Global)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   userBadges UserBadge[]
+  claimCodes BadgeClaimCode[]
+}
+
+model BadgeClaimCode {
+  id      String @id @default(cuid())
+  badgeId String
+  badge   Badge  @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  
+  code    String @unique
+  isUsed  Boolean @default(false)
+  userId  String?
+  user    User?   @relation(fields: [userId], references: [id])
+  usedAt  DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([badgeId])
+  @@index([code])
 }
 
 model UserBadge {

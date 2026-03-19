@@ -144,6 +144,7 @@ let CheckinService = class CheckinService {
         `,
             });
         }
+        await this.badgesService.checkAndAwardBadge(user.id, event.id, 'CHECKIN_STREAK');
         return { alreadyCheckedIn: false, attendanceId: attendance.id };
     }
     async drawRaffle(params) {

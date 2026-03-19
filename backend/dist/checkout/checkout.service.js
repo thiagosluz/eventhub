@@ -15,12 +15,14 @@ const prisma_service_1 = require("../prisma/prisma.service");
 const activities_service_1 = require("../activities/activities.service");
 const free_ticket_strategy_1 = require("./free-ticket.strategy");
 const mail_service_1 = require("../mail/mail.service");
+const badges_service_1 = require("../badges/badges.service");
 let CheckoutService = class CheckoutService {
-    constructor(prisma, activitiesService, freeTicketStrategy, mailService) {
+    constructor(prisma, activitiesService, freeTicketStrategy, mailService, badgesService) {
         this.prisma = prisma;
         this.activitiesService = activitiesService;
         this.freeTicketStrategy = freeTicketStrategy;
         this.mailService = mailService;
+        this.badgesService = badgesService;
     }
     async processCheckout(input) {
         var _a;
@@ -46,6 +48,7 @@ let CheckoutService = class CheckoutService {
                 userId,
             },
         });
+        await this.badgesService.checkAndAwardBadge(userId, eventId, 'EARLY_BIRD');
         const autoEnrollActivities = await this.prisma.activity.findMany({
             where: {
                 eventId,
@@ -127,6 +130,7 @@ exports.CheckoutService = CheckoutService = __decorate([
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         activities_service_1.ActivitiesService,
         free_ticket_strategy_1.FreeTicketStrategy,
-        mail_service_1.MailService])
+        mail_service_1.MailService,
+        badges_service_1.BadgesService])
 ], CheckoutService);
 //# sourceMappingURL=checkout.service.js.map

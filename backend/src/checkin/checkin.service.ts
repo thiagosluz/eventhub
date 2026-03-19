@@ -127,6 +127,9 @@ export class CheckinService {
       });
     }
 
+    // Trigger Badge Check for Check-in Streak
+    await this.badgesService.checkAndAwardBadge(user.id, event.id, 'CHECKIN_STREAK');
+
     return { alreadyCheckedIn: false, attendanceId: attendance.id };
   }
 

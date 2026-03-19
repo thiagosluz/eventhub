@@ -7,8 +7,20 @@ export interface Badge {
   iconUrl?: string;
   color: string;
   triggerRule: string;
+  manualDeliveryMode?: 'SCAN' | 'UNIQUE_CODES' | 'GLOBAL_CODE';
+  minRequirement?: number;
+  claimCode?: string;
   event?: { name: string };
   isEarned?: boolean;
+}
+
+export interface BadgeClaimCode {
+  id: string;
+  badgeId: string;
+  code: string;
+  isUsed: boolean;
+  usedAt?: string;
+  user?: { name: string; email: string };
 }
 
 export interface UserBadge {
@@ -50,5 +62,20 @@ export const badgesService = {
 
   deleteBadge: async (id: string): Promise<void> => {
     await api.delete(`/badges/${id}`);
+  },
+  
+  async claimBadge(id: string, claimCode: string): Promise<UserBadge> {
+    const { data } = await api.post(`/badges/claim/${id}`, { claimCode });
+    return data;
+  },
+
+  async awardByScan(id: string, ticketToken: string): Promise<UserBadge> {
+    const { data } = await api.post(`/badges/${id}/award-scan`, { ticketToken });
+    return data;
+  },
+
+  async getClaimCodes(id: string): Promise<BadgeClaimCode[]> {
+    const { data } = await api.get(`/badges/${id}/claim-codes`);
+    return data;
   }
 };

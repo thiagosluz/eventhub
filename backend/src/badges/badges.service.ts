@@ -6,7 +6,7 @@ export class BadgesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createBadge(tenantId: string, eventId: string, data: any) {
-    return this.prisma.badge.create({
+    const badge = await this.prisma.badge.create({
       data: {
         tenantId,
         eventId,
@@ -15,8 +15,37 @@ export class BadgesService {
         iconUrl: data.iconUrl,
         color: data.color || 'blue',
         triggerRule: data.triggerRule || 'MANUAL',
+        manualDeliveryMode: data.manualDeliveryMode || 'GLOBAL_CODE',
+        minRequirement: data.minRequirement ? parseInt(data.minRequirement) : 0,
+        claimCode: data.claimCode || null,
       },
     });
+
+    // If UNIQUE_CODES, generate the batch
+    if (data.manualDeliveryMode === 'UNIQUE_CODES' && data.codesCount > 0) {
+      const codes = [];
+      for (let i = 0; i < data.codesCount; i++) {
+        codes.push({
+          badgeId: badge.id,
+          code: this.generateRandomCode(),
+        });
+      }
+      await this.prisma.badgeClaimCode.createMany({
+        data: codes,
+      });
+    }
+
+    return badge;
+  }
+
+  private generateRandomCode(): string {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // No O, 0, I, 1
+    let result = '';
+    for (let i = 0; i < 6; i++) {
+      if (i === 3) result += '-';
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
   }
 
   async getBadgesByEvent(tenantId: string, eventId: string) {
@@ -104,6 +133,37 @@ export class BadgesService {
     const awarded = [];
 
     for (const badge of matchingBadges) {
+      if (triggerRule === 'EARLY_BIRD') {
+        // Se a posição do usuário na fila for <= minRequirement
+        // Para ser mais preciso, deveríamos buscar a posição real do registro deste usuário
+        const userReg = await this.prisma.registration.findFirst({
+           where: { userId, eventId },
+           select: { id: true, createdAt: true }
+        });
+        
+        if (userReg) {
+           const position = await this.prisma.registration.count({
+              where: { eventId, createdAt: { lt: userReg.createdAt } }
+           });
+           
+           if (position + 1 > (badge.minRequirement || 0)) continue;
+        }
+      }
+
+      // Logic for Check-in Streak
+      if (triggerRule === 'CHECKIN_STREAK') {
+        const checkinCount = await this.prisma.attendance.count({
+          where: { 
+            activity: { eventId },
+            ticket: {
+              registration: { userId }
+            }
+          }
+        });
+
+        if (checkinCount < (badge.minRequirement || 1)) continue;
+      }
+
       const existing = await this.prisma.userBadge.findUnique({
         where: {
           userId_badgeId_eventId: {
@@ -127,5 +187,110 @@ export class BadgesService {
     }
 
     return awarded;
+  }
+
+  async claimBadge(userId: string, badgeId: string, claimCode: string) {
+    const badge = await this.prisma.badge.findUnique({
+      where: { id: badgeId }
+    });
+
+    if (!badge) throw new NotFoundException('Conquista não encontrada');
+    if (badge.triggerRule !== 'MANUAL') throw new Error('Esta conquista não pode ser resgatada manualmente');
+
+    // Validation based on delivery mode
+    if (badge.manualDeliveryMode === 'GLOBAL_CODE') {
+      if (badge.claimCode && badge.claimCode !== claimCode) throw new Error('Código de resgate inválido');
+    } else if (badge.manualDeliveryMode === 'UNIQUE_CODES') {
+      const uniqueCode = await this.prisma.badgeClaimCode.findFirst({
+        where: { badgeId: badge.id, code: claimCode }
+      });
+
+      if (!uniqueCode) throw new Error('Código inexistente');
+      if (uniqueCode.isUsed) throw new Error('Este código já foi utilizado');
+
+      // Mark as used
+      await this.prisma.badgeClaimCode.update({
+        where: { id: uniqueCode.id },
+        data: { isUsed: true, userId, usedAt: new Date() }
+      });
+    } else {
+      throw new Error('Esta conquista requer escaneamento pelo organizador');
+    }
+
+    const existing = await this.prisma.userBadge.findUnique({
+      where: {
+        userId_badgeId_eventId: {
+          userId,
+          badgeId: badge.id,
+          eventId: badge.eventId!,
+        }
+      }
+    });
+
+    if (existing) {
+      // Se for código único, o erro acima já deu, mas se for global...
+      if (badge.manualDeliveryMode === 'GLOBAL_CODE') throw new Error('Você já possui esta conquista');
+      return existing; 
+    }
+
+    return this.prisma.userBadge.create({
+      data: {
+        userId,
+        badgeId: badge.id,
+        eventId: badge.eventId,
+      }
+    });
+  }
+
+  async awardBadgeByScan(tenantId: string, badgeId: string, ticketToken: string) {
+    // 1. Find the badge and verify permission
+    const badge = await this.prisma.badge.findFirst({
+      where: { id: badgeId, tenantId }
+    });
+    if (!badge) throw new NotFoundException('Badge not found or no permission');
+
+    // 2. Find the user from ticket
+    const ticket = await this.prisma.ticket.findFirst({
+      where: { qrCodeToken: ticketToken },
+      include: { registration: true }
+    });
+    if (!ticket) throw new NotFoundException('Ingresso inválido');
+
+    const userId = ticket.registration.userId;
+    const eventId = badge.eventId || ticket.eventId;
+
+    // 3. Award
+    const existing = await this.prisma.userBadge.findUnique({
+      where: {
+        userId_badgeId_eventId: {
+          userId,
+          badgeId: badge.id,
+          eventId,
+        }
+      }
+    });
+
+    if (existing) return existing;
+
+    return this.prisma.userBadge.create({
+      data: {
+        userId,
+        badgeId: badge.id,
+        eventId,
+      }
+    });
+  }
+
+  async getBadgeClaimCodes(tenantId: string, badgeId: string) {
+    const badge = await this.prisma.badge.findFirst({
+      where: { id: badgeId, tenantId }
+    });
+    if (!badge) throw new NotFoundException('Badge not found');
+
+    return this.prisma.badgeClaimCode.findMany({
+      where: { badgeId },
+      include: { user: { select: { name: true, email: true } } },
+      orderBy: { createdAt: 'desc' }
+    });
   }
 }

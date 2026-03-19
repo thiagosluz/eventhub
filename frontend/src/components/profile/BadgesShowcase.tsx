@@ -5,11 +5,15 @@ import { badgesService, Badge, UserBadge } from "@/services/badges.service";
 import { TrophyIcon, SparklesIcon, ShareIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Badge3D } from "./Badge3D";
 import confetti from "canvas-confetti";
+import { toast } from "react-hot-toast";
 
 export function BadgesShowcase() {
   const [availableBadges, setAvailableBadges] = useState<Badge[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
+  const [claimingBadge, setClaimingBadge] = useState<Badge | null>(null);
+  const [claimCode, setClaimCode] = useState("");
+  const [isSubmittingClaim, setIsSubmittingClaim] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -34,6 +38,39 @@ export function BadgesShowcase() {
       origin: { y: 0.6 },
       colors: ['#a855f7', '#ec4899', '#3b82f6']
     });
+  };
+
+  const onBadgeClick = (badge: Badge) => {
+    if (badge.isEarned) {
+      handleCelebrate(badge);
+    } else if (badge.triggerRule === 'MANUAL') {
+      setClaimingBadge(badge);
+    } else {
+      toast("Esta conquista é secreta! Continue participando para desbloquear.", { icon: "🤫" });
+    }
+  };
+
+  const handleClaimSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!claimingBadge || !claimCode) return;
+    
+    setIsSubmittingClaim(true);
+    try {
+      await badgesService.claimBadge(claimingBadge.id, claimCode);
+      toast.success("Conquista desbloqueada!");
+      setClaimingBadge(null);
+      setClaimCode("");
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      fetchData();
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Código inválido ou erro ao resgatar.");
+    } finally {
+      setIsSubmittingClaim(false);
+    }
   };
 
   const earned = availableBadges.filter(b => b.isEarned);
@@ -74,7 +111,7 @@ export function BadgesShowcase() {
               iconUrl={badge.iconUrl}
               eventName={badge.event?.name}
               isEarned={true}
-              onClick={() => handleCelebrate(badge)}
+              onClick={() => onBadgeClick(badge)}
             />
           ))}
         </div>
@@ -105,14 +142,57 @@ export function BadgesShowcase() {
               <Badge3D 
                 key={badge.id}
                 name={badge.name}
-                description="Mistério... participe das atividades para descobrir como ganhar!"
+                description={badge.triggerRule === 'MANUAL' ? "Clique para resgatar com seu código!" : "Mistério... participe das atividades para descobrir como ganhar!"}
                 color={badge.color}
                 iconUrl={undefined}
                 eventName={badge.event?.name}
                 isEarned={false}
+                onClick={() => onBadgeClick(badge)}
               />
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Claim Modal */}
+      {claimingBadge && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 animate-in fade-in duration-300">
+           <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={() => setClaimingBadge(null)} />
+           <div className="relative w-full max-w-md bg-card border border-border rounded-[2rem] p-8 space-y-6 shadow-2xl animate-in zoom-in-95 duration-300">
+              <div className="text-center space-y-2">
+                 <div className="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mx-auto">
+                    <SparklesIcon className="w-8 h-8" />
+                 </div>
+                 <h3 className="text-xl font-black tracking-tight">Resgatar Conquista</h3>
+                 <p className="text-sm text-muted-foreground">Insira o código secreto para desbloquear <strong>{claimingBadge.name}</strong>.</p>
+              </div>
+
+              <form onSubmit={handleClaimSubmit} className="space-y-4">
+                 <input 
+                   autoFocus
+                   required
+                   value={claimCode}
+                   onChange={e => setClaimCode(e.target.value.toUpperCase())}
+                   placeholder="CÓDIGO SECRETO"
+                   className="w-full h-14 bg-muted/50 border border-border rounded-xl px-4 text-center font-black tracking-[0.3em] outline-none focus:border-primary transition-colors"
+                 />
+                 <div className="flex gap-3">
+                    <button 
+                      type="button"
+                      onClick={() => setClaimingBadge(null)}
+                      className="flex-1 h-12 rounded-xl font-bold text-sm hover:bg-muted transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                    <button 
+                      disabled={isSubmittingClaim || !claimCode}
+                      className="flex-[2] h-12 bg-primary text-white rounded-xl font-black text-sm uppercase tracking-widest disabled:opacity-50 transition-all shadow-lg shadow-primary/20"
+                    >
+                      {isSubmittingClaim ? "Validando..." : "Desbloquear"}
+                    </button>
+                 </div>
+              </form>
+           </div>
         </div>
       )}
 

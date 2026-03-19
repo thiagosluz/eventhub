@@ -365,8 +365,21 @@ exports.Prisma.BadgeScalarFieldEnum = {
   iconUrl: 'iconUrl',
   color: 'color',
   triggerRule: 'triggerRule',
+  manualDeliveryMode: 'manualDeliveryMode',
+  minRequirement: 'minRequirement',
+  claimCode: 'claimCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BadgeClaimCodeScalarFieldEnum = {
+  id: 'id',
+  badgeId: 'badgeId',
+  code: 'code',
+  isUsed: 'isUsed',
+  userId: 'userId',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.UserBadgeScalarFieldEnum = {
@@ -492,6 +505,12 @@ exports.BadgeTrigger = exports.$Enums.BadgeTrigger = {
   CHECKIN_STREAK: 'CHECKIN_STREAK'
 };
 
+exports.ManualDeliveryMode = exports.$Enums.ManualDeliveryMode = {
+  SCAN: 'SCAN',
+  UNIQUE_CODES: 'UNIQUE_CODES',
+  GLOBAL_CODE: 'GLOBAL_CODE'
+};
+
 exports.Prisma.ModelName = {
   Tenant: 'Tenant',
   User: 'User',
@@ -517,6 +536,7 @@ exports.Prisma.ModelName = {
   Sponsor: 'Sponsor',
   RaffleHistory: 'RaffleHistory',
   Badge: 'Badge',
+  BadgeClaimCode: 'BadgeClaimCode',
   UserBadge: 'UserBadge'
 };
 
