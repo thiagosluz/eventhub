@@ -482,6 +482,9 @@ enum BadgeTrigger {
   RAFFLE_WINNER
   EARLY_BIRD
   CHECKIN_STREAK
+  ACTIVITY_HOURS
+  EVENT_COUNT
+  PROFILE_COMPLETED
 }
 
 enum ManualDeliveryMode {

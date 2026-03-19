@@ -122,9 +122,26 @@ let BadgesService = class BadgesService {
         }));
     }
     async checkAndAwardBadge(userId, eventId, triggerRule) {
-        const matchingBadges = await this.prisma.badge.findMany({
-            where: { eventId, triggerRule },
-        });
+        let matchingBadges = [];
+        if (triggerRule === 'PROFILE_COMPLETED') {
+            const user = await this.prisma.user.findUnique({
+                where: { id: userId },
+                select: { tenantId: true }
+            });
+            if (!user)
+                return [];
+            matchingBadges = await this.prisma.badge.findMany({
+                where: {
+                    tenantId: user.tenantId,
+                    triggerRule: 'PROFILE_COMPLETED'
+                },
+            });
+        }
+        else {
+            matchingBadges = await this.prisma.badge.findMany({
+                where: { eventId, triggerRule },
+            });
+        }
         const awarded = [];
         for (const badge of matchingBadges) {
             if (triggerRule === 'EARLY_BIRD') {
@@ -152,12 +169,53 @@ let BadgesService = class BadgesService {
                 if (checkinCount < (badge.minRequirement || 1))
                     continue;
             }
+            if (badge.triggerRule === 'ACTIVITY_HOURS') {
+                const attendances = await this.prisma.attendance.findMany({
+                    where: {
+                        ticket: {
+                            registration: {
+                                userId,
+                                event: { tenantId: badge.tenantId }
+                            }
+                        },
+                        activityId: { not: null }
+                    },
+                    include: { activity: true }
+                });
+                const totalMinutes = attendances.reduce((acc, curr) => {
+                    if (!curr.activity)
+                        return acc;
+                    const duration = (curr.activity.endAt.getTime() - curr.activity.startAt.getTime()) / (1000 * 60);
+                    return acc + duration;
+                }, 0);
+                const totalHours = totalMinutes / 60;
+                if (totalHours < (badge.minRequirement || 0))
+                    continue;
+            }
+            if (badge.triggerRule === 'EVENT_COUNT') {
+                const eventCount = await this.prisma.registration.count({
+                    where: {
+                        userId,
+                        event: { tenantId: badge.tenantId }
+                    }
+                });
+                if (eventCount < (badge.minRequirement || 1))
+                    continue;
+            }
+            if (badge.triggerRule === 'PROFILE_COMPLETED') {
+                const user = await this.prisma.user.findUnique({
+                    where: { id: userId }
+                });
+                if (!(user === null || user === void 0 ? void 0 : user.bio) || !(user === null || user === void 0 ? void 0 : user.avatarUrl))
+                    continue;
+            }
+            const targetEventId = badge.eventId || eventId;
             const existing = await this.prisma.userBadge.findUnique({
                 where: {
                     userId_badgeId_eventId: {
                         userId,
                         badgeId: badge.id,
-                        eventId,
+                        eventId: targetEventId,
                     }
                 }
             });
@@ -166,7 +224,7 @@ let BadgesService = class BadgesService {
                     data: {
                         userId,
                         badgeId: badge.id,
-                        eventId,
+                        eventId: targetEventId,
                     }
                 });
                 awarded.push(userBadge);

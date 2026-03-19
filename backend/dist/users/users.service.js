@@ -47,10 +47,12 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const argon2 = __importStar(require("argon2"));
 const minio_service_1 = require("../storage/minio.service");
+const badges_service_1 = require("../badges/badges.service");
 let UsersService = class UsersService {
-    constructor(prisma, minio) {
+    constructor(prisma, minio, badgesService) {
         this.prisma = prisma;
         this.minio = minio;
+        this.badgesService = badgesService;
     }
     async findMe(userId) {
         const user = await this.prisma.user.findUnique({
@@ -78,7 +80,7 @@ let UsersService = class UsersService {
                 throw new common_1.ConflictException("Este e-mail já está em uso por outro usuário.");
             }
         }
-        return this.prisma.user.update({
+        const updatedUser = await this.prisma.user.update({
             where: { id: userId },
             data: dto,
             select: {
@@ -91,6 +93,8 @@ let UsersService = class UsersService {
                 tenantId: true,
             },
         });
+        await this.badgesService.checkAndAwardBadge(userId, null, 'PROFILE_COMPLETED');
+        return updatedUser;
     }
     async updatePassword(userId, dto) {
         const user = await this.prisma.user.findUnique({
@@ -122,7 +126,7 @@ let UsersService = class UsersService {
             data: file.buffer,
             contentType: file.mimetype,
         });
-        return this.prisma.user.update({
+        const updatedUser = await this.prisma.user.update({
             where: { id: userId },
             data: { avatarUrl: url },
             select: {
@@ -130,12 +134,15 @@ let UsersService = class UsersService {
                 avatarUrl: true,
             },
         });
+        await this.badgesService.checkAndAwardBadge(userId, null, 'PROFILE_COMPLETED');
+        return updatedUser;
     }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        minio_service_1.MinioService])
+        minio_service_1.MinioService,
+        badges_service_1.BadgesService])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

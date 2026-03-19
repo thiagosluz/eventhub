@@ -67,8 +67,9 @@ export class CheckoutService {
       },
     });
 
-    // Trigger Badge Check for Early Bird
+    // Trigger Badge Check for Early Bird and Event Count
     await this.badgesService.checkAndAwardBadge(userId, eventId, 'EARLY_BIRD');
+    await this.badgesService.checkAndAwardBadge(userId, eventId, 'EVENT_COUNT');
 
     // Auto-enroll in activities that don't require manual enrollment
     const autoEnrollActivities = await this.prisma.activity.findMany({

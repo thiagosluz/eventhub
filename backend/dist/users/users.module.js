@@ -12,12 +12,13 @@ const users_controller_1 = require("./users.controller");
 const users_service_1 = require("./users.service");
 const prisma_module_1 = require("../prisma/prisma.module");
 const storage_module_1 = require("../storage/storage.module");
+const badges_module_1 = require("../badges/badges.module");
 let UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule;
 exports.UsersModule = UsersModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, storage_module_1.StorageModule],
+        imports: [prisma_module_1.PrismaModule, storage_module_1.StorageModule, badges_module_1.BadgesModule],
         controllers: [users_controller_1.UsersController],
         providers: [users_service_1.UsersService],
         exports: [users_service_1.UsersService],

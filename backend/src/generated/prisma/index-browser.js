@@ -502,7 +502,10 @@ exports.BadgeTrigger = exports.$Enums.BadgeTrigger = {
   MANUAL: 'MANUAL',
   RAFFLE_WINNER: 'RAFFLE_WINNER',
   EARLY_BIRD: 'EARLY_BIRD',
-  CHECKIN_STREAK: 'CHECKIN_STREAK'
+  CHECKIN_STREAK: 'CHECKIN_STREAK',
+  ACTIVITY_HOURS: 'ACTIVITY_HOURS',
+  EVENT_COUNT: 'EVENT_COUNT',
+  PROFILE_COMPLETED: 'PROFILE_COMPLETED'
 };
 
 exports.ManualDeliveryMode = exports.$Enums.ManualDeliveryMode = {

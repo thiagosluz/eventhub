@@ -8,12 +8,14 @@ import { PrismaService } from "../prisma/prisma.service";
 import { UpdateProfileDto, UpdatePasswordDto } from "./dto/update-user.dto";
 import * as argon2 from "argon2";
 import { MinioService } from "../storage/minio.service";
+import { BadgesService } from "../badges/badges.service";
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly minio: MinioService,
+    private readonly badgesService: BadgesService,
   ) {}
 
   async findMe(userId: string) {
@@ -45,7 +47,7 @@ export class UsersService {
       }
     }
 
-    return this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: { id: userId },
       data: dto,
       select: {
@@ -58,6 +60,11 @@ export class UsersService {
         tenantId: true,
       },
     });
+
+    // Trigger Badge Check for Profile Completed
+    await this.badgesService.checkAndAwardBadge(userId, null as any, 'PROFILE_COMPLETED');
+
+    return updatedUser;
   }
 
   async updatePassword(userId: string, dto: UpdatePasswordDto) {
@@ -99,7 +106,7 @@ export class UsersService {
       contentType: file.mimetype,
     });
 
-    return this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: { id: userId },
       data: { avatarUrl: url },
       select: {
@@ -107,5 +114,10 @@ export class UsersService {
         avatarUrl: true,
       },
     });
+
+    // Trigger Badge Check for Profile Completed
+    await this.badgesService.checkAndAwardBadge(userId, null as any, 'PROFILE_COMPLETED');
+
+    return updatedUser;
   }
 }

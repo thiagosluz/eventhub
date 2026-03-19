@@ -49,6 +49,7 @@ let CheckoutService = class CheckoutService {
             },
         });
         await this.badgesService.checkAndAwardBadge(userId, eventId, 'EARLY_BIRD');
+        await this.badgesService.checkAndAwardBadge(userId, eventId, 'EVENT_COUNT');
         const autoEnrollActivities = await this.prisma.activity.findMany({
             where: {
                 eventId,

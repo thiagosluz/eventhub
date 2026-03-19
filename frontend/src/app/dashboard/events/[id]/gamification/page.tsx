@@ -16,6 +16,8 @@ import {
   QrCodeIcon
 } from "@heroicons/react/24/outline";
 import { DeleteConfirmationModal } from "@/components/dashboard/DeleteConfirmationModal";
+import { SuccessModal } from "@/components/dashboard/SuccessModal";
+import { toast } from "react-hot-toast";
 
 const BADGE_COLORS = [
   { id: "emerald", name: "Sucesso (Verde)", bg: "bg-emerald-500", text: "text-emerald-500", border: "border-emerald-500/20" },
@@ -28,8 +30,11 @@ const BADGE_COLORS = [
 const TRIGGER_RULES = [
   { id: "MANUAL", name: "Entrega Manual (QR Code / Link)" },
   { id: "RAFFLE_WINNER", name: "Ganhador de Sorteio (Automático)" },
-  { id: "EARLY_BIRD", name: "Comprador Pioneiro (Futuro)" },
-  { id: "CHECKIN_STREAK", name: "Check-in Múltiplo (Futuro)" }
+  { id: "EARLY_BIRD", name: "Comprador Pioneiro (Inscrição X)" },
+  { id: "CHECKIN_STREAK", name: "Check-in Múltiplo (Atividades X)" },
+  { id: "ACTIVITY_HOURS", name: "Horas em Atividades (Mínimo X)" },
+  { id: "EVENT_COUNT", name: "Frequência em Eventos (Mínimo X)" },
+  { id: "PROFILE_COMPLETED", name: "Perfil Completo (Bio + Avatar)" }
 ];
 
 const STANDARD_ICONS = [
@@ -72,6 +77,7 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
   const [claimCodes, setClaimCodes] = useState<BadgeClaimCode[]>([]);
   const [loadingCodes, setLoadingCodes] = useState(false);
   const [isScanning, setIsScanning] = useState<Badge | null>(null);
+  const [successModal, setSuccessModal] = useState({ isOpen: false, title: "", description: "" });
   const scannerRef = useRef<Html5Qrcode | null>(null);
 
   useEffect(() => {
@@ -125,8 +131,8 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
         codesCount: 10
       });
       await fetchBadges();
-    } catch (err) {
-      alert("Erro ao criar a conquista.");
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Erro ao criar a conquista.");
     }
   };
 
@@ -137,7 +143,7 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
       const codes = await badgesService.getClaimCodes(badge.id);
       setClaimCodes(codes);
     } catch (err) {
-      alert("Erro ao carregar códigos.");
+      toast.error("Erro ao carregar códigos.");
     } finally {
       setLoadingCodes(false);
     }
@@ -154,9 +160,14 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
         async (decodedText) => {
           try {
             await badgesService.awardByScan(badge.id, decodedText);
-            alert("Sucesso! Medalha entregue.");
+            setSuccessModal({
+              isOpen: true,
+              title: "Medalha Entregue!",
+              description: `A conquista "${badge.name}" foi atribuída com sucesso ao participante.`
+            });
+            await stopScanner();
           } catch (err: any) {
-            alert(err.response?.data?.message || "Erro ao entregar");
+            toast.error(err.response?.data?.message || "Erro ao entregar");
           }
         },
         () => {}
@@ -182,7 +193,7 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
       setBadgeToDelete(null);
       await fetchBadges();
     } catch (err) {
-      alert("Erro ao deletar badge.");
+      toast.error("Erro ao deletar badge.");
     } finally {
       setBadgeToDelete(null);
     }
@@ -325,20 +336,32 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 {(formData.triggerRule === 'EARLY_BIRD' || formData.triggerRule === 'CHECKIN_STREAK') && (
-                   <div className="space-y-2 animate-in slide-in-from-left-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                        {formData.triggerRule === 'EARLY_BIRD' ? 'Nº de Pioneiros' : 'Mínimo de Check-ins'}
-                      </label>
-                      <input
-                        type="number"
-                        min={1}
-                        value={formData.minRequirement}
-                        onChange={e => setFormData({ ...formData, minRequirement: parseInt(e.target.value) })}
-                        className="w-full h-12 px-4 rounded-xl border border-border bg-muted/30 focus:border-fuchsia-500 outline-none font-bold text-sm transition-colors"
-                      />
-                   </div>
-                 )}
+                 {(formData.triggerRule === 'EARLY_BIRD' || 
+                   formData.triggerRule === 'CHECKIN_STREAK' ||
+                   formData.triggerRule === 'ACTIVITY_HOURS' ||
+                   formData.triggerRule === 'EVENT_COUNT'
+                  ) && (
+                    <div className="space-y-2 animate-in slide-in-from-left-2">
+                       <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                        {formData.triggerRule === 'EARLY_BIRD' && 'Nº de Pioneiros'}
+                        {formData.triggerRule === 'CHECKIN_STREAK' && 'Mínimo de Check-ins'}
+                        {formData.triggerRule === 'ACTIVITY_HOURS' && 'Horas Necessárias'}
+                        {formData.triggerRule === 'EVENT_COUNT' && 'Quantidade de Eventos'}
+                       </label>
+                       <input
+                         type="number"
+                         step={formData.triggerRule === 'ACTIVITY_HOURS' ? '0.5' : '1'}
+                         min={1}
+                         value={formData.minRequirement}
+                         onChange={e => setFormData({ ...formData, minRequirement: parseFloat(e.target.value) })}
+                         className="w-full h-12 px-4 rounded-xl border border-border bg-muted/30 focus:border-fuchsia-500 outline-none font-bold text-sm transition-colors"
+                       />
+                       <p className="text-[10px] font-bold text-muted-foreground italic px-1 pt-1 opacity-70">
+                         {formData.triggerRule === 'ACTIVITY_HOURS' && 'Calculado com base na duração agendada das atividades.'}
+                         {formData.triggerRule === 'EVENT_COUNT' && 'Considera apenas eventos desta mesma organização.'}
+                       </p>
+                    </div>
+                  )}
 
                  {formData.triggerRule === 'MANUAL' && (
                    <div className="space-y-4 pt-4 border-t border-border/50">
@@ -471,14 +494,21 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
                        </div>
                      )}
 
-                      {(badge.triggerRule === 'EARLY_BIRD' || badge.triggerRule === 'CHECKIN_STREAK') && (
-                        <div className="flex items-center justify-between px-1">
-                          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                            {badge.triggerRule === 'EARLY_BIRD' ? 'Vagas:' : 'Meta:'}
-                          </span>
-                          <span className="text-xs font-black text-slate-900">{badge.minRequirement || 0}</span>
-                        </div>
-                      )}
+                       {(badge.triggerRule === 'EARLY_BIRD' || 
+                         badge.triggerRule === 'CHECKIN_STREAK' ||
+                         badge.triggerRule === 'ACTIVITY_HOURS' ||
+                         badge.triggerRule === 'EVENT_COUNT'
+                        ) && (
+                         <div className="flex items-center justify-between px-1">
+                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                             {badge.triggerRule === 'EARLY_BIRD' && 'Vagas:'}
+                             {badge.triggerRule === 'CHECKIN_STREAK' && 'Check-ins:'}
+                             {badge.triggerRule === 'ACTIVITY_HOURS' && 'Horas:'}
+                             {badge.triggerRule === 'EVENT_COUNT' && 'Eventos:'}
+                           </span>
+                           <span className="text-xs font-black text-slate-900">{badge.minRequirement || 0}</span>
+                         </div>
+                       )}
 
                       {badge.triggerRule === 'MANUAL' && (
                         <div className="flex gap-2 pt-2">
@@ -589,6 +619,13 @@ export default function GamificationDashboardPage({ params }: { params: Promise<
         onConfirm={confirmDelete}
         title="Excluir Conquista"
         description="Tem certeza que deseja excluir esta conquista? Todos os participantes que a desbloquearam também a perderão de seus painéis."
+      />
+
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={() => setSuccessModal({ ...successModal, isOpen: false })}
+        title={successModal.title}
+        description={successModal.description}
       />
     </div>
   );
