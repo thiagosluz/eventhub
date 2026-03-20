@@ -22,6 +22,7 @@ import {
   MapPinIcon,
   QrCodeIcon,
   ChevronRightIcon,
+  ChevronLeftIcon,
   TrophyIcon
 } from "@heroicons/react/24/outline";
 
@@ -79,6 +80,9 @@ function ProfileContent() {
   // Tickets specific state
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [viewingActivitiesEvent, setViewingActivitiesEvent] = useState<{ id: string, name: string } | null>(null);
+  const [activeTicketIndex, setActiveTicketIndex] = useState(0);
+
+  const activeTickets = tickets.filter(t => !t.event?.endDate || new Date(t.event.endDate) >= new Date());
 
   // Profile Edit State
   const [isEditing, setIsEditing] = useState(false);
@@ -260,7 +264,7 @@ function ProfileContent() {
             <div className="space-y-8 animate-in fade-in duration-500">
                
                {/* Credencial Digital (Badge) */}
-               {tickets.length > 0 && (
+               {activeTickets.length > 0 && (
                  <div className="premium-card p-1 md:p-8 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 border-none relative overflow-hidden group">
                     <div className="absolute inset-0 bg-black/10 mix-blend-overlay"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
@@ -275,14 +279,43 @@ function ProfileContent() {
                             <p className="text-white/60 text-[8px] uppercase tracking-widest">{profile?.role === 'ORGANIZER' ? 'Staff' : 'Participante'}</p>
                           </div>
                           <div className="w-full text-center border-t border-white/20 pt-2">
-                             <div className="text-[10px] font-black text-white line-clamp-2">{tickets[0]?.event?.name || 'Evento EventHub'}</div>
+                             <div className="text-[10px] font-black text-white line-clamp-2">{activeTickets[activeTicketIndex]?.event?.name || 'Evento EventHub'}</div>
                           </div>
                        </div>
                        
                        <div className="flex-1 text-center md:text-left space-y-4">
-                          <div>
-                            <h3 className="text-2xl md:text-3xl font-black text-white drop-shadow-md">Sua Credencial Digital</h3>
-                            <p className="text-white/80 font-medium">Compartilhe com sua rede que você estará presente no evento <strong className="text-white">{tickets[0]?.event?.name}</strong>!</p>
+                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                              <h3 className="text-2xl md:text-3xl font-black text-white drop-shadow-md">Sua Credencial Digital</h3>
+                              <p className="text-white/80 font-medium">Compartilhe com sua rede que você estará presente no evento <strong className="text-white">{activeTickets[activeTicketIndex]?.event?.name}</strong>!</p>
+                            </div>
+                            
+                            {activeTickets.length > 1 && (
+                              <div className="flex items-center justify-center md:justify-end gap-2 bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20">
+                                <button 
+                                  onClick={() => setActiveTicketIndex(prev => (prev > 0 ? prev - 1 : activeTickets.length - 1))}
+                                  className="p-2 rounded-xl hover:bg-white/20 text-white transition-colors"
+                                  title="Evento Anterior"
+                                >
+                                  <ChevronLeftIcon className="w-5 h-5" />
+                                </button>
+                                <div className="flex gap-1 px-2">
+                                  {activeTickets.map((_, idx) => (
+                                    <div 
+                                      key={idx} 
+                                      className={`w-1.5 h-1.5 rounded-full transition-all ${idx === activeTicketIndex ? 'bg-white w-4' : 'bg-white/30'}`}
+                                    />
+                                  ))}
+                                </div>
+                                <button 
+                                  onClick={() => setActiveTicketIndex(prev => (prev < activeTickets.length - 1 ? prev + 1 : 0))}
+                                  className="p-2 rounded-xl hover:bg-white/20 text-white transition-colors"
+                                  title="Próximo Evento"
+                                >
+                                  <ChevronRightIcon className="w-5 h-5" />
+                                </button>
+                              </div>
+                            )}
                           </div>
                           <div className="flex flex-wrap gap-3 justify-center md:justify-start">
                             <button onClick={handleShareBadge} className="inline-flex items-center gap-2 bg-white text-purple-600 px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-white/90 transition-colors shadow-xl">
@@ -291,7 +324,7 @@ function ProfileContent() {
                             <button 
                               onClick={() => {
                                 setActiveTab('tickets');
-                                setViewingActivitiesEvent({ id: tickets[0].eventId, name: tickets[0].event?.name || "" });
+                                setViewingActivitiesEvent({ id: activeTickets[activeTicketIndex].eventId, name: activeTickets[activeTicketIndex].event?.name || "" });
                               }} 
                               className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white border border-white/20 px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-white/20 transition-colors shadow-xl"
                             >
