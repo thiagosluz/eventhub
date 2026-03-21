@@ -7,9 +7,11 @@ import confetti from "canvas-confetti";
 
 export default function CheckoutSuccessPage() {
   const [mounted, setMounted] = useState(false);
+  const [orderId, setOrderId] = useState('');
 
   useEffect(() => {
     setMounted(true);
+    setOrderId(String(Math.floor(Math.random() * 90000) + 10000));
     // Disparar confetes após a montagem
     const duration = 3 * 1000;
     const animationEnd = Date.now() + duration;
@@ -55,7 +57,7 @@ export default function CheckoutSuccessPage() {
         <div className="premium-card p-6 bg-card border-border max-w-md mx-auto space-y-4">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground font-bold uppercase tracking-widest">Pedido</span>
-            <span className="font-black text-foreground">#EVH-{Math.floor(Math.random() * 90000) + 10000}</span>
+            <span className="font-black text-foreground">#EVH-{orderId}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground font-bold uppercase tracking-widest">Status</span>

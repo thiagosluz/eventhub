@@ -61,7 +61,16 @@ export class CheckinController {
   @Roles(UserRole.ORGANIZER)
   @Post("raffles")
   async drawRaffle(
-    @Body() body: { eventId: string; activityId?: string; count?: number; rule?: 'ALL_REGISTERED' | 'ONLY_CHECKED_IN'; prizeName?: string; uniqueWinners?: boolean; excludeStaff?: boolean },
+    @Body()
+    body: {
+      eventId: string;
+      activityId?: string;
+      count?: number;
+      rule?: "ALL_REGISTERED" | "ONLY_CHECKED_IN";
+      prizeName?: string;
+      uniqueWinners?: boolean;
+      excludeStaff?: boolean;
+    },
     @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
@@ -84,10 +93,16 @@ export class CheckinController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Get("raffles/latest/:eventId")
-  async getLatestRaffle(@Param("eventId") eventId: string, @Req() req: AuthRequest) {
+  async getLatestRaffle(
+    @Param("eventId") eventId: string,
+    @Req() req: AuthRequest,
+  ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) throw new Error("Missing tenantId");
-    const history = await this.checkinService.getEventRaffleHistory(tenantId, eventId);
+    const history = await this.checkinService.getEventRaffleHistory(
+      tenantId,
+      eventId,
+    );
     return history.length > 0 ? history[0] : null;
   }
 
@@ -97,18 +112,25 @@ export class CheckinController {
   async setRaffleDisplayVisibility(
     @Param("id") id: string,
     @Body() body: { hide: boolean },
-    @Req() req: AuthRequest
+    @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) throw new Error("Missing tenantId");
-    await this.checkinService.setRaffleDisplayVisibility(tenantId, id, body.hide);
+    await this.checkinService.setRaffleDisplayVisibility(
+      tenantId,
+      id,
+      body.hide,
+    );
     return { success: true };
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Get("raffles/history/:eventId")
-  async getRaffleHistory(@Param("eventId") eventId: string, @Req() req: AuthRequest) {
+  async getRaffleHistory(
+    @Param("eventId") eventId: string,
+    @Req() req: AuthRequest,
+  ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) throw new Error("Missing tenantId");
     return this.checkinService.getEventRaffleHistory(tenantId, eventId);
@@ -130,7 +152,7 @@ export class CheckinController {
   async markPrizeReceived(
     @Param("id") id: string,
     @Body() body: { received: boolean },
-    @Req() req: AuthRequest
+    @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) throw new Error("Missing tenantId");

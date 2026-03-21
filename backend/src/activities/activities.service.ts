@@ -484,7 +484,7 @@ export class ActivitiesService implements OnModuleInit {
     // If the activity doesn't require enrollment, everyone registered for the event is "enrolled"
     // but the actual ActivityEnrollment records are created by createMany in create/update activity.
     // For manual enrollments (requiresEnrollment: true), the user should be allowed to unroll.
-    
+
     return this.prisma.activityEnrollment.delete({
       where: { id: enrollment.id },
     });

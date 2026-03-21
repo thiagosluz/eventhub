@@ -128,8 +128,16 @@ export class CheckinService {
     }
 
     // Trigger Badge Check for Check-in Streak and Activity Hours
-    await this.badgesService.checkAndAwardBadge(user.id, event.id, 'CHECKIN_STREAK');
-    await this.badgesService.checkAndAwardBadge(user.id, event.id, 'ACTIVITY_HOURS');
+    await this.badgesService.checkAndAwardBadge(
+      user.id,
+      event.id,
+      "CHECKIN_STREAK",
+    );
+    await this.badgesService.checkAndAwardBadge(
+      user.id,
+      event.id,
+      "ACTIVITY_HOURS",
+    );
 
     return { alreadyCheckedIn: false, attendanceId: attendance.id };
   }
@@ -144,7 +152,16 @@ export class CheckinService {
     uniqueWinners?: boolean;
     excludeStaff?: boolean;
   }): Promise<{ winners: { registrationId: string; userName: string }[] }> {
-    const { tenantId, eventId, activityId, count = 1, rule = "ONLY_CHECKED_IN", prizeName, uniqueWinners, excludeStaff } = params;
+    const {
+      tenantId,
+      eventId,
+      activityId,
+      count = 1,
+      rule = "ONLY_CHECKED_IN",
+      prizeName,
+      uniqueWinners,
+      excludeStaff,
+    } = params;
 
     const event = await this.prisma.event.findFirst({
       where: { id: eventId, tenantId },
@@ -154,7 +171,10 @@ export class CheckinService {
       throw new ForbiddenException("Evento não pertence a este tenant.");
     }
 
-    const byRegistration = new Map<string, { registrationId: string; userName: string; role: string }>();
+    const byRegistration = new Map<
+      string,
+      { registrationId: string; userName: string; role: string }
+    >();
 
     if (rule === "ONLY_CHECKED_IN") {
       const attendances = await this.prisma.attendance.findMany({
@@ -209,16 +229,16 @@ export class CheckinService {
     let validPool = Array.from(byRegistration.values());
 
     if (excludeStaff) {
-      validPool = validPool.filter(p => p.role !== "ORGANIZER");
+      validPool = validPool.filter((p) => p.role !== "ORGANIZER");
     }
 
     if (uniqueWinners) {
       const pastWinners = await this.prisma.raffleHistory.findMany({
         where: { eventId },
-        select: { registrationId: true }
+        select: { registrationId: true },
       });
-      const pastSet = new Set(pastWinners.map(w => w.registrationId));
-      validPool = validPool.filter(p => !pastSet.has(p.registrationId));
+      const pastSet = new Set(pastWinners.map((w) => w.registrationId));
+      validPool = validPool.filter((p) => !pastSet.has(p.registrationId));
     }
 
     if (validPool.length === 0) {
@@ -249,32 +269,38 @@ export class CheckinService {
     const event = await this.prisma.event.findFirst({
       where: { id: eventId, tenantId },
     });
-    if (!event) throw new ForbiddenException("Evento não pertence a este tenant.");
+    if (!event)
+      throw new ForbiddenException("Evento não pertence a este tenant.");
 
     const history = await this.prisma.raffleHistory.findMany({
       where: { eventId },
       include: {
         registration: {
-          include: { user: { select: { name: true, email: true } } }
+          include: { user: { select: { name: true, email: true } } },
         },
-        activity: { select: { title: true } }
+        activity: { select: { title: true } },
       },
-      orderBy: { drawnAt: 'desc' },
+      orderBy: { drawnAt: "desc" },
     });
 
-    return history.map(h => ({
+    return history.map((h) => ({
       ...h,
-      isHiddenOnDisplay: this.hiddenRaffleIds.has(h.id)
+      isHiddenOnDisplay: this.hiddenRaffleIds.has(h.id),
     }));
   }
 
-  async setRaffleDisplayVisibility(tenantId: string, historyId: string, hide: boolean) {
+  async setRaffleDisplayVisibility(
+    tenantId: string,
+    historyId: string,
+    hide: boolean,
+  ) {
     const history = await this.prisma.raffleHistory.findUnique({
       where: { id: historyId },
       include: { event: true },
     });
     if (!history) throw new NotFoundException("Histórico não encontrado.");
-    if (history.event.tenantId !== tenantId) throw new ForbiddenException("Sem permissão.");
+    if (history.event.tenantId !== tenantId)
+      throw new ForbiddenException("Sem permissão.");
 
     if (hide) {
       this.hiddenRaffleIds.add(historyId);
@@ -289,18 +315,24 @@ export class CheckinService {
       include: { event: true },
     });
     if (!history) throw new NotFoundException("Histórico não encontrado.");
-    if (history.event.tenantId !== tenantId) throw new ForbiddenException("Sem permissão.");
+    if (history.event.tenantId !== tenantId)
+      throw new ForbiddenException("Sem permissão.");
 
     await this.prisma.raffleHistory.delete({ where: { id: historyId } });
   }
 
-  async markPrizeReceived(tenantId: string, historyId: string, received: boolean) {
+  async markPrizeReceived(
+    tenantId: string,
+    historyId: string,
+    received: boolean,
+  ) {
     const history = await this.prisma.raffleHistory.findUnique({
       where: { id: historyId },
       include: { event: true, registration: true },
     });
     if (!history) throw new NotFoundException("Histórico não encontrado.");
-    if (history.event.tenantId !== tenantId) throw new ForbiddenException("Sem permissão.");
+    if (history.event.tenantId !== tenantId)
+      throw new ForbiddenException("Sem permissão.");
 
     const updated = await this.prisma.raffleHistory.update({
       where: { id: historyId },
@@ -309,9 +341,9 @@ export class CheckinService {
 
     if (received) {
       await this.badgesService.checkAndAwardBadge(
-        history.registration.userId, 
-        history.eventId, 
-        'RAFFLE_WINNER'
+        history.registration.userId,
+        history.eventId,
+        "RAFFLE_WINNER",
       );
     }
 

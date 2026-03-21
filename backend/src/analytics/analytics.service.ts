@@ -105,7 +105,9 @@ export class AnalyticsService {
     // 5. Overall Event Check-ins
     const totalCheckins = event.registrations.filter((r) =>
       r.tickets.some((t) =>
-        t.attendances.some((a) => a.activityId === null || a.activityId === undefined),
+        t.attendances.some(
+          (a) => a.activityId === null || a.activityId === undefined,
+        ),
       ),
     ).length;
 
@@ -131,8 +133,8 @@ export class AnalyticsService {
         user: true,
         tickets: {
           include: {
-            attendances: true
-          }
+            attendances: true,
+          },
         },
         enrollments: {
           include: {
@@ -152,12 +154,20 @@ export class AnalyticsService {
       ticketType: reg.tickets[0]?.type || "FREE",
       ticketStatus: reg.tickets[0]?.status || "PENDING",
       qrCodeToken: reg.tickets[0]?.qrCodeToken,
-      attendances: reg.tickets[0]?.attendances?.map(a => ({ id: a.id, activityId: a.activityId })) || [],
+      attendances:
+        reg.tickets[0]?.attendances?.map((a) => ({
+          id: a.id,
+          activityId: a.activityId,
+        })) || [],
       enrollmentsCount: reg.enrollments.length,
     }));
   }
 
-  async getEventCheckins(tenantId: string, eventId: string, activityId?: string) {
+  async getEventCheckins(
+    tenantId: string,
+    eventId: string,
+    activityId?: string,
+  ) {
     const attendances = await this.prisma.attendance.findMany({
       where: {
         ticket: {

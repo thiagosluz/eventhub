@@ -26,7 +26,6 @@ export default function RaffleDisplayPage({ params }: { params: Promise<{ id: st
   ];
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
 
     const checkLatest = async () => {
       try {
@@ -64,7 +63,7 @@ export default function RaffleDisplayPage({ params }: { params: Promise<{ id: st
       }
     };
 
-    intervalId = setInterval(checkLatest, 3000);
+    const intervalId = setInterval(checkLatest, 3000);
     checkLatest(); // check instantâneo ao montar
 
     return () => clearInterval(intervalId);

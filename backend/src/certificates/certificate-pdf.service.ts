@@ -79,7 +79,7 @@ export class CertificatePdfService {
     ];
 
     const validationHash = uuidv4();
-    const validationUrl = `${process.env.FRONTEND_URL || 'http://localhost:3001'}/certificates/validate/${validationHash}`;
+    const validationUrl = `${process.env.FRONTEND_URL || "http://localhost:3001"}/certificates/validate/${validationHash}`;
     const qrCodeBuffer = await QRCode.toBuffer(validationUrl);
 
     const attendances = await this.prisma.attendance.findMany({
@@ -88,7 +88,7 @@ export class CertificatePdfService {
         activity: { eventId: template.eventId },
       },
       include: { activity: true },
-      orderBy: { activity: { startAt: 'asc' } },
+      orderBy: { activity: { startAt: "asc" } },
     });
 
     const pdfBuffer = await this.renderPdf(
@@ -97,7 +97,7 @@ export class CertificatePdfService {
       data,
       qrCodeBuffer,
       attendances,
-      validationHash
+      validationHash,
     );
 
     const objectName = `certificates/${template.eventId}/${registrationId}-${Date.now()}.pdf`;
@@ -126,7 +126,7 @@ export class CertificatePdfService {
     data: Record<string, string>,
     qrCodeBuffer?: Buffer,
     attendances?: any[],
-    validationHash?: string
+    validationHash?: string,
   ): Promise<Buffer> {
     const imageBuffer = await this.fetchImage(backgroundUrl);
     return new Promise((resolve, reject) => {
@@ -185,8 +185,9 @@ export class CertificatePdfService {
 
         for (const att of attendances) {
           if (!att.activity) continue;
-          
-          if (y > 420) { // Limit max Y to accommodate QR Code at the bottom
+
+          if (y > 420) {
+            // Limit max Y to accommodate QR Code at the bottom
             doc.addPage();
             doc.rect(0, 0, 841.89, 595.28).fill("#ffffff");
             doc.fillColor("#000000");
@@ -196,17 +197,18 @@ export class CertificatePdfService {
 
           const start = new Date(att.activity.startAt);
           const end = new Date(att.activity.endAt);
-          const durationHrs = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-          
-          const dateStr = `${String(start.getUTCDate()).padStart(2, '0')}/${String(start.getUTCMonth()+1).padStart(2,'0')}/${start.getUTCFullYear()}`;
+          const durationHrs =
+            (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+
+          const dateStr = `${String(start.getUTCDate()).padStart(2, "0")}/${String(start.getUTCMonth() + 1).padStart(2, "0")}/${start.getUTCFullYear()}`;
           const checkinDate = new Date(att.checkedAt);
-          const checkinStr = `${String(checkinDate.getUTCDate()).padStart(2, '0')}/${String(checkinDate.getUTCMonth()+1).padStart(2,'0')}/${checkinDate.getUTCFullYear()} ${String(checkinDate.getUTCHours()-3).padStart(2,'0')}:${String(checkinDate.getUTCMinutes()).padStart(2,'0')}`;
+          const checkinStr = `${String(checkinDate.getUTCDate()).padStart(2, "0")}/${String(checkinDate.getUTCMonth() + 1).padStart(2, "0")}/${checkinDate.getUTCFullYear()} ${String(checkinDate.getUTCHours() - 3).padStart(2, "0")}:${String(checkinDate.getUTCMinutes()).padStart(2, "0")}`;
 
           doc.text(att.activity.title.substring(0, 60), 50, y);
           doc.text(dateStr, 450, y);
           doc.text(`${Math.round(durationHrs * 10) / 10}h`, 550, y);
           doc.text(checkinStr, 650, y);
-          
+
           y += 25;
         }
         finalY = y;
@@ -224,8 +226,16 @@ export class CertificatePdfService {
         doc.fontSize(12).font("Helvetica-Bold");
         doc.text("Validação de Autenticidade", 170, 470);
         doc.fontSize(10).font("Helvetica");
-        doc.text("Para verificar a autenticidade deste certificado, aponte a câmera do seu celular para", 170, 490);
-        doc.text("o QR Code ao lado ou acesse a página de validação on-line.", 170, 505);
+        doc.text(
+          "Para verificar a autenticidade deste certificado, aponte a câmera do seu celular para",
+          170,
+          490,
+        );
+        doc.text(
+          "o QR Code ao lado ou acesse a página de validação on-line.",
+          170,
+          505,
+        );
         if (validationHash) {
           doc.fontSize(11).font("Helvetica-Bold");
           doc.text(`Código verificador: ${validationHash}`, 170, 530);

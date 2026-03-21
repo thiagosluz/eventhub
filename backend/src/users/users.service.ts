@@ -62,7 +62,11 @@ export class UsersService {
     });
 
     // Trigger Badge Check for Profile Completed
-    await this.badgesService.checkAndAwardBadge(userId, null as any, 'PROFILE_COMPLETED');
+    await this.badgesService.checkAndAwardBadge(
+      userId,
+      null as any,
+      "PROFILE_COMPLETED",
+    );
 
     return updatedUser;
   }
@@ -116,7 +120,11 @@ export class UsersService {
     });
 
     // Trigger Badge Check for Profile Completed
-    await this.badgesService.checkAndAwardBadge(userId, null as any, 'PROFILE_COMPLETED');
+    await this.badgesService.checkAndAwardBadge(
+      userId,
+      null as any,
+      "PROFILE_COMPLETED",
+    );
 
     return updatedUser;
   }

@@ -1,5 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class BadgesService {
@@ -13,16 +17,16 @@ export class BadgesService {
         name: data.name,
         description: data.description,
         iconUrl: data.iconUrl,
-        color: data.color || 'blue',
-        triggerRule: data.triggerRule || 'MANUAL',
-        manualDeliveryMode: data.manualDeliveryMode || 'GLOBAL_CODE',
+        color: data.color || "blue",
+        triggerRule: data.triggerRule || "MANUAL",
+        manualDeliveryMode: data.manualDeliveryMode || "GLOBAL_CODE",
         minRequirement: data.minRequirement ? parseInt(data.minRequirement) : 0,
         claimCode: data.claimCode || null,
       },
     });
 
     // If UNIQUE_CODES, generate the batch
-    if (data.manualDeliveryMode === 'UNIQUE_CODES' && data.codesCount > 0) {
+    if (data.manualDeliveryMode === "UNIQUE_CODES" && data.codesCount > 0) {
       const codes = [];
       for (let i = 0; i < data.codesCount; i++) {
         codes.push({
@@ -39,10 +43,10 @@ export class BadgesService {
   }
 
   private generateRandomCode(): string {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // No O, 0, I, 1
-    let result = '';
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // No O, 0, I, 1
+    let result = "";
     for (let i = 0; i < 6; i++) {
-      if (i === 3) result += '-';
+      if (i === 3) result += "-";
       result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return result;
@@ -51,7 +55,7 @@ export class BadgesService {
   async getBadgesByEvent(tenantId: string, eventId: string) {
     return this.prisma.badge.findMany({
       where: { tenantId, eventId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
   }
 
@@ -59,7 +63,7 @@ export class BadgesService {
     const badge = await this.prisma.badge.findFirst({
       where: { id: badgeId, tenantId },
     });
-    if (!badge) throw new NotFoundException('Badge not found');
+    if (!badge) throw new NotFoundException("Badge not found");
 
     return this.prisma.badge.update({
       where: { id: badgeId },
@@ -71,7 +75,7 @@ export class BadgesService {
     const badge = await this.prisma.badge.findFirst({
       where: { id: badgeId, tenantId },
     });
-    if (!badge) throw new NotFoundException('Badge not found');
+    if (!badge) throw new NotFoundException("Badge not found");
 
     return this.prisma.badge.delete({
       where: { id: badgeId },
@@ -84,62 +88,62 @@ export class BadgesService {
       where: { userId },
       include: {
         badge: true,
-        event: { select: { name: true, slug: true } }
+        event: { select: { name: true, slug: true } },
       },
-      orderBy: { earnedAt: 'desc' },
+      orderBy: { earnedAt: "desc" },
     });
   }
 
   async getAvailableBadges(userId: string) {
     if (!userId) return [];
-    
+
     // 1. Get all events the user is registered for
     const registrations = await this.prisma.registration.findMany({
       where: { userId },
-      select: { eventId: true }
+      select: { eventId: true },
     });
-    const eventIds = registrations.map(r => r.eventId);
+    const eventIds = registrations.map((r) => r.eventId);
 
     // 2. Get all badges for these events
     const allBadges = await this.prisma.badge.findMany({
-      where: { 
+      where: {
         OR: [
           { eventId: { in: eventIds } },
-          { eventId: null } // Global platform badges
-        ]
+          { eventId: null }, // Global platform badges
+        ],
       },
-      include: { event: { select: { name: true } } }
+      include: { event: { select: { name: true } } },
     });
 
     // 3. Get user's earned badges
     const earnedBadges = await this.prisma.userBadge.findMany({
       where: { userId },
-      select: { badgeId: true }
+      select: { badgeId: true },
     });
-    const earnedIds = new Set(earnedBadges.map(eb => eb.badgeId));
+    const earnedIds = new Set(earnedBadges.map((eb) => eb.badgeId));
 
     // 4. Map results
-    return allBadges.map(badge => ({
+    return allBadges.map((badge) => ({
       ...badge,
-      isEarned: earnedIds.has(badge.id)
+      isEarned: earnedIds.has(badge.id),
     }));
   }
 
   async checkAndAwardBadge(userId: string, eventId: string, triggerRule: any) {
-    let matchingBadges = [];
-    
-    if (triggerRule === 'PROFILE_COMPLETED') {
+    let matchingBadges: any[];
+
+    if (triggerRule === "PROFILE_COMPLETED") {
       const user = await this.prisma.user.findUnique({
         where: { id: userId },
-        select: { tenantId: true }
+        select: { tenantId: true },
       });
-      
+
       if (!user) return [];
-      
+
       matchingBadges = await this.prisma.badge.findMany({
-        where: { 
+        where: {
           tenantId: user.tenantId,
-          triggerRule: 'PROFILE_COMPLETED'
+          triggerRule: "PROFILE_COMPLETED",
         },
       });
     } else {
@@ -151,77 +155,79 @@ export class BadgesService {
     const awarded = [];
 
     for (const badge of matchingBadges) {
-      if (triggerRule === 'EARLY_BIRD') {
+      if (triggerRule === "EARLY_BIRD") {
         const userReg = await this.prisma.registration.findFirst({
-           where: { userId, eventId },
-           select: { id: true, createdAt: true }
+          where: { userId, eventId },
+          select: { id: true, createdAt: true },
         });
-        
+
         if (userReg) {
-           const position = await this.prisma.registration.count({
-              where: { eventId, createdAt: { lt: userReg.createdAt } }
-           });
-           
-           if (position + 1 > (badge.minRequirement || 0)) continue;
+          const position = await this.prisma.registration.count({
+            where: { eventId, createdAt: { lt: userReg.createdAt } },
+          });
+
+          if (position + 1 > (badge.minRequirement || 0)) continue;
         }
       }
 
-      if (triggerRule === 'CHECKIN_STREAK') {
+      if (triggerRule === "CHECKIN_STREAK") {
         const checkinCount = await this.prisma.attendance.count({
-          where: { 
+          where: {
             activity: { eventId },
             ticket: {
-              registration: { userId }
-            }
-          }
+              registration: { userId },
+            },
+          },
         });
 
         if (checkinCount < (badge.minRequirement || 1)) continue;
       }
-      
-      if (badge.triggerRule === 'ACTIVITY_HOURS') {
+
+      if (badge.triggerRule === "ACTIVITY_HOURS") {
         const attendances = await this.prisma.attendance.findMany({
           where: {
-            ticket: { 
-              registration: { 
+            ticket: {
+              registration: {
                 userId,
-                event: { tenantId: badge.tenantId }
-              } 
+                event: { tenantId: badge.tenantId },
+              },
             },
-            activityId: { not: null }
+            activityId: { not: null },
           },
-          include: { activity: true }
+          include: { activity: true },
         });
-        
+
         const totalMinutes = attendances.reduce((acc, curr) => {
           if (!curr.activity) return acc;
-          const duration = (curr.activity.endAt.getTime() - curr.activity.startAt.getTime()) / (1000 * 60);
+          const duration =
+            (curr.activity.endAt.getTime() - curr.activity.startAt.getTime()) /
+            (1000 * 60);
           return acc + duration;
         }, 0);
-        
+
         const totalHours = totalMinutes / 60;
         if (totalHours < (badge.minRequirement || 0)) continue;
       }
-      
-      if (badge.triggerRule === 'EVENT_COUNT') {
+
+      if (badge.triggerRule === "EVENT_COUNT") {
         const eventCount = await this.prisma.registration.count({
-          where: { 
+          where: {
             userId,
             event: { tenantId: badge.tenantId },
             tickets: {
-              some: { status: 'COMPLETED' }
-            }
-          }
+              some: { status: "COMPLETED" },
+            },
+          },
         });
-        
+
         if (eventCount < (badge.minRequirement || 1)) continue;
       }
-      
-      if (badge.triggerRule === 'PROFILE_COMPLETED') {
+
+      if (badge.triggerRule === "PROFILE_COMPLETED") {
         const user = await this.prisma.user.findUnique({
-          where: { id: userId }
+          where: { id: userId },
         });
-        
+
         if (!user?.bio || user.bio.length < 50 || !user?.avatarUrl) continue;
       }
 
@@ -233,8 +239,8 @@ export class BadgesService {
             userId,
             badgeId: badge.id,
             eventId: targetEventId as any,
-          }
-        }
+          },
+        },
       });
 
       if (!existing) {
@@ -243,7 +249,7 @@ export class BadgesService {
             userId,
             badgeId: badge.id,
             eventId: targetEventId as any,
-          }
+          },
         });
         awarded.push(userBadge);
       }
@@ -254,30 +260,35 @@ export class BadgesService {
 
   async claimBadge(userId: string, badgeId: string, claimCode: string) {
     const badge = await this.prisma.badge.findUnique({
-      where: { id: badgeId }
+      where: { id: badgeId },
     });
 
-    if (!badge) throw new NotFoundException('Conquista não encontrada');
-    if (badge.triggerRule !== 'MANUAL') throw new BadRequestException('Esta conquista não pode ser resgatada manualmente');
+    if (!badge) throw new NotFoundException("Conquista não encontrada");
+    if (badge.triggerRule !== "MANUAL")
+      throw new BadRequestException(
+        "Esta conquista não pode ser resgatada manualmente",
+      );
 
     // Validation based on delivery mode
-    if (badge.manualDeliveryMode === 'GLOBAL_CODE') {
-      if (badge.claimCode && badge.claimCode !== claimCode) throw new BadRequestException('Código de resgate inválido');
-    } else if (badge.manualDeliveryMode === 'UNIQUE_CODES') {
+    if (badge.manualDeliveryMode === "GLOBAL_CODE") {
+      if (badge.claimCode && badge.claimCode !== claimCode)
+        throw new BadRequestException("Código de resgate inválido");
+    } else if (badge.manualDeliveryMode === "UNIQUE_CODES") {
       const uniqueCode = await this.prisma.badgeClaimCode.findFirst({
-        where: { badgeId: badge.id, code: claimCode }
+        where: { badgeId: badge.id, code: claimCode },
       });
 
-      if (!uniqueCode) throw new BadRequestException('Código inexistente');
-      if (uniqueCode.isUsed) throw new BadRequestException('Este código já foi utilizado');
+      if (!uniqueCode) throw new BadRequestException("Código inexistente");
+      if (uniqueCode.isUsed)
+        throw new BadRequestException("Este código já foi utilizado");
 
       // Mark as used
       await this.prisma.badgeClaimCode.update({
         where: { id: uniqueCode.id },
-        data: { isUsed: true, userId, usedAt: new Date() }
+        data: { isUsed: true, userId, usedAt: new Date() },
       });
     } else {
-      throw new Error('Esta conquista requer escaneamento pelo organizador');
+      throw new Error("Esta conquista requer escaneamento pelo organizador");
     }
 
     const existing = await this.prisma.userBadge.findUnique({
@@ -286,14 +297,15 @@ export class BadgesService {
           userId,
           badgeId: badge.id,
           eventId: badge.eventId!,
-        }
-      }
+        },
+      },
     });
 
     if (existing) {
       // Se for código único, o erro acima já deu, mas se for global...
-      if (badge.manualDeliveryMode === 'GLOBAL_CODE') throw new BadRequestException('Você já possui esta conquista');
-      return existing; 
+      if (badge.manualDeliveryMode === "GLOBAL_CODE")
+        throw new BadRequestException("Você já possui esta conquista");
+      return existing;
     }
 
     return this.prisma.userBadge.create({
@@ -301,23 +313,27 @@ export class BadgesService {
         userId,
         badgeId: badge.id,
         eventId: badge.eventId,
-      }
+      },
     });
   }
 
-  async awardBadgeByScan(tenantId: string, badgeId: string, ticketToken: string) {
+  async awardBadgeByScan(
+    tenantId: string,
+    badgeId: string,
+    ticketToken: string,
+  ) {
     // 1. Find the badge and verify permission
     const badge = await this.prisma.badge.findFirst({
-      where: { id: badgeId, tenantId }
+      where: { id: badgeId, tenantId },
     });
-    if (!badge) throw new NotFoundException('Badge not found or no permission');
+    if (!badge) throw new NotFoundException("Badge not found or no permission");
 
     // 2. Find the user from ticket
     const ticket = await this.prisma.ticket.findFirst({
       where: { qrCodeToken: ticketToken },
-      include: { registration: true }
+      include: { registration: true },
     });
-    if (!ticket) throw new NotFoundException('Ingresso inválido');
+    if (!ticket) throw new NotFoundException("Ingresso inválido");
 
     const userId = ticket.registration.userId;
     const eventId = badge.eventId || ticket.eventId;
@@ -329,8 +345,8 @@ export class BadgesService {
           userId,
           badgeId: badge.id,
           eventId,
-        }
-      }
+        },
+      },
     });
 
     if (existing) return existing;
@@ -340,20 +356,20 @@ export class BadgesService {
         userId,
         badgeId: badge.id,
         eventId,
-      }
+      },
     });
   }
 
   async getBadgeClaimCodes(tenantId: string, badgeId: string) {
     const badge = await this.prisma.badge.findFirst({
-      where: { id: badgeId, tenantId }
+      where: { id: badgeId, tenantId },
     });
-    if (!badge) throw new NotFoundException('Badge not found');
+    if (!badge) throw new NotFoundException("Badge not found");
 
     return this.prisma.badgeClaimCode.findMany({
       where: { badgeId },
       include: { user: { select: { name: true, email: true } } },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: "desc" },
     });
   }
 }
