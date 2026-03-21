@@ -27,6 +27,11 @@ const navigation = [
   { name: "Revisões", href: "/dashboard/reviews", icon: AcademicCapIcon },
   { name: "Financeiro", href: "/dashboard/finance", icon: CreditCardIcon },
   { name: "Configurações", href: "/dashboard/settings", icon: Cog6ToothIcon },
+  
+  // Speaker specific
+  { name: "Minha Agenda", href: "/speaker/activities", icon: CalendarIcon },
+  { name: "Feedbacks", href: "/speaker/feedbacks", icon: AcademicCapIcon },
+  { name: "Meu Perfil", href: "/speaker/profile", icon: UserIcon },
 ];
 
 export function Sidebar({ tenant }: { tenant?: Tenant | null }) {
@@ -37,8 +42,11 @@ export function Sidebar({ tenant }: { tenant?: Tenant | null }) {
     if (user?.role === "REVIEWER") {
       return ["Visão Geral", "Revisões"].includes(item.name);
     }
-    // Para ORGANIZER ou ADMIN, mostra tudo (por enquanto)
-    return true;
+    if (user?.role === "SPEAKER") {
+      return ["Visão Geral", "Minha Agenda", "Feedbacks", "Meu Perfil"].includes(item.name);
+    }
+    // Para ORGANIZER ou ADMIN, mostra tudo, exceto itens específicos de speaker
+    return !["Minha Agenda", "Feedbacks", "Meu Perfil"].includes(item.name) || item.name === "Meu Perfil";
   });
 
   return (
@@ -72,7 +80,7 @@ export function Sidebar({ tenant }: { tenant?: Tenant | null }) {
           return (
             <Link
               key={item.name}
-              href={item.href}
+              href={item.name === "Visão Geral" && user?.role === "SPEAKER" ? "/speaker" : item.href}
               className={`flex items-center gap-3 px-3 py-2.5 text-sm font-bold rounded-xl transition-all ${
                 isActive
                   ? "bg-primary/10 text-primary shadow-sm shadow-primary/5"

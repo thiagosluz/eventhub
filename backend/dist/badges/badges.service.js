@@ -24,14 +24,14 @@ let BadgesService = class BadgesService {
                 name: data.name,
                 description: data.description,
                 iconUrl: data.iconUrl,
-                color: data.color || 'blue',
-                triggerRule: data.triggerRule || 'MANUAL',
-                manualDeliveryMode: data.manualDeliveryMode || 'GLOBAL_CODE',
+                color: data.color || "blue",
+                triggerRule: data.triggerRule || "MANUAL",
+                manualDeliveryMode: data.manualDeliveryMode || "GLOBAL_CODE",
                 minRequirement: data.minRequirement ? parseInt(data.minRequirement) : 0,
                 claimCode: data.claimCode || null,
             },
         });
-        if (data.manualDeliveryMode === 'UNIQUE_CODES' && data.codesCount > 0) {
+        if (data.manualDeliveryMode === "UNIQUE_CODES" && data.codesCount > 0) {
             const codes = [];
             for (let i = 0; i < data.codesCount; i++) {
                 codes.push({
@@ -46,11 +46,11 @@ let BadgesService = class BadgesService {
         return badge;
     }
     generateRandomCode() {
-        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        let result = '';
+        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        let result = "";
         for (let i = 0; i < 6; i++) {
             if (i === 3)
-                result += '-';
+                result += "-";
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return result;
@@ -58,7 +58,7 @@ let BadgesService = class BadgesService {
     async getBadgesByEvent(tenantId, eventId) {
         return this.prisma.badge.findMany({
             where: { tenantId, eventId },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { createdAt: "desc" },
         });
     }
     async updateBadge(tenantId, badgeId, data) {
@@ -66,7 +66,7 @@ let BadgesService = class BadgesService {
             where: { id: badgeId, tenantId },
         });
         if (!badge)
-            throw new common_1.NotFoundException('Badge not found');
+            throw new common_1.NotFoundException("Badge not found");
         return this.prisma.badge.update({
             where: { id: badgeId },
             data,
@@ -77,7 +77,7 @@ let BadgesService = class BadgesService {
             where: { id: badgeId, tenantId },
         });
         if (!badge)
-            throw new common_1.NotFoundException('Badge not found');
+            throw new common_1.NotFoundException("Badge not found");
         return this.prisma.badge.delete({
             where: { id: badgeId },
         });
@@ -89,9 +89,9 @@ let BadgesService = class BadgesService {
             where: { userId },
             include: {
                 badge: true,
-                event: { select: { name: true, slug: true } }
+                event: { select: { name: true, slug: true } },
             },
-            orderBy: { earnedAt: 'desc' },
+            orderBy: { earnedAt: "desc" },
         });
     }
     async getAvailableBadges(userId) {
@@ -99,41 +99,41 @@ let BadgesService = class BadgesService {
             return [];
         const registrations = await this.prisma.registration.findMany({
             where: { userId },
-            select: { eventId: true }
+            select: { eventId: true },
         });
-        const eventIds = registrations.map(r => r.eventId);
+        const eventIds = registrations.map((r) => r.eventId);
         const allBadges = await this.prisma.badge.findMany({
             where: {
                 OR: [
                     { eventId: { in: eventIds } },
-                    { eventId: null }
-                ]
+                    { eventId: null },
+                ],
             },
-            include: { event: { select: { name: true } } }
+            include: { event: { select: { name: true } } },
         });
         const earnedBadges = await this.prisma.userBadge.findMany({
             where: { userId },
-            select: { badgeId: true }
+            select: { badgeId: true },
         });
-        const earnedIds = new Set(earnedBadges.map(eb => eb.badgeId));
-        return allBadges.map(badge => ({
+        const earnedIds = new Set(earnedBadges.map((eb) => eb.badgeId));
+        return allBadges.map((badge) => ({
             ...badge,
-            isEarned: earnedIds.has(badge.id)
+            isEarned: earnedIds.has(badge.id),
         }));
     }
     async checkAndAwardBadge(userId, eventId, triggerRule) {
-        let matchingBadges = [];
-        if (triggerRule === 'PROFILE_COMPLETED') {
+        let matchingBadges;
+        if (triggerRule === "PROFILE_COMPLETED") {
             const user = await this.prisma.user.findUnique({
                 where: { id: userId },
-                select: { tenantId: true }
+                select: { tenantId: true },
             });
             if (!user)
                 return [];
             matchingBadges = await this.prisma.badge.findMany({
                 where: {
                     tenantId: user.tenantId,
-                    triggerRule: 'PROFILE_COMPLETED'
+                    triggerRule: "PROFILE_COMPLETED",
                 },
             });
         }
@@ -144,70 +144,71 @@ let BadgesService = class BadgesService {
         }
         const awarded = [];
         for (const badge of matchingBadges) {
-            if (triggerRule === 'EARLY_BIRD') {
+            if (triggerRule === "EARLY_BIRD") {
                 const userReg = await this.prisma.registration.findFirst({
                     where: { userId, eventId },
-                    select: { id: true, createdAt: true }
+                    select: { id: true, createdAt: true },
                 });
                 if (userReg) {
                     const position = await this.prisma.registration.count({
-                        where: { eventId, createdAt: { lt: userReg.createdAt } }
+                        where: { eventId, createdAt: { lt: userReg.createdAt } },
                     });
                     if (position + 1 > (badge.minRequirement || 0))
                         continue;
                 }
             }
-            if (triggerRule === 'CHECKIN_STREAK') {
+            if (triggerRule === "CHECKIN_STREAK") {
                 const checkinCount = await this.prisma.attendance.count({
                     where: {
                         activity: { eventId },
                         ticket: {
-                            registration: { userId }
-                        }
-                    }
+                            registration: { userId },
+                        },
+                    },
                 });
                 if (checkinCount < (badge.minRequirement || 1))
                     continue;
             }
-            if (badge.triggerRule === 'ACTIVITY_HOURS') {
+            if (badge.triggerRule === "ACTIVITY_HOURS") {
                 const attendances = await this.prisma.attendance.findMany({
                     where: {
                         ticket: {
                             registration: {
                                 userId,
-                                event: { tenantId: badge.tenantId }
-                            }
+                                event: { tenantId: badge.tenantId },
+                            },
                         },
-                        activityId: { not: null }
+                        activityId: { not: null },
                     },
-                    include: { activity: true }
+                    include: { activity: true },
                 });
                 const totalMinutes = attendances.reduce((acc, curr) => {
                     if (!curr.activity)
                         return acc;
-                    const duration = (curr.activity.endAt.getTime() - curr.activity.startAt.getTime()) / (1000 * 60);
+                    const duration = (curr.activity.endAt.getTime() - curr.activity.startAt.getTime()) /
+                        (1000 * 60);
                     return acc + duration;
                 }, 0);
                 const totalHours = totalMinutes / 60;
                 if (totalHours < (badge.minRequirement || 0))
                     continue;
             }
-            if (badge.triggerRule === 'EVENT_COUNT') {
+            if (badge.triggerRule === "EVENT_COUNT") {
                 const eventCount = await this.prisma.registration.count({
                     where: {
                         userId,
                         event: { tenantId: badge.tenantId },
                         tickets: {
-                            some: { status: 'COMPLETED' }
-                        }
-                    }
+                            some: { status: "COMPLETED" },
+                        },
+                    },
                 });
                 if (eventCount < (badge.minRequirement || 1))
                     continue;
             }
-            if (badge.triggerRule === 'PROFILE_COMPLETED') {
+            if (badge.triggerRule === "PROFILE_COMPLETED") {
                 const user = await this.prisma.user.findUnique({
-                    where: { id: userId }
+                    where: { id: userId },
                 });
                 if (!(user === null || user === void 0 ? void 0 : user.bio) || user.bio.length < 50 || !(user === null || user === void 0 ? void 0 : user.avatarUrl))
                     continue;
@@ -219,8 +220,8 @@ let BadgesService = class BadgesService {
                         userId,
                         badgeId: badge.id,
                         eventId: targetEventId,
-                    }
-                }
+                    },
+                },
             });
             if (!existing) {
                 const userBadge = await this.prisma.userBadge.create({
@@ -228,7 +229,7 @@ let BadgesService = class BadgesService {
                         userId,
                         badgeId: badge.id,
                         eventId: targetEventId,
-                    }
+                    },
                 });
                 awarded.push(userBadge);
             }
@@ -237,31 +238,31 @@ let BadgesService = class BadgesService {
     }
     async claimBadge(userId, badgeId, claimCode) {
         const badge = await this.prisma.badge.findUnique({
-            where: { id: badgeId }
+            where: { id: badgeId },
         });
         if (!badge)
-            throw new common_1.NotFoundException('Conquista não encontrada');
-        if (badge.triggerRule !== 'MANUAL')
-            throw new common_1.BadRequestException('Esta conquista não pode ser resgatada manualmente');
-        if (badge.manualDeliveryMode === 'GLOBAL_CODE') {
+            throw new common_1.NotFoundException("Conquista não encontrada");
+        if (badge.triggerRule !== "MANUAL")
+            throw new common_1.BadRequestException("Esta conquista não pode ser resgatada manualmente");
+        if (badge.manualDeliveryMode === "GLOBAL_CODE") {
             if (badge.claimCode && badge.claimCode !== claimCode)
-                throw new common_1.BadRequestException('Código de resgate inválido');
+                throw new common_1.BadRequestException("Código de resgate inválido");
         }
-        else if (badge.manualDeliveryMode === 'UNIQUE_CODES') {
+        else if (badge.manualDeliveryMode === "UNIQUE_CODES") {
             const uniqueCode = await this.prisma.badgeClaimCode.findFirst({
-                where: { badgeId: badge.id, code: claimCode }
+                where: { badgeId: badge.id, code: claimCode },
             });
             if (!uniqueCode)
-                throw new common_1.BadRequestException('Código inexistente');
+                throw new common_1.BadRequestException("Código inexistente");
             if (uniqueCode.isUsed)
-                throw new common_1.BadRequestException('Este código já foi utilizado');
+                throw new common_1.BadRequestException("Este código já foi utilizado");
             await this.prisma.badgeClaimCode.update({
                 where: { id: uniqueCode.id },
-                data: { isUsed: true, userId, usedAt: new Date() }
+                data: { isUsed: true, userId, usedAt: new Date() },
             });
         }
         else {
-            throw new Error('Esta conquista requer escaneamento pelo organizador');
+            throw new Error("Esta conquista requer escaneamento pelo organizador");
         }
         const existing = await this.prisma.userBadge.findUnique({
             where: {
@@ -269,12 +270,12 @@ let BadgesService = class BadgesService {
                     userId,
                     badgeId: badge.id,
                     eventId: badge.eventId,
-                }
-            }
+                },
+            },
         });
         if (existing) {
-            if (badge.manualDeliveryMode === 'GLOBAL_CODE')
-                throw new common_1.BadRequestException('Você já possui esta conquista');
+            if (badge.manualDeliveryMode === "GLOBAL_CODE")
+                throw new common_1.BadRequestException("Você já possui esta conquista");
             return existing;
         }
         return this.prisma.userBadge.create({
@@ -282,21 +283,21 @@ let BadgesService = class BadgesService {
                 userId,
                 badgeId: badge.id,
                 eventId: badge.eventId,
-            }
+            },
         });
     }
     async awardBadgeByScan(tenantId, badgeId, ticketToken) {
         const badge = await this.prisma.badge.findFirst({
-            where: { id: badgeId, tenantId }
+            where: { id: badgeId, tenantId },
         });
         if (!badge)
-            throw new common_1.NotFoundException('Badge not found or no permission');
+            throw new common_1.NotFoundException("Badge not found or no permission");
         const ticket = await this.prisma.ticket.findFirst({
             where: { qrCodeToken: ticketToken },
-            include: { registration: true }
+            include: { registration: true },
         });
         if (!ticket)
-            throw new common_1.NotFoundException('Ingresso inválido');
+            throw new common_1.NotFoundException("Ingresso inválido");
         const userId = ticket.registration.userId;
         const eventId = badge.eventId || ticket.eventId;
         const existing = await this.prisma.userBadge.findUnique({
@@ -305,8 +306,8 @@ let BadgesService = class BadgesService {
                     userId,
                     badgeId: badge.id,
                     eventId,
-                }
-            }
+                },
+            },
         });
         if (existing)
             return existing;
@@ -315,19 +316,19 @@ let BadgesService = class BadgesService {
                 userId,
                 badgeId: badge.id,
                 eventId,
-            }
+            },
         });
     }
     async getBadgeClaimCodes(tenantId, badgeId) {
         const badge = await this.prisma.badge.findFirst({
-            where: { id: badgeId, tenantId }
+            where: { id: badgeId, tenantId },
         });
         if (!badge)
-            throw new common_1.NotFoundException('Badge not found');
+            throw new common_1.NotFoundException("Badge not found");
         return this.prisma.badgeClaimCode.findMany({
             where: { badgeId },
             include: { user: { select: { name: true, email: true } } },
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: "desc" },
         });
     }
 };

@@ -44,4 +44,9 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateSpeakerDto.prototype, "websiteUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Object)
+], CreateSpeakerDto.prototype, "userId", void 0);
 //# sourceMappingURL=create-speaker.dto.js.map

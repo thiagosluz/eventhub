@@ -15,6 +15,7 @@ datasource db {
 enum UserRole {
   ORGANIZER
   REVIEWER
+  SPEAKER
   PARTICIPANT
 }
 
@@ -121,6 +122,7 @@ model User {
   submissions   Submission[]     @relation("SubmissionAuthor")
   userBadges    UserBadge[]
   claimCodes    BadgeClaimCode[]
+  speaker       Speaker?
 }
 
 model Event {
@@ -205,6 +207,8 @@ model Activity {
   enrollments     ActivityEnrollment[]
   attendances     Attendance[]
   raffleHistories RaffleHistory[]
+  materials       ActivityMaterial[]
+  feedbacks       ActivityFeedback[]
 }
 
 model Speaker {
@@ -221,6 +225,9 @@ model Speaker {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id])
 
   activities ActivitySpeaker[]
 }
@@ -247,11 +254,12 @@ model Registration {
 
   createdAt DateTime @default(now())
 
-  tickets         Ticket[]
-  enrollments     ActivityEnrollment[]
-  formResponses   CustomFormResponse[]
-  certificates    IssuedCertificate[]
-  raffleHistories RaffleHistory[]
+  tickets           Ticket[]
+  enrollments       ActivityEnrollment[]
+  formResponses     CustomFormResponse[]
+  certificates      IssuedCertificate[]
+  raffleHistories   RaffleHistory[]
+  activityFeedbacks ActivityFeedback[]
 }
 
 model ActivityEnrollment {
@@ -545,4 +553,31 @@ model UserBadge {
 
   // Garante que o usuário só ganhe a mesma badge 1 vez por evento
   @@unique([userId, badgeId, eventId])
+}
+
+model ActivityMaterial {
+  id         String   @id @default(cuid())
+  activityId String
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  title    String
+  fileUrl  String
+  fileType String? // PDF, ZIP, SLIDES
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ActivityFeedback {
+  id         String   @id @default(cuid())
+  activityId String
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  rating  Int // 1-5
+  comment String?
+
+  registrationId String?
+  registration   Registration? @relation(fields: [registrationId], references: [id])
+
+  createdAt DateTime @default(now())
 }

@@ -24,4 +24,8 @@ export class CreateSpeakerDto {
   @IsUrl()
   @IsOptional()
   websiteUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  userId?: string | null;
 }

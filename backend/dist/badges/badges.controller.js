@@ -53,93 +53,93 @@ let BadgesController = class BadgesController {
 };
 exports.BadgesController = BadgesController;
 __decorate([
-    (0, common_1.Get)('my'),
+    (0, common_1.Get)("my"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], BadgesController.prototype, "getMyBadges", null);
 __decorate([
-    (0, common_1.Get)('available'),
+    (0, common_1.Get)("available"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], BadgesController.prototype, "getAvailable", null);
 __decorate([
-    (0, common_1.Post)('event/:eventId'),
+    (0, common_1.Post)("event/:eventId"),
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('eventId')),
+    __param(1, (0, common_1.Param)("eventId")),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", void 0)
 ], BadgesController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)('event/:eventId'),
+    (0, common_1.Get)("event/:eventId"),
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('eventId')),
+    __param(1, (0, common_1.Param)("eventId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], BadgesController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
+    (0, common_1.Patch)(":id"),
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", void 0)
 ], BadgesController.prototype, "update", null);
 __decorate([
-    (0, common_1.Post)('claim/:id'),
+    (0, common_1.Post)("claim/:id"),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
-    __param(2, (0, common_1.Body)('claimCode')),
+    __param(1, (0, common_1.Param)("id")),
+    __param(2, (0, common_1.Body)("claimCode")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", void 0)
 ], BadgesController.prototype, "claim", null);
 __decorate([
-    (0, common_1.Post)(':id/award-scan'),
+    (0, common_1.Post)(":id/award-scan"),
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
-    __param(2, (0, common_1.Body)('ticketToken')),
+    __param(1, (0, common_1.Param)("id")),
+    __param(2, (0, common_1.Body)("ticketToken")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", void 0)
 ], BadgesController.prototype, "awardByScan", null);
 __decorate([
-    (0, common_1.Get)(':id/claim-codes'),
+    (0, common_1.Get)(":id/claim-codes"),
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], BadgesController.prototype, "getClaimCodes", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Delete)(":id"),
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], BadgesController.prototype, "remove", null);
 exports.BadgesController = BadgesController = __decorate([
-    (0, common_1.Controller)('badges'),
+    (0, common_1.Controller)("badges"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:paramtypes", [badges_service_1.BadgesService])
 ], BadgesController);

@@ -26,7 +26,7 @@ export class TenantsController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ORGANIZER)
+  @Roles(UserRole.ORGANIZER, UserRole.SPEAKER)
   @Get("me")
   async getMe(@Req() req: AuthRequest) {
     return this.tenantsService.getTenant(req.user!.tenantId);

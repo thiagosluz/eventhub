@@ -67,7 +67,7 @@ let CertificatePdfService = class CertificatePdfService {
             { key: "workload", x: 100, y: 380, fontSize: 12 },
         ];
         const validationHash = (0, uuid_1.v4)();
-        const validationUrl = `${process.env.FRONTEND_URL || 'http://localhost:3001'}/certificates/validate/${validationHash}`;
+        const validationUrl = `${process.env.FRONTEND_URL || "http://localhost:3001"}/certificates/validate/${validationHash}`;
         const qrCodeBuffer = await qrcode_1.default.toBuffer(validationUrl);
         const attendances = await this.prisma.attendance.findMany({
             where: {
@@ -75,7 +75,7 @@ let CertificatePdfService = class CertificatePdfService {
                 activity: { eventId: template.eventId },
             },
             include: { activity: true },
-            orderBy: { activity: { startAt: 'asc' } },
+            orderBy: { activity: { startAt: "asc" } },
         });
         const pdfBuffer = await this.renderPdf(template.backgroundUrl, placeholders, data, qrCodeBuffer, attendances, validationHash);
         const objectName = `certificates/${template.eventId}/${registrationId}-${Date.now()}.pdf`;
@@ -154,9 +154,9 @@ let CertificatePdfService = class CertificatePdfService {
                     const start = new Date(att.activity.startAt);
                     const end = new Date(att.activity.endAt);
                     const durationHrs = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-                    const dateStr = `${String(start.getUTCDate()).padStart(2, '0')}/${String(start.getUTCMonth() + 1).padStart(2, '0')}/${start.getUTCFullYear()}`;
+                    const dateStr = `${String(start.getUTCDate()).padStart(2, "0")}/${String(start.getUTCMonth() + 1).padStart(2, "0")}/${start.getUTCFullYear()}`;
                     const checkinDate = new Date(att.checkedAt);
-                    const checkinStr = `${String(checkinDate.getUTCDate()).padStart(2, '0')}/${String(checkinDate.getUTCMonth() + 1).padStart(2, '0')}/${checkinDate.getUTCFullYear()} ${String(checkinDate.getUTCHours() - 3).padStart(2, '0')}:${String(checkinDate.getUTCMinutes()).padStart(2, '0')}`;
+                    const checkinStr = `${String(checkinDate.getUTCDate()).padStart(2, "0")}/${String(checkinDate.getUTCMonth() + 1).padStart(2, "0")}/${checkinDate.getUTCFullYear()} ${String(checkinDate.getUTCHours() - 3).padStart(2, "0")}:${String(checkinDate.getUTCMinutes()).padStart(2, "0")}`;
                     doc.text(att.activity.title.substring(0, 60), 50, y);
                     doc.text(dateStr, 450, y);
                     doc.text(`${Math.round(durationHrs * 10) / 10}h`, 550, y);

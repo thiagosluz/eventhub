@@ -10,6 +10,34 @@ export interface Speaker {
   websiteUrl?: string;
   createdAt: string;
   updatedAt: string;
+  userId?: string | null;
+}
+
+export interface ActivitySpeaker {
+  activityId: string;
+  speakerId: string;
+  roleId?: string;
+  activity: {
+    id: string;
+    title: string;
+    description?: string;
+    startAt: string;
+    endAt: string;
+    location?: string;
+    event: { name: string; slug: string };
+    type?: { name: string };
+    _count: { enrollments: number };
+  };
+  role?: { name: string };
+}
+
+export interface ActivityFeedback {
+  id: string;
+  activityId: string;
+  rating: number;
+  comment?: string;
+  createdAt: string;
+  activity: { title: string };
 }
 
 export const speakersService = {
@@ -40,5 +68,24 @@ export const speakersService = {
     const formData = new FormData();
     formData.append('file', file);
     return api.post<{ url: string }>('/speakers/upload', formData);
+  },
+
+  getMe: async (): Promise<Speaker> => {
+    return api.get<Speaker>('/speakers/me');
+  },
+
+  getMyActivities: async (): Promise<ActivitySpeaker[]> => {
+    return api.get<ActivitySpeaker[]>('/speakers/me/activities');
+  },
+
+  getMyFeedbacks: async (): Promise<ActivityFeedback[]> => {
+    return api.get<ActivityFeedback[]>('/speakers/me/feedbacks');
+  },
+
+  addActivityMaterial: async (
+    activityId: string,
+    data: { title: string; fileUrl: string; fileType?: string },
+  ): Promise<any> => {
+    return api.post(`/speakers/me/activities/${activityId}/materials`, data);
   },
 };

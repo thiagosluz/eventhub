@@ -1,4 +1,4 @@
-import api from "./api";
+import { api } from "../lib/api";
 import { User } from "../types/auth";
 
 export interface UserProfile extends Omit<User, "tenantId"> {
@@ -12,25 +12,25 @@ export interface UserProfile extends Omit<User, "tenantId"> {
 }
 
 export const usersService = {
-  async getMe(): Promise<UserProfile> {
-    const res = await api.get<UserProfile>("/users/me");
-    return res.data;
+  getMe: async (): Promise<UserProfile> => {
+    return api.get<UserProfile>("/users/me");
   },
 
-  async updateProfile(data: Partial<UserProfile>): Promise<UserProfile> {
-    const res = await api.patch<UserProfile>("/users/me", data);
-    return res.data;
+  updateProfile: async (data: Partial<UserProfile>): Promise<UserProfile> => {
+    return api.patch<UserProfile>("/users/me", data);
   },
 
-  async updatePassword(data: any): Promise<{ message: string }> {
-    const res = await api.patch("/users/me/password", data);
-    return res.data;
+  updatePassword: async (data: any): Promise<{ message: string }> => {
+    return api.patch("/users/me/password", data);
   },
 
-  async uploadAvatar(file: File): Promise<{ id: string; avatarUrl: string }> {
+  uploadAvatar: async (file: File): Promise<{ id: string; avatarUrl: string }> => {
     const formData = new FormData();
     formData.append("file", file);
-    const res = await api.post("/users/me/avatar", formData);
-    return res.data;
+    return api.post("/users/me/avatar", formData);
+  },
+
+  getUsers: async (): Promise<User[]> => {
+    return api.get<User[]>("/users");
   },
 };

@@ -93,7 +93,7 @@ let UsersService = class UsersService {
                 tenantId: true,
             },
         });
-        await this.badgesService.checkAndAwardBadge(userId, null, 'PROFILE_COMPLETED');
+        await this.badgesService.checkAndAwardBadge(userId, null, "PROFILE_COMPLETED");
         return updatedUser;
     }
     async updatePassword(userId, dto) {
@@ -134,8 +134,34 @@ let UsersService = class UsersService {
                 avatarUrl: true,
             },
         });
-        await this.badgesService.checkAndAwardBadge(userId, null, 'PROFILE_COMPLETED');
+        await this.badgesService.checkAndAwardBadge(userId, null, "PROFILE_COMPLETED");
         return updatedUser;
+    }
+    async findAll(tenantId) {
+        return this.prisma.user.findMany({
+            where: {
+                OR: [
+                    { tenantId },
+                    {
+                        registrations: {
+                            some: {
+                                event: {
+                                    tenantId,
+                                },
+                            },
+                        },
+                    },
+                ],
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+                avatarUrl: true,
+            },
+            orderBy: { name: "asc" },
+        });
     }
 };
 exports.UsersService = UsersService;

@@ -113,8 +113,8 @@ let AnalyticsService = class AnalyticsService {
                 user: true,
                 tickets: {
                     include: {
-                        attendances: true
-                    }
+                        attendances: true,
+                    },
                 },
                 enrollments: {
                     include: {
@@ -135,7 +135,10 @@ let AnalyticsService = class AnalyticsService {
                 ticketType: ((_a = reg.tickets[0]) === null || _a === void 0 ? void 0 : _a.type) || "FREE",
                 ticketStatus: ((_b = reg.tickets[0]) === null || _b === void 0 ? void 0 : _b.status) || "PENDING",
                 qrCodeToken: (_c = reg.tickets[0]) === null || _c === void 0 ? void 0 : _c.qrCodeToken,
-                attendances: ((_e = (_d = reg.tickets[0]) === null || _d === void 0 ? void 0 : _d.attendances) === null || _e === void 0 ? void 0 : _e.map(a => ({ id: a.id, activityId: a.activityId }))) || [],
+                attendances: ((_e = (_d = reg.tickets[0]) === null || _d === void 0 ? void 0 : _d.attendances) === null || _e === void 0 ? void 0 : _e.map((a) => ({
+                    id: a.id,
+                    activityId: a.activityId,
+                }))) || [],
                 enrollmentsCount: reg.enrollments.length,
             });
         });

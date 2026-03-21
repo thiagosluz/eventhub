@@ -13,18 +13,23 @@ exports.SpeakersService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const minio_service_1 = require("../storage/minio.service");
+const roles_types_1 = require("../auth/roles.types");
 let SpeakersService = class SpeakersService {
     constructor(prisma, minio) {
         this.prisma = prisma;
         this.minio = minio;
     }
     async create(tenantId, data) {
-        return this.prisma.speaker.create({
+        const speaker = await this.prisma.speaker.create({
             data: {
                 ...data,
                 tenantId,
             },
         });
+        if (data.userId) {
+            await this.upgradeUserToSpeaker(data.userId);
+        }
+        return speaker;
     }
     async findAll(tenantId) {
         return this.prisma.speaker.findMany({
@@ -42,11 +47,36 @@ let SpeakersService = class SpeakersService {
         return speaker;
     }
     async update(tenantId, id, data) {
-        await this.findOne(tenantId, id);
-        return this.prisma.speaker.update({
+        const existingSpeaker = await this.findOne(tenantId, id);
+        if (data.userId === null && existingSpeaker.userId) {
+            await this.downgradeUserToParticipant(existingSpeaker.userId);
+        }
+        const updatedSpeaker = await this.prisma.speaker.update({
             where: { id },
             data,
         });
+        if (data.userId) {
+            await this.upgradeUserToSpeaker(data.userId);
+        }
+        return updatedSpeaker;
+    }
+    async upgradeUserToSpeaker(userId) {
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (user && user.role === roles_types_1.UserRole.PARTICIPANT) {
+            await this.prisma.user.update({
+                where: { id: userId },
+                data: { role: roles_types_1.UserRole.SPEAKER },
+            });
+        }
+    }
+    async downgradeUserToParticipant(userId) {
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (user && user.role === roles_types_1.UserRole.SPEAKER) {
+            await this.prisma.user.update({
+                where: { id: userId },
+                data: { role: roles_types_1.UserRole.PARTICIPANT },
+            });
+        }
     }
     async remove(tenantId, id) {
         await this.findOne(tenantId, id);
@@ -83,6 +113,54 @@ let SpeakersService = class SpeakersService {
         if (!role)
             throw new common_1.NotFoundException("Role not found");
         return this.prisma.speakerRole.delete({ where: { id } });
+    }
+    async findByUserId(userId) {
+        const speaker = await this.prisma.speaker.findUnique({
+            where: { userId },
+        });
+        if (!speaker)
+            throw new common_1.NotFoundException("Perfil de palestrante não encontrado para este usuário.");
+        return speaker;
+    }
+    async findActivities(speakerId) {
+        return this.prisma.activitySpeaker.findMany({
+            where: { speakerId },
+            include: {
+                activity: {
+                    include: {
+                        event: { select: { name: true, slug: true } },
+                        type: true,
+                        _count: { select: { enrollments: true } },
+                    },
+                },
+                role: true,
+            },
+            orderBy: { activity: { startAt: "asc" } },
+        });
+    }
+    async getFeedbacks(speakerId) {
+        const activities = await this.prisma.activitySpeaker.findMany({
+            where: { speakerId },
+            select: { activityId: true },
+        });
+        const activityIds = activities.map((a) => a.activityId);
+        return this.prisma.activityFeedback.findMany({
+            where: { activityId: { in: activityIds } },
+            include: {
+                activity: { select: { title: true } },
+            },
+            orderBy: { createdAt: "desc" },
+        });
+    }
+    async addMaterial(activityId, data) {
+        return this.prisma.activityMaterial.create({
+            data: {
+                activityId,
+                title: data.title,
+                fileUrl: data.fileUrl,
+                fileType: data.fileType,
+            },
+        });
     }
 };
 exports.SpeakersService = SpeakersService;

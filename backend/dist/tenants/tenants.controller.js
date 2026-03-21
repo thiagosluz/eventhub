@@ -43,7 +43,7 @@ __decorate([
 ], TenantsController.prototype, "getPublicTenant", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER),
+    (0, roles_decorator_1.Roles)(roles_types_1.UserRole.ORGANIZER, roles_types_1.UserRole.SPEAKER),
     (0, common_1.Get)("me"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),

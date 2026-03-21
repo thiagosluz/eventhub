@@ -14,6 +14,9 @@ import { Request } from "express";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { UsersService } from "./users.service";
 import { UpdateProfileDto, UpdatePasswordDto } from "./dto/update-user.dto";
+import { Roles } from "../auth/roles.decorator";
+import { RolesGuard } from "../auth/roles.guard";
+import { UserRole } from "../auth/roles.types";
 
 interface AuthRequest extends Request {
   user?: { sub: string; email: string; tenantId: string; role: string };
@@ -52,5 +55,12 @@ export class UsersController {
     @Req() req: AuthRequest,
   ) {
     return this.usersService.uploadAvatar(req.user!.sub, file);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get()
+  async findAll(@Req() req: AuthRequest) {
+    return this.usersService.findAll(req.user!.tenantId);
   }
 }

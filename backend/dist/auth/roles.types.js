@@ -5,6 +5,7 @@ var UserRole;
 (function (UserRole) {
     UserRole["ORGANIZER"] = "ORGANIZER";
     UserRole["REVIEWER"] = "REVIEWER";
+    UserRole["SPEAKER"] = "SPEAKER";
     UserRole["PARTICIPANT"] = "PARTICIPANT";
 })(UserRole || (exports.UserRole = UserRole = {}));
 //# sourceMappingURL=roles.types.js.map

@@ -10,6 +10,7 @@ export interface Speaker {
   websiteUrl?: string;
   createdAt: string;
   updatedAt: string;
+  userId?: string | null;
 }
 
 export interface ActivityType {

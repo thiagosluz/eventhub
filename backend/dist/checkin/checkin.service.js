@@ -144,12 +144,12 @@ let CheckinService = class CheckinService {
         `,
             });
         }
-        await this.badgesService.checkAndAwardBadge(user.id, event.id, 'CHECKIN_STREAK');
-        await this.badgesService.checkAndAwardBadge(user.id, event.id, 'ACTIVITY_HOURS');
+        await this.badgesService.checkAndAwardBadge(user.id, event.id, "CHECKIN_STREAK");
+        await this.badgesService.checkAndAwardBadge(user.id, event.id, "ACTIVITY_HOURS");
         return { alreadyCheckedIn: false, attendanceId: attendance.id };
     }
     async drawRaffle(params) {
-        const { tenantId, eventId, activityId, count = 1, rule = "ONLY_CHECKED_IN", prizeName, uniqueWinners, excludeStaff } = params;
+        const { tenantId, eventId, activityId, count = 1, rule = "ONLY_CHECKED_IN", prizeName, uniqueWinners, excludeStaff, } = params;
         const event = await this.prisma.event.findFirst({
             where: { id: eventId, tenantId },
         });
@@ -208,15 +208,15 @@ let CheckinService = class CheckinService {
         }
         let validPool = Array.from(byRegistration.values());
         if (excludeStaff) {
-            validPool = validPool.filter(p => p.role !== "ORGANIZER");
+            validPool = validPool.filter((p) => p.role !== "ORGANIZER");
         }
         if (uniqueWinners) {
             const pastWinners = await this.prisma.raffleHistory.findMany({
                 where: { eventId },
-                select: { registrationId: true }
+                select: { registrationId: true },
             });
-            const pastSet = new Set(pastWinners.map(w => w.registrationId));
-            validPool = validPool.filter(p => !pastSet.has(p.registrationId));
+            const pastSet = new Set(pastWinners.map((w) => w.registrationId));
+            validPool = validPool.filter((p) => !pastSet.has(p.registrationId));
         }
         if (validPool.length === 0) {
             return { winners: [] };
@@ -247,15 +247,15 @@ let CheckinService = class CheckinService {
             where: { eventId },
             include: {
                 registration: {
-                    include: { user: { select: { name: true, email: true } } }
+                    include: { user: { select: { name: true, email: true } } },
                 },
-                activity: { select: { title: true } }
+                activity: { select: { title: true } },
             },
-            orderBy: { drawnAt: 'desc' },
+            orderBy: { drawnAt: "desc" },
         });
-        return history.map(h => ({
+        return history.map((h) => ({
             ...h,
-            isHiddenOnDisplay: this.hiddenRaffleIds.has(h.id)
+            isHiddenOnDisplay: this.hiddenRaffleIds.has(h.id),
         }));
     }
     async setRaffleDisplayVisibility(tenantId, historyId, hide) {
@@ -299,7 +299,7 @@ let CheckinService = class CheckinService {
             data: { hasReceived: received },
         });
         if (received) {
-            await this.badgesService.checkAndAwardBadge(history.registration.userId, history.eventId, 'RAFFLE_WINNER');
+            await this.badgesService.checkAndAwardBadge(history.registration.userId, history.eventId, "RAFFLE_WINNER");
         }
         return updated;
     }

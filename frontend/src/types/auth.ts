@@ -2,7 +2,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'ORGANIZER' | 'PARTICIPANT' | 'ADMIN' | 'REVIEWER';
+  role: 'ORGANIZER' | 'PARTICIPANT' | 'ADMIN' | 'REVIEWER' | 'SPEAKER';
   avatarUrl?: string;
   bio?: string;
   tenantId?: string;

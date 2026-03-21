@@ -202,7 +202,8 @@ exports.Prisma.SpeakerScalarFieldEnum = {
   linkedinUrl: 'linkedinUrl',
   websiteUrl: 'websiteUrl',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userId: 'userId'
 };
 
 exports.Prisma.ActivitySpeakerScalarFieldEnum = {
@@ -390,6 +391,25 @@ exports.Prisma.UserBadgeScalarFieldEnum = {
   earnedAt: 'earnedAt'
 };
 
+exports.Prisma.ActivityMaterialScalarFieldEnum = {
+  id: 'id',
+  activityId: 'activityId',
+  title: 'title',
+  fileUrl: 'fileUrl',
+  fileType: 'fileType',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ActivityFeedbackScalarFieldEnum = {
+  id: 'id',
+  activityId: 'activityId',
+  rating: 'rating',
+  comment: 'comment',
+  registrationId: 'registrationId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -422,6 +442,7 @@ exports.Prisma.NullsOrder = {
 exports.UserRole = exports.$Enums.UserRole = {
   ORGANIZER: 'ORGANIZER',
   REVIEWER: 'REVIEWER',
+  SPEAKER: 'SPEAKER',
   PARTICIPANT: 'PARTICIPANT'
 };
 
@@ -540,7 +561,9 @@ exports.Prisma.ModelName = {
   RaffleHistory: 'RaffleHistory',
   Badge: 'Badge',
   BadgeClaimCode: 'BadgeClaimCode',
-  UserBadge: 'UserBadge'
+  UserBadge: 'UserBadge',
+  ActivityMaterial: 'ActivityMaterial',
+  ActivityFeedback: 'ActivityFeedback'
 };
 
 /**

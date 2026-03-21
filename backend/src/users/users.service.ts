@@ -128,4 +128,31 @@ export class UsersService {
 
     return updatedUser;
   }
+
+  async findAll(tenantId: string) {
+    return this.prisma.user.findMany({
+      where: {
+        OR: [
+          { tenantId },
+          {
+            registrations: {
+              some: {
+                event: {
+                  tenantId,
+                },
+              },
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        avatarUrl: true,
+      },
+      orderBy: { name: "asc" },
+    });
+  }
 }
