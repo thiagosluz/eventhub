@@ -55,6 +55,23 @@ let SpeakersService = class SpeakersService {
             where: { id },
             data,
         });
+        if (existingSpeaker.userId) {
+            const userSyncData = {};
+            if (data.name)
+                userSyncData.name = data.name;
+            if (data.email)
+                userSyncData.email = data.email;
+            if (data.bio)
+                userSyncData.bio = data.bio;
+            if (data.avatarUrl)
+                userSyncData.avatarUrl = data.avatarUrl;
+            if (Object.keys(userSyncData).length > 0) {
+                await this.prisma.user.update({
+                    where: { id: existingSpeaker.userId },
+                    data: userSyncData,
+                });
+            }
+        }
         if (data.userId) {
             await this.upgradeUserToSpeaker(data.userId);
         }

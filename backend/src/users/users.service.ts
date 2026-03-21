@@ -61,6 +61,13 @@ export class UsersService {
       },
     });
 
+    // Synchronize to Speaker Profile if exists
+    await this.syncToSpeaker(userId, {
+      name: updatedUser.name,
+      email: updatedUser.email,
+      bio: updatedUser.bio,
+    });
+
     // Trigger Badge Check for Profile Completed
     await this.badgesService.checkAndAwardBadge(
       userId,
@@ -119,6 +126,11 @@ export class UsersService {
       },
     });
 
+    // Synchronize to Speaker Profile if exists
+    await this.syncToSpeaker(userId, {
+      avatarUrl: updatedUser.avatarUrl,
+    });
+
     // Trigger Badge Check for Profile Completed
     await this.badgesService.checkAndAwardBadge(
       userId,
@@ -127,6 +139,18 @@ export class UsersService {
     );
 
     return updatedUser;
+  }
+
+  private async syncToSpeaker(userId: string, data: any) {
+    const speaker = await this.prisma.speaker.findUnique({
+      where: { userId },
+    });
+    if (speaker) {
+      await this.prisma.speaker.update({
+        where: { id: speaker.id },
+        data,
+      });
+    }
   }
 
   async findAll(tenantId: string) {

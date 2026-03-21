@@ -54,10 +54,17 @@ export default function SpeakerLayout({
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Header */}
         <header className="h-16 border-b border-border bg-card/50 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-[40]">
-          <div>
+          <div className="flex items-center gap-6">
             <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground">
               Portal do <span className="text-primary italic">Palestrante</span>
             </h2>
+            
+            <Link 
+              href="/profile"
+              className="text-[10px] font-black bg-primary/10 text-primary px-3 py-1.5 rounded-lg hover:bg-primary/20 transition-all uppercase tracking-tighter"
+            >
+              Área do Participante
+            </Link>
           </div>
           <div className="flex items-center gap-4">
             <button className="p-2 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-all relative">

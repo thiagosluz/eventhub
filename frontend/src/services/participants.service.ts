@@ -1,5 +1,5 @@
 import { Ticket } from "../types/event";
-import api from "./api";
+import { api } from "../lib/api";
 
 export interface ParticipantDetail extends Participant {
   enrollments: unknown[];
@@ -26,15 +26,12 @@ export interface Participant {
 
 export const participantsService = {
   list: async () => {
-    const response = await api.get<Participant[]>("/participants");
-    return response.data;
+    return api.get<Participant[]>("/participants");
   },
   getDetail: async (id: string) => {
-    const response = await api.get<ParticipantDetail>(`/participants/${id}`);
-    return response.data;
+    return api.get<ParticipantDetail>(`/participants/${id}`);
   },
   exportCSV: async () => {
-    const response = await api.get<string>("/participants/export", { responseType: 'text' });
-    return response.data;
+    return api.get<string>("/participants/export");
   }
 };

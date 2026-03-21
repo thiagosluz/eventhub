@@ -51,6 +51,14 @@
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
   }
 
+  .premium-input {
+    @apply bg-background rounded-xl border border-border/80 px-4 py-3 text-sm transition-all duration-300;
+    @apply focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10;
+    @apply placeholder:text-muted-foreground/40;
+    @apply hover:border-primary/20;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+  }
+
   .premium-button {
     @apply relative overflow-hidden rounded-lg px-8 py-3 font-semibold transition-all duration-300;
     @apply hover:brightness-110 active:scale-95 text-white flex items-center justify-center gap-2;

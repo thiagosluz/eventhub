@@ -1,4 +1,4 @@
-import api from './api';
+import { api } from '../lib/api';
 
 export interface Badge {
   id: string;
@@ -36,28 +36,23 @@ export interface UserBadge {
 
 export const badgesService = {
   async getMyBadges(): Promise<UserBadge[]> {
-    const response = await api.get('/badges/my');
-    return response.data;
+    return api.get('/badges/my');
   },
 
   async getAvailableBadges(): Promise<Badge[]> {
-    const response = await api.get('/badges/available');
-    return response.data;
+    return api.get('/badges/available');
   },
 
   async getEventBadges(eventId: string): Promise<Badge[]> {
-    const { data } = await api.get(`/badges/event/${eventId}`);
-    return data;
+    return api.get(`/badges/event/${eventId}`);
   },
 
   createBadge: async (eventId: string, badgeData: Partial<Badge>): Promise<Badge> => {
-    const { data } = await api.post(`/badges/event/${eventId}`, badgeData);
-    return data;
+    return api.post(`/badges/event/${eventId}`, badgeData);
   },
 
   updateBadge: async (id: string, badgeData: Partial<Badge>): Promise<Badge> => {
-    const { data } = await api.patch(`/badges/${id}`, badgeData);
-    return data;
+    return api.patch(`/badges/${id}`, badgeData);
   },
 
   deleteBadge: async (id: string): Promise<void> => {
@@ -65,17 +60,14 @@ export const badgesService = {
   },
   
   async claimBadge(id: string, claimCode: string): Promise<UserBadge> {
-    const { data } = await api.post(`/badges/claim/${id}`, { claimCode });
-    return data;
+    return api.post(`/badges/claim/${id}`, { claimCode });
   },
 
   async awardByScan(id: string, ticketToken: string): Promise<UserBadge> {
-    const { data } = await api.post(`/badges/${id}/award-scan`, { ticketToken });
-    return data;
+    return api.post(`/badges/${id}/award-scan`, { ticketToken });
   },
 
   async getClaimCodes(id: string): Promise<BadgeClaimCode[]> {
-    const { data } = await api.get(`/badges/${id}/claim-codes`);
-    return data;
+    return api.get(`/badges/${id}/claim-codes`);
   }
 };

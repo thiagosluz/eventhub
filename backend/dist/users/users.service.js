@@ -93,6 +93,11 @@ let UsersService = class UsersService {
                 tenantId: true,
             },
         });
+        await this.syncToSpeaker(userId, {
+            name: updatedUser.name,
+            email: updatedUser.email,
+            bio: updatedUser.bio,
+        });
         await this.badgesService.checkAndAwardBadge(userId, null, "PROFILE_COMPLETED");
         return updatedUser;
     }
@@ -134,8 +139,22 @@ let UsersService = class UsersService {
                 avatarUrl: true,
             },
         });
+        await this.syncToSpeaker(userId, {
+            avatarUrl: updatedUser.avatarUrl,
+        });
         await this.badgesService.checkAndAwardBadge(userId, null, "PROFILE_COMPLETED");
         return updatedUser;
+    }
+    async syncToSpeaker(userId, data) {
+        const speaker = await this.prisma.speaker.findUnique({
+            where: { userId },
+        });
+        if (speaker) {
+            await this.prisma.speaker.update({
+                where: { id: speaker.id },
+                data,
+            });
+        }
     }
     async findAll(tenantId) {
         return this.prisma.user.findMany({

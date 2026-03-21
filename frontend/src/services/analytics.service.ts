@@ -1,4 +1,4 @@
-import api from "@/services/api";
+import { api } from "@/lib/api";
 
 export interface EventAnalytics {
   eventId: string;
@@ -52,19 +52,16 @@ export interface Checkin {
 
 export const analyticsService = {
   getEventAnalytics: async (eventId: string): Promise<EventAnalytics> => {
-    const response = await api.get(`/analytics/events/${eventId}`);
-    return response.data;
+    return api.get(`/analytics/events/${eventId}`);
   },
 
   getEventParticipants: async (eventId: string): Promise<Participant[]> => {
-    const response = await api.get(`/analytics/events/${eventId}/participants`);
-    return response.data;
+    return api.get(`/analytics/events/${eventId}/participants`);
   },
 
   getEventCheckins: async (eventId: string, activityId?: string): Promise<Checkin[]> => {
-    const response = await api.get(`/analytics/events/${eventId}/checkins`, {
+    return api.get(`/analytics/events/${eventId}/checkins`, {
       params: { activityId },
     });
-    return response.data;
   },
 };

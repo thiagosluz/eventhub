@@ -54,9 +54,23 @@ export function Navbar({ tenant }: { tenant?: Tenant }) {
               <div className="hidden sm:flex flex-col items-end mr-2">
                 <span className="text-xs font-black text-foreground uppercase tracking-wider">{user?.name}</span>
                 <span className="text-[10px] font-bold text-primary uppercase">
-                  {user?.role === 'ORGANIZER' ? 'Organizador' : user?.role === 'REVIEWER' ? 'Revisor' : 'Participante'}
+                  {user?.role === 'ORGANIZER' 
+                    ? 'Organizador' 
+                    : user?.role === 'REVIEWER' 
+                      ? 'Revisor' 
+                      : user?.role === 'SPEAKER'
+                        ? 'Palestrante'
+                        : 'Participante'}
                 </span>
               </div>
+              {user?.role === 'SPEAKER' && (
+                <Link 
+                  href={pathname.startsWith('/speaker') ? '/profile' : '/speaker'}
+                  className="text-[10px] font-black bg-primary/10 text-primary px-3 py-1 rounded-lg hover:bg-primary/20 transition-all uppercase tracking-tighter mr-2"
+                >
+                  {pathname.startsWith('/speaker') ? 'Área do Participante' : 'Portal do Palestrante'}
+                </Link>
+              )}
               <Link 
                 href={user?.role === 'ORGANIZER' ? '/dashboard' : user?.role === 'REVIEWER' ? '/dashboard/reviews' : '/profile'} 
                 className="text-sm font-black text-muted-foreground hover:text-primary transition-colors px-4 py-2 uppercase tracking-widest"

@@ -8,9 +8,24 @@ interface ApiError extends Error {
   };
 }
 
+export type ApiRequestOptions = RequestInit & { params?: Record<string, any> };
+
 class ApiClient {
-  private async request<T>(path: string, options: RequestInit = {}): Promise<T> {
-    const url = `${API_BASE_URL}${path}`;
+  private async request<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
+    let url = `${API_BASE_URL}${path}`;
+    
+    if (options.params) {
+      const searchParams = new URLSearchParams();
+      Object.entries(options.params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          searchParams.append(key, String(value));
+        }
+      });
+      const queryString = searchParams.toString();
+      if (queryString) {
+        url += `${url.includes('?') ? '&' : '?'}${queryString}`;
+      }
+    }
     
     let token = null;
 
@@ -41,7 +56,14 @@ class ApiClient {
     const response = await fetch(url, { ...options, headers });
 
     const text = await response.text();
-    const data = text ? JSON.parse(text) : {};
+    let data;
+    const contentType = response.headers.get('content-type');
+    
+    if (contentType?.includes('application/json')) {
+      data = text ? JSON.parse(text) : {};
+    } else {
+      data = text;
+    }
 
     if (!response.ok) {
       const error = new Error(data.message || `API Error: ${response.status}`) as ApiError;
@@ -53,11 +75,11 @@ class ApiClient {
     return data;
   }
 
-  get<T>(path: string, options?: RequestInit) {
+  get<T>(path: string, options?: ApiRequestOptions) {
     return this.request<T>(path, { ...options, method: 'GET' });
   }
 
-  post<T>(path: string, body: unknown, options?: RequestInit) {
+  post<T>(path: string, body?: unknown, options?: ApiRequestOptions) {
     return this.request<T>(path, {
       ...options,
       method: "POST",
@@ -65,7 +87,7 @@ class ApiClient {
     });
   }
 
-  patch<T>(path: string, body: unknown, options?: RequestInit) {
+  patch<T>(path: string, body?: unknown, options?: ApiRequestOptions) {
     return this.request<T>(path, {
       ...options,
       method: "PATCH",
@@ -73,7 +95,7 @@ class ApiClient {
     });
   }
 
-  delete<T>(path: string, options?: RequestInit) {
+  delete<T>(path: string, options?: ApiRequestOptions) {
     return this.request<T>(path, { ...options, method: 'DELETE' });
   }
 }
