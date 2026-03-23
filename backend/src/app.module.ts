@@ -15,8 +15,6 @@ import { CheckoutService } from "./checkout/checkout.service";
 import { FreeTicketStrategy } from "./checkout/free-ticket.strategy";
 import { CheckinController } from "./checkin/checkin.controller";
 import { CheckinService } from "./checkin/checkin.service";
-import { MailService } from "./mail/mail.service";
-import { MailProcessor } from "./mail/mail.processor";
 import { CertificatesController } from "./certificates/certificates.controller";
 import { CertificatePdfService } from "./certificates/certificate-pdf.service";
 import { CertificateTemplatesService } from "./certificates/certificate-templates.service";
@@ -30,6 +28,7 @@ import { AnalyticsModule } from "./analytics/analytics.module";
 import { SponsorsModule } from "./sponsors/sponsors.module";
 import { UsersModule } from "./users/users.module";
 import { BadgesModule } from "./badges/badges.module";
+import { MailModule } from "./mail/mail.module";
 
 @Module({
   imports: [
@@ -44,6 +43,7 @@ import { BadgesModule } from "./badges/badges.module";
     SponsorsModule,
     UsersModule,
     BadgesModule,
+    MailModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST ?? "localhost",
@@ -52,7 +52,6 @@ import { BadgesModule } from "./badges/badges.module";
     }),
     BullModule.registerQueue(
       { name: "assign-reviews" },
-      { name: "emails" },
       { name: "activities" },
     ),
   ],
@@ -74,8 +73,6 @@ import { BadgesModule } from "./badges/badges.module";
     CheckoutService,
     FreeTicketStrategy,
     CheckinService,
-    MailService,
-    MailProcessor,
     CertificatePdfService,
     CertificateTemplatesService,
   ],

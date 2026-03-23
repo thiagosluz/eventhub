@@ -111,6 +111,11 @@ model User {
   role      UserRole
   avatarUrl String?
   bio       String?
+  
+  refreshToken         String?
+  resetPasswordToken   String?
+  resetPasswordExpires DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

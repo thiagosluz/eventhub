@@ -2,6 +2,12 @@ import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
 import { Request } from "express";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { CheckoutService } from "./checkout.service";
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiProperty,
+  ApiTags,
+} from "@nestjs/swagger";
 
 interface AuthRequest extends Request {
   user?: {
@@ -13,27 +19,37 @@ interface AuthRequest extends Request {
 }
 
 class FormAnswerDto {
+  @ApiProperty()
   fieldId!: string;
+  @ApiProperty()
   value!: string;
 }
 
 class FormResponseDto {
+  @ApiProperty()
   formId!: string;
+  @ApiProperty({ type: [FormAnswerDto] })
   answers!: FormAnswerDto[];
 }
 
 class CheckoutDto {
+  @ApiProperty()
   eventId!: string;
+  @ApiProperty({ type: [String], required: false })
   activityIds?: string[];
+  @ApiProperty({ type: [FormResponseDto], required: false })
   formResponses?: FormResponseDto[];
 }
 
+@ApiTags("checkout")
+@ApiBearerAuth()
 @Controller()
 export class CheckoutController {
   constructor(private readonly checkout: CheckoutService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post("checkout")
+  @ApiOperation({ summary: "Process checkout for free tickets and activities" })
   async checkoutFree(@Body() body: CheckoutDto, @Req() req: AuthRequest) {
     const userId = req.user?.sub;
     if (!userId) {

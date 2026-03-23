@@ -25,6 +25,13 @@ import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { JwtService } from "@nestjs/jwt";
 import { MinioService } from "../storage/minio.service";
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from "@nestjs/swagger";
 
 interface AuthRequest extends Request {
   user?: {
@@ -35,6 +42,8 @@ interface AuthRequest extends Request {
   };
 }
 
+@ApiTags("events")
+@ApiBearerAuth()
 @Controller()
 export class EventsController {
   constructor(
@@ -45,6 +54,7 @@ export class EventsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
+  @ApiOperation({ summary: "Create a new event (Organizer only)" })
   @Post("events")
   async createEvent(@Body() body: CreateEventDto, @Req() req: AuthRequest) {
     const tenantId = req.user?.tenantId;
@@ -190,6 +200,16 @@ export class EventsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
+  @ApiOperation({ summary: "Upload event banner" })
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        file: { type: "string", format: "binary" },
+      },
+    },
+  })
   @Post("events/:id/banner")
   @UseInterceptors(FileInterceptor("file"))
   async uploadBanner(
@@ -248,6 +268,7 @@ export class EventsController {
     });
   }
 
+  @ApiOperation({ summary: "List all public events" })
   @Get("public/events")
   async listPublicEvents() {
     return this.eventsService.findAllPublic();

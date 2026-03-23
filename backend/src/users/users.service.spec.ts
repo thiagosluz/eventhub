@@ -1,0 +1,104 @@
+import { Test, TestingModule } from "@nestjs/testing";
+import { UsersService } from "./users.service";
+import { PrismaService } from "../prisma/prisma.service";
+import { MinioService } from "../storage/minio.service";
+import { BadgesService } from "../badges/badges.service";
+import { ConflictException, NotFoundException } from "@nestjs/common";
+
+describe("UsersService", () => {
+  let service: UsersService;
+
+  const mockPrismaService = {
+    user: {
+      findUnique: jest.fn(),
+      findFirst: jest.fn(),
+      update: jest.fn(),
+      findMany: jest.fn(),
+    },
+    speaker: {
+      findUnique: jest.fn(),
+      update: jest.fn(),
+    },
+  };
+
+  const mockMinioService = {
+    uploadObject: jest.fn(),
+  };
+
+  const mockBadgesService = {
+    checkAndAwardBadge: jest.fn(),
+  };
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UsersService,
+        { provide: PrismaService, useValue: mockPrismaService },
+        { provide: MinioService, useValue: mockMinioService },
+        { provide: BadgesService, useValue: mockBadgesService },
+      ],
+    }).compile();
+
+    service = module.get<UsersService>(UsersService);
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should be defined", () => {
+    expect(service).toBeDefined();
+  });
+
+  describe("findMe", () => {
+    it("should return user info", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "u1",
+        name: "User",
+      });
+      const result = await service.findMe("u1");
+      expect(result.name).toBe("User");
+    });
+
+    it("should throw NotFoundException if user not found", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue(null);
+      await expect(service.findMe("u1")).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe("updateProfile", () => {
+    it("should throw ConflictException if email in use", async () => {
+      mockPrismaService.user.findFirst.mockResolvedValue({ id: "u2" });
+      await expect(
+        service.updateProfile("u1", { email: "used@test.com" }),
+      ).rejects.toThrow(ConflictException);
+    });
+
+    it("should update profile and sync to speaker", async () => {
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+      mockPrismaService.user.update.mockResolvedValue({
+        id: "u1",
+        name: "New Name",
+      });
+      mockPrismaService.speaker.findUnique.mockResolvedValue({ id: "s1" });
+
+      const result = await service.updateProfile("u1", { name: "New Name" });
+
+      expect(result.name).toBe("New Name");
+      expect(mockPrismaService.speaker.update).toHaveBeenCalled();
+      expect(mockBadgesService.checkAndAwardBadge).toHaveBeenCalledWith(
+        "u1",
+        null,
+        "PROFILE_COMPLETED",
+      );
+    });
+  });
+
+  describe("findAll", () => {
+    it("should list users for a tenant or with registrations in the tenant", async () => {
+      mockPrismaService.user.findMany.mockResolvedValue([{ id: "u1" }]);
+      const result = await service.findAll("t1");
+      expect(result).toHaveLength(1);
+    });
+  });
+});

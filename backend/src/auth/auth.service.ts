@@ -1,7 +1,13 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  Injectable,
+  UnauthorizedException,
+  NotFoundException,
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as argon2 from "argon2";
 import { PrismaService } from "../prisma/prisma.service";
+import { MailService } from "../mail/mail.service";
+import { v4 as uuidv4 } from "uuid";
 
 interface RegisterOrganizerInput {
   tenantName: string;
@@ -21,6 +27,7 @@ export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   async registerOrganizer(input: RegisterOrganizerInput) {
@@ -51,23 +58,7 @@ export class AuthService {
       },
     });
 
-    const access_token = await this.generateToken({
-      userId: user.id,
-      email: user.email,
-      tenantId: tenant.id,
-      role: user.role,
-    });
-
-    return {
-      access_token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        tenantId: user.tenantId,
-      },
-    };
+    return this.createSession(user);
   }
 
   async registerParticipant(
@@ -100,23 +91,7 @@ export class AuthService {
       },
     });
 
-    const access_token = await this.generateToken({
-      userId: user.id,
-      email: user.email,
-      tenantId: tenant.id,
-      role: user.role,
-    });
-
-    return {
-      access_token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        tenantId: user.tenantId,
-      },
-    };
+    return this.createSession(user);
   }
 
   async login(input: LoginInput) {
@@ -129,15 +104,93 @@ export class AuthService {
       throw new UnauthorizedException("Credenciais inválidas.");
     }
 
-    const access_token = await this.generateToken({
-      userId: user.id,
-      email: user.email,
-      tenantId: user.tenantId,
-      role: user.role,
+    return this.createSession(user);
+  }
+
+  async refresh(refreshToken: string) {
+    const user = await this.prisma.user.findFirst({
+      where: { refreshToken },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException("Token de atualização inválido.");
+    }
+
+    return this.createSession(user);
+  }
+
+  async logout(userId: string) {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { refreshToken: null },
+    });
+  }
+
+  async forgotPassword(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new NotFoundException("Usuário não encontrado.");
+    }
+
+    const token = uuidv4();
+    const expires = new Date();
+    expires.setHours(expires.getHours() + 1);
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        resetPasswordToken: token,
+        resetPasswordExpires: expires,
+      },
+    });
+
+    await this.mailService.enqueue({
+      to: user.email,
+      subject: "Recuperação de Senha - EventHub",
+      text: `Utilize o token abaixo para resetar sua senha (válido por 1 hora):\n\n${token}`,
+      html: `<p>Utilize o token abaixo para resetar sua senha (válido por 1 hora):</p><h3>${token}</h3>`,
+    });
+  }
+
+  async resetPassword(token: string, newPassword: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        resetPasswordToken: token,
+        resetPasswordExpires: { gt: new Date() },
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException("Token inválido ou expirado.");
+    }
+
+    const passwordHash = await argon2.hash(newPassword);
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: passwordHash,
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
+      },
+    });
+  }
+
+  private async createSession(user: any) {
+    const access_token = await this.generateToken(user, "15m");
+    const refresh_token = await this.generateToken(user, "7d");
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken: refresh_token },
     });
 
     return {
       access_token,
+      refresh_token,
       user: {
         id: user.id,
         name: user.name,
@@ -148,19 +201,14 @@ export class AuthService {
     };
   }
 
-  private async generateToken(params: {
-    userId: string;
-    email: string;
-    tenantId: string;
-    role: string;
-  }) {
+  private async generateToken(user: any, expiresIn: string) {
     const payload = {
-      sub: params.userId,
-      email: params.email,
-      tenantId: params.tenantId,
-      role: params.role,
+      sub: user.id,
+      email: user.email,
+      tenantId: user.tenantId,
+      role: user.role,
     };
 
-    return this.jwtService.signAsync(payload);
+    return this.jwtService.signAsync(payload, { expiresIn: expiresIn as any });
   }
 }

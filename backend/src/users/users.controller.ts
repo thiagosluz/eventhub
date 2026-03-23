@@ -17,28 +17,40 @@ import { UpdateProfileDto, UpdatePasswordDto } from "./dto/update-user.dto";
 import { Roles } from "../auth/roles.decorator";
 import { RolesGuard } from "../auth/roles.guard";
 import { UserRole } from "../auth/roles.types";
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiTags,
+  ApiConsumes,
+  ApiBody,
+} from "@nestjs/swagger";
 
 interface AuthRequest extends Request {
   user?: { sub: string; email: string; tenantId: string; role: string };
 }
 
+@ApiTags("users")
+@ApiBearerAuth()
 @Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Get currently logged in user profile" })
   @Get("me")
   async getMe(@Req() req: AuthRequest) {
     return this.usersService.findMe(req.user!.sub);
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Update current user profile" })
   @Patch("me")
   async updateProfile(@Body() dto: UpdateProfileDto, @Req() req: AuthRequest) {
     return this.usersService.updateProfile(req.user!.sub, dto);
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Update current user password" })
   @Patch("me/password")
   async updatePassword(
     @Body() dto: UpdatePasswordDto,
@@ -48,6 +60,19 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Upload user avatar" })
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        file: {
+          type: "string",
+          format: "binary",
+        },
+      },
+    },
+  })
   @Post("me/avatar")
   @UseInterceptors(FileInterceptor("file"))
   async uploadAvatar(
@@ -59,6 +84,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
+  @ApiOperation({ summary: "List all users in the tenant (Organizer only)" })
   @Get()
   async findAll(@Req() req: AuthRequest) {
     return this.usersService.findAll(req.user!.tenantId);

@@ -14,7 +14,10 @@ import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { RolesGuard } from "../auth/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { UserRole } from "../auth/roles.types";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
+@ApiTags("badges")
+@ApiBearerAuth()
 @Controller("badges")
 @UseGuards(JwtAuthGuard)
 export class BadgesController {
@@ -55,6 +58,7 @@ export class BadgesController {
     return this.badgesService.updateBadge(req.user.tenantId, id, body);
   }
 
+  @ApiOperation({ summary: "Claim a badge using a code" })
   @Post("claim/:id")
   claim(
     @Req() req: any,
