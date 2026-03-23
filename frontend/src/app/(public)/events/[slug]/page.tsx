@@ -1,9 +1,11 @@
+import { Metadata } from 'next';
 import { eventsService } from "@/services/events.service";
 import { notFound } from "next/navigation";
 import { TicketWidget } from "@/components/events/TicketWidget";
 import { SponsorShowcase } from "@/components/events/SponsorShowcase";
 import { ScheduleGrid } from "@/components/events/ScheduleGrid";
 import { SpeakersSection } from "@/components/events/SpeakersSection";
+import { SocialShare } from "@/components/events/SocialShare";
 import { sponsorsService } from "@/services/sponsors.service";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,6 +13,37 @@ import Image from "next/image";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  try {
+    const event = await eventsService.getPublicEventBySlug(slug);
+    if (!event) return { title: 'Evento não encontrado' };
+
+    const title = event.seoTitle || event.name;
+    const description = event.seoDescription || event.description?.slice(0, 160);
+    const images = event.bannerUrl ? [event.bannerUrl] : [];
+
+    return {
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        images,
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images,
+      },
+    };
+  } catch (e) {
+    return { title: 'Evento - EventHub' };
+  }
+}
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -33,7 +66,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   }
 
   const startDate = new Date(event.startDate);
-  const endDate = new Date(event.endDate);
 
   const formattedDate = startDate.toLocaleDateString('pt-BR', {
     day: '2-digit',
@@ -111,10 +143,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 mt-12">
         {/* Main Content */}
-        <div className="lg:col-span-2 space-y-16">
-          <section className="space-y-6">
-            <h2 className="text-3xl font-bold tracking-tight">Sobre o Evento</h2>
-            <div className="text-lg text-muted-foreground leading-relaxed whitespace-pre-wrap">
+        <div className="lg:col-span-2 space-y-24">
+          <section className="space-y-12">
+            <div className="flex flex-col items-center text-center space-y-4">
+              <h2 className="text-4xl font-black tracking-tight text-foreground">Sobre o Evento</h2>
+              <div className="w-20 h-1.5 bg-primary rounded-full" />
+            </div>
+            <div className="text-lg text-muted-foreground leading-relaxed whitespace-pre-wrap max-w-3xl mx-auto text-center">
               {event.description || 'Nenhuma descrição fornecida para este evento.'}
             </div>
           </section>
@@ -127,28 +162,47 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             </>
           )}
 
+          {/* New Sections: Submission and Social */}
+          <section className="space-y-12">
+            <div className="flex flex-col items-center text-center space-y-4">
+              <h2 className="text-4xl font-black tracking-tight text-foreground">Chamada de Trabalhos</h2>
+              <div className="w-20 h-1.5 bg-primary rounded-full" />
+            </div>
+            <Link 
+              href={`/events/${event.slug}/submit`}
+              className="max-w-2xl mx-auto flex items-center justify-between p-8 rounded-[2.5rem] bg-secondary/10 border border-secondary/20 hover:bg-secondary/20 transition-all group"
+            >
+              <div className="flex flex-col items-start gap-1">
+                <span className="text-xs font-black uppercase tracking-widest text-secondary italic">Envie sua proposta</span>
+                <span className="text-2xl font-black text-foreground group-hover:text-primary transition-colors">Submeter Trabalho</span>
+              </div>
+              <div className="p-4 bg-secondary/20 rounded-2xl group-hover:bg-primary group-hover:text-white transition-all">
+                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                 </svg>
+              </div>
+            </Link>
+          </section>
+
+          <section className="space-y-12">
+            <div className="flex flex-col items-center text-center space-y-4">
+              <h2 className="text-4xl font-black tracking-tight text-foreground">Compartilhe e Salve</h2>
+              <div className="w-20 h-1.5 bg-primary rounded-full" />
+            </div>
+            <div className="max-w-2xl mx-auto w-full">
+              <SocialShare event={event} />
+            </div>
+          </section>
+
           {/* Sponsors Showcase */}
           <SponsorShowcase categories={sponsors} />
         </div>
 
         {/* Sidebar / Ticket Selection */}
         <div className="space-y-8">
-          <Link 
-            href={`/events/${event.slug}/submit`}
-            className="w-full flex items-center justify-between p-6 rounded-3xl bg-secondary/10 border border-secondary/20 hover:bg-secondary/20 transition-all group"
-          >
-            <div className="flex flex-col items-start">
-              <span className="text-[10px] font-black uppercase tracking-widest text-secondary italic mb-1">Chamada Aberta</span>
-              <span className="text-lg font-black text-foreground group-hover:text-primary transition-colors">Submeter Trabalho</span>
-            </div>
-            <div className="p-3 bg-secondary/20 rounded-xl group-hover:bg-primary group-hover:text-white transition-all">
-               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-               </svg>
-            </div>
-          </Link>
-
-          <TicketWidget event={event} />
+          <div className="sticky top-24">
+            <TicketWidget event={event} />
+          </div>
         </div>
       </div>
     </main>

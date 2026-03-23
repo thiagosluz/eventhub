@@ -40,8 +40,9 @@ export function SpeakersSection({ activities }: SpeakersSectionProps) {
 
   return (
     <section className="space-y-12">
-      <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight">Palestrantes e Convidados</h2>
+      <div className="flex flex-col items-center text-center space-y-4">
+        <h2 className="text-4xl font-black tracking-tight text-foreground">Palestrantes e Convidados</h2>
+        <div className="w-20 h-1.5 bg-primary rounded-full" />
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 md:gap-12">

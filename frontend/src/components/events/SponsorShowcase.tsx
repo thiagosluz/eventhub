@@ -23,9 +23,9 @@ export function SponsorShowcase({ categories }: SponsorShowcaseProps) {
 
   return (
     <section className="space-y-16 py-12 px-6">
-      <div className="flex flex-col items-center text-center space-y-2">
-        <h2 className="text-3xl font-black uppercase tracking-tight">Realização e Apoio</h2>
-        <div className="w-24 h-1.5 bg-primary rounded-full" />
+      <div className="flex flex-col items-center text-center space-y-4">
+        <h2 className="text-4xl font-black tracking-tight text-foreground">Realização e Apoio</h2>
+        <div className="w-20 h-1.5 bg-primary rounded-full" />
       </div>
 
       <div className="space-y-20">
