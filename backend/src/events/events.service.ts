@@ -72,7 +72,18 @@ export class EventsService {
     const event = await this.prisma.event.findFirst({
       where: { id: eventId, tenantId },
       include: {
-        activities: { orderBy: { startAt: "asc" } },
+        activities: {
+          orderBy: { startAt: "asc" },
+          include: {
+            type: true,
+            speakers: {
+              include: {
+                speaker: true,
+                role: true,
+              },
+            },
+          },
+        },
         _count: {
           select: { registrations: true },
         },
@@ -170,7 +181,18 @@ export class EventsService {
         ],
       },
       include: {
-        activities: { orderBy: { startAt: "asc" } },
+        activities: {
+          orderBy: { startAt: "asc" },
+          include: {
+            type: true,
+            speakers: {
+              include: {
+                speaker: true,
+                role: true,
+              },
+            },
+          },
+        },
         tenant: {
           select: {
             id: true,

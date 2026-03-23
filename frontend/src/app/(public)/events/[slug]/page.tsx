@@ -2,6 +2,7 @@ import { eventsService } from "@/services/events.service";
 import { notFound } from "next/navigation";
 import { TicketWidget } from "@/components/events/TicketWidget";
 import { SponsorShowcase } from "@/components/events/SponsorShowcase";
+import { ScheduleGrid } from "@/components/events/ScheduleGrid";
 import { sponsorsService } from "@/services/sponsors.service";
 import Link from "next/link";
 import Image from "next/image";
@@ -119,34 +120,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
           {/* Activities / Schedule */}
           {event.activities && event.activities.length > 0 && (
-            <section className="space-y-8">
-              <h2 className="text-3xl font-bold tracking-tight">Programação</h2>
-              <div className="space-y-4">
-                {event.activities.map((activity: any) => (
-                  <div key={activity.id} className="premium-card p-6 flex items-start gap-6 hover:border-primary/50 transition-colors">
-                    <div className="text-center min-w-[80px]">
-                      <div className="text-2xl font-black text-primary">
-                        {new Date(activity.startAt).getHours().toString().padStart(2, '0')}:
-                        {new Date(activity.startAt).getMinutes().toString().padStart(2, '0')}
-                      </div>
-                      <div className="text-xs font-bold text-muted-foreground uppercase">Início</div>
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-bold">{activity.title}</h3>
-                      <p className="text-muted-foreground line-clamp-2">{activity.description}</p>
-                      {activity.location && (
-                        <div className="flex items-center gap-2 text-sm font-medium text-primary">
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          </svg>
-                          {activity.location}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+            <ScheduleGrid activities={event.activities} />
           )}
 
           {/* Sponsors Showcase */}
