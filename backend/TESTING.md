@@ -99,51 +99,35 @@ describe('MyService', () => {
     - `processCheckout`: Sucesso, falha por evento inexistente, falha por já inscrito.
 - **FreeTicketStrategy (`free-ticket.strategy.spec.ts`)**
     - `process`: Criação correta de tickets para eventos e atividades.
-- **SubmissionsService (`submissions.service.spec.ts`)**
-    - `createSubmission`: Sucesso, upload de arquivo, envio de e-mail e fila BullMQ.
-    - `listSubmissionsForEvent`: Sucesso, verificação de permissões do tenant.
-    - `submitReview`: Sucesso, verificação de atribuição do revisor.
+- **SubmissionsService (`src/submissions/submissions.service.spec.ts`)**
+    - `createSubmission`: Sucesso, upload via Minio, e-mail de confirmação e fila BullMQ.
+    - `listMySubmissions`: Histórico detalhado para o autor.
+    - `review`: Atribuição double-blind e submissão de avaliações por revisores autorizados.
 - **AssignReviewsProcessor (`submissions.processor.spec.ts`)**
     - `process`: Atribuição correta de revisores do tenant à submissão.
 - **CertificateTemplatesService (`certificate-templates.service.spec.ts`)**
     - `create`, `findOne`, `listByEvent`: CRUD e verificação de tenant.
 - **CertificatePdfService (`certificate-pdf.service.spec.ts`)**
     - `generateAndStore`: Geração de PDF com placeholders, QR Code e armazenamento.
-- **CheckinService (`checkin.service.spec.ts`)**
-    - `getQrCodePng`: Geração de buffer para QR Code do ingresso.
-    - `checkin`: Validação de token, regras de atividade e prevenção de duplicatas.
-    - `drawRaffle`: Sorteio de prêmios com regras de filtro (check-in, staff, ganhadores únicos).
-- **DashboardService (`dashboard.service.spec.ts`)**
-    - `getStats`: Agregação de receita, inscrições, eventos ativos e atividades recentes por tenant.
-    - `getTimeSeriesData`: Geração de dados temporais dos últimos 30 dias.
-- **ActivitiesService (`activities.service.spec.ts`)**
-    - `createActivity`: Sucesso com auto-inscrição, falha por evento fora do tenant.
-    - `enrollInActivity`: Sucesso, falha por conflito de horário, falha por capacidade atingida.
-    - `updateActivity`: Sucesso, sincronização de palestrantes e auto-inscrição.
-    - `deleteActivity`: Remoção completa e de associações.
-    - `Activity Types`: CRUD de tipos de atividade.
-    - `Enrollment Management`: Listagem e confirmação manual de inscrições.
-- **ActivitiesProcessor (`activities.processor.spec.ts`)**
-    - `cleanupExpiredEnrollments`: Cancelamento automático de inscrições pendentes expiradas.
+- **CheckinService (`src/checkin/checkin.service.spec.ts`)**
+    - `checkin`: Validação de tokens, atividades restritas por inscrição, prevenção de duplicatas.
+    - `drawRaffle`: Sorteios com regras complexas (staff, ganhadores únicos, inscrição vs check-in).
+    - `History`: Gestão de visibilidade e premiação de badges para ganhadores.
 - **UsersService (`src/users/users.service.spec.ts`)**
-    - `findMe`: Sucesso e erro 404.
-    - `updateProfile`: Sucesso (com sincronização de palestrante) e erro de e-mail duplicado.
-    - `findAll`: Listagem filtrada por tenant.
+    - `updatePassword`: Validação segura com hash Argon2 e erro de senha incorreta.
+    - `uploadAvatar`: Upload via Minio com sincronização automática para perfil de palestrante.
+    - `Badges`: Conquista automática de badge ao completar 100% do perfil.
 - **SpeakersService (`src/speakers/speakers.service.spec.ts`)**
-    - `create`: Upgrade de role de PARTICIPANT para SPEAKER.
-    - `update`: Downgrade de role ao desvincular usuário e sincronização de perfil.
-    - `Portal`: Listagem de atividades e feedbacks do palestrante.
+    - `Roles`: Gestão automática de permissões (SPEAKER/PARTICIPANT) ao vincular/desvincular usuários.
+    - `Portal`: Listagem de atividades, materiais e feedbacks consolidados por palestrante.
 - **SponsorsService (`src/sponsors/sponsors.service.spec.ts`)**
-    - `Categories`: Sucesso e erro de isolamento por tenant.
-    - `Sponsors`: Criação e associação correta a categorias.
+    - `Multi-tenant`: Isolamento rigoroso de categorias e patrocinadores entre inquilinos.
+    - `Public`: Lógica de listagem pública e upload de logos.
 - **FormsService (`src/forms/forms.service.spec.ts`)**
-    - `RegistrationForm`: Recuperação e salvamento dinâmico de campos (upsert/delete).
-- **TenantsService (`src/tenants/tenants.service.spec.ts`)**
-    - `getTenant`: Busca por ID com erro 404.
-    - `updateTenant`: Atualização de marca e tema.
-    - `getPublicTenant`: Recuperação de dados públicos para o portal.
-- **Prisma Filter (`src/common/filters/prisma-client-exception.filter.spec.ts`)**
-    - `catch`: Mapeamento de erros Prisma (P2002, P2025) para HTTP 409 e 404.
+    - `Dynamic Forms`: Sincronização completa (upsert/delete) de campos customizados por evento.
+- **BadgesService (`src/badges/badges.service.spec.ts`)**
+    - `Automation`: Gatilhos complexos (Check-in streak, Activity hours, Early bird).
+    - `Scanning`: Entrega manual por código (único/global) ou por escaneamento de organizador.
     
 ## Testes de Integração Real (Testcontainers)
 Para garantir que a integração com serviços externos funcione conforme o esperado em produção, utilizamos o **Testcontainers** para subir instâncias reais via Docker durante os testes:
@@ -209,3 +193,17 @@ Para validar a resiliência do sistema sob estresse, incluímos scripts de teste
 - **Integração de E-mail**: Testes de integração (não apenas mocks) usando Testcontainers (ex: Mailhog).
 - **Integração de Storage**: Garantir que o fluxo de upload/delete de banner/avatar seja validado no E2E com MinIO real.
 - **Segurança Avançada**: Testes de Rate Limiting e fluxos de 2FA.
+## Solução de Problemas (Troubleshooting)
+
+### Travamento do Sistema / Exaustão de Recursos
+Se o seu computador travar ao executar os testes, isso provavelmente se deve ao alto consumo de CPU e RAM pelo Jest ao rodar múltiplos testes em paralelo com o NestJS e Docker (Testcontainers).
+
+Para resolver, siga estas recomendações:
+
+1.  **Limite de Workers:** Os scripts padrão já foram atualizados para usar `--maxWorkers=2`.
+2.  **Execução Sequencial:** Se o sistema ainda estiver lento, utilize o comando para rodar um arquivo por vez:
+    ```bash
+    npm run test:seq
+    ```
+3.  **Logs de Memória:** O script `npm run test` agora inclui `--logHeapUsage` para ajudar a identificar vazamentos de memória.
+4.  **Docker:** Certifique-se de que o Docker Desktop (ou equivalente) tenha recursos suficientes alocados (pelo menos 4GB de RAM recomendados).

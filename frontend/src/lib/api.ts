@@ -11,6 +11,21 @@ interface ApiError extends Error {
 export type ApiRequestOptions = RequestInit & { params?: Record<string, any> };
 
 class ApiClient {
+  private isRefreshing = false;
+  private failedQueue: any[] = [];
+
+  private processQueue(error: any, token: string | null = null) {
+    this.failedQueue.forEach((prom) => {
+      if (error) {
+        prom.reject(error);
+      } else {
+        prom.resolve(token);
+      }
+    });
+
+    this.failedQueue = [];
+  }
+
   private async request<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
     let url = `${API_BASE_URL}${path}`;
     
@@ -66,6 +81,72 @@ class ApiClient {
     }
 
     if (!response.ok) {
+      // Handle 401 Unauthorized - Token expired
+      if (response.status === 401 && !path.includes('/auth/login') && !path.includes('/auth/refresh')) {
+        if (this.isRefreshing) {
+          return new Promise((resolve, reject) => {
+            this.failedQueue.push({ resolve, reject });
+          })
+            .then((token) => {
+              return this.request<T>(path, options);
+            })
+            .catch((err) => {
+              throw err;
+            });
+        }
+
+        this.isRefreshing = true;
+
+        try {
+          const refreshToken = typeof window !== 'undefined' 
+            ? localStorage.getItem('eventhub_refresh_token')
+            : null;
+
+          if (!refreshToken) {
+            throw new Error('No refresh token available');
+          }
+
+          const refreshResponse = await fetch(`${API_BASE_URL}/auth/refresh`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refresh_token: refreshToken }),
+          });
+
+          if (!refreshResponse.ok) {
+            throw new Error('Refresh token invalid');
+          }
+
+          const refreshData = await refreshResponse.json();
+          const newToken = refreshData.access_token;
+          const newRefreshToken = refreshData.refresh_token;
+
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('eventhub_token', newToken);
+            localStorage.setItem('eventhub_refresh_token', newRefreshToken);
+            // Also update cookies for SSR
+            document.cookie = `eventhub_token=${newToken}; path=/; max-age=604800`;
+            document.cookie = `eventhub_refresh_token=${newRefreshToken}; path=/; max-age=604800`;
+          }
+
+          this.processQueue(null, newToken);
+          return this.request<T>(path, options);
+        } catch (refreshError) {
+          this.processQueue(refreshError, null);
+          // If refresh fails, logout
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('eventhub_token');
+            localStorage.removeItem('eventhub_refresh_token');
+            localStorage.removeItem('eventhub_user');
+            document.cookie = "eventhub_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            document.cookie = "eventhub_refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            window.location.href = '/login';
+          }
+          throw refreshError;
+        } finally {
+          this.isRefreshing = false;
+        }
+      }
+
       const error = new Error(data.message || `API Error: ${response.status}`) as ApiError;
       error.status = response.status;
       error.response = { status: response.status, data };

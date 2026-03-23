@@ -48,7 +48,7 @@ describe("CheckoutController (e2e)", () => {
     enqueue: jest.fn(),
   };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
@@ -63,6 +63,10 @@ describe("CheckoutController (e2e)", () => {
     app = moduleFixture.createNestApplication();
     jwtService = moduleFixture.get<JwtService>(JwtService);
     await app.init();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   afterAll(async () => {

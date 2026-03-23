@@ -1,6 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { FormsService } from "./forms.service";
 import { PrismaService } from "../prisma/prisma.service";
+import { NotFoundException } from "@nestjs/common";
 
 describe("FormsService", () => {
   let service: FormsService;
@@ -71,6 +72,43 @@ describe("FormsService", () => {
 
       expect(mockPrismaService.customForm.create).toHaveBeenCalled();
       expect(mockPrismaService.customFormField.create).toHaveBeenCalled();
+    });
+
+    it("should delete removed fields and update existing ones", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
+      mockPrismaService.customForm.findFirst.mockResolvedValue({
+        id: "f1",
+        name: "Old Name",
+      });
+      mockPrismaService.customForm.update.mockResolvedValue({ id: "f1" });
+      mockPrismaService.customFormField.findMany.mockResolvedValue([
+        { id: "field-to-delete", label: "Old" },
+        { id: "field-to-keep", label: "Keep" },
+      ]);
+
+      await service.saveRegistrationForm("t1", "e1", {
+        name: "New Name",
+        fields: [
+          { id: "field-to-keep", label: "Updated", type: "TEXT", required: true, order: 1 },
+          { label: "New Field", type: "TEXT", required: false, order: 2 },
+        ],
+      });
+
+      expect(mockPrismaService.customFormField.deleteMany).toHaveBeenCalledWith({
+        where: { id: { in: ["field-to-delete"] } },
+      });
+      expect(mockPrismaService.customFormField.update).toHaveBeenCalledWith({
+        where: { id: "field-to-keep" },
+        data: expect.objectContaining({ label: "Updated" }),
+      });
+      expect(mockPrismaService.customFormField.create).toHaveBeenCalled();
+    });
+
+    it("should throw NotFound if event not found", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue(null);
+      await expect(
+        service.saveRegistrationForm("t1", "e1", { name: "X", fields: [] }),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });

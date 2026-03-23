@@ -11,7 +11,7 @@ describe("AppController (e2e)", () => {
     // Add mocks for prisma methods if needed
   };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     process.env.JWT_SECRET = "test_secret";
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -22,6 +22,10 @@ describe("AppController (e2e)", () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   afterAll(async () => {

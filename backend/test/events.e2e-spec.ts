@@ -31,7 +31,7 @@ describe("EventsController (e2e)", () => {
     uploadObject: jest.fn().mockResolvedValue("http://minio/banner.png"),
   };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
@@ -44,6 +44,10 @@ describe("EventsController (e2e)", () => {
     app = moduleFixture.createNestApplication();
     jwtService = moduleFixture.get<JwtService>(JwtService);
     await app.init();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   afterAll(async () => {

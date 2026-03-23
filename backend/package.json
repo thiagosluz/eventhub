@@ -11,11 +11,12 @@
     "prisma:generate": "prisma generate",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test": "jest --maxWorkers=2 --logHeapUsage",
+    "test:watch": "jest --watch --maxWorkers=2",
+    "test:cov": "jest --coverage --maxWorkers=2 --logHeapUsage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json --maxWorkers=2 --logHeapUsage",
+    "test:seq": "jest --runInBand --logHeapUsage"
   },
   "keywords": [],
   "author": "",

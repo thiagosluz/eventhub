@@ -34,9 +34,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (!Cookies.get("eventhub_token")) {
             Cookies.set("eventhub_token", storedToken, { expires: 7 });
           }
+          if (localStorage.getItem("eventhub_refresh_token") && !Cookies.get("eventhub_refresh_token")) {
+            Cookies.set("eventhub_refresh_token", localStorage.getItem("eventhub_refresh_token")!, { expires: 7 });
+          }
         } catch {
           localStorage.removeItem("eventhub_user");
           localStorage.removeItem("eventhub_token");
+          localStorage.removeItem("eventhub_refresh_token");
         }
       }
       setIsLoading(false);
@@ -49,15 +53,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(authData.user);
     localStorage.setItem("eventhub_user", JSON.stringify(authData.user));
     localStorage.setItem("eventhub_token", authData.access_token);
+    localStorage.setItem("eventhub_refresh_token", authData.refresh_token);
     // Sync with cookie for server-side auth
     Cookies.set("eventhub_token", authData.access_token, { expires: 7 });
+    Cookies.set("eventhub_refresh_token", authData.refresh_token, { expires: 7 });
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("eventhub_user");
     localStorage.removeItem("eventhub_token");
+    localStorage.removeItem("eventhub_refresh_token");
     Cookies.remove("eventhub_token");
+    Cookies.remove("eventhub_refresh_token");
     router.push("/");
   };
 

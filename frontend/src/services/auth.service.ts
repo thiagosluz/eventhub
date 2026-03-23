@@ -13,4 +13,8 @@ export const authService = {
   registerParticipant: async (data: RegisterParticipantDto): Promise<AuthResponse> => {
     return api.post<AuthResponse>('/auth/register-participant', data);
   },
+
+  refresh: async (refresh_token: string): Promise<AuthResponse> => {
+    return api.post<AuthResponse>('/auth/refresh', { refresh_token });
+  },
 };

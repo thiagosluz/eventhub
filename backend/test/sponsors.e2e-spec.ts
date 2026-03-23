@@ -29,7 +29,7 @@ describe("Sponsors (e2e)", () => {
 
   const mockQueue = { add: jest.fn() };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
@@ -52,6 +52,10 @@ describe("Sponsors (e2e)", () => {
     app = moduleFixture.createNestApplication();
     jwtService = moduleFixture.get<JwtService>(JwtService);
     await app.init();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   afterAll(async () => {

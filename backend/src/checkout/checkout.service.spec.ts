@@ -117,10 +117,42 @@ describe("CheckoutService", () => {
 
       const result = await service.processCheckout(checkoutInput);
 
-      expect(result).toBeDefined();
       expect(result.registrationId).toBe("reg_new");
       expect(mockFreeTicketStrategy.process).toHaveBeenCalled();
       expect(mockMailService.enqueue).toHaveBeenCalled();
+    });
+
+    it("should auto-enroll in activities with requiresEnrollment false", async () => {
+      mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1" });
+      mockPrismaService.registration.create.mockResolvedValue({ id: "reg1" });
+      mockPrismaService.activity.findMany.mockResolvedValue([{ id: "act1" }]); // requiresEnrollment: false
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
+      mockFreeTicketStrategy.process.mockResolvedValue({});
+
+      await service.processCheckout({ eventId: "e1", userId: "u1", activityIds: [] });
+
+      expect(mockPrismaService.activityEnrollment.createMany).toHaveBeenCalled();
+    });
+
+    it("should process custom form responses if provided", async () => {
+      mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1" });
+      mockPrismaService.registration.create.mockResolvedValue({ id: "reg1" });
+      mockPrismaService.activity.findMany.mockResolvedValue([]);
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
+      mockFreeTicketStrategy.process.mockResolvedValue({});
+      mockPrismaService.customFormResponse.create.mockResolvedValue({ id: "resp1" });
+
+      await service.processCheckout({
+        eventId: "e1",
+        userId: "u1",
+        activityIds: [],
+        formResponses: [
+          { formId: "f1", answers: [{ fieldId: "fld1", value: "answer1" }] },
+        ],
+      });
+
+      expect(mockPrismaService.customFormResponse.create).toHaveBeenCalled();
+      expect(mockPrismaService.customFormAnswer.create).toHaveBeenCalled();
     });
   });
 });

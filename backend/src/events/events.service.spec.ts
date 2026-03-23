@@ -89,4 +89,115 @@ describe("EventsService", () => {
       expect(result).toEqual(event);
     });
   });
+
+  describe("updateEvent", () => {
+    it("should throw for invalid start date", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
+      await expect(
+        service.updateEvent({
+          tenantId: "t1",
+          eventId: "e1",
+          data: { startDate: "invalid" },
+        }),
+      ).rejects.toThrow("Data de início inválida");
+    });
+
+    it("should throw for invalid end date", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
+      await expect(
+        service.updateEvent({
+          tenantId: "t1",
+          eventId: "e1",
+          data: { endDate: "invalid" },
+        }),
+      ).rejects.toThrow("Data de término inválida");
+    });
+
+    it("should update event if owner", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
+      mockPrismaService.event.update.mockResolvedValue({ id: "e1", name: "Upd" });
+
+      const result = await service.updateEvent({
+        tenantId: "t1",
+        eventId: "e1",
+        data: { name: "Upd" },
+      });
+      expect(result.name).toBe("Upd");
+    });
+
+    it("should throw NotFound if event not in tenant", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue(null);
+      await expect(
+        service.updateEvent({ tenantId: "t1", eventId: "e1", data: {} }),
+      ).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe("listParticipants", () => {
+    it("should list participants for tenant", async () => {
+      mockPrismaService.registration.findMany.mockResolvedValue([{ id: "r1" }]);
+      const result = await service.listParticipants("t1", {});
+      expect(result).toHaveLength(1);
+    });
+  });
+
+  describe("deleteEvent", () => {
+    it("should delete event if in DRAFT", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue({
+        id: "e1",
+        status: "DRAFT",
+      });
+      mockPrismaService.event.delete.mockResolvedValue({ id: "e1" });
+      await service.deleteEvent("t1", "e1");
+      expect(mockPrismaService.event.delete).toHaveBeenCalled();
+    });
+
+    it("should throw if not in DRAFT", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue({
+        id: "e1",
+        status: "PUBLISHED",
+      });
+      await expect(service.deleteEvent("t1", "e1")).rejects.toThrow(
+        "Apenas eventos em rascunho podem ser excluídos.",
+      );
+    });
+  });
+
+  describe("Participant Detail & Tickets", () => {
+    it("should return my tickets list", async () => {
+      mockPrismaService.ticket.findMany.mockResolvedValue([{ id: "t1" }]);
+      const result = await service.findMyTickets("u1");
+      expect(result).toHaveLength(1);
+    });
+
+    it("should return participant detail and history", async () => {
+      mockPrismaService.registration.findUnique.mockResolvedValue({
+        id: "r1",
+        userId: "u1",
+        event: { tenantId: "t1" },
+      });
+      mockPrismaService.registration.findMany.mockResolvedValue([{ id: "r_old" }]);
+      const result = await service.findParticipantDetail("t1", "r1");
+      expect(result.history).toHaveLength(1);
+    });
+  });
+
+  describe("Public Events", () => {
+    it("should list all published events", async () => {
+      mockPrismaService.event.findMany.mockResolvedValue([{ id: "e1" }]);
+      const result = await service.findAllPublic();
+      expect(result).toHaveLength(1);
+    });
+
+    it("should find public event by slug", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1", slug: "s" });
+      const result = await service.findPublicBySlug("s");
+      expect(result.id).toBe("e1");
+    });
+
+    it("should throw NotFound if public event slug doesn't exist", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue(null);
+      await expect(service.findPublicBySlug("s")).rejects.toThrow(NotFoundException);
+    });
+  });
 });

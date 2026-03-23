@@ -61,7 +61,7 @@ describe("Activities (e2e)", () => {
     add: jest.fn(),
   };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
@@ -118,6 +118,10 @@ describe("Activities (e2e)", () => {
     jwtService = moduleFixture.get<JwtService>(JwtService);
     await app.init();
     fetchTenant();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   afterAll(async () => {
