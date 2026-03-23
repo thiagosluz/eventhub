@@ -108,7 +108,7 @@ async function main() {
   });
 
   // 5. Atividade de Teste
-  await prisma.activity.create({
+  const activity = await prisma.activity.create({
     data: {
       eventId: event.id,
       title: 'Abertura: O Futuro da IA',
@@ -120,6 +120,81 @@ async function main() {
       status: 'SCHEDULED'
     }
   });
+
+  // 6. Speakers e Convidados
+  const speakersData = [
+    {
+      name: 'Claudionor Nunes Coelho Júnior',
+      bio: 'Especialista em Inteligência Artificial e Sistemas Distribuídos.',
+      avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200&h=200',
+      linkedinUrl: 'https://linkedin.com',
+    },
+    {
+      name: 'Daniel Augustus Bichuetti Silva',
+      bio: 'Pesquisador de Machine Learning e Visão Computacional.',
+      avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200&h=200',
+      linkedinUrl: 'https://linkedin.com',
+    },
+    {
+      name: 'Daniel Vitor Ferreira Silva',
+      bio: 'Desenvolvedor Fullstack com foco em Performance.',
+      avatarUrl: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&q=80&w=200&h=200',
+      linkedinUrl: 'https://linkedin.com',
+    },
+    {
+      name: 'Davi Ribeiro Magalhães Filho',
+      bio: 'Arquiteto de Soluções Cloud e DevOps.',
+      avatarUrl: 'https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&q=80&w=200&h=200',
+      linkedinUrl: 'https://linkedin.com',
+    },
+    {
+      name: 'Eduardo Noronha de Andrade Freitas',
+      bio: 'Líder Técnico com experiência em Transformação Digital.',
+      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200',
+      linkedinUrl: 'https://linkedin.com',
+    },
+    {
+      name: 'Elisângela Silva Dias',
+      bio: 'Especialista em Experiência do Usuário (UX/UI).',
+      avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200&h=200',
+      linkedinUrl: 'https://linkedin.com',
+    },
+    {
+      name: 'Hemily Alves Lima',
+      bio: 'Engenheira de Dados e Especialista em Big Data.',
+      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200&h=200',
+      linkedinUrl: 'https://linkedin.com',
+    },
+    {
+      name: 'Henrique Franco Herrmann',
+      bio: 'Product Manager apaixonado por Tecnologia.',
+      avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200&h=200',
+      linkedinUrl: 'https://linkedin.com',
+    },
+    {
+      name: 'Luan Antônio de Morais',
+      bio: 'Especialista em Segurança da Informação.',
+      avatarUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=200&h=200',
+      linkedinUrl: 'https://linkedin.com',
+    },
+  ];
+
+  for (const speakerInfo of speakersData) {
+    const speaker = await prisma.speaker.create({
+      data: {
+        ...speakerInfo,
+        tenantId: tenant.id,
+      }
+    });
+
+    await prisma.activitySpeaker.create({
+      data: {
+        activityId: activity.id,
+        speakerId: speaker.id,
+        roleId: rolePalestrante.id
+      }
+    });
+  }
 
   console.log('Seed finalizado com sucesso! 🌱');
   console.log('Usuários criados (Senha: 123456):');

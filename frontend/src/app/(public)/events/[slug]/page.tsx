@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { TicketWidget } from "@/components/events/TicketWidget";
 import { SponsorShowcase } from "@/components/events/SponsorShowcase";
 import { ScheduleGrid } from "@/components/events/ScheduleGrid";
+import { SpeakersSection } from "@/components/events/SpeakersSection";
 import { sponsorsService } from "@/services/sponsors.service";
 import Link from "next/link";
 import Image from "next/image";
@@ -120,7 +121,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
           {/* Activities / Schedule */}
           {event.activities && event.activities.length > 0 && (
-            <ScheduleGrid activities={event.activities} />
+            <>
+              <ScheduleGrid activities={event.activities} />
+              <SpeakersSection activities={event.activities} />
+            </>
           )}
 
           {/* Sponsors Showcase */}
