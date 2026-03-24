@@ -113,10 +113,17 @@ export default function CategoriesPage() {
     }
   };
 
-  if (loading) return <div className="p-8">Carregando...</div>;
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
+        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-muted-foreground font-bold animate-pulse">Carregando categorias e papéis...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-black tracking-tight text-foreground">Categorias e Papéis</h1>
         <p className="text-muted-foreground font-medium mt-1">Gerencie os tipos de atividades e os papéis dos palestrantes para sua organização.</p>

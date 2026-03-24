@@ -52,10 +52,17 @@ export default function BrandingPage() {
     }
   };
 
-  if (loading) return <div className="p-8">Carregando...</div>;
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
+        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-muted-foreground font-bold animate-pulse">Carregando configurações...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="max-w-4xl mx-auto space-y-8">
       <div className="mb-8">
         <h1 className="text-3xl font-black tracking-tight text-foreground">Branding da Organização</h1>
         <p className="text-muted-foreground font-medium mt-1">Personalize a identidade visual do seu portal de eventos.</p>

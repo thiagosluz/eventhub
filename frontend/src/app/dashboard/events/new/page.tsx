@@ -302,6 +302,7 @@ export default function NewEventPage() {
             <div>
               {step < 3 ? (
                 <button 
+                  key="btn-next"
                   type="button"
                   onClick={nextStep}
                   className="premium-button !px-8 !py-3 !text-xs !font-black flex items-center gap-2"
@@ -311,6 +312,7 @@ export default function NewEventPage() {
                 </button>
               ) : (
                 <button 
+                  key="btn-submit"
                   type="submit"
                   disabled={isLoading}
                   className="premium-button !px-12 !py-3 !text-xs !font-black flex items-center gap-2"
