@@ -92,8 +92,30 @@ describe("AuthService", () => {
           email: user.email,
           role: user.role,
           tenantId: user.tenantId,
+          isSpeaker: false,
         },
       });
+    });
+
+    it("should return isSpeaker: true if user has speaker profile", async () => {
+      const user = {
+        id: "user_id",
+        email: "test@example.com",
+        password: "hashed_password",
+        role: "ORGANIZER",
+        tenantId: "tenant_id",
+        speaker: { id: "speaker_id" },
+      };
+      mockPrismaService.user.findUnique.mockResolvedValue(user);
+      (argon2.verify as jest.Mock).mockResolvedValue(true);
+      mockJwtService.signAsync.mockResolvedValue("token");
+
+      const result = await service.login({
+        email: "test@example.com",
+        password: "password",
+      });
+
+      expect(result.user.isSpeaker).toBe(true);
     });
   });
 });

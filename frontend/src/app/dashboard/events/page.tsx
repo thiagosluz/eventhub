@@ -42,7 +42,7 @@ export default function EventsManagementPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-foreground">Meus Eventos</h1>
-          <p className="text-muted-foreground font-medium">Gerencie e acompanhe o desempenho de seus eventos.</p>
+          <p className="text-muted-foreground font-medium mt-1">Gerencie e acompanhe o desempenho de seus eventos.</p>
         </div>
         <Link 
           href="/dashboard/events/new"
@@ -62,7 +62,7 @@ export default function EventsManagementPage() {
             placeholder="Buscar eventos por nome ou local..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium text-sm"
+            className="premium-input w-full pl-12 pr-4"
           />
         </div>
         <div className="flex gap-2">

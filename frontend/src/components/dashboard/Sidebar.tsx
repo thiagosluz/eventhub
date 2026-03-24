@@ -31,7 +31,7 @@ const navigation = [
   // Speaker specific
   { name: "Minha Agenda", href: "/speaker/activities", icon: CalendarIcon },
   { name: "Feedbacks", href: "/speaker/feedbacks", icon: AcademicCapIcon },
-  { name: "Meu Perfil", href: "/speaker/profile", icon: UserIcon },
+  { name: "Perfil de Palestrante", href: "/speaker/profile", icon: UserIcon },
 ];
 
 export function Sidebar({ tenant }: { tenant?: Tenant | null }) {
@@ -42,11 +42,19 @@ export function Sidebar({ tenant }: { tenant?: Tenant | null }) {
     if (user?.role === "REVIEWER") {
       return ["Visão Geral", "Revisões"].includes(item.name);
     }
+    
+    const isSpeakerItem = ["Minha Agenda", "Feedbacks", "Perfil de Palestrante"].includes(item.name);
+    
     if (user?.role === "SPEAKER") {
-      return ["Visão Geral", "Minha Agenda", "Feedbacks", "Meu Perfil"].includes(item.name);
+      return ["Visão Geral", ...["Minha Agenda", "Feedbacks", "Perfil de Palestrante"]].includes(item.name);
     }
-    // Para ORGANIZER ou ADMIN, mostra tudo, exceto itens específicos de speaker
-    return !["Minha Agenda", "Feedbacks", "Meu Perfil"].includes(item.name) || item.name === "Meu Perfil";
+
+    // Para ORGANIZER ou ADMIN
+    if (isSpeakerItem) {
+      return !!user?.isSpeaker;
+    }
+
+    return true;
   });
 
   return (

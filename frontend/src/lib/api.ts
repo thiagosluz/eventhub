@@ -139,7 +139,7 @@ class ApiClient {
             localStorage.removeItem('eventhub_user');
             document.cookie = "eventhub_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
             document.cookie = "eventhub_refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-            window.location.href = '/login';
+            window.location.href = '/auth/login';
           }
           throw refreshError;
         } finally {

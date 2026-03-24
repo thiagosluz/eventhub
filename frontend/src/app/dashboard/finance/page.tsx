@@ -42,9 +42,9 @@ export default function FinancePage() {
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-black tracking-tight text-foreground uppercase">Centro de Finanças</h1>
-          <p className="text-muted-foreground font-medium">Controle total sobre suas receitas e transações.</p>
+        <div>
+          <h1 className="text-3xl font-black tracking-tight text-foreground">Centro de Finanças</h1>
+          <p className="text-muted-foreground font-medium mt-1">Controle total sobre suas receitas e transações.</p>
         </div>
         <button className="premium-button !px-6 !py-3 !text-sm !font-black inline-flex items-center gap-2">
           <ArrowDownTrayIcon className="w-5 h-5" />

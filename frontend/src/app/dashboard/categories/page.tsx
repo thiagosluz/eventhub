@@ -116,10 +116,10 @@ export default function CategoriesPage() {
   if (loading) return <div className="p-8">Carregando...</div>;
 
   return (
-    <div className="p-8 max-w-6xl mx-auto space-y-12">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div>
-        <h1 className="text-3xl font-black mb-2">Categorias e Papéis</h1>
-        <p className="text-muted-foreground">Gerencie os tipos de atividades e os papéis dos palestrantes para sua organização.</p>
+        <h1 className="text-3xl font-black tracking-tight text-foreground">Categorias e Papéis</h1>
+        <p className="text-muted-foreground font-medium mt-1">Gerencie os tipos de atividades e os papéis dos palestrantes para sua organização.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

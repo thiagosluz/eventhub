@@ -97,7 +97,10 @@ export class AuthService {
   async login(input: LoginInput) {
     const user = await this.prisma.user.findUnique({
       where: { email: input.email },
-      include: { tenant: true },
+      include: { 
+        tenant: true,
+        speaker: { select: { id: true } }
+      },
     });
 
     if (!user || !(await argon2.verify(user.password, input.password))) {
@@ -110,6 +113,10 @@ export class AuthService {
   async refresh(refreshToken: string) {
     const user = await this.prisma.user.findFirst({
       where: { refreshToken },
+      include: {
+        tenant: true,
+        speaker: { select: { id: true } }
+      }
     });
 
     if (!user) {
@@ -197,6 +204,7 @@ export class AuthService {
         email: user.email,
         role: user.role,
         tenantId: user.tenantId,
+        isSpeaker: !!user.speaker || user.role === "SPEAKER",
       },
     };
   }
@@ -207,6 +215,7 @@ export class AuthService {
       email: user.email,
       tenantId: user.tenantId,
       role: user.role,
+      isSpeaker: !!user.speaker || user.role === "SPEAKER",
     };
 
     return this.jwtService.signAsync(payload, { expiresIn: expiresIn as any });

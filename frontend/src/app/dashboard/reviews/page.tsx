@@ -83,7 +83,7 @@ export default function ReviewerDashboardPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-foreground">Revisões Científicas</h1>
-          <p className="text-muted-foreground font-medium">Gerencie e avalie os trabalhos submetidos para seus eventos.</p>
+          <p className="text-muted-foreground font-medium mt-1">Gerencie e avalie os trabalhos submetidos para seus eventos.</p>
         </div>
         <div className="flex items-center gap-2 text-xs font-black text-muted-foreground uppercase tracking-widest bg-muted/50 px-4 py-2 rounded-full">
            <AcademicCapIcon className="w-4 h-4" />
@@ -134,14 +134,16 @@ export default function ReviewerDashboardPage() {
           ))}
         </div>
       ) : (
-        <div className="premium-card p-16 text-center space-y-6">
-           <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center mx-auto">
-             <AcademicCapIcon className="w-10 h-10 text-muted-foreground" />
-           </div>
-           <div className="space-y-2">
-             <h2 className="text-2xl font-black text-foreground">Nenhuma revisão pendente</h2>
-             <p className="text-muted-foreground font-medium max-w-sm mx-auto text-sm">Você está em dia com suas avaliações ou ainda não foi designado para nenhum trabalho.</p>
-           </div>
+        <div className="premium-card p-12 bg-card border-border border-dashed border-2 flex flex-col items-center justify-center text-center space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground">
+            <AcademicCapIcon className="w-8 h-8" />
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-foreground">Nenhuma revisão pendente</h3>
+            <p className="text-muted-foreground font-medium max-w-sm mx-auto">
+              Você está em dia com suas avaliações ou ainda não foi designado para nenhum trabalho.
+            </p>
+          </div>
         </div>
       )}
 

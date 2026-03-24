@@ -83,14 +83,14 @@ export default function ParticipantsPage() {
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-black tracking-tight text-foreground uppercase">Gestão de Participantes</h1>
-          <p className="text-muted-foreground font-medium">Visualize e gerencie todos os inscritos nos seus eventos.</p>
+        <div>
+          <h1 className="text-3xl font-black tracking-tight text-foreground">Gestão de Participantes</h1>
+          <p className="text-muted-foreground font-medium mt-1">Visualize e gerencie todos os inscritos nos seus eventos.</p>
         </div>
         <div className="flex items-center gap-3">
           <button 
             onClick={handleExportCSV}
-            className="premium-button !bg-muted !text-muted-foreground hover:!text-foreground !border-border !px-4 !py-3"
+            className="premium-button-outline !px-4 !py-3"
             title="Exportar CSV"
           >
              <ArrowDownTrayIcon className="w-5 h-5" />
@@ -100,7 +100,7 @@ export default function ParticipantsPage() {
             <input 
               type="text"
               placeholder="Buscar por nome ou email..."
-              className="bg-muted/50 border-border border-2 rounded-2xl pl-12 pr-6 py-3 text-sm font-bold focus:border-primary outline-none transition-all w-full md:w-[300px]"
+              className="premium-input pl-12 pr-6 w-full md:w-[300px]"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />

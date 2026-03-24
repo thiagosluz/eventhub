@@ -79,17 +79,17 @@ export default function SpeakersPage() {
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground text-glow-primary">
+          <h1 className="text-3xl font-black tracking-tight text-foreground">
             Palestrantes
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-muted-foreground font-medium mt-1">
             Gerencie o banco de palestrantes e vincule-os a contas de usuários.
           </p>
         </div>
         
         <Link 
           href="/dashboard/speakers/new" 
-          className="premium-button flex items-center gap-2"
+          className="premium-button !px-6 !py-3 !text-sm !font-black inline-flex items-center gap-2"
         >
           <PlusIcon className="w-5 h-5" />
           Novo Palestrante
@@ -103,19 +103,18 @@ export default function SpeakersPage() {
           ))}
         </div>
       ) : speakers.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-card rounded-3xl border border-dashed border-border text-center px-6">
-          <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-4">
-            <UserIcon className="w-8 h-8 text-muted-foreground" />
+        <div className="premium-card p-12 bg-card border-border border-dashed border-2 flex flex-col items-center justify-center text-center space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground">
+            <UserIcon className="w-8 h-8" />
           </div>
-          <h2 className="text-xl font-bold text-foreground">Nenhum palestrante encontrado</h2>
-          <p className="text-muted-foreground max-w-sm mt-2">
-            Comece cadastrando palestrantes que poderão ser vinculados às atividades dos seus eventos.
-          </p>
-          <Link 
-            href="/dashboard/speakers/new" 
-            className="mt-6 text-primary font-bold hover:underline underline-offset-4"
-          >
-            Cadastrar primeiro palestrante
+          <div>
+            <h3 className="text-xl font-bold text-foreground">Nenhum palestrante encontrado</h3>
+            <p className="text-muted-foreground font-medium max-w-sm mx-auto">
+              Comece cadastrando palestrantes que poderão ser vinculados às atividades dos seus eventos.
+            </p>
+          </div>
+          <Link href="/dashboard/speakers/new" className="premium-button !px-8">
+            Cadastrar Primeiro Palestrante
           </Link>
         </div>
       ) : (
@@ -123,7 +122,7 @@ export default function SpeakersPage() {
           {speakers.map((speaker) => (
             <div 
               key={speaker.id} 
-              className="group bg-card rounded-3xl border border-border p-6 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1 transition-all flex flex-col"
+              className="premium-card p-6 hover:shadow-2xl hover:shadow-primary/5 transition-all group flex flex-col"
             >
               <div className="flex items-start gap-4">
                 <div className="w-16 h-16 rounded-2xl overflow-hidden bg-muted flex-shrink-0 border-2 border-border group-hover:border-primary/20 transition-colors">

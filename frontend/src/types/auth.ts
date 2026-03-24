@@ -6,6 +6,7 @@ export interface User {
   avatarUrl?: string;
   bio?: string;
   tenantId?: string;
+  isSpeaker?: boolean;
 }
 
 export interface AuthResponse {

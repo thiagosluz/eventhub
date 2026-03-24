@@ -22,12 +22,15 @@ export default function SpeakerLayout({
 
   useEffect(() => {
     const allowedRoles = ["SPEAKER"];
-    if (!isLoading && (!isAuthenticated || !user || !allowedRoles.includes(user.role))) {
+    const isAllowed = user && (allowedRoles.includes(user.role) || user.isSpeaker);
+
+    if (!isLoading && (!isAuthenticated || !isAllowed)) {
       router.push("/auth/login");
     }
 
     const fetchTenant = () => {
-      if (isAuthenticated && user?.role === 'SPEAKER') {
+      const isAllowed = user && (user.role === 'SPEAKER' || user.isSpeaker);
+      if (isAuthenticated && isAllowed) {
         tenantsService.getMe().then(setTenant).catch(console.error);
       }
     };
@@ -43,7 +46,9 @@ export default function SpeakerLayout({
     );
   }
 
-  if (!isAuthenticated || !user || user.role !== "SPEAKER") {
+  const isAllowed = user && (user.role === "SPEAKER" || user.isSpeaker);
+
+  if (!isAuthenticated || !isAllowed) {
     return null;
   }
 

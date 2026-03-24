@@ -20,6 +20,9 @@ describe("Auth Advanced (e2e)", () => {
       create: jest.fn(),
       deleteMany: jest.fn(),
     },
+    speaker: {
+      findUnique: jest.fn(),
+    },
   };
 
   const mockMailService = {
@@ -115,6 +118,40 @@ describe("Auth Advanced (e2e)", () => {
         .post("/auth/refresh")
         .send({ refresh_token: secondRefreshToken })
         .expect(401);
+    });
+
+    it("should allow ORGANIZER with isSpeaker flag to access SPEAKER routes", async () => {
+      const { JwtService } = require("@nestjs/jwt");
+      const jwtService = app.get(JwtService);
+      
+      const payload = {
+        sub: "u_hybrid",
+        email: "hybrid@example.com",
+        role: "ORGANIZER",
+        tenantId: "t1",
+        isSpeaker: true,
+      };
+      
+      const accessToken = await jwtService.signAsync(payload);
+
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        ...payload,
+        id: payload.sub,
+      });
+
+      mockPrismaService.speaker.findUnique = jest.fn().mockResolvedValue({
+        id: "s1",
+        userId: "u_hybrid",
+        tenantId: "t1",
+        name: "Hybrid Speaker",
+      });
+
+      // Simular acesso ao endpoint /speakers/me que exige role SPEAKER
+      // O RolesGuard deve permitir por causa da flag isSpeaker: true
+      await request(app.getHttpServer())
+        .get("/speakers/me")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .expect(200);
     });
   });
 

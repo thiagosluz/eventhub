@@ -83,51 +83,28 @@ describe('MyService', () => {
 });
 ```
 
-## Cobertura Atual de Testes
+### Resumo da Cobertura de Meta (>90%)
 
-### Testes Unitários
-- **AuthService (`auth.service.spec.ts`)**
-    - `login`: Sucesso, falha por usuário inexistente, falha por senha incorreta.
-- **RolesGuard (`roles.guard.spec.ts`)**
-    - `canActivate`: Validação de papéis (ORGANIZER, REVIEWER, etc.) e isolamento.
-- **JwtStrategy (`jwt.strategy.spec.ts`)**
-    - `validate`: Extração correta de payload e validação de segredo.
-- **EventsService (`events.service.spec.ts`)**
-    - `createEvent`: Sucesso, falha por slug duplicado.
-    - `findEventById`: Sucesso, falha por ID inexistente.
-- **CheckoutService (`checkout.service.spec.ts`)**
-    - `processCheckout`: Sucesso, falha por evento inexistente, falha por já inscrito.
-- **FreeTicketStrategy (`free-ticket.strategy.spec.ts`)**
-    - `process`: Criação correta de tickets para eventos e atividades.
-- **SubmissionsService (`src/submissions/submissions.service.spec.ts`)**
-    - `createSubmission`: Sucesso, upload via Minio, e-mail de confirmação e fila BullMQ.
-    - `listMySubmissions`: Histórico detalhado para o autor.
-    - `review`: Atribuição double-blind e submissão de avaliações por revisores autorizados.
-- **AssignReviewsProcessor (`submissions.processor.spec.ts`)**
-    - `process`: Atribuição correta de revisores do tenant à submissão.
-- **CertificateTemplatesService (`certificate-templates.service.spec.ts`)**
-    - `create`, `findOne`, `listByEvent`: CRUD e verificação de tenant.
-- **CertificatePdfService (`certificate-pdf.service.spec.ts`)**
-    - `generateAndStore`: Geração de PDF com placeholders, QR Code e armazenamento.
-- **CheckinService (`src/checkin/checkin.service.spec.ts`)**
-    - `checkin`: Validação de tokens, atividades restritas por inscrição, prevenção de duplicatas.
-    - `drawRaffle`: Sorteios com regras complexas (staff, ganhadores únicos, inscrição vs check-in).
-    - `History`: Gestão de visibilidade e premiação de badges para ganhadores.
-- **UsersService (`src/users/users.service.spec.ts`)**
-    - `updatePassword`: Validação segura com hash Argon2 e erro de senha incorreta.
-    - `uploadAvatar`: Upload via Minio com sincronização automática para perfil de palestrante.
-    - `Badges`: Conquista automática de badge ao completar 100% do perfil.
-- **SpeakersService (`src/speakers/speakers.service.spec.ts`)**
-    - `Roles`: Gestão automática de permissões (SPEAKER/PARTICIPANT) ao vincular/desvincular usuários.
-    - `Portal`: Listagem de atividades, materiais e feedbacks consolidados por palestrante.
-- **SponsorsService (`src/sponsors/sponsors.service.spec.ts`)**
-    - `Multi-tenant`: Isolamento rigoroso de categorias e patrocinadores entre inquilinos.
-    - `Public`: Lógica de listagem pública e upload de logos.
-- **FormsService (`src/forms/forms.service.spec.ts`)**
-    - `Dynamic Forms`: Sincronização completa (upsert/delete) de campos customizados por evento.
-- **BadgesService (`src/badges/badges.service.spec.ts`)**
-    - `Automation`: Gatilhos complexos (Check-in streak, Activity hours, Early bird).
-    - `Scanning`: Entrega manual por código (único/global) ou por escaneamento de organizador.
+Conseguimos atingir a meta de mais de 90% de cobertura unitária em todos os 9 serviços principais do backend:
+
+| Serviço | Cobertura de Linhas | Principais Garantias |
+|---------|---------------------|----------------------|
+| **CheckoutService** | 100.0% | Fluxo completo de inscrição e validação de formulários. |
+| **FormsService** | 96.8% | Sincronização dinâmica de campos e deleção segura. |
+| **AnalyticsService** | 95.8% | Cálculos temporais e agregações complexas de participantes. |
+| **SponsorsService** | 95.6% | Isolamento de tenant e gestão de categorias/logos. |
+| **UsersService** | 95.5% | Segurança de hashes (Argon2), avatars e badges de perfil. |
+| **SpeakersService** | 93.8% | Portal do palestrante e sincronização de atividades/materiais. |
+| **CheckinService** | 91.9% | Sorteios (Raffles) e validação de check-ins duplicados. |
+| **EventsService** | 91.3% | Filtros avançados de participantes e gestão de tenants. |
+| **BadgesService** | 91.2% | Gatilhos de automação e resgate via scan/código único. |
+
+### Autenticação e Sessão
+- **Backend**: Endpoint `/auth/refresh` implementado para permitir a renovação de tokens JWT sem nova autenticação manual.
+- **Acesso Híbrido**: Usuários com perfil `ORGANIZER` podem acessar funcionalidades de `SPEAKER` se houver um perfil de palestrante vinculado (validado via flag `isSpeaker` no JWT).
+- **Frontend**: Cliente API configurado para realizar o *Silent Refresh*, renovando o `access_token` (15min) automaticamente usando o `refresh_token` (7 dias).
+
+---
     
 ## Testes de Integração Real (Testcontainers)
 Para garantir que a integração com serviços externos funcione conforme o esperado em produção, utilizamos o **Testcontainers** para subir instâncias reais via Docker durante os testes:

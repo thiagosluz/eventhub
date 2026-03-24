@@ -73,6 +73,17 @@ describe("RolesGuard", () => {
     expect(guard.canActivate(context)).toBe(true);
   });
 
+  it("should return true if ORGANIZER has isSpeaker: true and accessing SPEAKER route", () => {
+    jest
+      .spyOn(reflector, "getAllAndOverride")
+      .mockReturnValue([UserRole.SPEAKER]);
+    const context = createMockContext({ 
+      role: UserRole.ORGANIZER,
+      isSpeaker: true 
+    });
+    expect(guard.canActivate(context)).toBe(true);
+  });
+
   function createMockContext(user: any = {}) {
     return {
       getHandler: () => ({}),
