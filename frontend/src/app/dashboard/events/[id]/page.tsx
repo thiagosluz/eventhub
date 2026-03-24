@@ -22,6 +22,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SecureDeleteModal } from "@/components/dashboard/SecureDeleteModal";
+import { SeoPreview } from "@/components/dashboard/SeoPreview";
 import toast from "react-hot-toast";
 
 export default function EventManagementPage({ params }: { params: Promise<{ id: string }> }) {
@@ -277,27 +278,44 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Título SEO</label>
+                  <div className="flex items-center justify-between px-1">
+                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Título SEO</label>
+                    <span className={`text-[10px] font-black tracking-widest ${formData.seoTitle.length > 60 ? 'text-destructive' : formData.seoTitle.length > 0 ? 'text-emerald-500' : 'text-muted-foreground'}`}>{formData.seoTitle.length}/60</span>
+                  </div>
                   <input 
                     name="seoTitle" 
                     value={formData.seoTitle} 
                     onChange={handleChange} 
                     type="text" 
                     placeholder="Título para o Google e Redes Sociais"
-                    className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm" 
+                    className={`w-full h-12 px-4 rounded-xl border ${formData.seoTitle.length > 60 ? 'border-destructive focus:ring-destructive/10' : 'border-border focus:border-primary focus:ring-primary/10'} bg-card focus:ring-4 transition-all outline-none font-bold text-sm`} 
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Descrição SEO</label>
+                  <div className="flex items-center justify-between px-1">
+                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Descrição SEO</label>
+                    <span className={`text-[10px] font-black tracking-widest ${formData.seoDescription.length > 160 ? 'text-destructive' : formData.seoDescription.length > 0 ? 'text-emerald-500' : 'text-muted-foreground'}`}>{formData.seoDescription.length}/160</span>
+                  </div>
                   <textarea 
                     name="seoDescription" 
                     value={formData.seoDescription} 
                     onChange={handleChange} 
                     rows={1}
                     placeholder="Breve resumo para buscadores..."
-                    className="w-full h-12 p-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm resize-none" 
+                    className={`w-full h-12 px-4 py-3 rounded-xl border ${formData.seoDescription.length > 160 ? 'border-destructive focus:ring-destructive/10' : 'border-border focus:border-primary focus:ring-primary/10'} bg-card focus:ring-4 transition-all outline-none font-bold text-sm resize-none`} 
                   />
                 </div>
+              </div>
+
+              <div className="pb-6">
+                <SeoPreview 
+                  seoTitle={formData.seoTitle}
+                  seoDescription={formData.seoDescription}
+                  name={formData.name}
+                  slug={formData.slug}
+                  description={formData.description}
+                  bannerUrl={event?.bannerUrl}
+                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">

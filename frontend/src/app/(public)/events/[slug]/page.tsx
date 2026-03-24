@@ -23,10 +23,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const title = event.seoTitle || event.name;
     const description = event.seoDescription || event.description?.slice(0, 160);
     const images = event.bannerUrl ? [event.bannerUrl] : [];
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eventhub.com';
 
     return {
       title,
       description,
+      metadataBase: new URL(appUrl),
+      alternates: {
+        canonical: `/events/${event.slug}`,
+      },
       openGraph: {
         title,
         description,
@@ -77,8 +82,40 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
   const logoToDisplay = event.logoUrl || event.tenant?.logoUrl;
 
+  const url = `${process.env.NEXT_PUBLIC_APP_URL || 'https://eventhub.com'}/events/${event.slug}`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: event.seoTitle || event.name,
+    description: event.seoDescription || event.description,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: event.location ? "https://schema.org/OfflineEventAttendanceMode" : "https://schema.org/OnlineEventAttendanceMode",
+    location: event.location ? {
+      '@type': 'Place',
+      name: event.location,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: event.location
+      }
+    } : {
+      '@type': 'VirtualLocation',
+      url
+    },
+    image: event.bannerUrl ? [event.bannerUrl] : undefined,
+    organizer: {
+      '@type': 'Organization',
+      name: event.tenant?.name || 'Organizador',
+    }
+  };
+
   return (
     <ThemeProvider themeConfig={event.themeConfig} tenantThemeConfig={event.tenant?.themeConfig}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <main className="min-h-screen bg-background pb-24">
         {logoToDisplay && (
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
