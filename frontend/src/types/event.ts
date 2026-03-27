@@ -93,6 +93,7 @@ export interface FormField {
   type: string;
   required: boolean;
   order: number;
+  options?: string[];
 }
 
 export interface Submission {
@@ -104,6 +105,10 @@ export interface Submission {
   abstract?: string;
   fileUrl: string;
   status: 'SUBMITTED' | 'UNDER_REVIEW' | 'ACCEPTED' | 'REJECTED';
+  modalityId?: string;
+  modality?: SubmissionModality;
+  thematicAreaId?: string;
+  thematicArea?: ThematicArea;
   createdAt: string;
   reviews?: Review[];
 }
@@ -117,6 +122,44 @@ export interface Review {
   recommendation?: string;
   comments?: string;
   createdAt: string;
+}
+
+export interface SubmissionModality {
+  id: string;
+  eventId: string;
+  name: string;
+  description?: string;
+  templateUrl?: string;
+  createdAt: string;
+}
+
+export interface ThematicArea {
+  id: string;
+  eventId: string;
+  name: string;
+  createdAt: string;
+}
+
+export interface SubmissionRule {
+  id: string;
+  eventId: string;
+  title: string;
+  fileUrl: string;
+  createdAt: string;
+}
+
+export interface SubmissionConfig {
+  id: string;
+  submissionsEnabled: boolean;
+  submissionStartDate?: string;
+  submissionEndDate?: string;
+  reviewStartDate?: string;
+  reviewEndDate?: string;
+  scientificCommitteeHead?: string;
+  scientificCommitteeEmail?: string;
+  submissionModalities: SubmissionModality[];
+  thematicAreas: ThematicArea[];
+  submissionRules: SubmissionRule[];
 }
 
 export interface Form {
@@ -140,11 +183,25 @@ export interface Event {
   themeConfig?: Record<string, unknown>;
   seoTitle?: string;
   seoDescription?: string;
+
+  // Submission module config
+  submissionsEnabled?: boolean;
+  submissionStartDate?: string;
+  submissionEndDate?: string;
+  reviewStartDate?: string;
+  reviewEndDate?: string;
+  scientificCommitteeHead?: string;
+  scientificCommitteeEmail?: string;
+
   activities?: Activity[];
   tickets?: Ticket[];
   forms?: Form[];
   tenant?: Tenant;
+  submissionModalities?: SubmissionModality[];
+  thematicAreas?: ThematicArea[];
+  submissionRules?: SubmissionRule[];
   _count?: {
     registrations: number;
   };
 }
+

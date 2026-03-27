@@ -14,6 +14,8 @@ interface CreateSubmissionParams {
   eventId: string;
   title: string;
   abstract?: string;
+  modalityId?: string;
+  thematicAreaId?: string;
   file: { buffer: Buffer; mimetype: string };
 }
 
@@ -27,7 +29,7 @@ export class SubmissionsService {
   ) {}
 
   async createSubmission(params: CreateSubmissionParams) {
-    const { authorId, eventId, title, abstract, file } = params;
+    const { authorId, eventId, title, abstract, modalityId, thematicAreaId, file } = params;
 
     const event = await this.prisma.event.findUnique({
       where: { id: eventId },
@@ -36,6 +38,27 @@ export class SubmissionsService {
 
     if (!event) {
       throw new NotFoundException("Evento não encontrado.");
+    }
+
+    // Deadline enforcement
+    if (!event.submissionsEnabled) {
+      throw new ForbiddenException(
+        "O módulo de submissões está desativado para este evento.",
+      );
+    }
+
+    const now = new Date();
+
+    if (event.submissionStartDate && now < event.submissionStartDate) {
+      throw new ForbiddenException(
+        "O período de submissões ainda não iniciou.",
+      );
+    }
+
+    if (event.submissionEndDate && now > event.submissionEndDate) {
+      throw new ForbiddenException(
+        "O prazo para submissões já encerrou.",
+      );
     }
 
     const objectName = `events/${eventId}/submissions/${Date.now()}`;
@@ -53,6 +76,8 @@ export class SubmissionsService {
         title,
         abstract,
         fileUrl,
+        modalityId,
+        thematicAreaId,
       },
       include: {
         author: true,
@@ -143,17 +168,23 @@ export class SubmissionsService {
     });
 
     return reviews.map((r) => ({
-      reviewId: r.id,
+      id: r.id,
       submissionId: r.submissionId,
-      title: r.submission.title,
-      abstract: r.submission.abstract,
-      fileUrl: r.submission.fileUrl,
-      status: r.submission.status,
-      event: {
-        id: r.submission.event.id,
-        name: r.submission.event.name,
+      score: r.score,
+      recommendation: r.recommendation,
+      comments: r.comments,
+      submission: {
+        id: r.submissionId,
+        title: r.submission.title,
+        abstract: r.submission.abstract,
+        fileUrl: r.submission.fileUrl,
+        status: r.submission.status,
+        event: {
+          id: r.submission.event.id,
+          name: r.submission.event.name,
+          reviewEndDate: r.submission.event.reviewEndDate,
+        },
       },
-      // double-blind: não expomos autor aqui
     }));
   }
 
@@ -169,11 +200,26 @@ export class SubmissionsService {
 
     const review = await this.prisma.review.findFirst({
       where: { submissionId, reviewerId },
+      include: {
+        submission: {
+          include: { event: true },
+        },
+      },
     });
 
     if (!review) {
       throw new ForbiddenException(
         "Revisor não está atribuído a esta submissão.",
+      );
+    }
+
+    // Review deadline enforcement
+    const event = review.submission.event;
+    const now = new Date();
+
+    if (event.reviewEndDate && now > event.reviewEndDate) {
+      throw new ForbiddenException(
+        "O prazo para revisões já encerrou.",
       );
     }
 

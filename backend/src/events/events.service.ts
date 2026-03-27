@@ -207,6 +207,15 @@ export class EventsService {
             fields: { orderBy: { order: "asc" } },
           },
         },
+        submissionModalities: {
+          orderBy: { createdAt: "asc" },
+        },
+        thematicAreas: {
+          orderBy: { createdAt: "asc" },
+        },
+        submissionRules: {
+          orderBy: { createdAt: "asc" },
+        },
       },
     });
 

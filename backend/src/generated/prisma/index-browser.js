@@ -161,6 +161,13 @@ exports.Prisma.EventScalarFieldEnum = {
   themeConfig: 'themeConfig',
   seoTitle: 'seoTitle',
   seoDescription: 'seoDescription',
+  submissionsEnabled: 'submissionsEnabled',
+  submissionStartDate: 'submissionStartDate',
+  submissionEndDate: 'submissionEndDate',
+  reviewStartDate: 'reviewStartDate',
+  reviewEndDate: 'reviewEndDate',
+  scientificCommitteeHead: 'scientificCommitteeHead',
+  scientificCommitteeEmail: 'scientificCommitteeEmail',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -287,6 +294,8 @@ exports.Prisma.SubmissionScalarFieldEnum = {
   abstract: 'abstract',
   fileUrl: 'fileUrl',
   status: 'status',
+  modalityId: 'modalityId',
+  thematicAreaId: 'thematicAreaId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -299,6 +308,32 @@ exports.Prisma.ReviewScalarFieldEnum = {
   recommendation: 'recommendation',
   comments: 'comments',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.SubmissionModalityScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  name: 'name',
+  description: 'description',
+  templateUrl: 'templateUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ThematicAreaScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  name: 'name',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SubmissionRuleScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  title: 'title',
+  fileUrl: 'fileUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.AttendanceScalarFieldEnum = {
@@ -556,6 +591,9 @@ exports.Prisma.ModelName = {
   CustomFormAnswer: 'CustomFormAnswer',
   Submission: 'Submission',
   Review: 'Review',
+  SubmissionModality: 'SubmissionModality',
+  ThematicArea: 'ThematicArea',
+  SubmissionRule: 'SubmissionRule',
   Attendance: 'Attendance',
   CertificateTemplate: 'CertificateTemplate',
   IssuedCertificate: 'IssuedCertificate',

@@ -99,6 +99,21 @@ export type Submission = $Result.DefaultSelection<Prisma.$SubmissionPayload>
  */
 export type Review = $Result.DefaultSelection<Prisma.$ReviewPayload>
 /**
+ * Model SubmissionModality
+ * 
+ */
+export type SubmissionModality = $Result.DefaultSelection<Prisma.$SubmissionModalityPayload>
+/**
+ * Model ThematicArea
+ * 
+ */
+export type ThematicArea = $Result.DefaultSelection<Prisma.$ThematicAreaPayload>
+/**
+ * Model SubmissionRule
+ * 
+ */
+export type SubmissionRule = $Result.DefaultSelection<Prisma.$SubmissionRulePayload>
+/**
  * Model Attendance
  * 
  */
@@ -643,6 +658,36 @@ export class PrismaClient<
     * ```
     */
   get review(): Prisma.ReviewDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.submissionModality`: Exposes CRUD operations for the **SubmissionModality** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SubmissionModalities
+    * const submissionModalities = await prisma.submissionModality.findMany()
+    * ```
+    */
+  get submissionModality(): Prisma.SubmissionModalityDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.thematicArea`: Exposes CRUD operations for the **ThematicArea** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ThematicAreas
+    * const thematicAreas = await prisma.thematicArea.findMany()
+    * ```
+    */
+  get thematicArea(): Prisma.ThematicAreaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.submissionRule`: Exposes CRUD operations for the **SubmissionRule** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SubmissionRules
+    * const submissionRules = await prisma.submissionRule.findMany()
+    * ```
+    */
+  get submissionRule(): Prisma.SubmissionRuleDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.attendance`: Exposes CRUD operations for the **Attendance** model.
@@ -1204,6 +1249,9 @@ export namespace Prisma {
     CustomFormAnswer: 'CustomFormAnswer',
     Submission: 'Submission',
     Review: 'Review',
+    SubmissionModality: 'SubmissionModality',
+    ThematicArea: 'ThematicArea',
+    SubmissionRule: 'SubmissionRule',
     Attendance: 'Attendance',
     CertificateTemplate: 'CertificateTemplate',
     IssuedCertificate: 'IssuedCertificate',
@@ -1230,7 +1278,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge" | "activityMaterial" | "activityFeedback"
+      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "submissionModality" | "thematicArea" | "submissionRule" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge" | "activityMaterial" | "activityFeedback"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2492,6 +2540,228 @@ export namespace Prisma {
           }
         }
       }
+      SubmissionModality: {
+        payload: Prisma.$SubmissionModalityPayload<ExtArgs>
+        fields: Prisma.SubmissionModalityFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SubmissionModalityFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SubmissionModalityFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload>
+          }
+          findFirst: {
+            args: Prisma.SubmissionModalityFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SubmissionModalityFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload>
+          }
+          findMany: {
+            args: Prisma.SubmissionModalityFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload>[]
+          }
+          create: {
+            args: Prisma.SubmissionModalityCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload>
+          }
+          createMany: {
+            args: Prisma.SubmissionModalityCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SubmissionModalityCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload>[]
+          }
+          delete: {
+            args: Prisma.SubmissionModalityDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload>
+          }
+          update: {
+            args: Prisma.SubmissionModalityUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload>
+          }
+          deleteMany: {
+            args: Prisma.SubmissionModalityDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SubmissionModalityUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SubmissionModalityUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload>[]
+          }
+          upsert: {
+            args: Prisma.SubmissionModalityUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionModalityPayload>
+          }
+          aggregate: {
+            args: Prisma.SubmissionModalityAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSubmissionModality>
+          }
+          groupBy: {
+            args: Prisma.SubmissionModalityGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SubmissionModalityGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SubmissionModalityCountArgs<ExtArgs>
+            result: $Utils.Optional<SubmissionModalityCountAggregateOutputType> | number
+          }
+        }
+      }
+      ThematicArea: {
+        payload: Prisma.$ThematicAreaPayload<ExtArgs>
+        fields: Prisma.ThematicAreaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ThematicAreaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ThematicAreaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload>
+          }
+          findFirst: {
+            args: Prisma.ThematicAreaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ThematicAreaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload>
+          }
+          findMany: {
+            args: Prisma.ThematicAreaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload>[]
+          }
+          create: {
+            args: Prisma.ThematicAreaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload>
+          }
+          createMany: {
+            args: Prisma.ThematicAreaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ThematicAreaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload>[]
+          }
+          delete: {
+            args: Prisma.ThematicAreaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload>
+          }
+          update: {
+            args: Prisma.ThematicAreaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload>
+          }
+          deleteMany: {
+            args: Prisma.ThematicAreaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ThematicAreaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ThematicAreaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload>[]
+          }
+          upsert: {
+            args: Prisma.ThematicAreaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThematicAreaPayload>
+          }
+          aggregate: {
+            args: Prisma.ThematicAreaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateThematicArea>
+          }
+          groupBy: {
+            args: Prisma.ThematicAreaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ThematicAreaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ThematicAreaCountArgs<ExtArgs>
+            result: $Utils.Optional<ThematicAreaCountAggregateOutputType> | number
+          }
+        }
+      }
+      SubmissionRule: {
+        payload: Prisma.$SubmissionRulePayload<ExtArgs>
+        fields: Prisma.SubmissionRuleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SubmissionRuleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SubmissionRuleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload>
+          }
+          findFirst: {
+            args: Prisma.SubmissionRuleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SubmissionRuleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload>
+          }
+          findMany: {
+            args: Prisma.SubmissionRuleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload>[]
+          }
+          create: {
+            args: Prisma.SubmissionRuleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload>
+          }
+          createMany: {
+            args: Prisma.SubmissionRuleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SubmissionRuleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload>[]
+          }
+          delete: {
+            args: Prisma.SubmissionRuleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload>
+          }
+          update: {
+            args: Prisma.SubmissionRuleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload>
+          }
+          deleteMany: {
+            args: Prisma.SubmissionRuleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SubmissionRuleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SubmissionRuleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload>[]
+          }
+          upsert: {
+            args: Prisma.SubmissionRuleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionRulePayload>
+          }
+          aggregate: {
+            args: Prisma.SubmissionRuleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSubmissionRule>
+          }
+          groupBy: {
+            args: Prisma.SubmissionRuleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SubmissionRuleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SubmissionRuleCountArgs<ExtArgs>
+            result: $Utils.Optional<SubmissionRuleCountAggregateOutputType> | number
+          }
+        }
+      }
       Attendance: {
         payload: Prisma.$AttendancePayload<ExtArgs>
         fields: Prisma.AttendanceFieldRefs
@@ -3431,6 +3701,9 @@ export namespace Prisma {
     customFormAnswer?: CustomFormAnswerOmit
     submission?: SubmissionOmit
     review?: ReviewOmit
+    submissionModality?: SubmissionModalityOmit
+    thematicArea?: ThematicAreaOmit
+    submissionRule?: SubmissionRuleOmit
     attendance?: AttendanceOmit
     certificateTemplate?: CertificateTemplateOmit
     issuedCertificate?: IssuedCertificateOmit
@@ -3675,6 +3948,9 @@ export namespace Prisma {
     raffleHistories: number
     badges: number
     userBadges: number
+    submissionModalities: number
+    thematicAreas: number
+    submissionRules: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3688,6 +3964,9 @@ export namespace Prisma {
     raffleHistories?: boolean | EventCountOutputTypeCountRaffleHistoriesArgs
     badges?: boolean | EventCountOutputTypeCountBadgesArgs
     userBadges?: boolean | EventCountOutputTypeCountUserBadgesArgs
+    submissionModalities?: boolean | EventCountOutputTypeCountSubmissionModalitiesArgs
+    thematicAreas?: boolean | EventCountOutputTypeCountThematicAreasArgs
+    submissionRules?: boolean | EventCountOutputTypeCountSubmissionRulesArgs
   }
 
   // Custom InputTypes
@@ -3769,6 +4048,27 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountUserBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserBadgeWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountSubmissionModalitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubmissionModalityWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountThematicAreasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ThematicAreaWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountSubmissionRulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubmissionRuleWhereInput
   }
 
 
@@ -4187,6 +4487,68 @@ export namespace Prisma {
    */
   export type SubmissionCountOutputTypeCountFormResponsesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CustomFormResponseWhereInput
+  }
+
+
+  /**
+   * Count Type SubmissionModalityCountOutputType
+   */
+
+  export type SubmissionModalityCountOutputType = {
+    submissions: number
+  }
+
+  export type SubmissionModalityCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    submissions?: boolean | SubmissionModalityCountOutputTypeCountSubmissionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SubmissionModalityCountOutputType without action
+   */
+  export type SubmissionModalityCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModalityCountOutputType
+     */
+    select?: SubmissionModalityCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SubmissionModalityCountOutputType without action
+   */
+  export type SubmissionModalityCountOutputTypeCountSubmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubmissionWhereInput
+  }
+
+
+  /**
+   * Count Type ThematicAreaCountOutputType
+   */
+
+  export type ThematicAreaCountOutputType = {
+    submissions: number
+  }
+
+  export type ThematicAreaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    submissions?: boolean | ThematicAreaCountOutputTypeCountSubmissionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ThematicAreaCountOutputType without action
+   */
+  export type ThematicAreaCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicAreaCountOutputType
+     */
+    select?: ThematicAreaCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ThematicAreaCountOutputType without action
+   */
+  export type ThematicAreaCountOutputTypeCountSubmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubmissionWhereInput
   }
 
 
@@ -6889,6 +7251,13 @@ export namespace Prisma {
     logoUrl: string | null
     seoTitle: string | null
     seoDescription: string | null
+    submissionsEnabled: boolean | null
+    submissionStartDate: Date | null
+    submissionEndDate: Date | null
+    reviewStartDate: Date | null
+    reviewEndDate: Date | null
+    scientificCommitteeHead: string | null
+    scientificCommitteeEmail: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6907,6 +7276,13 @@ export namespace Prisma {
     logoUrl: string | null
     seoTitle: string | null
     seoDescription: string | null
+    submissionsEnabled: boolean | null
+    submissionStartDate: Date | null
+    submissionEndDate: Date | null
+    reviewStartDate: Date | null
+    reviewEndDate: Date | null
+    scientificCommitteeHead: string | null
+    scientificCommitteeEmail: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6926,6 +7302,13 @@ export namespace Prisma {
     themeConfig: number
     seoTitle: number
     seoDescription: number
+    submissionsEnabled: number
+    submissionStartDate: number
+    submissionEndDate: number
+    reviewStartDate: number
+    reviewEndDate: number
+    scientificCommitteeHead: number
+    scientificCommitteeEmail: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6946,6 +7329,13 @@ export namespace Prisma {
     logoUrl?: true
     seoTitle?: true
     seoDescription?: true
+    submissionsEnabled?: true
+    submissionStartDate?: true
+    submissionEndDate?: true
+    reviewStartDate?: true
+    reviewEndDate?: true
+    scientificCommitteeHead?: true
+    scientificCommitteeEmail?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6964,6 +7354,13 @@ export namespace Prisma {
     logoUrl?: true
     seoTitle?: true
     seoDescription?: true
+    submissionsEnabled?: true
+    submissionStartDate?: true
+    submissionEndDate?: true
+    reviewStartDate?: true
+    reviewEndDate?: true
+    scientificCommitteeHead?: true
+    scientificCommitteeEmail?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6983,6 +7380,13 @@ export namespace Prisma {
     themeConfig?: true
     seoTitle?: true
     seoDescription?: true
+    submissionsEnabled?: true
+    submissionStartDate?: true
+    submissionEndDate?: true
+    reviewStartDate?: true
+    reviewEndDate?: true
+    scientificCommitteeHead?: true
+    scientificCommitteeEmail?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7075,6 +7479,13 @@ export namespace Prisma {
     themeConfig: JsonValue | null
     seoTitle: string | null
     seoDescription: string | null
+    submissionsEnabled: boolean
+    submissionStartDate: Date | null
+    submissionEndDate: Date | null
+    reviewStartDate: Date | null
+    reviewEndDate: Date | null
+    scientificCommitteeHead: string | null
+    scientificCommitteeEmail: string | null
     createdAt: Date
     updatedAt: Date
     _count: EventCountAggregateOutputType | null
@@ -7111,6 +7522,13 @@ export namespace Prisma {
     themeConfig?: boolean
     seoTitle?: boolean
     seoDescription?: boolean
+    submissionsEnabled?: boolean
+    submissionStartDate?: boolean
+    submissionEndDate?: boolean
+    reviewStartDate?: boolean
+    reviewEndDate?: boolean
+    scientificCommitteeHead?: boolean
+    scientificCommitteeEmail?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
@@ -7124,6 +7542,9 @@ export namespace Prisma {
     raffleHistories?: boolean | Event$raffleHistoriesArgs<ExtArgs>
     badges?: boolean | Event$badgesArgs<ExtArgs>
     userBadges?: boolean | Event$userBadgesArgs<ExtArgs>
+    submissionModalities?: boolean | Event$submissionModalitiesArgs<ExtArgs>
+    thematicAreas?: boolean | Event$thematicAreasArgs<ExtArgs>
+    submissionRules?: boolean | Event$submissionRulesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -7142,6 +7563,13 @@ export namespace Prisma {
     themeConfig?: boolean
     seoTitle?: boolean
     seoDescription?: boolean
+    submissionsEnabled?: boolean
+    submissionStartDate?: boolean
+    submissionEndDate?: boolean
+    reviewStartDate?: boolean
+    reviewEndDate?: boolean
+    scientificCommitteeHead?: boolean
+    scientificCommitteeEmail?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
@@ -7162,6 +7590,13 @@ export namespace Prisma {
     themeConfig?: boolean
     seoTitle?: boolean
     seoDescription?: boolean
+    submissionsEnabled?: boolean
+    submissionStartDate?: boolean
+    submissionEndDate?: boolean
+    reviewStartDate?: boolean
+    reviewEndDate?: boolean
+    scientificCommitteeHead?: boolean
+    scientificCommitteeEmail?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
@@ -7182,11 +7617,18 @@ export namespace Prisma {
     themeConfig?: boolean
     seoTitle?: boolean
     seoDescription?: boolean
+    submissionsEnabled?: boolean
+    submissionStartDate?: boolean
+    submissionEndDate?: boolean
+    reviewStartDate?: boolean
+    reviewEndDate?: boolean
+    scientificCommitteeHead?: boolean
+    scientificCommitteeEmail?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "name" | "slug" | "description" | "location" | "startDate" | "endDate" | "status" | "bannerUrl" | "logoUrl" | "themeConfig" | "seoTitle" | "seoDescription" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "name" | "slug" | "description" | "location" | "startDate" | "endDate" | "status" | "bannerUrl" | "logoUrl" | "themeConfig" | "seoTitle" | "seoDescription" | "submissionsEnabled" | "submissionStartDate" | "submissionEndDate" | "reviewStartDate" | "reviewEndDate" | "scientificCommitteeHead" | "scientificCommitteeEmail" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     activities?: boolean | Event$activitiesArgs<ExtArgs>
@@ -7199,6 +7641,9 @@ export namespace Prisma {
     raffleHistories?: boolean | Event$raffleHistoriesArgs<ExtArgs>
     badges?: boolean | Event$badgesArgs<ExtArgs>
     userBadges?: boolean | Event$userBadgesArgs<ExtArgs>
+    submissionModalities?: boolean | Event$submissionModalitiesArgs<ExtArgs>
+    thematicAreas?: boolean | Event$thematicAreasArgs<ExtArgs>
+    submissionRules?: boolean | Event$submissionRulesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7222,6 +7667,9 @@ export namespace Prisma {
       raffleHistories: Prisma.$RaffleHistoryPayload<ExtArgs>[]
       badges: Prisma.$BadgePayload<ExtArgs>[]
       userBadges: Prisma.$UserBadgePayload<ExtArgs>[]
+      submissionModalities: Prisma.$SubmissionModalityPayload<ExtArgs>[]
+      thematicAreas: Prisma.$ThematicAreaPayload<ExtArgs>[]
+      submissionRules: Prisma.$SubmissionRulePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7238,6 +7686,13 @@ export namespace Prisma {
       themeConfig: Prisma.JsonValue | null
       seoTitle: string | null
       seoDescription: string | null
+      submissionsEnabled: boolean
+      submissionStartDate: Date | null
+      submissionEndDate: Date | null
+      reviewStartDate: Date | null
+      reviewEndDate: Date | null
+      scientificCommitteeHead: string | null
+      scientificCommitteeEmail: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["event"]>
@@ -7645,6 +8100,9 @@ export namespace Prisma {
     raffleHistories<T extends Event$raffleHistoriesArgs<ExtArgs> = {}>(args?: Subset<T, Event$raffleHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RaffleHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     badges<T extends Event$badgesArgs<ExtArgs> = {}>(args?: Subset<T, Event$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userBadges<T extends Event$userBadgesArgs<ExtArgs> = {}>(args?: Subset<T, Event$userBadgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    submissionModalities<T extends Event$submissionModalitiesArgs<ExtArgs> = {}>(args?: Subset<T, Event$submissionModalitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    thematicAreas<T extends Event$thematicAreasArgs<ExtArgs> = {}>(args?: Subset<T, Event$thematicAreasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    submissionRules<T extends Event$submissionRulesArgs<ExtArgs> = {}>(args?: Subset<T, Event$submissionRulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7688,6 +8146,13 @@ export namespace Prisma {
     readonly themeConfig: FieldRef<"Event", 'Json'>
     readonly seoTitle: FieldRef<"Event", 'String'>
     readonly seoDescription: FieldRef<"Event", 'String'>
+    readonly submissionsEnabled: FieldRef<"Event", 'Boolean'>
+    readonly submissionStartDate: FieldRef<"Event", 'DateTime'>
+    readonly submissionEndDate: FieldRef<"Event", 'DateTime'>
+    readonly reviewStartDate: FieldRef<"Event", 'DateTime'>
+    readonly reviewEndDate: FieldRef<"Event", 'DateTime'>
+    readonly scientificCommitteeHead: FieldRef<"Event", 'String'>
+    readonly scientificCommitteeEmail: FieldRef<"Event", 'String'>
     readonly createdAt: FieldRef<"Event", 'DateTime'>
     readonly updatedAt: FieldRef<"Event", 'DateTime'>
   }
@@ -8328,6 +8793,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserBadgeScalarFieldEnum | UserBadgeScalarFieldEnum[]
+  }
+
+  /**
+   * Event.submissionModalities
+   */
+  export type Event$submissionModalitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    where?: SubmissionModalityWhereInput
+    orderBy?: SubmissionModalityOrderByWithRelationInput | SubmissionModalityOrderByWithRelationInput[]
+    cursor?: SubmissionModalityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubmissionModalityScalarFieldEnum | SubmissionModalityScalarFieldEnum[]
+  }
+
+  /**
+   * Event.thematicAreas
+   */
+  export type Event$thematicAreasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    where?: ThematicAreaWhereInput
+    orderBy?: ThematicAreaOrderByWithRelationInput | ThematicAreaOrderByWithRelationInput[]
+    cursor?: ThematicAreaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ThematicAreaScalarFieldEnum | ThematicAreaScalarFieldEnum[]
+  }
+
+  /**
+   * Event.submissionRules
+   */
+  export type Event$submissionRulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
+    where?: SubmissionRuleWhereInput
+    orderBy?: SubmissionRuleOrderByWithRelationInput | SubmissionRuleOrderByWithRelationInput[]
+    cursor?: SubmissionRuleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubmissionRuleScalarFieldEnum | SubmissionRuleScalarFieldEnum[]
   }
 
   /**
@@ -22212,6 +22749,8 @@ export namespace Prisma {
     abstract: string | null
     fileUrl: string | null
     status: $Enums.SubmissionStatus | null
+    modalityId: string | null
+    thematicAreaId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -22224,6 +22763,8 @@ export namespace Prisma {
     abstract: string | null
     fileUrl: string | null
     status: $Enums.SubmissionStatus | null
+    modalityId: string | null
+    thematicAreaId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -22236,6 +22777,8 @@ export namespace Prisma {
     abstract: number
     fileUrl: number
     status: number
+    modalityId: number
+    thematicAreaId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -22250,6 +22793,8 @@ export namespace Prisma {
     abstract?: true
     fileUrl?: true
     status?: true
+    modalityId?: true
+    thematicAreaId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -22262,6 +22807,8 @@ export namespace Prisma {
     abstract?: true
     fileUrl?: true
     status?: true
+    modalityId?: true
+    thematicAreaId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -22274,6 +22821,8 @@ export namespace Prisma {
     abstract?: true
     fileUrl?: true
     status?: true
+    modalityId?: true
+    thematicAreaId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -22359,6 +22908,8 @@ export namespace Prisma {
     abstract: string | null
     fileUrl: string
     status: $Enums.SubmissionStatus
+    modalityId: string | null
+    thematicAreaId: string | null
     createdAt: Date
     updatedAt: Date
     _count: SubmissionCountAggregateOutputType | null
@@ -22388,10 +22939,14 @@ export namespace Prisma {
     abstract?: boolean
     fileUrl?: boolean
     status?: boolean
+    modalityId?: boolean
+    thematicAreaId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    modality?: boolean | Submission$modalityArgs<ExtArgs>
+    thematicArea?: boolean | Submission$thematicAreaArgs<ExtArgs>
     reviews?: boolean | Submission$reviewsArgs<ExtArgs>
     formResponses?: boolean | Submission$formResponsesArgs<ExtArgs>
     _count?: boolean | SubmissionCountOutputTypeDefaultArgs<ExtArgs>
@@ -22405,10 +22960,14 @@ export namespace Prisma {
     abstract?: boolean
     fileUrl?: boolean
     status?: boolean
+    modalityId?: boolean
+    thematicAreaId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    modality?: boolean | Submission$modalityArgs<ExtArgs>
+    thematicArea?: boolean | Submission$thematicAreaArgs<ExtArgs>
   }, ExtArgs["result"]["submission"]>
 
   export type SubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -22419,10 +22978,14 @@ export namespace Prisma {
     abstract?: boolean
     fileUrl?: boolean
     status?: boolean
+    modalityId?: boolean
+    thematicAreaId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    modality?: boolean | Submission$modalityArgs<ExtArgs>
+    thematicArea?: boolean | Submission$thematicAreaArgs<ExtArgs>
   }, ExtArgs["result"]["submission"]>
 
   export type SubmissionSelectScalar = {
@@ -22433,14 +22996,18 @@ export namespace Prisma {
     abstract?: boolean
     fileUrl?: boolean
     status?: boolean
+    modalityId?: boolean
+    thematicAreaId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "authorId" | "title" | "abstract" | "fileUrl" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["submission"]>
+  export type SubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "authorId" | "title" | "abstract" | "fileUrl" | "status" | "modalityId" | "thematicAreaId" | "createdAt" | "updatedAt", ExtArgs["result"]["submission"]>
   export type SubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    modality?: boolean | Submission$modalityArgs<ExtArgs>
+    thematicArea?: boolean | Submission$thematicAreaArgs<ExtArgs>
     reviews?: boolean | Submission$reviewsArgs<ExtArgs>
     formResponses?: boolean | Submission$formResponsesArgs<ExtArgs>
     _count?: boolean | SubmissionCountOutputTypeDefaultArgs<ExtArgs>
@@ -22448,10 +23015,14 @@ export namespace Prisma {
   export type SubmissionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    modality?: boolean | Submission$modalityArgs<ExtArgs>
+    thematicArea?: boolean | Submission$thematicAreaArgs<ExtArgs>
   }
   export type SubmissionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    modality?: boolean | Submission$modalityArgs<ExtArgs>
+    thematicArea?: boolean | Submission$thematicAreaArgs<ExtArgs>
   }
 
   export type $SubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22459,6 +23030,8 @@ export namespace Prisma {
     objects: {
       event: Prisma.$EventPayload<ExtArgs>
       author: Prisma.$UserPayload<ExtArgs>
+      modality: Prisma.$SubmissionModalityPayload<ExtArgs> | null
+      thematicArea: Prisma.$ThematicAreaPayload<ExtArgs> | null
       reviews: Prisma.$ReviewPayload<ExtArgs>[]
       formResponses: Prisma.$CustomFormResponsePayload<ExtArgs>[]
     }
@@ -22470,6 +23043,8 @@ export namespace Prisma {
       abstract: string | null
       fileUrl: string
       status: $Enums.SubmissionStatus
+      modalityId: string | null
+      thematicAreaId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["submission"]>
@@ -22868,6 +23443,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    modality<T extends Submission$modalityArgs<ExtArgs> = {}>(args?: Subset<T, Submission$modalityArgs<ExtArgs>>): Prisma__SubmissionModalityClient<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    thematicArea<T extends Submission$thematicAreaArgs<ExtArgs> = {}>(args?: Subset<T, Submission$thematicAreaArgs<ExtArgs>>): Prisma__ThematicAreaClient<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     reviews<T extends Submission$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Submission$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     formResponses<T extends Submission$formResponsesArgs<ExtArgs> = {}>(args?: Subset<T, Submission$formResponsesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomFormResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -22906,6 +23483,8 @@ export namespace Prisma {
     readonly abstract: FieldRef<"Submission", 'String'>
     readonly fileUrl: FieldRef<"Submission", 'String'>
     readonly status: FieldRef<"Submission", 'SubmissionStatus'>
+    readonly modalityId: FieldRef<"Submission", 'String'>
+    readonly thematicAreaId: FieldRef<"Submission", 'String'>
     readonly createdAt: FieldRef<"Submission", 'DateTime'>
     readonly updatedAt: FieldRef<"Submission", 'DateTime'>
   }
@@ -23306,6 +23885,44 @@ export namespace Prisma {
      * Limit how many Submissions to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Submission.modality
+   */
+  export type Submission$modalityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    where?: SubmissionModalityWhereInput
+  }
+
+  /**
+   * Submission.thematicArea
+   */
+  export type Submission$thematicAreaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    where?: ThematicAreaWhereInput
   }
 
   /**
@@ -24503,6 +25120,3281 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ReviewInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SubmissionModality
+   */
+
+  export type AggregateSubmissionModality = {
+    _count: SubmissionModalityCountAggregateOutputType | null
+    _min: SubmissionModalityMinAggregateOutputType | null
+    _max: SubmissionModalityMaxAggregateOutputType | null
+  }
+
+  export type SubmissionModalityMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    name: string | null
+    description: string | null
+    templateUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SubmissionModalityMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    name: string | null
+    description: string | null
+    templateUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SubmissionModalityCountAggregateOutputType = {
+    id: number
+    eventId: number
+    name: number
+    description: number
+    templateUrl: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SubmissionModalityMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    description?: true
+    templateUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SubmissionModalityMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    description?: true
+    templateUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SubmissionModalityCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    description?: true
+    templateUrl?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SubmissionModalityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SubmissionModality to aggregate.
+     */
+    where?: SubmissionModalityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubmissionModalities to fetch.
+     */
+    orderBy?: SubmissionModalityOrderByWithRelationInput | SubmissionModalityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SubmissionModalityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubmissionModalities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubmissionModalities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SubmissionModalities
+    **/
+    _count?: true | SubmissionModalityCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SubmissionModalityMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SubmissionModalityMaxAggregateInputType
+  }
+
+  export type GetSubmissionModalityAggregateType<T extends SubmissionModalityAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubmissionModality]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSubmissionModality[P]>
+      : GetScalarType<T[P], AggregateSubmissionModality[P]>
+  }
+
+
+
+
+  export type SubmissionModalityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubmissionModalityWhereInput
+    orderBy?: SubmissionModalityOrderByWithAggregationInput | SubmissionModalityOrderByWithAggregationInput[]
+    by: SubmissionModalityScalarFieldEnum[] | SubmissionModalityScalarFieldEnum
+    having?: SubmissionModalityScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SubmissionModalityCountAggregateInputType | true
+    _min?: SubmissionModalityMinAggregateInputType
+    _max?: SubmissionModalityMaxAggregateInputType
+  }
+
+  export type SubmissionModalityGroupByOutputType = {
+    id: string
+    eventId: string
+    name: string
+    description: string | null
+    templateUrl: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SubmissionModalityCountAggregateOutputType | null
+    _min: SubmissionModalityMinAggregateOutputType | null
+    _max: SubmissionModalityMaxAggregateOutputType | null
+  }
+
+  type GetSubmissionModalityGroupByPayload<T extends SubmissionModalityGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SubmissionModalityGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SubmissionModalityGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SubmissionModalityGroupByOutputType[P]>
+            : GetScalarType<T[P], SubmissionModalityGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SubmissionModalitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    description?: boolean
+    templateUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    submissions?: boolean | SubmissionModality$submissionsArgs<ExtArgs>
+    _count?: boolean | SubmissionModalityCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["submissionModality"]>
+
+  export type SubmissionModalitySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    description?: boolean
+    templateUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["submissionModality"]>
+
+  export type SubmissionModalitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    description?: boolean
+    templateUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["submissionModality"]>
+
+  export type SubmissionModalitySelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    description?: boolean
+    templateUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SubmissionModalityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "name" | "description" | "templateUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["submissionModality"]>
+  export type SubmissionModalityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    submissions?: boolean | SubmissionModality$submissionsArgs<ExtArgs>
+    _count?: boolean | SubmissionModalityCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SubmissionModalityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type SubmissionModalityIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+
+  export type $SubmissionModalityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SubmissionModality"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      submissions: Prisma.$SubmissionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      name: string
+      description: string | null
+      templateUrl: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["submissionModality"]>
+    composites: {}
+  }
+
+  type SubmissionModalityGetPayload<S extends boolean | null | undefined | SubmissionModalityDefaultArgs> = $Result.GetResult<Prisma.$SubmissionModalityPayload, S>
+
+  type SubmissionModalityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SubmissionModalityFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SubmissionModalityCountAggregateInputType | true
+    }
+
+  export interface SubmissionModalityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SubmissionModality'], meta: { name: 'SubmissionModality' } }
+    /**
+     * Find zero or one SubmissionModality that matches the filter.
+     * @param {SubmissionModalityFindUniqueArgs} args - Arguments to find a SubmissionModality
+     * @example
+     * // Get one SubmissionModality
+     * const submissionModality = await prisma.submissionModality.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SubmissionModalityFindUniqueArgs>(args: SelectSubset<T, SubmissionModalityFindUniqueArgs<ExtArgs>>): Prisma__SubmissionModalityClient<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SubmissionModality that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SubmissionModalityFindUniqueOrThrowArgs} args - Arguments to find a SubmissionModality
+     * @example
+     * // Get one SubmissionModality
+     * const submissionModality = await prisma.submissionModality.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SubmissionModalityFindUniqueOrThrowArgs>(args: SelectSubset<T, SubmissionModalityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SubmissionModalityClient<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SubmissionModality that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionModalityFindFirstArgs} args - Arguments to find a SubmissionModality
+     * @example
+     * // Get one SubmissionModality
+     * const submissionModality = await prisma.submissionModality.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SubmissionModalityFindFirstArgs>(args?: SelectSubset<T, SubmissionModalityFindFirstArgs<ExtArgs>>): Prisma__SubmissionModalityClient<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SubmissionModality that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionModalityFindFirstOrThrowArgs} args - Arguments to find a SubmissionModality
+     * @example
+     * // Get one SubmissionModality
+     * const submissionModality = await prisma.submissionModality.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SubmissionModalityFindFirstOrThrowArgs>(args?: SelectSubset<T, SubmissionModalityFindFirstOrThrowArgs<ExtArgs>>): Prisma__SubmissionModalityClient<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SubmissionModalities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionModalityFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SubmissionModalities
+     * const submissionModalities = await prisma.submissionModality.findMany()
+     * 
+     * // Get first 10 SubmissionModalities
+     * const submissionModalities = await prisma.submissionModality.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const submissionModalityWithIdOnly = await prisma.submissionModality.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SubmissionModalityFindManyArgs>(args?: SelectSubset<T, SubmissionModalityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SubmissionModality.
+     * @param {SubmissionModalityCreateArgs} args - Arguments to create a SubmissionModality.
+     * @example
+     * // Create one SubmissionModality
+     * const SubmissionModality = await prisma.submissionModality.create({
+     *   data: {
+     *     // ... data to create a SubmissionModality
+     *   }
+     * })
+     * 
+     */
+    create<T extends SubmissionModalityCreateArgs>(args: SelectSubset<T, SubmissionModalityCreateArgs<ExtArgs>>): Prisma__SubmissionModalityClient<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SubmissionModalities.
+     * @param {SubmissionModalityCreateManyArgs} args - Arguments to create many SubmissionModalities.
+     * @example
+     * // Create many SubmissionModalities
+     * const submissionModality = await prisma.submissionModality.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SubmissionModalityCreateManyArgs>(args?: SelectSubset<T, SubmissionModalityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SubmissionModalities and returns the data saved in the database.
+     * @param {SubmissionModalityCreateManyAndReturnArgs} args - Arguments to create many SubmissionModalities.
+     * @example
+     * // Create many SubmissionModalities
+     * const submissionModality = await prisma.submissionModality.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SubmissionModalities and only return the `id`
+     * const submissionModalityWithIdOnly = await prisma.submissionModality.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SubmissionModalityCreateManyAndReturnArgs>(args?: SelectSubset<T, SubmissionModalityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SubmissionModality.
+     * @param {SubmissionModalityDeleteArgs} args - Arguments to delete one SubmissionModality.
+     * @example
+     * // Delete one SubmissionModality
+     * const SubmissionModality = await prisma.submissionModality.delete({
+     *   where: {
+     *     // ... filter to delete one SubmissionModality
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SubmissionModalityDeleteArgs>(args: SelectSubset<T, SubmissionModalityDeleteArgs<ExtArgs>>): Prisma__SubmissionModalityClient<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SubmissionModality.
+     * @param {SubmissionModalityUpdateArgs} args - Arguments to update one SubmissionModality.
+     * @example
+     * // Update one SubmissionModality
+     * const submissionModality = await prisma.submissionModality.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SubmissionModalityUpdateArgs>(args: SelectSubset<T, SubmissionModalityUpdateArgs<ExtArgs>>): Prisma__SubmissionModalityClient<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SubmissionModalities.
+     * @param {SubmissionModalityDeleteManyArgs} args - Arguments to filter SubmissionModalities to delete.
+     * @example
+     * // Delete a few SubmissionModalities
+     * const { count } = await prisma.submissionModality.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SubmissionModalityDeleteManyArgs>(args?: SelectSubset<T, SubmissionModalityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SubmissionModalities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionModalityUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SubmissionModalities
+     * const submissionModality = await prisma.submissionModality.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SubmissionModalityUpdateManyArgs>(args: SelectSubset<T, SubmissionModalityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SubmissionModalities and returns the data updated in the database.
+     * @param {SubmissionModalityUpdateManyAndReturnArgs} args - Arguments to update many SubmissionModalities.
+     * @example
+     * // Update many SubmissionModalities
+     * const submissionModality = await prisma.submissionModality.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SubmissionModalities and only return the `id`
+     * const submissionModalityWithIdOnly = await prisma.submissionModality.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SubmissionModalityUpdateManyAndReturnArgs>(args: SelectSubset<T, SubmissionModalityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SubmissionModality.
+     * @param {SubmissionModalityUpsertArgs} args - Arguments to update or create a SubmissionModality.
+     * @example
+     * // Update or create a SubmissionModality
+     * const submissionModality = await prisma.submissionModality.upsert({
+     *   create: {
+     *     // ... data to create a SubmissionModality
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SubmissionModality we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SubmissionModalityUpsertArgs>(args: SelectSubset<T, SubmissionModalityUpsertArgs<ExtArgs>>): Prisma__SubmissionModalityClient<$Result.GetResult<Prisma.$SubmissionModalityPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SubmissionModalities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionModalityCountArgs} args - Arguments to filter SubmissionModalities to count.
+     * @example
+     * // Count the number of SubmissionModalities
+     * const count = await prisma.submissionModality.count({
+     *   where: {
+     *     // ... the filter for the SubmissionModalities we want to count
+     *   }
+     * })
+    **/
+    count<T extends SubmissionModalityCountArgs>(
+      args?: Subset<T, SubmissionModalityCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SubmissionModalityCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SubmissionModality.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionModalityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SubmissionModalityAggregateArgs>(args: Subset<T, SubmissionModalityAggregateArgs>): Prisma.PrismaPromise<GetSubmissionModalityAggregateType<T>>
+
+    /**
+     * Group by SubmissionModality.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionModalityGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SubmissionModalityGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SubmissionModalityGroupByArgs['orderBy'] }
+        : { orderBy?: SubmissionModalityGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SubmissionModalityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubmissionModalityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SubmissionModality model
+   */
+  readonly fields: SubmissionModalityFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SubmissionModality.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SubmissionModalityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    submissions<T extends SubmissionModality$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, SubmissionModality$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SubmissionModality model
+   */
+  interface SubmissionModalityFieldRefs {
+    readonly id: FieldRef<"SubmissionModality", 'String'>
+    readonly eventId: FieldRef<"SubmissionModality", 'String'>
+    readonly name: FieldRef<"SubmissionModality", 'String'>
+    readonly description: FieldRef<"SubmissionModality", 'String'>
+    readonly templateUrl: FieldRef<"SubmissionModality", 'String'>
+    readonly createdAt: FieldRef<"SubmissionModality", 'DateTime'>
+    readonly updatedAt: FieldRef<"SubmissionModality", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SubmissionModality findUnique
+   */
+  export type SubmissionModalityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    /**
+     * Filter, which SubmissionModality to fetch.
+     */
+    where: SubmissionModalityWhereUniqueInput
+  }
+
+  /**
+   * SubmissionModality findUniqueOrThrow
+   */
+  export type SubmissionModalityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    /**
+     * Filter, which SubmissionModality to fetch.
+     */
+    where: SubmissionModalityWhereUniqueInput
+  }
+
+  /**
+   * SubmissionModality findFirst
+   */
+  export type SubmissionModalityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    /**
+     * Filter, which SubmissionModality to fetch.
+     */
+    where?: SubmissionModalityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubmissionModalities to fetch.
+     */
+    orderBy?: SubmissionModalityOrderByWithRelationInput | SubmissionModalityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SubmissionModalities.
+     */
+    cursor?: SubmissionModalityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubmissionModalities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubmissionModalities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubmissionModalities.
+     */
+    distinct?: SubmissionModalityScalarFieldEnum | SubmissionModalityScalarFieldEnum[]
+  }
+
+  /**
+   * SubmissionModality findFirstOrThrow
+   */
+  export type SubmissionModalityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    /**
+     * Filter, which SubmissionModality to fetch.
+     */
+    where?: SubmissionModalityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubmissionModalities to fetch.
+     */
+    orderBy?: SubmissionModalityOrderByWithRelationInput | SubmissionModalityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SubmissionModalities.
+     */
+    cursor?: SubmissionModalityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubmissionModalities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubmissionModalities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubmissionModalities.
+     */
+    distinct?: SubmissionModalityScalarFieldEnum | SubmissionModalityScalarFieldEnum[]
+  }
+
+  /**
+   * SubmissionModality findMany
+   */
+  export type SubmissionModalityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    /**
+     * Filter, which SubmissionModalities to fetch.
+     */
+    where?: SubmissionModalityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubmissionModalities to fetch.
+     */
+    orderBy?: SubmissionModalityOrderByWithRelationInput | SubmissionModalityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SubmissionModalities.
+     */
+    cursor?: SubmissionModalityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubmissionModalities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubmissionModalities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubmissionModalities.
+     */
+    distinct?: SubmissionModalityScalarFieldEnum | SubmissionModalityScalarFieldEnum[]
+  }
+
+  /**
+   * SubmissionModality create
+   */
+  export type SubmissionModalityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SubmissionModality.
+     */
+    data: XOR<SubmissionModalityCreateInput, SubmissionModalityUncheckedCreateInput>
+  }
+
+  /**
+   * SubmissionModality createMany
+   */
+  export type SubmissionModalityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SubmissionModalities.
+     */
+    data: SubmissionModalityCreateManyInput | SubmissionModalityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SubmissionModality createManyAndReturn
+   */
+  export type SubmissionModalityCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * The data used to create many SubmissionModalities.
+     */
+    data: SubmissionModalityCreateManyInput | SubmissionModalityCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SubmissionModality update
+   */
+  export type SubmissionModalityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SubmissionModality.
+     */
+    data: XOR<SubmissionModalityUpdateInput, SubmissionModalityUncheckedUpdateInput>
+    /**
+     * Choose, which SubmissionModality to update.
+     */
+    where: SubmissionModalityWhereUniqueInput
+  }
+
+  /**
+   * SubmissionModality updateMany
+   */
+  export type SubmissionModalityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SubmissionModalities.
+     */
+    data: XOR<SubmissionModalityUpdateManyMutationInput, SubmissionModalityUncheckedUpdateManyInput>
+    /**
+     * Filter which SubmissionModalities to update
+     */
+    where?: SubmissionModalityWhereInput
+    /**
+     * Limit how many SubmissionModalities to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SubmissionModality updateManyAndReturn
+   */
+  export type SubmissionModalityUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * The data used to update SubmissionModalities.
+     */
+    data: XOR<SubmissionModalityUpdateManyMutationInput, SubmissionModalityUncheckedUpdateManyInput>
+    /**
+     * Filter which SubmissionModalities to update
+     */
+    where?: SubmissionModalityWhereInput
+    /**
+     * Limit how many SubmissionModalities to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SubmissionModality upsert
+   */
+  export type SubmissionModalityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SubmissionModality to update in case it exists.
+     */
+    where: SubmissionModalityWhereUniqueInput
+    /**
+     * In case the SubmissionModality found by the `where` argument doesn't exist, create a new SubmissionModality with this data.
+     */
+    create: XOR<SubmissionModalityCreateInput, SubmissionModalityUncheckedCreateInput>
+    /**
+     * In case the SubmissionModality was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SubmissionModalityUpdateInput, SubmissionModalityUncheckedUpdateInput>
+  }
+
+  /**
+   * SubmissionModality delete
+   */
+  export type SubmissionModalityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+    /**
+     * Filter which SubmissionModality to delete.
+     */
+    where: SubmissionModalityWhereUniqueInput
+  }
+
+  /**
+   * SubmissionModality deleteMany
+   */
+  export type SubmissionModalityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SubmissionModalities to delete
+     */
+    where?: SubmissionModalityWhereInput
+    /**
+     * Limit how many SubmissionModalities to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SubmissionModality.submissions
+   */
+  export type SubmissionModality$submissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    where?: SubmissionWhereInput
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
+    cursor?: SubmissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * SubmissionModality without action
+   */
+  export type SubmissionModalityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionModality
+     */
+    select?: SubmissionModalitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionModality
+     */
+    omit?: SubmissionModalityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionModalityInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ThematicArea
+   */
+
+  export type AggregateThematicArea = {
+    _count: ThematicAreaCountAggregateOutputType | null
+    _min: ThematicAreaMinAggregateOutputType | null
+    _max: ThematicAreaMaxAggregateOutputType | null
+  }
+
+  export type ThematicAreaMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    name: string | null
+    createdAt: Date | null
+  }
+
+  export type ThematicAreaMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    name: string | null
+    createdAt: Date | null
+  }
+
+  export type ThematicAreaCountAggregateOutputType = {
+    id: number
+    eventId: number
+    name: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ThematicAreaMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    createdAt?: true
+  }
+
+  export type ThematicAreaMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    createdAt?: true
+  }
+
+  export type ThematicAreaCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    name?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ThematicAreaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ThematicArea to aggregate.
+     */
+    where?: ThematicAreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ThematicAreas to fetch.
+     */
+    orderBy?: ThematicAreaOrderByWithRelationInput | ThematicAreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ThematicAreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ThematicAreas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ThematicAreas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ThematicAreas
+    **/
+    _count?: true | ThematicAreaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ThematicAreaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ThematicAreaMaxAggregateInputType
+  }
+
+  export type GetThematicAreaAggregateType<T extends ThematicAreaAggregateArgs> = {
+        [P in keyof T & keyof AggregateThematicArea]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateThematicArea[P]>
+      : GetScalarType<T[P], AggregateThematicArea[P]>
+  }
+
+
+
+
+  export type ThematicAreaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ThematicAreaWhereInput
+    orderBy?: ThematicAreaOrderByWithAggregationInput | ThematicAreaOrderByWithAggregationInput[]
+    by: ThematicAreaScalarFieldEnum[] | ThematicAreaScalarFieldEnum
+    having?: ThematicAreaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ThematicAreaCountAggregateInputType | true
+    _min?: ThematicAreaMinAggregateInputType
+    _max?: ThematicAreaMaxAggregateInputType
+  }
+
+  export type ThematicAreaGroupByOutputType = {
+    id: string
+    eventId: string
+    name: string
+    createdAt: Date
+    _count: ThematicAreaCountAggregateOutputType | null
+    _min: ThematicAreaMinAggregateOutputType | null
+    _max: ThematicAreaMaxAggregateOutputType | null
+  }
+
+  type GetThematicAreaGroupByPayload<T extends ThematicAreaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ThematicAreaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ThematicAreaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ThematicAreaGroupByOutputType[P]>
+            : GetScalarType<T[P], ThematicAreaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ThematicAreaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    submissions?: boolean | ThematicArea$submissionsArgs<ExtArgs>
+    _count?: boolean | ThematicAreaCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["thematicArea"]>
+
+  export type ThematicAreaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["thematicArea"]>
+
+  export type ThematicAreaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["thematicArea"]>
+
+  export type ThematicAreaSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    name?: boolean
+    createdAt?: boolean
+  }
+
+  export type ThematicAreaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "name" | "createdAt", ExtArgs["result"]["thematicArea"]>
+  export type ThematicAreaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    submissions?: boolean | ThematicArea$submissionsArgs<ExtArgs>
+    _count?: boolean | ThematicAreaCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ThematicAreaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type ThematicAreaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+
+  export type $ThematicAreaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ThematicArea"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      submissions: Prisma.$SubmissionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      name: string
+      createdAt: Date
+    }, ExtArgs["result"]["thematicArea"]>
+    composites: {}
+  }
+
+  type ThematicAreaGetPayload<S extends boolean | null | undefined | ThematicAreaDefaultArgs> = $Result.GetResult<Prisma.$ThematicAreaPayload, S>
+
+  type ThematicAreaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ThematicAreaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ThematicAreaCountAggregateInputType | true
+    }
+
+  export interface ThematicAreaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ThematicArea'], meta: { name: 'ThematicArea' } }
+    /**
+     * Find zero or one ThematicArea that matches the filter.
+     * @param {ThematicAreaFindUniqueArgs} args - Arguments to find a ThematicArea
+     * @example
+     * // Get one ThematicArea
+     * const thematicArea = await prisma.thematicArea.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ThematicAreaFindUniqueArgs>(args: SelectSubset<T, ThematicAreaFindUniqueArgs<ExtArgs>>): Prisma__ThematicAreaClient<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ThematicArea that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ThematicAreaFindUniqueOrThrowArgs} args - Arguments to find a ThematicArea
+     * @example
+     * // Get one ThematicArea
+     * const thematicArea = await prisma.thematicArea.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ThematicAreaFindUniqueOrThrowArgs>(args: SelectSubset<T, ThematicAreaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ThematicAreaClient<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ThematicArea that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThematicAreaFindFirstArgs} args - Arguments to find a ThematicArea
+     * @example
+     * // Get one ThematicArea
+     * const thematicArea = await prisma.thematicArea.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ThematicAreaFindFirstArgs>(args?: SelectSubset<T, ThematicAreaFindFirstArgs<ExtArgs>>): Prisma__ThematicAreaClient<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ThematicArea that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThematicAreaFindFirstOrThrowArgs} args - Arguments to find a ThematicArea
+     * @example
+     * // Get one ThematicArea
+     * const thematicArea = await prisma.thematicArea.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ThematicAreaFindFirstOrThrowArgs>(args?: SelectSubset<T, ThematicAreaFindFirstOrThrowArgs<ExtArgs>>): Prisma__ThematicAreaClient<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ThematicAreas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThematicAreaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ThematicAreas
+     * const thematicAreas = await prisma.thematicArea.findMany()
+     * 
+     * // Get first 10 ThematicAreas
+     * const thematicAreas = await prisma.thematicArea.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const thematicAreaWithIdOnly = await prisma.thematicArea.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ThematicAreaFindManyArgs>(args?: SelectSubset<T, ThematicAreaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ThematicArea.
+     * @param {ThematicAreaCreateArgs} args - Arguments to create a ThematicArea.
+     * @example
+     * // Create one ThematicArea
+     * const ThematicArea = await prisma.thematicArea.create({
+     *   data: {
+     *     // ... data to create a ThematicArea
+     *   }
+     * })
+     * 
+     */
+    create<T extends ThematicAreaCreateArgs>(args: SelectSubset<T, ThematicAreaCreateArgs<ExtArgs>>): Prisma__ThematicAreaClient<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ThematicAreas.
+     * @param {ThematicAreaCreateManyArgs} args - Arguments to create many ThematicAreas.
+     * @example
+     * // Create many ThematicAreas
+     * const thematicArea = await prisma.thematicArea.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ThematicAreaCreateManyArgs>(args?: SelectSubset<T, ThematicAreaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ThematicAreas and returns the data saved in the database.
+     * @param {ThematicAreaCreateManyAndReturnArgs} args - Arguments to create many ThematicAreas.
+     * @example
+     * // Create many ThematicAreas
+     * const thematicArea = await prisma.thematicArea.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ThematicAreas and only return the `id`
+     * const thematicAreaWithIdOnly = await prisma.thematicArea.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ThematicAreaCreateManyAndReturnArgs>(args?: SelectSubset<T, ThematicAreaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ThematicArea.
+     * @param {ThematicAreaDeleteArgs} args - Arguments to delete one ThematicArea.
+     * @example
+     * // Delete one ThematicArea
+     * const ThematicArea = await prisma.thematicArea.delete({
+     *   where: {
+     *     // ... filter to delete one ThematicArea
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ThematicAreaDeleteArgs>(args: SelectSubset<T, ThematicAreaDeleteArgs<ExtArgs>>): Prisma__ThematicAreaClient<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ThematicArea.
+     * @param {ThematicAreaUpdateArgs} args - Arguments to update one ThematicArea.
+     * @example
+     * // Update one ThematicArea
+     * const thematicArea = await prisma.thematicArea.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ThematicAreaUpdateArgs>(args: SelectSubset<T, ThematicAreaUpdateArgs<ExtArgs>>): Prisma__ThematicAreaClient<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ThematicAreas.
+     * @param {ThematicAreaDeleteManyArgs} args - Arguments to filter ThematicAreas to delete.
+     * @example
+     * // Delete a few ThematicAreas
+     * const { count } = await prisma.thematicArea.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ThematicAreaDeleteManyArgs>(args?: SelectSubset<T, ThematicAreaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ThematicAreas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThematicAreaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ThematicAreas
+     * const thematicArea = await prisma.thematicArea.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ThematicAreaUpdateManyArgs>(args: SelectSubset<T, ThematicAreaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ThematicAreas and returns the data updated in the database.
+     * @param {ThematicAreaUpdateManyAndReturnArgs} args - Arguments to update many ThematicAreas.
+     * @example
+     * // Update many ThematicAreas
+     * const thematicArea = await prisma.thematicArea.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ThematicAreas and only return the `id`
+     * const thematicAreaWithIdOnly = await prisma.thematicArea.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ThematicAreaUpdateManyAndReturnArgs>(args: SelectSubset<T, ThematicAreaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ThematicArea.
+     * @param {ThematicAreaUpsertArgs} args - Arguments to update or create a ThematicArea.
+     * @example
+     * // Update or create a ThematicArea
+     * const thematicArea = await prisma.thematicArea.upsert({
+     *   create: {
+     *     // ... data to create a ThematicArea
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ThematicArea we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ThematicAreaUpsertArgs>(args: SelectSubset<T, ThematicAreaUpsertArgs<ExtArgs>>): Prisma__ThematicAreaClient<$Result.GetResult<Prisma.$ThematicAreaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ThematicAreas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThematicAreaCountArgs} args - Arguments to filter ThematicAreas to count.
+     * @example
+     * // Count the number of ThematicAreas
+     * const count = await prisma.thematicArea.count({
+     *   where: {
+     *     // ... the filter for the ThematicAreas we want to count
+     *   }
+     * })
+    **/
+    count<T extends ThematicAreaCountArgs>(
+      args?: Subset<T, ThematicAreaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ThematicAreaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ThematicArea.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThematicAreaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ThematicAreaAggregateArgs>(args: Subset<T, ThematicAreaAggregateArgs>): Prisma.PrismaPromise<GetThematicAreaAggregateType<T>>
+
+    /**
+     * Group by ThematicArea.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThematicAreaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ThematicAreaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ThematicAreaGroupByArgs['orderBy'] }
+        : { orderBy?: ThematicAreaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ThematicAreaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetThematicAreaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ThematicArea model
+   */
+  readonly fields: ThematicAreaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ThematicArea.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ThematicAreaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    submissions<T extends ThematicArea$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, ThematicArea$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ThematicArea model
+   */
+  interface ThematicAreaFieldRefs {
+    readonly id: FieldRef<"ThematicArea", 'String'>
+    readonly eventId: FieldRef<"ThematicArea", 'String'>
+    readonly name: FieldRef<"ThematicArea", 'String'>
+    readonly createdAt: FieldRef<"ThematicArea", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ThematicArea findUnique
+   */
+  export type ThematicAreaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    /**
+     * Filter, which ThematicArea to fetch.
+     */
+    where: ThematicAreaWhereUniqueInput
+  }
+
+  /**
+   * ThematicArea findUniqueOrThrow
+   */
+  export type ThematicAreaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    /**
+     * Filter, which ThematicArea to fetch.
+     */
+    where: ThematicAreaWhereUniqueInput
+  }
+
+  /**
+   * ThematicArea findFirst
+   */
+  export type ThematicAreaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    /**
+     * Filter, which ThematicArea to fetch.
+     */
+    where?: ThematicAreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ThematicAreas to fetch.
+     */
+    orderBy?: ThematicAreaOrderByWithRelationInput | ThematicAreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ThematicAreas.
+     */
+    cursor?: ThematicAreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ThematicAreas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ThematicAreas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ThematicAreas.
+     */
+    distinct?: ThematicAreaScalarFieldEnum | ThematicAreaScalarFieldEnum[]
+  }
+
+  /**
+   * ThematicArea findFirstOrThrow
+   */
+  export type ThematicAreaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    /**
+     * Filter, which ThematicArea to fetch.
+     */
+    where?: ThematicAreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ThematicAreas to fetch.
+     */
+    orderBy?: ThematicAreaOrderByWithRelationInput | ThematicAreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ThematicAreas.
+     */
+    cursor?: ThematicAreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ThematicAreas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ThematicAreas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ThematicAreas.
+     */
+    distinct?: ThematicAreaScalarFieldEnum | ThematicAreaScalarFieldEnum[]
+  }
+
+  /**
+   * ThematicArea findMany
+   */
+  export type ThematicAreaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    /**
+     * Filter, which ThematicAreas to fetch.
+     */
+    where?: ThematicAreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ThematicAreas to fetch.
+     */
+    orderBy?: ThematicAreaOrderByWithRelationInput | ThematicAreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ThematicAreas.
+     */
+    cursor?: ThematicAreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ThematicAreas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ThematicAreas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ThematicAreas.
+     */
+    distinct?: ThematicAreaScalarFieldEnum | ThematicAreaScalarFieldEnum[]
+  }
+
+  /**
+   * ThematicArea create
+   */
+  export type ThematicAreaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ThematicArea.
+     */
+    data: XOR<ThematicAreaCreateInput, ThematicAreaUncheckedCreateInput>
+  }
+
+  /**
+   * ThematicArea createMany
+   */
+  export type ThematicAreaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ThematicAreas.
+     */
+    data: ThematicAreaCreateManyInput | ThematicAreaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ThematicArea createManyAndReturn
+   */
+  export type ThematicAreaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * The data used to create many ThematicAreas.
+     */
+    data: ThematicAreaCreateManyInput | ThematicAreaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ThematicArea update
+   */
+  export type ThematicAreaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ThematicArea.
+     */
+    data: XOR<ThematicAreaUpdateInput, ThematicAreaUncheckedUpdateInput>
+    /**
+     * Choose, which ThematicArea to update.
+     */
+    where: ThematicAreaWhereUniqueInput
+  }
+
+  /**
+   * ThematicArea updateMany
+   */
+  export type ThematicAreaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ThematicAreas.
+     */
+    data: XOR<ThematicAreaUpdateManyMutationInput, ThematicAreaUncheckedUpdateManyInput>
+    /**
+     * Filter which ThematicAreas to update
+     */
+    where?: ThematicAreaWhereInput
+    /**
+     * Limit how many ThematicAreas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ThematicArea updateManyAndReturn
+   */
+  export type ThematicAreaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * The data used to update ThematicAreas.
+     */
+    data: XOR<ThematicAreaUpdateManyMutationInput, ThematicAreaUncheckedUpdateManyInput>
+    /**
+     * Filter which ThematicAreas to update
+     */
+    where?: ThematicAreaWhereInput
+    /**
+     * Limit how many ThematicAreas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ThematicArea upsert
+   */
+  export type ThematicAreaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ThematicArea to update in case it exists.
+     */
+    where: ThematicAreaWhereUniqueInput
+    /**
+     * In case the ThematicArea found by the `where` argument doesn't exist, create a new ThematicArea with this data.
+     */
+    create: XOR<ThematicAreaCreateInput, ThematicAreaUncheckedCreateInput>
+    /**
+     * In case the ThematicArea was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ThematicAreaUpdateInput, ThematicAreaUncheckedUpdateInput>
+  }
+
+  /**
+   * ThematicArea delete
+   */
+  export type ThematicAreaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+    /**
+     * Filter which ThematicArea to delete.
+     */
+    where: ThematicAreaWhereUniqueInput
+  }
+
+  /**
+   * ThematicArea deleteMany
+   */
+  export type ThematicAreaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ThematicAreas to delete
+     */
+    where?: ThematicAreaWhereInput
+    /**
+     * Limit how many ThematicAreas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ThematicArea.submissions
+   */
+  export type ThematicArea$submissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    where?: SubmissionWhereInput
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
+    cursor?: SubmissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * ThematicArea without action
+   */
+  export type ThematicAreaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThematicArea
+     */
+    select?: ThematicAreaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThematicArea
+     */
+    omit?: ThematicAreaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThematicAreaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SubmissionRule
+   */
+
+  export type AggregateSubmissionRule = {
+    _count: SubmissionRuleCountAggregateOutputType | null
+    _min: SubmissionRuleMinAggregateOutputType | null
+    _max: SubmissionRuleMaxAggregateOutputType | null
+  }
+
+  export type SubmissionRuleMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    title: string | null
+    fileUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SubmissionRuleMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    title: string | null
+    fileUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SubmissionRuleCountAggregateOutputType = {
+    id: number
+    eventId: number
+    title: number
+    fileUrl: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SubmissionRuleMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    title?: true
+    fileUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SubmissionRuleMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    title?: true
+    fileUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SubmissionRuleCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    title?: true
+    fileUrl?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SubmissionRuleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SubmissionRule to aggregate.
+     */
+    where?: SubmissionRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubmissionRules to fetch.
+     */
+    orderBy?: SubmissionRuleOrderByWithRelationInput | SubmissionRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SubmissionRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubmissionRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubmissionRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SubmissionRules
+    **/
+    _count?: true | SubmissionRuleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SubmissionRuleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SubmissionRuleMaxAggregateInputType
+  }
+
+  export type GetSubmissionRuleAggregateType<T extends SubmissionRuleAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubmissionRule]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSubmissionRule[P]>
+      : GetScalarType<T[P], AggregateSubmissionRule[P]>
+  }
+
+
+
+
+  export type SubmissionRuleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubmissionRuleWhereInput
+    orderBy?: SubmissionRuleOrderByWithAggregationInput | SubmissionRuleOrderByWithAggregationInput[]
+    by: SubmissionRuleScalarFieldEnum[] | SubmissionRuleScalarFieldEnum
+    having?: SubmissionRuleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SubmissionRuleCountAggregateInputType | true
+    _min?: SubmissionRuleMinAggregateInputType
+    _max?: SubmissionRuleMaxAggregateInputType
+  }
+
+  export type SubmissionRuleGroupByOutputType = {
+    id: string
+    eventId: string
+    title: string
+    fileUrl: string
+    createdAt: Date
+    updatedAt: Date
+    _count: SubmissionRuleCountAggregateOutputType | null
+    _min: SubmissionRuleMinAggregateOutputType | null
+    _max: SubmissionRuleMaxAggregateOutputType | null
+  }
+
+  type GetSubmissionRuleGroupByPayload<T extends SubmissionRuleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SubmissionRuleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SubmissionRuleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SubmissionRuleGroupByOutputType[P]>
+            : GetScalarType<T[P], SubmissionRuleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SubmissionRuleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    title?: boolean
+    fileUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["submissionRule"]>
+
+  export type SubmissionRuleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    title?: boolean
+    fileUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["submissionRule"]>
+
+  export type SubmissionRuleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    title?: boolean
+    fileUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["submissionRule"]>
+
+  export type SubmissionRuleSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    title?: boolean
+    fileUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SubmissionRuleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "title" | "fileUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["submissionRule"]>
+  export type SubmissionRuleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type SubmissionRuleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type SubmissionRuleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+
+  export type $SubmissionRulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SubmissionRule"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      title: string
+      fileUrl: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["submissionRule"]>
+    composites: {}
+  }
+
+  type SubmissionRuleGetPayload<S extends boolean | null | undefined | SubmissionRuleDefaultArgs> = $Result.GetResult<Prisma.$SubmissionRulePayload, S>
+
+  type SubmissionRuleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SubmissionRuleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SubmissionRuleCountAggregateInputType | true
+    }
+
+  export interface SubmissionRuleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SubmissionRule'], meta: { name: 'SubmissionRule' } }
+    /**
+     * Find zero or one SubmissionRule that matches the filter.
+     * @param {SubmissionRuleFindUniqueArgs} args - Arguments to find a SubmissionRule
+     * @example
+     * // Get one SubmissionRule
+     * const submissionRule = await prisma.submissionRule.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SubmissionRuleFindUniqueArgs>(args: SelectSubset<T, SubmissionRuleFindUniqueArgs<ExtArgs>>): Prisma__SubmissionRuleClient<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SubmissionRule that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SubmissionRuleFindUniqueOrThrowArgs} args - Arguments to find a SubmissionRule
+     * @example
+     * // Get one SubmissionRule
+     * const submissionRule = await prisma.submissionRule.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SubmissionRuleFindUniqueOrThrowArgs>(args: SelectSubset<T, SubmissionRuleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SubmissionRuleClient<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SubmissionRule that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionRuleFindFirstArgs} args - Arguments to find a SubmissionRule
+     * @example
+     * // Get one SubmissionRule
+     * const submissionRule = await prisma.submissionRule.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SubmissionRuleFindFirstArgs>(args?: SelectSubset<T, SubmissionRuleFindFirstArgs<ExtArgs>>): Prisma__SubmissionRuleClient<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SubmissionRule that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionRuleFindFirstOrThrowArgs} args - Arguments to find a SubmissionRule
+     * @example
+     * // Get one SubmissionRule
+     * const submissionRule = await prisma.submissionRule.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SubmissionRuleFindFirstOrThrowArgs>(args?: SelectSubset<T, SubmissionRuleFindFirstOrThrowArgs<ExtArgs>>): Prisma__SubmissionRuleClient<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SubmissionRules that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionRuleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SubmissionRules
+     * const submissionRules = await prisma.submissionRule.findMany()
+     * 
+     * // Get first 10 SubmissionRules
+     * const submissionRules = await prisma.submissionRule.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const submissionRuleWithIdOnly = await prisma.submissionRule.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SubmissionRuleFindManyArgs>(args?: SelectSubset<T, SubmissionRuleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SubmissionRule.
+     * @param {SubmissionRuleCreateArgs} args - Arguments to create a SubmissionRule.
+     * @example
+     * // Create one SubmissionRule
+     * const SubmissionRule = await prisma.submissionRule.create({
+     *   data: {
+     *     // ... data to create a SubmissionRule
+     *   }
+     * })
+     * 
+     */
+    create<T extends SubmissionRuleCreateArgs>(args: SelectSubset<T, SubmissionRuleCreateArgs<ExtArgs>>): Prisma__SubmissionRuleClient<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SubmissionRules.
+     * @param {SubmissionRuleCreateManyArgs} args - Arguments to create many SubmissionRules.
+     * @example
+     * // Create many SubmissionRules
+     * const submissionRule = await prisma.submissionRule.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SubmissionRuleCreateManyArgs>(args?: SelectSubset<T, SubmissionRuleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SubmissionRules and returns the data saved in the database.
+     * @param {SubmissionRuleCreateManyAndReturnArgs} args - Arguments to create many SubmissionRules.
+     * @example
+     * // Create many SubmissionRules
+     * const submissionRule = await prisma.submissionRule.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SubmissionRules and only return the `id`
+     * const submissionRuleWithIdOnly = await prisma.submissionRule.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SubmissionRuleCreateManyAndReturnArgs>(args?: SelectSubset<T, SubmissionRuleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SubmissionRule.
+     * @param {SubmissionRuleDeleteArgs} args - Arguments to delete one SubmissionRule.
+     * @example
+     * // Delete one SubmissionRule
+     * const SubmissionRule = await prisma.submissionRule.delete({
+     *   where: {
+     *     // ... filter to delete one SubmissionRule
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SubmissionRuleDeleteArgs>(args: SelectSubset<T, SubmissionRuleDeleteArgs<ExtArgs>>): Prisma__SubmissionRuleClient<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SubmissionRule.
+     * @param {SubmissionRuleUpdateArgs} args - Arguments to update one SubmissionRule.
+     * @example
+     * // Update one SubmissionRule
+     * const submissionRule = await prisma.submissionRule.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SubmissionRuleUpdateArgs>(args: SelectSubset<T, SubmissionRuleUpdateArgs<ExtArgs>>): Prisma__SubmissionRuleClient<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SubmissionRules.
+     * @param {SubmissionRuleDeleteManyArgs} args - Arguments to filter SubmissionRules to delete.
+     * @example
+     * // Delete a few SubmissionRules
+     * const { count } = await prisma.submissionRule.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SubmissionRuleDeleteManyArgs>(args?: SelectSubset<T, SubmissionRuleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SubmissionRules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionRuleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SubmissionRules
+     * const submissionRule = await prisma.submissionRule.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SubmissionRuleUpdateManyArgs>(args: SelectSubset<T, SubmissionRuleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SubmissionRules and returns the data updated in the database.
+     * @param {SubmissionRuleUpdateManyAndReturnArgs} args - Arguments to update many SubmissionRules.
+     * @example
+     * // Update many SubmissionRules
+     * const submissionRule = await prisma.submissionRule.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SubmissionRules and only return the `id`
+     * const submissionRuleWithIdOnly = await prisma.submissionRule.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SubmissionRuleUpdateManyAndReturnArgs>(args: SelectSubset<T, SubmissionRuleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SubmissionRule.
+     * @param {SubmissionRuleUpsertArgs} args - Arguments to update or create a SubmissionRule.
+     * @example
+     * // Update or create a SubmissionRule
+     * const submissionRule = await prisma.submissionRule.upsert({
+     *   create: {
+     *     // ... data to create a SubmissionRule
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SubmissionRule we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SubmissionRuleUpsertArgs>(args: SelectSubset<T, SubmissionRuleUpsertArgs<ExtArgs>>): Prisma__SubmissionRuleClient<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SubmissionRules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionRuleCountArgs} args - Arguments to filter SubmissionRules to count.
+     * @example
+     * // Count the number of SubmissionRules
+     * const count = await prisma.submissionRule.count({
+     *   where: {
+     *     // ... the filter for the SubmissionRules we want to count
+     *   }
+     * })
+    **/
+    count<T extends SubmissionRuleCountArgs>(
+      args?: Subset<T, SubmissionRuleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SubmissionRuleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SubmissionRule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionRuleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SubmissionRuleAggregateArgs>(args: Subset<T, SubmissionRuleAggregateArgs>): Prisma.PrismaPromise<GetSubmissionRuleAggregateType<T>>
+
+    /**
+     * Group by SubmissionRule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionRuleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SubmissionRuleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SubmissionRuleGroupByArgs['orderBy'] }
+        : { orderBy?: SubmissionRuleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SubmissionRuleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubmissionRuleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SubmissionRule model
+   */
+  readonly fields: SubmissionRuleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SubmissionRule.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SubmissionRuleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SubmissionRule model
+   */
+  interface SubmissionRuleFieldRefs {
+    readonly id: FieldRef<"SubmissionRule", 'String'>
+    readonly eventId: FieldRef<"SubmissionRule", 'String'>
+    readonly title: FieldRef<"SubmissionRule", 'String'>
+    readonly fileUrl: FieldRef<"SubmissionRule", 'String'>
+    readonly createdAt: FieldRef<"SubmissionRule", 'DateTime'>
+    readonly updatedAt: FieldRef<"SubmissionRule", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SubmissionRule findUnique
+   */
+  export type SubmissionRuleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which SubmissionRule to fetch.
+     */
+    where: SubmissionRuleWhereUniqueInput
+  }
+
+  /**
+   * SubmissionRule findUniqueOrThrow
+   */
+  export type SubmissionRuleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which SubmissionRule to fetch.
+     */
+    where: SubmissionRuleWhereUniqueInput
+  }
+
+  /**
+   * SubmissionRule findFirst
+   */
+  export type SubmissionRuleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which SubmissionRule to fetch.
+     */
+    where?: SubmissionRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubmissionRules to fetch.
+     */
+    orderBy?: SubmissionRuleOrderByWithRelationInput | SubmissionRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SubmissionRules.
+     */
+    cursor?: SubmissionRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubmissionRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubmissionRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubmissionRules.
+     */
+    distinct?: SubmissionRuleScalarFieldEnum | SubmissionRuleScalarFieldEnum[]
+  }
+
+  /**
+   * SubmissionRule findFirstOrThrow
+   */
+  export type SubmissionRuleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which SubmissionRule to fetch.
+     */
+    where?: SubmissionRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubmissionRules to fetch.
+     */
+    orderBy?: SubmissionRuleOrderByWithRelationInput | SubmissionRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SubmissionRules.
+     */
+    cursor?: SubmissionRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubmissionRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubmissionRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubmissionRules.
+     */
+    distinct?: SubmissionRuleScalarFieldEnum | SubmissionRuleScalarFieldEnum[]
+  }
+
+  /**
+   * SubmissionRule findMany
+   */
+  export type SubmissionRuleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
+    /**
+     * Filter, which SubmissionRules to fetch.
+     */
+    where?: SubmissionRuleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubmissionRules to fetch.
+     */
+    orderBy?: SubmissionRuleOrderByWithRelationInput | SubmissionRuleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SubmissionRules.
+     */
+    cursor?: SubmissionRuleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubmissionRules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubmissionRules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubmissionRules.
+     */
+    distinct?: SubmissionRuleScalarFieldEnum | SubmissionRuleScalarFieldEnum[]
+  }
+
+  /**
+   * SubmissionRule create
+   */
+  export type SubmissionRuleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SubmissionRule.
+     */
+    data: XOR<SubmissionRuleCreateInput, SubmissionRuleUncheckedCreateInput>
+  }
+
+  /**
+   * SubmissionRule createMany
+   */
+  export type SubmissionRuleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SubmissionRules.
+     */
+    data: SubmissionRuleCreateManyInput | SubmissionRuleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SubmissionRule createManyAndReturn
+   */
+  export type SubmissionRuleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * The data used to create many SubmissionRules.
+     */
+    data: SubmissionRuleCreateManyInput | SubmissionRuleCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SubmissionRule update
+   */
+  export type SubmissionRuleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SubmissionRule.
+     */
+    data: XOR<SubmissionRuleUpdateInput, SubmissionRuleUncheckedUpdateInput>
+    /**
+     * Choose, which SubmissionRule to update.
+     */
+    where: SubmissionRuleWhereUniqueInput
+  }
+
+  /**
+   * SubmissionRule updateMany
+   */
+  export type SubmissionRuleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SubmissionRules.
+     */
+    data: XOR<SubmissionRuleUpdateManyMutationInput, SubmissionRuleUncheckedUpdateManyInput>
+    /**
+     * Filter which SubmissionRules to update
+     */
+    where?: SubmissionRuleWhereInput
+    /**
+     * Limit how many SubmissionRules to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SubmissionRule updateManyAndReturn
+   */
+  export type SubmissionRuleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * The data used to update SubmissionRules.
+     */
+    data: XOR<SubmissionRuleUpdateManyMutationInput, SubmissionRuleUncheckedUpdateManyInput>
+    /**
+     * Filter which SubmissionRules to update
+     */
+    where?: SubmissionRuleWhereInput
+    /**
+     * Limit how many SubmissionRules to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SubmissionRule upsert
+   */
+  export type SubmissionRuleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SubmissionRule to update in case it exists.
+     */
+    where: SubmissionRuleWhereUniqueInput
+    /**
+     * In case the SubmissionRule found by the `where` argument doesn't exist, create a new SubmissionRule with this data.
+     */
+    create: XOR<SubmissionRuleCreateInput, SubmissionRuleUncheckedCreateInput>
+    /**
+     * In case the SubmissionRule was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SubmissionRuleUpdateInput, SubmissionRuleUncheckedUpdateInput>
+  }
+
+  /**
+   * SubmissionRule delete
+   */
+  export type SubmissionRuleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
+    /**
+     * Filter which SubmissionRule to delete.
+     */
+    where: SubmissionRuleWhereUniqueInput
+  }
+
+  /**
+   * SubmissionRule deleteMany
+   */
+  export type SubmissionRuleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SubmissionRules to delete
+     */
+    where?: SubmissionRuleWhereInput
+    /**
+     * Limit how many SubmissionRules to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SubmissionRule without action
+   */
+  export type SubmissionRuleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubmissionRule
+     */
+    select?: SubmissionRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubmissionRule
+     */
+    omit?: SubmissionRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionRuleInclude<ExtArgs> | null
   }
 
 
@@ -37008,6 +40900,13 @@ export namespace Prisma {
     themeConfig: 'themeConfig',
     seoTitle: 'seoTitle',
     seoDescription: 'seoDescription',
+    submissionsEnabled: 'submissionsEnabled',
+    submissionStartDate: 'submissionStartDate',
+    submissionEndDate: 'submissionEndDate',
+    reviewStartDate: 'reviewStartDate',
+    reviewEndDate: 'reviewEndDate',
+    scientificCommitteeHead: 'scientificCommitteeHead',
+    scientificCommitteeEmail: 'scientificCommitteeEmail',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -37173,6 +41072,8 @@ export namespace Prisma {
     abstract: 'abstract',
     fileUrl: 'fileUrl',
     status: 'status',
+    modalityId: 'modalityId',
+    thematicAreaId: 'thematicAreaId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -37191,6 +41092,41 @@ export namespace Prisma {
   };
 
   export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+  export const SubmissionModalityScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    name: 'name',
+    description: 'description',
+    templateUrl: 'templateUrl',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SubmissionModalityScalarFieldEnum = (typeof SubmissionModalityScalarFieldEnum)[keyof typeof SubmissionModalityScalarFieldEnum]
+
+
+  export const ThematicAreaScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    name: 'name',
+    createdAt: 'createdAt'
+  };
+
+  export type ThematicAreaScalarFieldEnum = (typeof ThematicAreaScalarFieldEnum)[keyof typeof ThematicAreaScalarFieldEnum]
+
+
+  export const SubmissionRuleScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    title: 'title',
+    fileUrl: 'fileUrl',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SubmissionRuleScalarFieldEnum = (typeof SubmissionRuleScalarFieldEnum)[keyof typeof SubmissionRuleScalarFieldEnum]
 
 
   export const AttendanceScalarFieldEnum: {
@@ -37462,6 +41398,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -37486,13 +41429,6 @@ export namespace Prisma {
    * Reference to a field of type 'ActivityStatus[]'
    */
   export type ListEnumActivityStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActivityStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -37892,6 +41828,13 @@ export namespace Prisma {
     themeConfig?: JsonNullableFilter<"Event">
     seoTitle?: StringNullableFilter<"Event"> | string | null
     seoDescription?: StringNullableFilter<"Event"> | string | null
+    submissionsEnabled?: BoolFilter<"Event"> | boolean
+    submissionStartDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    submissionEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    reviewStartDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    reviewEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    scientificCommitteeHead?: StringNullableFilter<"Event"> | string | null
+    scientificCommitteeEmail?: StringNullableFilter<"Event"> | string | null
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
@@ -37905,6 +41848,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryListRelationFilter
     badges?: BadgeListRelationFilter
     userBadges?: UserBadgeListRelationFilter
+    submissionModalities?: SubmissionModalityListRelationFilter
+    thematicAreas?: ThematicAreaListRelationFilter
+    submissionRules?: SubmissionRuleListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -37922,6 +41868,13 @@ export namespace Prisma {
     themeConfig?: SortOrderInput | SortOrder
     seoTitle?: SortOrderInput | SortOrder
     seoDescription?: SortOrderInput | SortOrder
+    submissionsEnabled?: SortOrder
+    submissionStartDate?: SortOrderInput | SortOrder
+    submissionEndDate?: SortOrderInput | SortOrder
+    reviewStartDate?: SortOrderInput | SortOrder
+    reviewEndDate?: SortOrderInput | SortOrder
+    scientificCommitteeHead?: SortOrderInput | SortOrder
+    scientificCommitteeEmail?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     tenant?: TenantOrderByWithRelationInput
@@ -37935,6 +41888,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryOrderByRelationAggregateInput
     badges?: BadgeOrderByRelationAggregateInput
     userBadges?: UserBadgeOrderByRelationAggregateInput
+    submissionModalities?: SubmissionModalityOrderByRelationAggregateInput
+    thematicAreas?: ThematicAreaOrderByRelationAggregateInput
+    submissionRules?: SubmissionRuleOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -37956,6 +41912,13 @@ export namespace Prisma {
     themeConfig?: JsonNullableFilter<"Event">
     seoTitle?: StringNullableFilter<"Event"> | string | null
     seoDescription?: StringNullableFilter<"Event"> | string | null
+    submissionsEnabled?: BoolFilter<"Event"> | boolean
+    submissionStartDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    submissionEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    reviewStartDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    reviewEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    scientificCommitteeHead?: StringNullableFilter<"Event"> | string | null
+    scientificCommitteeEmail?: StringNullableFilter<"Event"> | string | null
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
@@ -37969,6 +41932,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryListRelationFilter
     badges?: BadgeListRelationFilter
     userBadges?: UserBadgeListRelationFilter
+    submissionModalities?: SubmissionModalityListRelationFilter
+    thematicAreas?: ThematicAreaListRelationFilter
+    submissionRules?: SubmissionRuleListRelationFilter
   }, "id" | "tenantId_slug">
 
   export type EventOrderByWithAggregationInput = {
@@ -37986,6 +41952,13 @@ export namespace Prisma {
     themeConfig?: SortOrderInput | SortOrder
     seoTitle?: SortOrderInput | SortOrder
     seoDescription?: SortOrderInput | SortOrder
+    submissionsEnabled?: SortOrder
+    submissionStartDate?: SortOrderInput | SortOrder
+    submissionEndDate?: SortOrderInput | SortOrder
+    reviewStartDate?: SortOrderInput | SortOrder
+    reviewEndDate?: SortOrderInput | SortOrder
+    scientificCommitteeHead?: SortOrderInput | SortOrder
+    scientificCommitteeEmail?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: EventCountOrderByAggregateInput
@@ -38011,6 +41984,13 @@ export namespace Prisma {
     themeConfig?: JsonNullableWithAggregatesFilter<"Event">
     seoTitle?: StringNullableWithAggregatesFilter<"Event"> | string | null
     seoDescription?: StringNullableWithAggregatesFilter<"Event"> | string | null
+    submissionsEnabled?: BoolWithAggregatesFilter<"Event"> | boolean
+    submissionStartDate?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
+    submissionEndDate?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
+    reviewStartDate?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
+    reviewEndDate?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
+    scientificCommitteeHead?: StringNullableWithAggregatesFilter<"Event"> | string | null
+    scientificCommitteeEmail?: StringNullableWithAggregatesFilter<"Event"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
   }
@@ -38875,10 +42855,14 @@ export namespace Prisma {
     abstract?: StringNullableFilter<"Submission"> | string | null
     fileUrl?: StringFilter<"Submission"> | string
     status?: EnumSubmissionStatusFilter<"Submission"> | $Enums.SubmissionStatus
+    modalityId?: StringNullableFilter<"Submission"> | string | null
+    thematicAreaId?: StringNullableFilter<"Submission"> | string | null
     createdAt?: DateTimeFilter<"Submission"> | Date | string
     updatedAt?: DateTimeFilter<"Submission"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    modality?: XOR<SubmissionModalityNullableScalarRelationFilter, SubmissionModalityWhereInput> | null
+    thematicArea?: XOR<ThematicAreaNullableScalarRelationFilter, ThematicAreaWhereInput> | null
     reviews?: ReviewListRelationFilter
     formResponses?: CustomFormResponseListRelationFilter
   }
@@ -38891,10 +42875,14 @@ export namespace Prisma {
     abstract?: SortOrderInput | SortOrder
     fileUrl?: SortOrder
     status?: SortOrder
+    modalityId?: SortOrderInput | SortOrder
+    thematicAreaId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     event?: EventOrderByWithRelationInput
     author?: UserOrderByWithRelationInput
+    modality?: SubmissionModalityOrderByWithRelationInput
+    thematicArea?: ThematicAreaOrderByWithRelationInput
     reviews?: ReviewOrderByRelationAggregateInput
     formResponses?: CustomFormResponseOrderByRelationAggregateInput
   }
@@ -38910,10 +42898,14 @@ export namespace Prisma {
     abstract?: StringNullableFilter<"Submission"> | string | null
     fileUrl?: StringFilter<"Submission"> | string
     status?: EnumSubmissionStatusFilter<"Submission"> | $Enums.SubmissionStatus
+    modalityId?: StringNullableFilter<"Submission"> | string | null
+    thematicAreaId?: StringNullableFilter<"Submission"> | string | null
     createdAt?: DateTimeFilter<"Submission"> | Date | string
     updatedAt?: DateTimeFilter<"Submission"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    modality?: XOR<SubmissionModalityNullableScalarRelationFilter, SubmissionModalityWhereInput> | null
+    thematicArea?: XOR<ThematicAreaNullableScalarRelationFilter, ThematicAreaWhereInput> | null
     reviews?: ReviewListRelationFilter
     formResponses?: CustomFormResponseListRelationFilter
   }, "id">
@@ -38926,6 +42918,8 @@ export namespace Prisma {
     abstract?: SortOrderInput | SortOrder
     fileUrl?: SortOrder
     status?: SortOrder
+    modalityId?: SortOrderInput | SortOrder
+    thematicAreaId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SubmissionCountOrderByAggregateInput
@@ -38944,6 +42938,8 @@ export namespace Prisma {
     abstract?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     fileUrl?: StringWithAggregatesFilter<"Submission"> | string
     status?: EnumSubmissionStatusWithAggregatesFilter<"Submission"> | $Enums.SubmissionStatus
+    modalityId?: StringNullableWithAggregatesFilter<"Submission"> | string | null
+    thematicAreaId?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Submission"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Submission"> | Date | string
   }
@@ -39016,6 +43012,189 @@ export namespace Prisma {
     recommendation?: EnumReviewRecommendationNullableWithAggregatesFilter<"Review"> | $Enums.ReviewRecommendation | null
     comments?: StringNullableWithAggregatesFilter<"Review"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Review"> | Date | string
+  }
+
+  export type SubmissionModalityWhereInput = {
+    AND?: SubmissionModalityWhereInput | SubmissionModalityWhereInput[]
+    OR?: SubmissionModalityWhereInput[]
+    NOT?: SubmissionModalityWhereInput | SubmissionModalityWhereInput[]
+    id?: StringFilter<"SubmissionModality"> | string
+    eventId?: StringFilter<"SubmissionModality"> | string
+    name?: StringFilter<"SubmissionModality"> | string
+    description?: StringNullableFilter<"SubmissionModality"> | string | null
+    templateUrl?: StringNullableFilter<"SubmissionModality"> | string | null
+    createdAt?: DateTimeFilter<"SubmissionModality"> | Date | string
+    updatedAt?: DateTimeFilter<"SubmissionModality"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    submissions?: SubmissionListRelationFilter
+  }
+
+  export type SubmissionModalityOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    templateUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    submissions?: SubmissionOrderByRelationAggregateInput
+  }
+
+  export type SubmissionModalityWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    eventId_name?: SubmissionModalityEventIdNameCompoundUniqueInput
+    AND?: SubmissionModalityWhereInput | SubmissionModalityWhereInput[]
+    OR?: SubmissionModalityWhereInput[]
+    NOT?: SubmissionModalityWhereInput | SubmissionModalityWhereInput[]
+    eventId?: StringFilter<"SubmissionModality"> | string
+    name?: StringFilter<"SubmissionModality"> | string
+    description?: StringNullableFilter<"SubmissionModality"> | string | null
+    templateUrl?: StringNullableFilter<"SubmissionModality"> | string | null
+    createdAt?: DateTimeFilter<"SubmissionModality"> | Date | string
+    updatedAt?: DateTimeFilter<"SubmissionModality"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    submissions?: SubmissionListRelationFilter
+  }, "id" | "eventId_name">
+
+  export type SubmissionModalityOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    templateUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SubmissionModalityCountOrderByAggregateInput
+    _max?: SubmissionModalityMaxOrderByAggregateInput
+    _min?: SubmissionModalityMinOrderByAggregateInput
+  }
+
+  export type SubmissionModalityScalarWhereWithAggregatesInput = {
+    AND?: SubmissionModalityScalarWhereWithAggregatesInput | SubmissionModalityScalarWhereWithAggregatesInput[]
+    OR?: SubmissionModalityScalarWhereWithAggregatesInput[]
+    NOT?: SubmissionModalityScalarWhereWithAggregatesInput | SubmissionModalityScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SubmissionModality"> | string
+    eventId?: StringWithAggregatesFilter<"SubmissionModality"> | string
+    name?: StringWithAggregatesFilter<"SubmissionModality"> | string
+    description?: StringNullableWithAggregatesFilter<"SubmissionModality"> | string | null
+    templateUrl?: StringNullableWithAggregatesFilter<"SubmissionModality"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SubmissionModality"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SubmissionModality"> | Date | string
+  }
+
+  export type ThematicAreaWhereInput = {
+    AND?: ThematicAreaWhereInput | ThematicAreaWhereInput[]
+    OR?: ThematicAreaWhereInput[]
+    NOT?: ThematicAreaWhereInput | ThematicAreaWhereInput[]
+    id?: StringFilter<"ThematicArea"> | string
+    eventId?: StringFilter<"ThematicArea"> | string
+    name?: StringFilter<"ThematicArea"> | string
+    createdAt?: DateTimeFilter<"ThematicArea"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    submissions?: SubmissionListRelationFilter
+  }
+
+  export type ThematicAreaOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    submissions?: SubmissionOrderByRelationAggregateInput
+  }
+
+  export type ThematicAreaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    eventId_name?: ThematicAreaEventIdNameCompoundUniqueInput
+    AND?: ThematicAreaWhereInput | ThematicAreaWhereInput[]
+    OR?: ThematicAreaWhereInput[]
+    NOT?: ThematicAreaWhereInput | ThematicAreaWhereInput[]
+    eventId?: StringFilter<"ThematicArea"> | string
+    name?: StringFilter<"ThematicArea"> | string
+    createdAt?: DateTimeFilter<"ThematicArea"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    submissions?: SubmissionListRelationFilter
+  }, "id" | "eventId_name">
+
+  export type ThematicAreaOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    _count?: ThematicAreaCountOrderByAggregateInput
+    _max?: ThematicAreaMaxOrderByAggregateInput
+    _min?: ThematicAreaMinOrderByAggregateInput
+  }
+
+  export type ThematicAreaScalarWhereWithAggregatesInput = {
+    AND?: ThematicAreaScalarWhereWithAggregatesInput | ThematicAreaScalarWhereWithAggregatesInput[]
+    OR?: ThematicAreaScalarWhereWithAggregatesInput[]
+    NOT?: ThematicAreaScalarWhereWithAggregatesInput | ThematicAreaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ThematicArea"> | string
+    eventId?: StringWithAggregatesFilter<"ThematicArea"> | string
+    name?: StringWithAggregatesFilter<"ThematicArea"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ThematicArea"> | Date | string
+  }
+
+  export type SubmissionRuleWhereInput = {
+    AND?: SubmissionRuleWhereInput | SubmissionRuleWhereInput[]
+    OR?: SubmissionRuleWhereInput[]
+    NOT?: SubmissionRuleWhereInput | SubmissionRuleWhereInput[]
+    id?: StringFilter<"SubmissionRule"> | string
+    eventId?: StringFilter<"SubmissionRule"> | string
+    title?: StringFilter<"SubmissionRule"> | string
+    fileUrl?: StringFilter<"SubmissionRule"> | string
+    createdAt?: DateTimeFilter<"SubmissionRule"> | Date | string
+    updatedAt?: DateTimeFilter<"SubmissionRule"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }
+
+  export type SubmissionRuleOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    title?: SortOrder
+    fileUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+  }
+
+  export type SubmissionRuleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SubmissionRuleWhereInput | SubmissionRuleWhereInput[]
+    OR?: SubmissionRuleWhereInput[]
+    NOT?: SubmissionRuleWhereInput | SubmissionRuleWhereInput[]
+    eventId?: StringFilter<"SubmissionRule"> | string
+    title?: StringFilter<"SubmissionRule"> | string
+    fileUrl?: StringFilter<"SubmissionRule"> | string
+    createdAt?: DateTimeFilter<"SubmissionRule"> | Date | string
+    updatedAt?: DateTimeFilter<"SubmissionRule"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }, "id">
+
+  export type SubmissionRuleOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    title?: SortOrder
+    fileUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SubmissionRuleCountOrderByAggregateInput
+    _max?: SubmissionRuleMaxOrderByAggregateInput
+    _min?: SubmissionRuleMinOrderByAggregateInput
+  }
+
+  export type SubmissionRuleScalarWhereWithAggregatesInput = {
+    AND?: SubmissionRuleScalarWhereWithAggregatesInput | SubmissionRuleScalarWhereWithAggregatesInput[]
+    OR?: SubmissionRuleScalarWhereWithAggregatesInput[]
+    NOT?: SubmissionRuleScalarWhereWithAggregatesInput | SubmissionRuleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SubmissionRule"> | string
+    eventId?: StringWithAggregatesFilter<"SubmissionRule"> | string
+    title?: StringWithAggregatesFilter<"SubmissionRule"> | string
+    fileUrl?: StringWithAggregatesFilter<"SubmissionRule"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SubmissionRule"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SubmissionRule"> | Date | string
   }
 
   export type AttendanceWhereInput = {
@@ -40034,6 +44213,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -40047,6 +44233,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -40064,6 +44253,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -40076,6 +44272,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -40092,6 +44291,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -40105,6 +44311,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -40122,6 +44331,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -40134,6 +44350,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -40151,6 +44370,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40169,6 +44395,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40188,6 +44421,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41059,6 +45299,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutSubmissionsInput
     author: UserCreateNestedOneWithoutSubmissionsInput
+    modality?: SubmissionModalityCreateNestedOneWithoutSubmissionsInput
+    thematicArea?: ThematicAreaCreateNestedOneWithoutSubmissionsInput
     reviews?: ReviewCreateNestedManyWithoutSubmissionInput
     formResponses?: CustomFormResponseCreateNestedManyWithoutSubmissionInput
   }
@@ -41071,6 +45313,8 @@ export namespace Prisma {
     abstract?: string | null
     fileUrl: string
     status?: $Enums.SubmissionStatus
+    modalityId?: string | null
+    thematicAreaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reviews?: ReviewUncheckedCreateNestedManyWithoutSubmissionInput
@@ -41087,6 +45331,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutSubmissionsNestedInput
     author?: UserUpdateOneRequiredWithoutSubmissionsNestedInput
+    modality?: SubmissionModalityUpdateOneWithoutSubmissionsNestedInput
+    thematicArea?: ThematicAreaUpdateOneWithoutSubmissionsNestedInput
     reviews?: ReviewUpdateManyWithoutSubmissionNestedInput
     formResponses?: CustomFormResponseUpdateManyWithoutSubmissionNestedInput
   }
@@ -41099,6 +45345,8 @@ export namespace Prisma {
     abstract?: NullableStringFieldUpdateOperationsInput | string | null
     fileUrl?: StringFieldUpdateOperationsInput | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    modalityId?: NullableStringFieldUpdateOperationsInput | string | null
+    thematicAreaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reviews?: ReviewUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -41113,6 +45361,8 @@ export namespace Prisma {
     abstract?: string | null
     fileUrl: string
     status?: $Enums.SubmissionStatus
+    modalityId?: string | null
+    thematicAreaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41135,6 +45385,8 @@ export namespace Prisma {
     abstract?: NullableStringFieldUpdateOperationsInput | string | null
     fileUrl?: StringFieldUpdateOperationsInput | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    modalityId?: NullableStringFieldUpdateOperationsInput | string | null
+    thematicAreaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41205,6 +45457,193 @@ export namespace Prisma {
     recommendation?: NullableEnumReviewRecommendationFieldUpdateOperationsInput | $Enums.ReviewRecommendation | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionModalityCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    templateUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutSubmissionModalitiesInput
+    submissions?: SubmissionCreateNestedManyWithoutModalityInput
+  }
+
+  export type SubmissionModalityUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    name: string
+    description?: string | null
+    templateUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutModalityInput
+  }
+
+  export type SubmissionModalityUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutSubmissionModalitiesNestedInput
+    submissions?: SubmissionUpdateManyWithoutModalityNestedInput
+  }
+
+  export type SubmissionModalityUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SubmissionUncheckedUpdateManyWithoutModalityNestedInput
+  }
+
+  export type SubmissionModalityCreateManyInput = {
+    id?: string
+    eventId: string
+    name: string
+    description?: string | null
+    templateUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionModalityUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionModalityUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThematicAreaCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutThematicAreasInput
+    submissions?: SubmissionCreateNestedManyWithoutThematicAreaInput
+  }
+
+  export type ThematicAreaUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    name: string
+    createdAt?: Date | string
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutThematicAreaInput
+  }
+
+  export type ThematicAreaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutThematicAreasNestedInput
+    submissions?: SubmissionUpdateManyWithoutThematicAreaNestedInput
+  }
+
+  export type ThematicAreaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SubmissionUncheckedUpdateManyWithoutThematicAreaNestedInput
+  }
+
+  export type ThematicAreaCreateManyInput = {
+    id?: string
+    eventId: string
+    name: string
+    createdAt?: Date | string
+  }
+
+  export type ThematicAreaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThematicAreaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionRuleCreateInput = {
+    id?: string
+    title: string
+    fileUrl: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutSubmissionRulesInput
+  }
+
+  export type SubmissionRuleUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    title: string
+    fileUrl: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionRuleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutSubmissionRulesNestedInput
+  }
+
+  export type SubmissionRuleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionRuleCreateManyInput = {
+    id?: string
+    eventId: string
+    title: string
+    fileUrl: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionRuleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionRuleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AttendanceCreateInput = {
@@ -42377,6 +46816,11 @@ export namespace Prisma {
     not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type ActivityListRelationFilter = {
     every?: ActivityWhereInput
     some?: ActivityWhereInput
@@ -42413,6 +46857,24 @@ export namespace Prisma {
     none?: RaffleHistoryWhereInput
   }
 
+  export type SubmissionModalityListRelationFilter = {
+    every?: SubmissionModalityWhereInput
+    some?: SubmissionModalityWhereInput
+    none?: SubmissionModalityWhereInput
+  }
+
+  export type ThematicAreaListRelationFilter = {
+    every?: ThematicAreaWhereInput
+    some?: ThematicAreaWhereInput
+    none?: ThematicAreaWhereInput
+  }
+
+  export type SubmissionRuleListRelationFilter = {
+    every?: SubmissionRuleWhereInput
+    some?: SubmissionRuleWhereInput
+    none?: SubmissionRuleWhereInput
+  }
+
   export type ActivityOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -42437,6 +46899,18 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type SubmissionModalityOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ThematicAreaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SubmissionRuleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type EventTenantIdSlugCompoundUniqueInput = {
     tenantId: string
     slug: string
@@ -42457,6 +46931,13 @@ export namespace Prisma {
     themeConfig?: SortOrder
     seoTitle?: SortOrder
     seoDescription?: SortOrder
+    submissionsEnabled?: SortOrder
+    submissionStartDate?: SortOrder
+    submissionEndDate?: SortOrder
+    reviewStartDate?: SortOrder
+    reviewEndDate?: SortOrder
+    scientificCommitteeHead?: SortOrder
+    scientificCommitteeEmail?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -42475,6 +46956,13 @@ export namespace Prisma {
     logoUrl?: SortOrder
     seoTitle?: SortOrder
     seoDescription?: SortOrder
+    submissionsEnabled?: SortOrder
+    submissionStartDate?: SortOrder
+    submissionEndDate?: SortOrder
+    reviewStartDate?: SortOrder
+    reviewEndDate?: SortOrder
+    scientificCommitteeHead?: SortOrder
+    scientificCommitteeEmail?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -42493,6 +46981,13 @@ export namespace Prisma {
     logoUrl?: SortOrder
     seoTitle?: SortOrder
     seoDescription?: SortOrder
+    submissionsEnabled?: SortOrder
+    submissionStartDate?: SortOrder
+    submissionEndDate?: SortOrder
+    reviewStartDate?: SortOrder
+    reviewEndDate?: SortOrder
+    scientificCommitteeHead?: SortOrder
+    scientificCommitteeEmail?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -42505,6 +47000,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEventStatusFilter<$PrismaModel>
     _max?: NestedEnumEventStatusFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type ActivityTypeTenantIdNameCompoundUniqueInput = {
@@ -42579,11 +47082,6 @@ export namespace Prisma {
     in?: $Enums.ActivityStatus[] | ListEnumActivityStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.ActivityStatus[] | ListEnumActivityStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumActivityStatusFilter<$PrismaModel> | $Enums.ActivityStatus
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type EventScalarRelationFilter = {
@@ -42724,14 +47222,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumActivityStatusFilter<$PrismaModel>
     _max?: NestedEnumActivityStatusFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type UserNullableScalarRelationFilter = {
@@ -43246,6 +47736,16 @@ export namespace Prisma {
     not?: NestedEnumSubmissionStatusFilter<$PrismaModel> | $Enums.SubmissionStatus
   }
 
+  export type SubmissionModalityNullableScalarRelationFilter = {
+    is?: SubmissionModalityWhereInput | null
+    isNot?: SubmissionModalityWhereInput | null
+  }
+
+  export type ThematicAreaNullableScalarRelationFilter = {
+    is?: ThematicAreaWhereInput | null
+    isNot?: ThematicAreaWhereInput | null
+  }
+
   export type SubmissionCountOrderByAggregateInput = {
     id?: SortOrder
     eventId?: SortOrder
@@ -43254,6 +47754,8 @@ export namespace Prisma {
     abstract?: SortOrder
     fileUrl?: SortOrder
     status?: SortOrder
+    modalityId?: SortOrder
+    thematicAreaId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -43266,6 +47768,8 @@ export namespace Prisma {
     abstract?: SortOrder
     fileUrl?: SortOrder
     status?: SortOrder
+    modalityId?: SortOrder
+    thematicAreaId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -43278,6 +47782,8 @@ export namespace Prisma {
     abstract?: SortOrder
     fileUrl?: SortOrder
     status?: SortOrder
+    modalityId?: SortOrder
+    thematicAreaId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -43350,6 +47856,94 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumReviewRecommendationNullableFilter<$PrismaModel>
     _max?: NestedEnumReviewRecommendationNullableFilter<$PrismaModel>
+  }
+
+  export type SubmissionModalityEventIdNameCompoundUniqueInput = {
+    eventId: string
+    name: string
+  }
+
+  export type SubmissionModalityCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    templateUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubmissionModalityMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    templateUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubmissionModalityMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    templateUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ThematicAreaEventIdNameCompoundUniqueInput = {
+    eventId: string
+    name: string
+  }
+
+  export type ThematicAreaCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ThematicAreaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ThematicAreaMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SubmissionRuleCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    title?: SortOrder
+    fileUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubmissionRuleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    title?: SortOrder
+    fileUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubmissionRuleMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    title?: SortOrder
+    fileUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type TicketScalarRelationFilter = {
@@ -44485,6 +49079,27 @@ export namespace Prisma {
     connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
   }
 
+  export type SubmissionModalityCreateNestedManyWithoutEventInput = {
+    create?: XOR<SubmissionModalityCreateWithoutEventInput, SubmissionModalityUncheckedCreateWithoutEventInput> | SubmissionModalityCreateWithoutEventInput[] | SubmissionModalityUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SubmissionModalityCreateOrConnectWithoutEventInput | SubmissionModalityCreateOrConnectWithoutEventInput[]
+    createMany?: SubmissionModalityCreateManyEventInputEnvelope
+    connect?: SubmissionModalityWhereUniqueInput | SubmissionModalityWhereUniqueInput[]
+  }
+
+  export type ThematicAreaCreateNestedManyWithoutEventInput = {
+    create?: XOR<ThematicAreaCreateWithoutEventInput, ThematicAreaUncheckedCreateWithoutEventInput> | ThematicAreaCreateWithoutEventInput[] | ThematicAreaUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: ThematicAreaCreateOrConnectWithoutEventInput | ThematicAreaCreateOrConnectWithoutEventInput[]
+    createMany?: ThematicAreaCreateManyEventInputEnvelope
+    connect?: ThematicAreaWhereUniqueInput | ThematicAreaWhereUniqueInput[]
+  }
+
+  export type SubmissionRuleCreateNestedManyWithoutEventInput = {
+    create?: XOR<SubmissionRuleCreateWithoutEventInput, SubmissionRuleUncheckedCreateWithoutEventInput> | SubmissionRuleCreateWithoutEventInput[] | SubmissionRuleUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SubmissionRuleCreateOrConnectWithoutEventInput | SubmissionRuleCreateOrConnectWithoutEventInput[]
+    createMany?: SubmissionRuleCreateManyEventInputEnvelope
+    connect?: SubmissionRuleWhereUniqueInput | SubmissionRuleWhereUniqueInput[]
+  }
+
   export type ActivityUncheckedCreateNestedManyWithoutEventInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -44555,8 +49170,33 @@ export namespace Prisma {
     connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
   }
 
+  export type SubmissionModalityUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<SubmissionModalityCreateWithoutEventInput, SubmissionModalityUncheckedCreateWithoutEventInput> | SubmissionModalityCreateWithoutEventInput[] | SubmissionModalityUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SubmissionModalityCreateOrConnectWithoutEventInput | SubmissionModalityCreateOrConnectWithoutEventInput[]
+    createMany?: SubmissionModalityCreateManyEventInputEnvelope
+    connect?: SubmissionModalityWhereUniqueInput | SubmissionModalityWhereUniqueInput[]
+  }
+
+  export type ThematicAreaUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<ThematicAreaCreateWithoutEventInput, ThematicAreaUncheckedCreateWithoutEventInput> | ThematicAreaCreateWithoutEventInput[] | ThematicAreaUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: ThematicAreaCreateOrConnectWithoutEventInput | ThematicAreaCreateOrConnectWithoutEventInput[]
+    createMany?: ThematicAreaCreateManyEventInputEnvelope
+    connect?: ThematicAreaWhereUniqueInput | ThematicAreaWhereUniqueInput[]
+  }
+
+  export type SubmissionRuleUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<SubmissionRuleCreateWithoutEventInput, SubmissionRuleUncheckedCreateWithoutEventInput> | SubmissionRuleCreateWithoutEventInput[] | SubmissionRuleUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SubmissionRuleCreateOrConnectWithoutEventInput | SubmissionRuleCreateOrConnectWithoutEventInput[]
+    createMany?: SubmissionRuleCreateManyEventInputEnvelope
+    connect?: SubmissionRuleWhereUniqueInput | SubmissionRuleWhereUniqueInput[]
+  }
+
   export type EnumEventStatusFieldUpdateOperationsInput = {
     set?: $Enums.EventStatus
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type TenantUpdateOneRequiredWithoutEventsNestedInput = {
@@ -44707,6 +49347,48 @@ export namespace Prisma {
     deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
   }
 
+  export type SubmissionModalityUpdateManyWithoutEventNestedInput = {
+    create?: XOR<SubmissionModalityCreateWithoutEventInput, SubmissionModalityUncheckedCreateWithoutEventInput> | SubmissionModalityCreateWithoutEventInput[] | SubmissionModalityUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SubmissionModalityCreateOrConnectWithoutEventInput | SubmissionModalityCreateOrConnectWithoutEventInput[]
+    upsert?: SubmissionModalityUpsertWithWhereUniqueWithoutEventInput | SubmissionModalityUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: SubmissionModalityCreateManyEventInputEnvelope
+    set?: SubmissionModalityWhereUniqueInput | SubmissionModalityWhereUniqueInput[]
+    disconnect?: SubmissionModalityWhereUniqueInput | SubmissionModalityWhereUniqueInput[]
+    delete?: SubmissionModalityWhereUniqueInput | SubmissionModalityWhereUniqueInput[]
+    connect?: SubmissionModalityWhereUniqueInput | SubmissionModalityWhereUniqueInput[]
+    update?: SubmissionModalityUpdateWithWhereUniqueWithoutEventInput | SubmissionModalityUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: SubmissionModalityUpdateManyWithWhereWithoutEventInput | SubmissionModalityUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: SubmissionModalityScalarWhereInput | SubmissionModalityScalarWhereInput[]
+  }
+
+  export type ThematicAreaUpdateManyWithoutEventNestedInput = {
+    create?: XOR<ThematicAreaCreateWithoutEventInput, ThematicAreaUncheckedCreateWithoutEventInput> | ThematicAreaCreateWithoutEventInput[] | ThematicAreaUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: ThematicAreaCreateOrConnectWithoutEventInput | ThematicAreaCreateOrConnectWithoutEventInput[]
+    upsert?: ThematicAreaUpsertWithWhereUniqueWithoutEventInput | ThematicAreaUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: ThematicAreaCreateManyEventInputEnvelope
+    set?: ThematicAreaWhereUniqueInput | ThematicAreaWhereUniqueInput[]
+    disconnect?: ThematicAreaWhereUniqueInput | ThematicAreaWhereUniqueInput[]
+    delete?: ThematicAreaWhereUniqueInput | ThematicAreaWhereUniqueInput[]
+    connect?: ThematicAreaWhereUniqueInput | ThematicAreaWhereUniqueInput[]
+    update?: ThematicAreaUpdateWithWhereUniqueWithoutEventInput | ThematicAreaUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: ThematicAreaUpdateManyWithWhereWithoutEventInput | ThematicAreaUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: ThematicAreaScalarWhereInput | ThematicAreaScalarWhereInput[]
+  }
+
+  export type SubmissionRuleUpdateManyWithoutEventNestedInput = {
+    create?: XOR<SubmissionRuleCreateWithoutEventInput, SubmissionRuleUncheckedCreateWithoutEventInput> | SubmissionRuleCreateWithoutEventInput[] | SubmissionRuleUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SubmissionRuleCreateOrConnectWithoutEventInput | SubmissionRuleCreateOrConnectWithoutEventInput[]
+    upsert?: SubmissionRuleUpsertWithWhereUniqueWithoutEventInput | SubmissionRuleUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: SubmissionRuleCreateManyEventInputEnvelope
+    set?: SubmissionRuleWhereUniqueInput | SubmissionRuleWhereUniqueInput[]
+    disconnect?: SubmissionRuleWhereUniqueInput | SubmissionRuleWhereUniqueInput[]
+    delete?: SubmissionRuleWhereUniqueInput | SubmissionRuleWhereUniqueInput[]
+    connect?: SubmissionRuleWhereUniqueInput | SubmissionRuleWhereUniqueInput[]
+    update?: SubmissionRuleUpdateWithWhereUniqueWithoutEventInput | SubmissionRuleUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: SubmissionRuleUpdateManyWithWhereWithoutEventInput | SubmissionRuleUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: SubmissionRuleScalarWhereInput | SubmissionRuleScalarWhereInput[]
+  }
+
   export type ActivityUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -44845,6 +49527,48 @@ export namespace Prisma {
     update?: UserBadgeUpdateWithWhereUniqueWithoutEventInput | UserBadgeUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: UserBadgeUpdateManyWithWhereWithoutEventInput | UserBadgeUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
+  }
+
+  export type SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<SubmissionModalityCreateWithoutEventInput, SubmissionModalityUncheckedCreateWithoutEventInput> | SubmissionModalityCreateWithoutEventInput[] | SubmissionModalityUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SubmissionModalityCreateOrConnectWithoutEventInput | SubmissionModalityCreateOrConnectWithoutEventInput[]
+    upsert?: SubmissionModalityUpsertWithWhereUniqueWithoutEventInput | SubmissionModalityUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: SubmissionModalityCreateManyEventInputEnvelope
+    set?: SubmissionModalityWhereUniqueInput | SubmissionModalityWhereUniqueInput[]
+    disconnect?: SubmissionModalityWhereUniqueInput | SubmissionModalityWhereUniqueInput[]
+    delete?: SubmissionModalityWhereUniqueInput | SubmissionModalityWhereUniqueInput[]
+    connect?: SubmissionModalityWhereUniqueInput | SubmissionModalityWhereUniqueInput[]
+    update?: SubmissionModalityUpdateWithWhereUniqueWithoutEventInput | SubmissionModalityUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: SubmissionModalityUpdateManyWithWhereWithoutEventInput | SubmissionModalityUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: SubmissionModalityScalarWhereInput | SubmissionModalityScalarWhereInput[]
+  }
+
+  export type ThematicAreaUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<ThematicAreaCreateWithoutEventInput, ThematicAreaUncheckedCreateWithoutEventInput> | ThematicAreaCreateWithoutEventInput[] | ThematicAreaUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: ThematicAreaCreateOrConnectWithoutEventInput | ThematicAreaCreateOrConnectWithoutEventInput[]
+    upsert?: ThematicAreaUpsertWithWhereUniqueWithoutEventInput | ThematicAreaUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: ThematicAreaCreateManyEventInputEnvelope
+    set?: ThematicAreaWhereUniqueInput | ThematicAreaWhereUniqueInput[]
+    disconnect?: ThematicAreaWhereUniqueInput | ThematicAreaWhereUniqueInput[]
+    delete?: ThematicAreaWhereUniqueInput | ThematicAreaWhereUniqueInput[]
+    connect?: ThematicAreaWhereUniqueInput | ThematicAreaWhereUniqueInput[]
+    update?: ThematicAreaUpdateWithWhereUniqueWithoutEventInput | ThematicAreaUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: ThematicAreaUpdateManyWithWhereWithoutEventInput | ThematicAreaUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: ThematicAreaScalarWhereInput | ThematicAreaScalarWhereInput[]
+  }
+
+  export type SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<SubmissionRuleCreateWithoutEventInput, SubmissionRuleUncheckedCreateWithoutEventInput> | SubmissionRuleCreateWithoutEventInput[] | SubmissionRuleUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SubmissionRuleCreateOrConnectWithoutEventInput | SubmissionRuleCreateOrConnectWithoutEventInput[]
+    upsert?: SubmissionRuleUpsertWithWhereUniqueWithoutEventInput | SubmissionRuleUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: SubmissionRuleCreateManyEventInputEnvelope
+    set?: SubmissionRuleWhereUniqueInput | SubmissionRuleWhereUniqueInput[]
+    disconnect?: SubmissionRuleWhereUniqueInput | SubmissionRuleWhereUniqueInput[]
+    delete?: SubmissionRuleWhereUniqueInput | SubmissionRuleWhereUniqueInput[]
+    connect?: SubmissionRuleWhereUniqueInput | SubmissionRuleWhereUniqueInput[]
+    update?: SubmissionRuleUpdateWithWhereUniqueWithoutEventInput | SubmissionRuleUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: SubmissionRuleUpdateManyWithWhereWithoutEventInput | SubmissionRuleUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: SubmissionRuleScalarWhereInput | SubmissionRuleScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutActivityTypesInput = {
@@ -45065,10 +49789,6 @@ export namespace Prisma {
 
   export type EnumActivityStatusFieldUpdateOperationsInput = {
     set?: $Enums.ActivityStatus
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type EventUpdateOneRequiredWithoutActivitiesNestedInput = {
@@ -46069,6 +50789,18 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type SubmissionModalityCreateNestedOneWithoutSubmissionsInput = {
+    create?: XOR<SubmissionModalityCreateWithoutSubmissionsInput, SubmissionModalityUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: SubmissionModalityCreateOrConnectWithoutSubmissionsInput
+    connect?: SubmissionModalityWhereUniqueInput
+  }
+
+  export type ThematicAreaCreateNestedOneWithoutSubmissionsInput = {
+    create?: XOR<ThematicAreaCreateWithoutSubmissionsInput, ThematicAreaUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: ThematicAreaCreateOrConnectWithoutSubmissionsInput
+    connect?: ThematicAreaWhereUniqueInput
+  }
+
   export type ReviewCreateNestedManyWithoutSubmissionInput = {
     create?: XOR<ReviewCreateWithoutSubmissionInput, ReviewUncheckedCreateWithoutSubmissionInput> | ReviewCreateWithoutSubmissionInput[] | ReviewUncheckedCreateWithoutSubmissionInput[]
     connectOrCreate?: ReviewCreateOrConnectWithoutSubmissionInput | ReviewCreateOrConnectWithoutSubmissionInput[]
@@ -46115,6 +50847,26 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutSubmissionsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubmissionsInput, UserUpdateWithoutSubmissionsInput>, UserUncheckedUpdateWithoutSubmissionsInput>
+  }
+
+  export type SubmissionModalityUpdateOneWithoutSubmissionsNestedInput = {
+    create?: XOR<SubmissionModalityCreateWithoutSubmissionsInput, SubmissionModalityUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: SubmissionModalityCreateOrConnectWithoutSubmissionsInput
+    upsert?: SubmissionModalityUpsertWithoutSubmissionsInput
+    disconnect?: SubmissionModalityWhereInput | boolean
+    delete?: SubmissionModalityWhereInput | boolean
+    connect?: SubmissionModalityWhereUniqueInput
+    update?: XOR<XOR<SubmissionModalityUpdateToOneWithWhereWithoutSubmissionsInput, SubmissionModalityUpdateWithoutSubmissionsInput>, SubmissionModalityUncheckedUpdateWithoutSubmissionsInput>
+  }
+
+  export type ThematicAreaUpdateOneWithoutSubmissionsNestedInput = {
+    create?: XOR<ThematicAreaCreateWithoutSubmissionsInput, ThematicAreaUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: ThematicAreaCreateOrConnectWithoutSubmissionsInput
+    upsert?: ThematicAreaUpsertWithoutSubmissionsInput
+    disconnect?: ThematicAreaWhereInput | boolean
+    delete?: ThematicAreaWhereInput | boolean
+    connect?: ThematicAreaWhereUniqueInput
+    update?: XOR<XOR<ThematicAreaUpdateToOneWithWhereWithoutSubmissionsInput, ThematicAreaUpdateWithoutSubmissionsInput>, ThematicAreaUncheckedUpdateWithoutSubmissionsInput>
   }
 
   export type ReviewUpdateManyWithoutSubmissionNestedInput = {
@@ -46203,6 +50955,132 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutReviewsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReviewsInput, UserUpdateWithoutReviewsInput>, UserUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type EventCreateNestedOneWithoutSubmissionModalitiesInput = {
+    create?: XOR<EventCreateWithoutSubmissionModalitiesInput, EventUncheckedCreateWithoutSubmissionModalitiesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutSubmissionModalitiesInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type SubmissionCreateNestedManyWithoutModalityInput = {
+    create?: XOR<SubmissionCreateWithoutModalityInput, SubmissionUncheckedCreateWithoutModalityInput> | SubmissionCreateWithoutModalityInput[] | SubmissionUncheckedCreateWithoutModalityInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutModalityInput | SubmissionCreateOrConnectWithoutModalityInput[]
+    createMany?: SubmissionCreateManyModalityInputEnvelope
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+  }
+
+  export type SubmissionUncheckedCreateNestedManyWithoutModalityInput = {
+    create?: XOR<SubmissionCreateWithoutModalityInput, SubmissionUncheckedCreateWithoutModalityInput> | SubmissionCreateWithoutModalityInput[] | SubmissionUncheckedCreateWithoutModalityInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutModalityInput | SubmissionCreateOrConnectWithoutModalityInput[]
+    createMany?: SubmissionCreateManyModalityInputEnvelope
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+  }
+
+  export type EventUpdateOneRequiredWithoutSubmissionModalitiesNestedInput = {
+    create?: XOR<EventCreateWithoutSubmissionModalitiesInput, EventUncheckedCreateWithoutSubmissionModalitiesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutSubmissionModalitiesInput
+    upsert?: EventUpsertWithoutSubmissionModalitiesInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutSubmissionModalitiesInput, EventUpdateWithoutSubmissionModalitiesInput>, EventUncheckedUpdateWithoutSubmissionModalitiesInput>
+  }
+
+  export type SubmissionUpdateManyWithoutModalityNestedInput = {
+    create?: XOR<SubmissionCreateWithoutModalityInput, SubmissionUncheckedCreateWithoutModalityInput> | SubmissionCreateWithoutModalityInput[] | SubmissionUncheckedCreateWithoutModalityInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutModalityInput | SubmissionCreateOrConnectWithoutModalityInput[]
+    upsert?: SubmissionUpsertWithWhereUniqueWithoutModalityInput | SubmissionUpsertWithWhereUniqueWithoutModalityInput[]
+    createMany?: SubmissionCreateManyModalityInputEnvelope
+    set?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    disconnect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    delete?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    update?: SubmissionUpdateWithWhereUniqueWithoutModalityInput | SubmissionUpdateWithWhereUniqueWithoutModalityInput[]
+    updateMany?: SubmissionUpdateManyWithWhereWithoutModalityInput | SubmissionUpdateManyWithWhereWithoutModalityInput[]
+    deleteMany?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
+  }
+
+  export type SubmissionUncheckedUpdateManyWithoutModalityNestedInput = {
+    create?: XOR<SubmissionCreateWithoutModalityInput, SubmissionUncheckedCreateWithoutModalityInput> | SubmissionCreateWithoutModalityInput[] | SubmissionUncheckedCreateWithoutModalityInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutModalityInput | SubmissionCreateOrConnectWithoutModalityInput[]
+    upsert?: SubmissionUpsertWithWhereUniqueWithoutModalityInput | SubmissionUpsertWithWhereUniqueWithoutModalityInput[]
+    createMany?: SubmissionCreateManyModalityInputEnvelope
+    set?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    disconnect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    delete?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    update?: SubmissionUpdateWithWhereUniqueWithoutModalityInput | SubmissionUpdateWithWhereUniqueWithoutModalityInput[]
+    updateMany?: SubmissionUpdateManyWithWhereWithoutModalityInput | SubmissionUpdateManyWithWhereWithoutModalityInput[]
+    deleteMany?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
+  }
+
+  export type EventCreateNestedOneWithoutThematicAreasInput = {
+    create?: XOR<EventCreateWithoutThematicAreasInput, EventUncheckedCreateWithoutThematicAreasInput>
+    connectOrCreate?: EventCreateOrConnectWithoutThematicAreasInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type SubmissionCreateNestedManyWithoutThematicAreaInput = {
+    create?: XOR<SubmissionCreateWithoutThematicAreaInput, SubmissionUncheckedCreateWithoutThematicAreaInput> | SubmissionCreateWithoutThematicAreaInput[] | SubmissionUncheckedCreateWithoutThematicAreaInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutThematicAreaInput | SubmissionCreateOrConnectWithoutThematicAreaInput[]
+    createMany?: SubmissionCreateManyThematicAreaInputEnvelope
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+  }
+
+  export type SubmissionUncheckedCreateNestedManyWithoutThematicAreaInput = {
+    create?: XOR<SubmissionCreateWithoutThematicAreaInput, SubmissionUncheckedCreateWithoutThematicAreaInput> | SubmissionCreateWithoutThematicAreaInput[] | SubmissionUncheckedCreateWithoutThematicAreaInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutThematicAreaInput | SubmissionCreateOrConnectWithoutThematicAreaInput[]
+    createMany?: SubmissionCreateManyThematicAreaInputEnvelope
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+  }
+
+  export type EventUpdateOneRequiredWithoutThematicAreasNestedInput = {
+    create?: XOR<EventCreateWithoutThematicAreasInput, EventUncheckedCreateWithoutThematicAreasInput>
+    connectOrCreate?: EventCreateOrConnectWithoutThematicAreasInput
+    upsert?: EventUpsertWithoutThematicAreasInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutThematicAreasInput, EventUpdateWithoutThematicAreasInput>, EventUncheckedUpdateWithoutThematicAreasInput>
+  }
+
+  export type SubmissionUpdateManyWithoutThematicAreaNestedInput = {
+    create?: XOR<SubmissionCreateWithoutThematicAreaInput, SubmissionUncheckedCreateWithoutThematicAreaInput> | SubmissionCreateWithoutThematicAreaInput[] | SubmissionUncheckedCreateWithoutThematicAreaInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutThematicAreaInput | SubmissionCreateOrConnectWithoutThematicAreaInput[]
+    upsert?: SubmissionUpsertWithWhereUniqueWithoutThematicAreaInput | SubmissionUpsertWithWhereUniqueWithoutThematicAreaInput[]
+    createMany?: SubmissionCreateManyThematicAreaInputEnvelope
+    set?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    disconnect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    delete?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    update?: SubmissionUpdateWithWhereUniqueWithoutThematicAreaInput | SubmissionUpdateWithWhereUniqueWithoutThematicAreaInput[]
+    updateMany?: SubmissionUpdateManyWithWhereWithoutThematicAreaInput | SubmissionUpdateManyWithWhereWithoutThematicAreaInput[]
+    deleteMany?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
+  }
+
+  export type SubmissionUncheckedUpdateManyWithoutThematicAreaNestedInput = {
+    create?: XOR<SubmissionCreateWithoutThematicAreaInput, SubmissionUncheckedCreateWithoutThematicAreaInput> | SubmissionCreateWithoutThematicAreaInput[] | SubmissionUncheckedCreateWithoutThematicAreaInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutThematicAreaInput | SubmissionCreateOrConnectWithoutThematicAreaInput[]
+    upsert?: SubmissionUpsertWithWhereUniqueWithoutThematicAreaInput | SubmissionUpsertWithWhereUniqueWithoutThematicAreaInput[]
+    createMany?: SubmissionCreateManyThematicAreaInputEnvelope
+    set?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    disconnect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    delete?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    update?: SubmissionUpdateWithWhereUniqueWithoutThematicAreaInput | SubmissionUpdateWithWhereUniqueWithoutThematicAreaInput[]
+    updateMany?: SubmissionUpdateManyWithWhereWithoutThematicAreaInput | SubmissionUpdateManyWithWhereWithoutThematicAreaInput[]
+    deleteMany?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
+  }
+
+  export type EventCreateNestedOneWithoutSubmissionRulesInput = {
+    create?: XOR<EventCreateWithoutSubmissionRulesInput, EventUncheckedCreateWithoutSubmissionRulesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutSubmissionRulesInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type EventUpdateOneRequiredWithoutSubmissionRulesNestedInput = {
+    create?: XOR<EventCreateWithoutSubmissionRulesInput, EventUncheckedCreateWithoutSubmissionRulesInput>
+    connectOrCreate?: EventCreateOrConnectWithoutSubmissionRulesInput
+    upsert?: EventUpsertWithoutSubmissionRulesInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutSubmissionRulesInput, EventUpdateWithoutSubmissionRulesInput>, EventUncheckedUpdateWithoutSubmissionRulesInput>
   }
 
   export type TicketCreateNestedOneWithoutAttendancesInput = {
@@ -46862,6 +51740,11 @@ export namespace Prisma {
     not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedEnumEventStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
     in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
@@ -46872,16 +51755,19 @@ export namespace Prisma {
     _max?: NestedEnumEventStatusFilter<$PrismaModel>
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedEnumActivityStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ActivityStatus | EnumActivityStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ActivityStatus[] | ListEnumActivityStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.ActivityStatus[] | ListEnumActivityStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumActivityStatusFilter<$PrismaModel> | $Enums.ActivityStatus
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -46919,14 +51805,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumActivityStatusFilter<$PrismaModel>
     _max?: NestedEnumActivityStatusFilter<$PrismaModel>
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumEnrollmentStatusFilter<$PrismaModel = never> = {
@@ -47259,6 +52137,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityCreateNestedManyWithoutEventInput
@@ -47271,6 +52156,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTenantInput = {
@@ -47287,6 +52175,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -47299,6 +52194,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTenantInput = {
@@ -47506,6 +52404,13 @@ export namespace Prisma {
     themeConfig?: JsonNullableFilter<"Event">
     seoTitle?: StringNullableFilter<"Event"> | string | null
     seoDescription?: StringNullableFilter<"Event"> | string | null
+    submissionsEnabled?: BoolFilter<"Event"> | boolean
+    submissionStartDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    submissionEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    reviewStartDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    reviewEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    scientificCommitteeHead?: StringNullableFilter<"Event"> | string | null
+    scientificCommitteeEmail?: StringNullableFilter<"Event"> | string | null
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
   }
@@ -47734,6 +52639,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutSubmissionsInput
+    modality?: SubmissionModalityCreateNestedOneWithoutSubmissionsInput
+    thematicArea?: ThematicAreaCreateNestedOneWithoutSubmissionsInput
     reviews?: ReviewCreateNestedManyWithoutSubmissionInput
     formResponses?: CustomFormResponseCreateNestedManyWithoutSubmissionInput
   }
@@ -47745,6 +52652,8 @@ export namespace Prisma {
     abstract?: string | null
     fileUrl: string
     status?: $Enums.SubmissionStatus
+    modalityId?: string | null
+    thematicAreaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reviews?: ReviewUncheckedCreateNestedManyWithoutSubmissionInput
@@ -47969,6 +52878,8 @@ export namespace Prisma {
     abstract?: StringNullableFilter<"Submission"> | string | null
     fileUrl?: StringFilter<"Submission"> | string
     status?: EnumSubmissionStatusFilter<"Submission"> | $Enums.SubmissionStatus
+    modalityId?: StringNullableFilter<"Submission"> | string | null
+    thematicAreaId?: StringNullableFilter<"Submission"> | string | null
     createdAt?: DateTimeFilter<"Submission"> | Date | string
     updatedAt?: DateTimeFilter<"Submission"> | Date | string
   }
@@ -48266,6 +53177,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     author: UserCreateNestedOneWithoutSubmissionsInput
+    modality?: SubmissionModalityCreateNestedOneWithoutSubmissionsInput
+    thematicArea?: ThematicAreaCreateNestedOneWithoutSubmissionsInput
     reviews?: ReviewCreateNestedManyWithoutSubmissionInput
     formResponses?: CustomFormResponseCreateNestedManyWithoutSubmissionInput
   }
@@ -48277,6 +53190,8 @@ export namespace Prisma {
     abstract?: string | null
     fileUrl: string
     status?: $Enums.SubmissionStatus
+    modalityId?: string | null
+    thematicAreaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reviews?: ReviewUncheckedCreateNestedManyWithoutSubmissionInput
@@ -48450,6 +53365,86 @@ export namespace Prisma {
 
   export type UserBadgeCreateManyEventInputEnvelope = {
     data: UserBadgeCreateManyEventInput | UserBadgeCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SubmissionModalityCreateWithoutEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    templateUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: SubmissionCreateNestedManyWithoutModalityInput
+  }
+
+  export type SubmissionModalityUncheckedCreateWithoutEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    templateUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutModalityInput
+  }
+
+  export type SubmissionModalityCreateOrConnectWithoutEventInput = {
+    where: SubmissionModalityWhereUniqueInput
+    create: XOR<SubmissionModalityCreateWithoutEventInput, SubmissionModalityUncheckedCreateWithoutEventInput>
+  }
+
+  export type SubmissionModalityCreateManyEventInputEnvelope = {
+    data: SubmissionModalityCreateManyEventInput | SubmissionModalityCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ThematicAreaCreateWithoutEventInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    submissions?: SubmissionCreateNestedManyWithoutThematicAreaInput
+  }
+
+  export type ThematicAreaUncheckedCreateWithoutEventInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutThematicAreaInput
+  }
+
+  export type ThematicAreaCreateOrConnectWithoutEventInput = {
+    where: ThematicAreaWhereUniqueInput
+    create: XOR<ThematicAreaCreateWithoutEventInput, ThematicAreaUncheckedCreateWithoutEventInput>
+  }
+
+  export type ThematicAreaCreateManyEventInputEnvelope = {
+    data: ThematicAreaCreateManyEventInput | ThematicAreaCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SubmissionRuleCreateWithoutEventInput = {
+    id?: string
+    title: string
+    fileUrl: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionRuleUncheckedCreateWithoutEventInput = {
+    id?: string
+    title: string
+    fileUrl: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionRuleCreateOrConnectWithoutEventInput = {
+    where: SubmissionRuleWhereUniqueInput
+    create: XOR<SubmissionRuleCreateWithoutEventInput, SubmissionRuleUncheckedCreateWithoutEventInput>
+  }
+
+  export type SubmissionRuleCreateManyEventInputEnvelope = {
+    data: SubmissionRuleCreateManyEventInput | SubmissionRuleCreateManyEventInput[]
     skipDuplicates?: boolean
   }
 
@@ -48743,6 +53738,89 @@ export namespace Prisma {
     data: XOR<UserBadgeUpdateManyMutationInput, UserBadgeUncheckedUpdateManyWithoutEventInput>
   }
 
+  export type SubmissionModalityUpsertWithWhereUniqueWithoutEventInput = {
+    where: SubmissionModalityWhereUniqueInput
+    update: XOR<SubmissionModalityUpdateWithoutEventInput, SubmissionModalityUncheckedUpdateWithoutEventInput>
+    create: XOR<SubmissionModalityCreateWithoutEventInput, SubmissionModalityUncheckedCreateWithoutEventInput>
+  }
+
+  export type SubmissionModalityUpdateWithWhereUniqueWithoutEventInput = {
+    where: SubmissionModalityWhereUniqueInput
+    data: XOR<SubmissionModalityUpdateWithoutEventInput, SubmissionModalityUncheckedUpdateWithoutEventInput>
+  }
+
+  export type SubmissionModalityUpdateManyWithWhereWithoutEventInput = {
+    where: SubmissionModalityScalarWhereInput
+    data: XOR<SubmissionModalityUpdateManyMutationInput, SubmissionModalityUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type SubmissionModalityScalarWhereInput = {
+    AND?: SubmissionModalityScalarWhereInput | SubmissionModalityScalarWhereInput[]
+    OR?: SubmissionModalityScalarWhereInput[]
+    NOT?: SubmissionModalityScalarWhereInput | SubmissionModalityScalarWhereInput[]
+    id?: StringFilter<"SubmissionModality"> | string
+    eventId?: StringFilter<"SubmissionModality"> | string
+    name?: StringFilter<"SubmissionModality"> | string
+    description?: StringNullableFilter<"SubmissionModality"> | string | null
+    templateUrl?: StringNullableFilter<"SubmissionModality"> | string | null
+    createdAt?: DateTimeFilter<"SubmissionModality"> | Date | string
+    updatedAt?: DateTimeFilter<"SubmissionModality"> | Date | string
+  }
+
+  export type ThematicAreaUpsertWithWhereUniqueWithoutEventInput = {
+    where: ThematicAreaWhereUniqueInput
+    update: XOR<ThematicAreaUpdateWithoutEventInput, ThematicAreaUncheckedUpdateWithoutEventInput>
+    create: XOR<ThematicAreaCreateWithoutEventInput, ThematicAreaUncheckedCreateWithoutEventInput>
+  }
+
+  export type ThematicAreaUpdateWithWhereUniqueWithoutEventInput = {
+    where: ThematicAreaWhereUniqueInput
+    data: XOR<ThematicAreaUpdateWithoutEventInput, ThematicAreaUncheckedUpdateWithoutEventInput>
+  }
+
+  export type ThematicAreaUpdateManyWithWhereWithoutEventInput = {
+    where: ThematicAreaScalarWhereInput
+    data: XOR<ThematicAreaUpdateManyMutationInput, ThematicAreaUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type ThematicAreaScalarWhereInput = {
+    AND?: ThematicAreaScalarWhereInput | ThematicAreaScalarWhereInput[]
+    OR?: ThematicAreaScalarWhereInput[]
+    NOT?: ThematicAreaScalarWhereInput | ThematicAreaScalarWhereInput[]
+    id?: StringFilter<"ThematicArea"> | string
+    eventId?: StringFilter<"ThematicArea"> | string
+    name?: StringFilter<"ThematicArea"> | string
+    createdAt?: DateTimeFilter<"ThematicArea"> | Date | string
+  }
+
+  export type SubmissionRuleUpsertWithWhereUniqueWithoutEventInput = {
+    where: SubmissionRuleWhereUniqueInput
+    update: XOR<SubmissionRuleUpdateWithoutEventInput, SubmissionRuleUncheckedUpdateWithoutEventInput>
+    create: XOR<SubmissionRuleCreateWithoutEventInput, SubmissionRuleUncheckedCreateWithoutEventInput>
+  }
+
+  export type SubmissionRuleUpdateWithWhereUniqueWithoutEventInput = {
+    where: SubmissionRuleWhereUniqueInput
+    data: XOR<SubmissionRuleUpdateWithoutEventInput, SubmissionRuleUncheckedUpdateWithoutEventInput>
+  }
+
+  export type SubmissionRuleUpdateManyWithWhereWithoutEventInput = {
+    where: SubmissionRuleScalarWhereInput
+    data: XOR<SubmissionRuleUpdateManyMutationInput, SubmissionRuleUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type SubmissionRuleScalarWhereInput = {
+    AND?: SubmissionRuleScalarWhereInput | SubmissionRuleScalarWhereInput[]
+    OR?: SubmissionRuleScalarWhereInput[]
+    NOT?: SubmissionRuleScalarWhereInput | SubmissionRuleScalarWhereInput[]
+    id?: StringFilter<"SubmissionRule"> | string
+    eventId?: StringFilter<"SubmissionRule"> | string
+    title?: StringFilter<"SubmissionRule"> | string
+    fileUrl?: StringFilter<"SubmissionRule"> | string
+    createdAt?: DateTimeFilter<"SubmissionRule"> | Date | string
+    updatedAt?: DateTimeFilter<"SubmissionRule"> | Date | string
+  }
+
   export type TenantCreateWithoutActivityTypesInput = {
     id?: string
     name: string
@@ -49026,6 +54104,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -49038,6 +54123,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutActivitiesInput = {
@@ -49055,6 +54143,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
@@ -49066,6 +54161,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutActivitiesInput = {
@@ -49267,6 +54365,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -49279,6 +54384,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutActivitiesInput = {
@@ -49296,6 +54404,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
@@ -49307,6 +54422,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityTypeUpsertWithoutActivitiesInput = {
@@ -49921,6 +55039,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -49933,6 +55058,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -49950,6 +55078,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -49961,6 +55096,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -50208,6 +55346,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -50220,6 +55365,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -50237,6 +55385,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -50248,6 +55403,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutRegistrationsInput = {
@@ -50608,6 +55766,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -50620,6 +55785,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTicketsInput = {
@@ -50637,6 +55805,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -50648,6 +55823,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTicketsInput = {
@@ -50731,6 +55909,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -50743,6 +55928,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTicketsInput = {
@@ -50760,6 +55948,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -50771,6 +55966,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutTicketsInput = {
@@ -50838,6 +56036,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -50850,6 +56055,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutFormsInput = {
@@ -50867,6 +56075,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -50878,6 +56093,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutFormsInput = {
@@ -50970,6 +56188,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -50982,6 +56207,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutFormsInput = {
@@ -50999,6 +56227,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -51010,6 +56245,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type CustomFormResponseUpsertWithWhereUniqueWithoutFormInput = {
@@ -51227,6 +56465,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutSubmissionsInput
     author: UserCreateNestedOneWithoutSubmissionsInput
+    modality?: SubmissionModalityCreateNestedOneWithoutSubmissionsInput
+    thematicArea?: ThematicAreaCreateNestedOneWithoutSubmissionsInput
     reviews?: ReviewCreateNestedManyWithoutSubmissionInput
   }
 
@@ -51238,6 +56478,8 @@ export namespace Prisma {
     abstract?: string | null
     fileUrl: string
     status?: $Enums.SubmissionStatus
+    modalityId?: string | null
+    thematicAreaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     reviews?: ReviewUncheckedCreateNestedManyWithoutSubmissionInput
@@ -51357,6 +56599,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutSubmissionsNestedInput
     author?: UserUpdateOneRequiredWithoutSubmissionsNestedInput
+    modality?: SubmissionModalityUpdateOneWithoutSubmissionsNestedInput
+    thematicArea?: ThematicAreaUpdateOneWithoutSubmissionsNestedInput
     reviews?: ReviewUpdateManyWithoutSubmissionNestedInput
   }
 
@@ -51368,6 +56612,8 @@ export namespace Prisma {
     abstract?: NullableStringFieldUpdateOperationsInput | string | null
     fileUrl?: StringFieldUpdateOperationsInput | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    modalityId?: NullableStringFieldUpdateOperationsInput | string | null
+    thematicAreaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reviews?: ReviewUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -51515,6 +56761,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -51527,6 +56780,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionsInput = {
@@ -51544,6 +56800,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -51555,6 +56818,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionsInput = {
@@ -51607,6 +56873,50 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutSubmissionsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutSubmissionsInput, UserUncheckedCreateWithoutSubmissionsInput>
+  }
+
+  export type SubmissionModalityCreateWithoutSubmissionsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    templateUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutSubmissionModalitiesInput
+  }
+
+  export type SubmissionModalityUncheckedCreateWithoutSubmissionsInput = {
+    id?: string
+    eventId: string
+    name: string
+    description?: string | null
+    templateUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionModalityCreateOrConnectWithoutSubmissionsInput = {
+    where: SubmissionModalityWhereUniqueInput
+    create: XOR<SubmissionModalityCreateWithoutSubmissionsInput, SubmissionModalityUncheckedCreateWithoutSubmissionsInput>
+  }
+
+  export type ThematicAreaCreateWithoutSubmissionsInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutThematicAreasInput
+  }
+
+  export type ThematicAreaUncheckedCreateWithoutSubmissionsInput = {
+    id?: string
+    eventId: string
+    name: string
+    createdAt?: Date | string
+  }
+
+  export type ThematicAreaCreateOrConnectWithoutSubmissionsInput = {
+    where: ThematicAreaWhereUniqueInput
+    create: XOR<ThematicAreaCreateWithoutSubmissionsInput, ThematicAreaUncheckedCreateWithoutSubmissionsInput>
   }
 
   export type ReviewCreateWithoutSubmissionInput = {
@@ -51688,6 +56998,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -51700,6 +57017,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionsInput = {
@@ -51717,6 +57037,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -51728,6 +57055,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutSubmissionsInput = {
@@ -51783,6 +57113,62 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
   }
 
+  export type SubmissionModalityUpsertWithoutSubmissionsInput = {
+    update: XOR<SubmissionModalityUpdateWithoutSubmissionsInput, SubmissionModalityUncheckedUpdateWithoutSubmissionsInput>
+    create: XOR<SubmissionModalityCreateWithoutSubmissionsInput, SubmissionModalityUncheckedCreateWithoutSubmissionsInput>
+    where?: SubmissionModalityWhereInput
+  }
+
+  export type SubmissionModalityUpdateToOneWithWhereWithoutSubmissionsInput = {
+    where?: SubmissionModalityWhereInput
+    data: XOR<SubmissionModalityUpdateWithoutSubmissionsInput, SubmissionModalityUncheckedUpdateWithoutSubmissionsInput>
+  }
+
+  export type SubmissionModalityUpdateWithoutSubmissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutSubmissionModalitiesNestedInput
+  }
+
+  export type SubmissionModalityUncheckedUpdateWithoutSubmissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThematicAreaUpsertWithoutSubmissionsInput = {
+    update: XOR<ThematicAreaUpdateWithoutSubmissionsInput, ThematicAreaUncheckedUpdateWithoutSubmissionsInput>
+    create: XOR<ThematicAreaCreateWithoutSubmissionsInput, ThematicAreaUncheckedCreateWithoutSubmissionsInput>
+    where?: ThematicAreaWhereInput
+  }
+
+  export type ThematicAreaUpdateToOneWithWhereWithoutSubmissionsInput = {
+    where?: ThematicAreaWhereInput
+    data: XOR<ThematicAreaUpdateWithoutSubmissionsInput, ThematicAreaUncheckedUpdateWithoutSubmissionsInput>
+  }
+
+  export type ThematicAreaUpdateWithoutSubmissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutThematicAreasNestedInput
+  }
+
+  export type ThematicAreaUncheckedUpdateWithoutSubmissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ReviewUpsertWithWhereUniqueWithoutSubmissionInput = {
     where: ReviewWhereUniqueInput
     update: XOR<ReviewUpdateWithoutSubmissionInput, ReviewUncheckedUpdateWithoutSubmissionInput>
@@ -51825,6 +57211,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutSubmissionsInput
     author: UserCreateNestedOneWithoutSubmissionsInput
+    modality?: SubmissionModalityCreateNestedOneWithoutSubmissionsInput
+    thematicArea?: ThematicAreaCreateNestedOneWithoutSubmissionsInput
     formResponses?: CustomFormResponseCreateNestedManyWithoutSubmissionInput
   }
 
@@ -51836,6 +57224,8 @@ export namespace Prisma {
     abstract?: string | null
     fileUrl: string
     status?: $Enums.SubmissionStatus
+    modalityId?: string | null
+    thematicAreaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     formResponses?: CustomFormResponseUncheckedCreateNestedManyWithoutSubmissionInput
@@ -51914,6 +57304,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutSubmissionsNestedInput
     author?: UserUpdateOneRequiredWithoutSubmissionsNestedInput
+    modality?: SubmissionModalityUpdateOneWithoutSubmissionsNestedInput
+    thematicArea?: ThematicAreaUpdateOneWithoutSubmissionsNestedInput
     formResponses?: CustomFormResponseUpdateManyWithoutSubmissionNestedInput
   }
 
@@ -51925,6 +57317,8 @@ export namespace Prisma {
     abstract?: NullableStringFieldUpdateOperationsInput | string | null
     fileUrl?: StringFieldUpdateOperationsInput | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    modalityId?: NullableStringFieldUpdateOperationsInput | string | null
+    thematicAreaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     formResponses?: CustomFormResponseUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -51981,6 +57375,622 @@ export namespace Prisma {
     userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
     claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type EventCreateWithoutSubmissionModalitiesInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutEventsInput
+    activities?: ActivityCreateNestedManyWithoutEventInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    tickets?: TicketCreateNestedManyWithoutEventInput
+    forms?: CustomFormCreateNestedManyWithoutEventInput
+    submissions?: SubmissionCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutSubmissionModalitiesInput = {
+    id?: string
+    tenantId: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutSubmissionModalitiesInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutSubmissionModalitiesInput, EventUncheckedCreateWithoutSubmissionModalitiesInput>
+  }
+
+  export type SubmissionCreateWithoutModalityInput = {
+    id?: string
+    title: string
+    abstract?: string | null
+    fileUrl: string
+    status?: $Enums.SubmissionStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutSubmissionsInput
+    author: UserCreateNestedOneWithoutSubmissionsInput
+    thematicArea?: ThematicAreaCreateNestedOneWithoutSubmissionsInput
+    reviews?: ReviewCreateNestedManyWithoutSubmissionInput
+    formResponses?: CustomFormResponseCreateNestedManyWithoutSubmissionInput
+  }
+
+  export type SubmissionUncheckedCreateWithoutModalityInput = {
+    id?: string
+    eventId: string
+    authorId: string
+    title: string
+    abstract?: string | null
+    fileUrl: string
+    status?: $Enums.SubmissionStatus
+    thematicAreaId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reviews?: ReviewUncheckedCreateNestedManyWithoutSubmissionInput
+    formResponses?: CustomFormResponseUncheckedCreateNestedManyWithoutSubmissionInput
+  }
+
+  export type SubmissionCreateOrConnectWithoutModalityInput = {
+    where: SubmissionWhereUniqueInput
+    create: XOR<SubmissionCreateWithoutModalityInput, SubmissionUncheckedCreateWithoutModalityInput>
+  }
+
+  export type SubmissionCreateManyModalityInputEnvelope = {
+    data: SubmissionCreateManyModalityInput | SubmissionCreateManyModalityInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventUpsertWithoutSubmissionModalitiesInput = {
+    update: XOR<EventUpdateWithoutSubmissionModalitiesInput, EventUncheckedUpdateWithoutSubmissionModalitiesInput>
+    create: XOR<EventCreateWithoutSubmissionModalitiesInput, EventUncheckedCreateWithoutSubmissionModalitiesInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutSubmissionModalitiesInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutSubmissionModalitiesInput, EventUncheckedUpdateWithoutSubmissionModalitiesInput>
+  }
+
+  export type EventUpdateWithoutSubmissionModalitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
+    activities?: ActivityUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    tickets?: TicketUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutSubmissionModalitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type SubmissionUpsertWithWhereUniqueWithoutModalityInput = {
+    where: SubmissionWhereUniqueInput
+    update: XOR<SubmissionUpdateWithoutModalityInput, SubmissionUncheckedUpdateWithoutModalityInput>
+    create: XOR<SubmissionCreateWithoutModalityInput, SubmissionUncheckedCreateWithoutModalityInput>
+  }
+
+  export type SubmissionUpdateWithWhereUniqueWithoutModalityInput = {
+    where: SubmissionWhereUniqueInput
+    data: XOR<SubmissionUpdateWithoutModalityInput, SubmissionUncheckedUpdateWithoutModalityInput>
+  }
+
+  export type SubmissionUpdateManyWithWhereWithoutModalityInput = {
+    where: SubmissionScalarWhereInput
+    data: XOR<SubmissionUpdateManyMutationInput, SubmissionUncheckedUpdateManyWithoutModalityInput>
+  }
+
+  export type EventCreateWithoutThematicAreasInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutEventsInput
+    activities?: ActivityCreateNestedManyWithoutEventInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    tickets?: TicketCreateNestedManyWithoutEventInput
+    forms?: CustomFormCreateNestedManyWithoutEventInput
+    submissions?: SubmissionCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutThematicAreasInput = {
+    id?: string
+    tenantId: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutThematicAreasInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutThematicAreasInput, EventUncheckedCreateWithoutThematicAreasInput>
+  }
+
+  export type SubmissionCreateWithoutThematicAreaInput = {
+    id?: string
+    title: string
+    abstract?: string | null
+    fileUrl: string
+    status?: $Enums.SubmissionStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutSubmissionsInput
+    author: UserCreateNestedOneWithoutSubmissionsInput
+    modality?: SubmissionModalityCreateNestedOneWithoutSubmissionsInput
+    reviews?: ReviewCreateNestedManyWithoutSubmissionInput
+    formResponses?: CustomFormResponseCreateNestedManyWithoutSubmissionInput
+  }
+
+  export type SubmissionUncheckedCreateWithoutThematicAreaInput = {
+    id?: string
+    eventId: string
+    authorId: string
+    title: string
+    abstract?: string | null
+    fileUrl: string
+    status?: $Enums.SubmissionStatus
+    modalityId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reviews?: ReviewUncheckedCreateNestedManyWithoutSubmissionInput
+    formResponses?: CustomFormResponseUncheckedCreateNestedManyWithoutSubmissionInput
+  }
+
+  export type SubmissionCreateOrConnectWithoutThematicAreaInput = {
+    where: SubmissionWhereUniqueInput
+    create: XOR<SubmissionCreateWithoutThematicAreaInput, SubmissionUncheckedCreateWithoutThematicAreaInput>
+  }
+
+  export type SubmissionCreateManyThematicAreaInputEnvelope = {
+    data: SubmissionCreateManyThematicAreaInput | SubmissionCreateManyThematicAreaInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventUpsertWithoutThematicAreasInput = {
+    update: XOR<EventUpdateWithoutThematicAreasInput, EventUncheckedUpdateWithoutThematicAreasInput>
+    create: XOR<EventCreateWithoutThematicAreasInput, EventUncheckedCreateWithoutThematicAreasInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutThematicAreasInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutThematicAreasInput, EventUncheckedUpdateWithoutThematicAreasInput>
+  }
+
+  export type EventUpdateWithoutThematicAreasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
+    activities?: ActivityUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    tickets?: TicketUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutThematicAreasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type SubmissionUpsertWithWhereUniqueWithoutThematicAreaInput = {
+    where: SubmissionWhereUniqueInput
+    update: XOR<SubmissionUpdateWithoutThematicAreaInput, SubmissionUncheckedUpdateWithoutThematicAreaInput>
+    create: XOR<SubmissionCreateWithoutThematicAreaInput, SubmissionUncheckedCreateWithoutThematicAreaInput>
+  }
+
+  export type SubmissionUpdateWithWhereUniqueWithoutThematicAreaInput = {
+    where: SubmissionWhereUniqueInput
+    data: XOR<SubmissionUpdateWithoutThematicAreaInput, SubmissionUncheckedUpdateWithoutThematicAreaInput>
+  }
+
+  export type SubmissionUpdateManyWithWhereWithoutThematicAreaInput = {
+    where: SubmissionScalarWhereInput
+    data: XOR<SubmissionUpdateManyMutationInput, SubmissionUncheckedUpdateManyWithoutThematicAreaInput>
+  }
+
+  export type EventCreateWithoutSubmissionRulesInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutEventsInput
+    activities?: ActivityCreateNestedManyWithoutEventInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    tickets?: TicketCreateNestedManyWithoutEventInput
+    forms?: CustomFormCreateNestedManyWithoutEventInput
+    submissions?: SubmissionCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutSubmissionRulesInput = {
+    id?: string
+    tenantId: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutSubmissionRulesInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutSubmissionRulesInput, EventUncheckedCreateWithoutSubmissionRulesInput>
+  }
+
+  export type EventUpsertWithoutSubmissionRulesInput = {
+    update: XOR<EventUpdateWithoutSubmissionRulesInput, EventUncheckedUpdateWithoutSubmissionRulesInput>
+    create: XOR<EventCreateWithoutSubmissionRulesInput, EventUncheckedCreateWithoutSubmissionRulesInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutSubmissionRulesInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutSubmissionRulesInput, EventUncheckedUpdateWithoutSubmissionRulesInput>
+  }
+
+  export type EventUpdateWithoutSubmissionRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
+    activities?: ActivityUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    tickets?: TicketUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutSubmissionRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type TicketCreateWithoutAttendancesInput = {
@@ -52169,6 +58179,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -52181,6 +58198,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutCertificateTemplatesInput = {
@@ -52198,6 +58218,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -52209,6 +58236,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutCertificateTemplatesInput = {
@@ -52267,6 +58297,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -52279,6 +58316,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutCertificateTemplatesInput = {
@@ -52296,6 +58336,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -52307,6 +58354,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type IssuedCertificateUpsertWithWhereUniqueWithoutTemplateInput = {
@@ -52459,6 +58509,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -52471,6 +58528,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSponsorCategoriesInput = {
@@ -52488,6 +58548,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -52499,6 +58566,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSponsorCategoriesInput = {
@@ -52561,6 +58631,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -52573,6 +58650,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSponsorCategoriesInput = {
@@ -52590,6 +58670,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -52601,6 +58688,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SponsorUpsertWithWhereUniqueWithoutCategoryInput = {
@@ -52707,6 +58797,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -52719,6 +58816,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRaffleHistoriesInput = {
@@ -52736,6 +58836,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -52747,6 +58854,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRaffleHistoriesInput = {
@@ -52859,6 +58969,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -52871,6 +58988,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRaffleHistoriesInput = {
@@ -52888,6 +59008,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -52899,6 +59026,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityUpsertWithoutRaffleHistoriesInput = {
@@ -53042,6 +59172,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -53054,6 +59191,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutBadgesInput = {
@@ -53071,6 +59211,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -53082,6 +59229,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutBadgesInput = {
@@ -53207,6 +59357,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -53219,6 +59376,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutBadgesInput = {
@@ -53236,6 +59396,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -53247,6 +59414,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserBadgeUpsertWithWhereUniqueWithoutBadgeInput = {
@@ -53565,6 +59735,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     tenant: TenantCreateNestedOneWithoutEventsInput
@@ -53577,6 +59754,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
     raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
     badges?: BadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutUserBadgesInput = {
@@ -53594,6 +59774,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
@@ -53605,6 +59792,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
     raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
     badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutUserBadgesInput = {
@@ -53735,6 +59925,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
@@ -53747,6 +59944,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutUserBadgesInput = {
@@ -53764,6 +59964,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -53775,6 +59982,9 @@ export namespace Prisma {
     sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityCreateWithoutMaterialsInput = {
@@ -54086,6 +60296,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: string | null
     seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -54199,6 +60416,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUpdateManyWithoutEventNestedInput
@@ -54211,6 +60435,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
     badges?: BadgeUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTenantInput = {
@@ -54227,6 +60454,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
@@ -54239,6 +60473,9 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutTenantInput = {
@@ -54255,6 +60492,13 @@ export namespace Prisma {
     themeConfig?: NullableJsonNullValueInput | InputJsonValue
     seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
     seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54405,6 +60649,8 @@ export namespace Prisma {
     abstract?: string | null
     fileUrl: string
     status?: $Enums.SubmissionStatus
+    modalityId?: string | null
+    thematicAreaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -54491,6 +60737,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutSubmissionsNestedInput
+    modality?: SubmissionModalityUpdateOneWithoutSubmissionsNestedInput
+    thematicArea?: ThematicAreaUpdateOneWithoutSubmissionsNestedInput
     reviews?: ReviewUpdateManyWithoutSubmissionNestedInput
     formResponses?: CustomFormResponseUpdateManyWithoutSubmissionNestedInput
   }
@@ -54502,6 +60750,8 @@ export namespace Prisma {
     abstract?: NullableStringFieldUpdateOperationsInput | string | null
     fileUrl?: StringFieldUpdateOperationsInput | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    modalityId?: NullableStringFieldUpdateOperationsInput | string | null
+    thematicAreaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reviews?: ReviewUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -54515,6 +60765,8 @@ export namespace Prisma {
     abstract?: NullableStringFieldUpdateOperationsInput | string | null
     fileUrl?: StringFieldUpdateOperationsInput | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    modalityId?: NullableStringFieldUpdateOperationsInput | string | null
+    thematicAreaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54616,6 +60868,8 @@ export namespace Prisma {
     abstract?: string | null
     fileUrl: string
     status?: $Enums.SubmissionStatus
+    modalityId?: string | null
+    thematicAreaId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -54669,6 +60923,29 @@ export namespace Prisma {
     userId: string
     badgeId: string
     earnedAt?: Date | string
+  }
+
+  export type SubmissionModalityCreateManyEventInput = {
+    id?: string
+    name: string
+    description?: string | null
+    templateUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ThematicAreaCreateManyEventInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+  }
+
+  export type SubmissionRuleCreateManyEventInput = {
+    id?: string
+    title: string
+    fileUrl: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ActivityUpdateWithoutEventInput = {
@@ -54836,6 +61113,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutSubmissionsNestedInput
+    modality?: SubmissionModalityUpdateOneWithoutSubmissionsNestedInput
+    thematicArea?: ThematicAreaUpdateOneWithoutSubmissionsNestedInput
     reviews?: ReviewUpdateManyWithoutSubmissionNestedInput
     formResponses?: CustomFormResponseUpdateManyWithoutSubmissionNestedInput
   }
@@ -54847,6 +61126,8 @@ export namespace Prisma {
     abstract?: NullableStringFieldUpdateOperationsInput | string | null
     fileUrl?: StringFieldUpdateOperationsInput | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    modalityId?: NullableStringFieldUpdateOperationsInput | string | null
+    thematicAreaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reviews?: ReviewUncheckedUpdateManyWithoutSubmissionNestedInput
@@ -54860,6 +61141,8 @@ export namespace Prisma {
     abstract?: NullableStringFieldUpdateOperationsInput | string | null
     fileUrl?: StringFieldUpdateOperationsInput | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    modalityId?: NullableStringFieldUpdateOperationsInput | string | null
+    thematicAreaId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55023,6 +61306,79 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     badgeId?: StringFieldUpdateOperationsInput | string
     earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionModalityUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SubmissionUpdateManyWithoutModalityNestedInput
+  }
+
+  export type SubmissionModalityUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SubmissionUncheckedUpdateManyWithoutModalityNestedInput
+  }
+
+  export type SubmissionModalityUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThematicAreaUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SubmissionUpdateManyWithoutThematicAreaNestedInput
+  }
+
+  export type ThematicAreaUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SubmissionUncheckedUpdateManyWithoutThematicAreaNestedInput
+  }
+
+  export type ThematicAreaUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionRuleUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionRuleUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionRuleUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ActivityCreateManyTypeInput = {
@@ -55753,6 +62109,118 @@ export namespace Prisma {
     formId?: StringFieldUpdateOperationsInput | string
     registrationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionCreateManyModalityInput = {
+    id?: string
+    eventId: string
+    authorId: string
+    title: string
+    abstract?: string | null
+    fileUrl: string
+    status?: $Enums.SubmissionStatus
+    thematicAreaId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionUpdateWithoutModalityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    abstract?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutSubmissionsNestedInput
+    author?: UserUpdateOneRequiredWithoutSubmissionsNestedInput
+    thematicArea?: ThematicAreaUpdateOneWithoutSubmissionsNestedInput
+    reviews?: ReviewUpdateManyWithoutSubmissionNestedInput
+    formResponses?: CustomFormResponseUpdateManyWithoutSubmissionNestedInput
+  }
+
+  export type SubmissionUncheckedUpdateWithoutModalityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    abstract?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    thematicAreaId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviews?: ReviewUncheckedUpdateManyWithoutSubmissionNestedInput
+    formResponses?: CustomFormResponseUncheckedUpdateManyWithoutSubmissionNestedInput
+  }
+
+  export type SubmissionUncheckedUpdateManyWithoutModalityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    abstract?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    thematicAreaId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionCreateManyThematicAreaInput = {
+    id?: string
+    eventId: string
+    authorId: string
+    title: string
+    abstract?: string | null
+    fileUrl: string
+    status?: $Enums.SubmissionStatus
+    modalityId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionUpdateWithoutThematicAreaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    abstract?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutSubmissionsNestedInput
+    author?: UserUpdateOneRequiredWithoutSubmissionsNestedInput
+    modality?: SubmissionModalityUpdateOneWithoutSubmissionsNestedInput
+    reviews?: ReviewUpdateManyWithoutSubmissionNestedInput
+    formResponses?: CustomFormResponseUpdateManyWithoutSubmissionNestedInput
+  }
+
+  export type SubmissionUncheckedUpdateWithoutThematicAreaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    abstract?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    modalityId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviews?: ReviewUncheckedUpdateManyWithoutSubmissionNestedInput
+    formResponses?: CustomFormResponseUncheckedUpdateManyWithoutSubmissionNestedInput
+  }
+
+  export type SubmissionUncheckedUpdateManyWithoutThematicAreaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    abstract?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
+    modalityId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IssuedCertificateCreateManyTemplateInput = {

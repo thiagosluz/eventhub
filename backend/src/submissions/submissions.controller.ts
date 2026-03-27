@@ -54,6 +54,8 @@ export class SubmissionsController {
       eventId: body.eventId,
       title: body.title,
       abstract: body.abstract,
+      modalityId: body.modalityId,
+      thematicAreaId: body.thematicAreaId,
       file: {
         buffer: file.buffer,
         mimetype: file.mimetype,

@@ -9,6 +9,8 @@ import { ActivitiesService } from "./activities/activities.service";
 import { SubmissionsController } from "./submissions/submissions.controller";
 import { SubmissionsService } from "./submissions/submissions.service";
 import { AssignReviewsProcessor } from "./submissions/submissions.processor";
+import { SubmissionConfigController } from "./submissions/submission-config.controller";
+import { SubmissionConfigService } from "./submissions/submission-config.service";
 import { ActivitiesProcessor } from "./activities/activities.processor";
 import { CheckoutController } from "./checkout/checkout.controller";
 import { CheckoutService } from "./checkout/checkout.service";
@@ -59,6 +61,7 @@ import { MailModule } from "./mail/mail.module";
     ProtectedExampleController,
     EventsController,
     SubmissionsController,
+    SubmissionConfigController,
     ActivitiesController,
     CheckoutController,
     CheckinController,
@@ -68,6 +71,7 @@ import { MailModule } from "./mail/mail.module";
     EventsService,
     ActivitiesService,
     SubmissionsService,
+    SubmissionConfigService,
     AssignReviewsProcessor,
     ActivitiesProcessor,
     CheckoutService,

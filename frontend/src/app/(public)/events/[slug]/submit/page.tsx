@@ -10,9 +10,41 @@ import {
   DocumentTextIcon, 
   CheckCircleIcon,
   ArrowLeftIcon,
-  InformationCircleIcon
+  InformationCircleIcon,
+  ClockIcon,
+  LockClosedIcon,
+  EnvelopeIcon,
+  ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+
+function useCountdown(targetDate: string | undefined) {
+  const [timeLeft, setTimeLeft] = useState("");
+
+  useEffect(() => {
+    if (!targetDate) return;
+    const target = new Date(targetDate).getTime();
+
+    const update = () => {
+      const now = Date.now();
+      const diff = target - now;
+      if (diff <= 0) { setTimeLeft("Encerrado"); return; }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    };
+
+    update();
+    const interval = setInterval(update, 1000);
+    return () => clearInterval(interval);
+  }, [targetDate]);
+
+  return timeLeft;
+}
 
 export default function SubmitWorkPage() {
   const params = useParams();
@@ -26,6 +58,8 @@ export default function SubmitWorkPage() {
   
   const [title, setTitle] = useState("");
   const [abstract, setAbstract] = useState("");
+  const [modalityId, setModalityId] = useState("");
+  const [thematicAreaId, setThematicAreaId] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,9 +77,17 @@ export default function SubmitWorkPage() {
     fetchEvent();
   }, [slug]);
 
+  const countdown = useCountdown(event?.submissionEndDate);
+
+  const now = new Date();
+  const submissionsDisabled = event && !event.submissionsEnabled;
+  const beforeStart = event?.submissionStartDate && now < new Date(event.submissionStartDate);
+  const afterEnd = event?.submissionEndDate && now > new Date(event.submissionEndDate);
+  const isBlocked = submissionsDisabled || beforeStart || afterEnd;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!event || !file) return;
+    if (!event || !file || isBlocked) return;
 
     setSubmitting(true);
     setError(null);
@@ -55,6 +97,8 @@ export default function SubmitWorkPage() {
         eventId: event.id,
         title,
         abstract,
+        modalityId: modalityId || undefined,
+        thematicAreaId: thematicAreaId || undefined,
         file
       });
       setSubmitted(true);
@@ -67,6 +111,57 @@ export default function SubmitWorkPage() {
 
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>;
   if (!event) return <div className="p-12 text-center text-destructive">Evento não encontrado.</div>;
+
+  // Blocked states
+  if (submissionsDisabled) {
+    return (
+      <div className="max-w-2xl mx-auto py-24 px-6 text-center space-y-8 animate-in zoom-in-95 duration-500">
+        <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mx-auto">
+          <LockClosedIcon className="w-16 h-16 text-muted-foreground" />
+        </div>
+        <div className="space-y-4">
+          <h1 className="text-4xl font-black tracking-tight text-foreground">Submissões Desativadas</h1>
+          <p className="text-muted-foreground text-lg font-medium">O módulo de submissões não está ativo para este evento.</p>
+        </div>
+        <Link href={`/events/${slug}`} className="premium-button-outline px-8 py-4">Voltar para o Evento</Link>
+      </div>
+    );
+  }
+
+  if (beforeStart) {
+    return (
+      <div className="max-w-2xl mx-auto py-24 px-6 text-center space-y-8 animate-in zoom-in-95 duration-500">
+        <div className="w-24 h-24 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto">
+          <ClockIcon className="w-16 h-16 text-amber-500" />
+        </div>
+        <div className="space-y-4">
+          <h1 className="text-4xl font-black tracking-tight text-foreground">Submissões Ainda Não Iniciaram</h1>
+          <p className="text-muted-foreground text-lg font-medium">
+            As submissões abrem em{" "}
+            <span className="font-black text-foreground">
+              {new Date(event.submissionStartDate!).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+            </span>
+          </p>
+        </div>
+        <Link href={`/events/${slug}`} className="premium-button-outline px-8 py-4">Voltar para o Evento</Link>
+      </div>
+    );
+  }
+
+  if (afterEnd) {
+    return (
+      <div className="max-w-2xl mx-auto py-24 px-6 text-center space-y-8 animate-in zoom-in-95 duration-500">
+        <div className="w-24 h-24 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
+          <LockClosedIcon className="w-16 h-16 text-destructive" />
+        </div>
+        <div className="space-y-4">
+          <h1 className="text-4xl font-black tracking-tight text-foreground">Prazo Encerrado</h1>
+          <p className="text-muted-foreground text-lg font-medium">O período para submissão de trabalhos já se encerrou.</p>
+        </div>
+        <Link href={`/events/${slug}`} className="premium-button-outline px-8 py-4">Voltar para o Evento</Link>
+      </div>
+    );
+  }
 
   if (submitted) {
     return (
@@ -86,6 +181,10 @@ export default function SubmitWorkPage() {
     );
   }
 
+  const modalities = event.submissionModalities || [];
+  const areas = event.thematicAreas || [];
+  const rules = event.submissionRules || [];
+
   return (
     <div className="max-w-4xl mx-auto py-12 px-6 space-y-12">
       <div className="space-y-4">
@@ -96,6 +195,52 @@ export default function SubmitWorkPage() {
         <h1 className="text-4xl font-black tracking-tight text-foreground">Submissão de Trabalho</h1>
         <p className="text-muted-foreground font-medium">Preencha os dados abaixo para submeter seu trabalho científico ao evento.</p>
       </div>
+
+      {/* Deadline countdown */}
+      {event.submissionEndDate && countdown && countdown !== "Encerrado" && (
+        <div className="flex items-center gap-4 p-5 bg-amber-500/10 border border-amber-500/20 rounded-2xl">
+          <ClockIcon className="w-6 h-6 text-amber-600 shrink-0" />
+          <div>
+            <p className="text-sm font-black text-amber-700">Prazo para submissão</p>
+            <p className="text-2xl font-black text-amber-600 font-mono tabular-nums">{countdown}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Scientific committee info */}
+      {(event.scientificCommitteeHead || event.scientificCommitteeEmail) && (
+        <div className="flex items-start gap-4 p-5 bg-primary/5 border border-primary/20 rounded-2xl">
+          <InformationCircleIcon className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="text-sm font-black text-foreground">Comissão Científica</p>
+            {event.scientificCommitteeHead && <p className="text-sm text-muted-foreground">Responsável: <span className="font-bold text-foreground">{event.scientificCommitteeHead}</span></p>}
+            {event.scientificCommitteeEmail && (
+              <a href={`mailto:${event.scientificCommitteeEmail}`} className="text-sm text-primary font-bold hover:underline flex items-center gap-1.5">
+                <EnvelopeIcon className="w-4 h-4" /> {event.scientificCommitteeEmail}
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Rules & Templates download */}
+      {(rules.length > 0 || modalities.some(m => m.templateUrl)) && (
+        <div className="premium-card p-6 bg-card border-border space-y-4">
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Documentos Importantes</p>
+          <div className="flex flex-wrap gap-3">
+            {rules.map(rule => (
+              <a key={rule.id} href={rule.fileUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border text-sm font-bold text-foreground hover:bg-muted hover:border-primary/50 transition-all">
+                <ArrowDownTrayIcon className="w-4 h-4 text-primary" /> {rule.title}
+              </a>
+            ))}
+            {modalities.filter(m => m.templateUrl).map(mod => (
+              <a key={mod.id} href={mod.templateUrl!} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border text-sm font-bold text-foreground hover:bg-muted hover:border-primary/50 transition-all">
+                <ArrowDownTrayIcon className="w-4 h-4 text-primary" /> Template: {mod.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-10">
         <div className="premium-card p-8 md:p-12 bg-card border-border space-y-8">
@@ -110,6 +255,32 @@ export default function SubmitWorkPage() {
               className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/50 transition-all font-bold"
             />
           </div>
+
+          {/* Modality Select */}
+          {modalities.length > 0 && (
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Modalidade</label>
+              <select value={modalityId} onChange={e => setModalityId(e.target.value)} className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground focus:ring-2 focus:ring-primary/50 transition-all font-bold">
+                <option value="">Selecione uma modalidade</option>
+                {modalities.map(m => (
+                  <option key={m.id} value={m.id}>{m.name}{m.description ? ` — ${m.description}` : ""}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Thematic Area Select */}
+          {areas.length > 0 && (
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Área Temática</label>
+              <select value={thematicAreaId} onChange={e => setThematicAreaId(e.target.value)} className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground focus:ring-2 focus:ring-primary/50 transition-all font-bold">
+                <option value="">Selecione uma área temática</option>
+                {areas.map(a => (
+                  <option key={a.id} value={a.id}>{a.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Abstract Field */}
           <div className="space-y-3">

@@ -57,7 +57,13 @@ describe("SubmissionsService", () => {
 
   describe("createSubmission", () => {
     it("should create submission and enqueue background job", async () => {
-      mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1", tenantId: "t1" });
+      mockPrismaService.event.findUnique.mockResolvedValue({ 
+        id: "e1", 
+        tenantId: "t1",
+        submissionsEnabled: true,
+        submissionStartDate: null,
+        submissionEndDate: null
+      });
       mockMinioService.uploadObject.mockResolvedValue("http://file.com");
       mockPrismaService.submission.create.mockResolvedValue({
         id: "s1",
@@ -107,13 +113,21 @@ describe("SubmissionsService", () => {
       ]);
       const result = await service.listAssignedToReviewer("rev1");
       expect(result).toHaveLength(1);
-      expect(result[0].title).toBe("T");
+      expect(result[0].id).toBe("r1");
+      expect(result[0].submission.title).toBe("T");
     });
   });
 
   describe("submitReview", () => {
     it("should update review if assigned", async () => {
-      mockPrismaService.review.findFirst.mockResolvedValue({ id: "r1" });
+      mockPrismaService.review.findFirst.mockResolvedValue({ 
+        id: "r1",
+        submission: { 
+          event: { 
+            reviewEndDate: null 
+          } 
+        } 
+      });
       mockPrismaService.review.update.mockResolvedValue({ id: "r1" });
       await service.submitReview({ reviewerId: "rev1", submissionId: "s1", score: 5 });
       expect(mockPrismaService.review.update).toHaveBeenCalled();

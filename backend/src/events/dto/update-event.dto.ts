@@ -11,4 +11,13 @@ export class UpdateEventDto {
   bannerUrl?: string;
   logoUrl?: string;
   status?: "DRAFT" | "PUBLISHED" | "ARCHIVED";
+
+  // Submission module config
+  submissionsEnabled?: boolean;
+  submissionStartDate?: string;
+  submissionEndDate?: string;
+  reviewStartDate?: string;
+  reviewEndDate?: string;
+  scientificCommitteeHead?: string;
+  scientificCommitteeEmail?: string;
 }

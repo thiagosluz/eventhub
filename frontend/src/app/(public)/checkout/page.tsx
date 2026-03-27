@@ -103,6 +103,109 @@ function CheckoutContent() {
     }
   };
 
+  const renderField = (field: any) => {
+    const answer = formAnswers[field.id] || "";
+    
+    switch (field.type) {
+      case "TEXTAREA":
+        return (
+          <textarea
+            value={answer}
+            onChange={(e) => handleInputChange(field.id, e.target.value)}
+            className="w-full p-4 rounded-xl border border-border bg-card focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-bold text-sm min-h-[100px]"
+            placeholder={`Digite seu ${field.label.toLowerCase()}`}
+          />
+        );
+      case "SELECT":
+        return (
+          <select
+            value={answer}
+            onChange={(e) => handleInputChange(field.id, e.target.value)}
+            className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-bold text-sm cursor-pointer text-muted-foreground"
+          >
+            <option value="">Selecione uma opção</option>
+            {Array.isArray(field.options) && field.options.map((opt: string, idx: number) => (
+              <option key={idx} value={opt} className="text-foreground">{opt}</option>
+            ))}
+          </select>
+        );
+      case "MULTISELECT":
+        const currentSelected = answer ? answer.split(",").map((s: string) => s.trim()) : [];
+        return (
+          <div className="space-y-3 p-4 rounded-xl border border-border bg-card">
+            {Array.isArray(field.options) && field.options.map((opt: string, idx: number) => {
+              const checked = currentSelected.includes(opt);
+              return (
+                <label key={idx} className="flex items-center gap-3 cursor-pointer group">
+                  <div className={`w-5 h-5 rounded border ${checked ? 'bg-primary border-primary' : 'border-border bg-background'} flex items-center justify-center transition-colors`}>
+                    {checked && <div className="w-2.5 h-2.5 bg-white rounded-sm" />}
+                  </div>
+                  <input
+                    type="checkbox"
+                    className="hidden"
+                    checked={checked}
+                    onChange={(e) => {
+                      let newArray = [...currentSelected];
+                      if (e.target.checked && !checked) newArray.push(opt);
+                      else if (!e.target.checked && checked) newArray = newArray.filter(item => item !== opt);
+                      handleInputChange(field.id, newArray.join(", "));
+                    }}
+                  />
+                  <span className="text-sm font-bold text-muted-foreground group-hover:text-foreground transition-colors">{opt}</span>
+                </label>
+              );
+            })}
+          </div>
+        );
+      case "CHECKBOX":
+        return (
+          <label className="flex items-center gap-3 cursor-pointer group p-4 rounded-xl border border-border bg-card">
+            <div className={`w-5 h-5 rounded border ${answer === "true" ? 'bg-primary border-primary' : 'border-border bg-background'} flex items-center justify-center transition-colors`}>
+              {answer === "true" && <div className="w-2.5 h-2.5 bg-white rounded-sm" />}
+            </div>
+            <input
+              type="checkbox"
+              className="hidden"
+              checked={answer === "true"}
+              onChange={(e) => handleInputChange(field.id, e.target.checked ? "true" : "false")}
+            />
+            <span className="text-sm font-bold text-muted-foreground group-hover:text-foreground transition-colors">
+               Sim, eu concordo
+            </span>
+          </label>
+        );
+      case "DATE":
+        return (
+          <input
+            type="date"
+            value={answer}
+            onChange={(e) => handleInputChange(field.id, e.target.value)}
+            className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-bold text-sm text-muted-foreground"
+          />
+        );
+      case "NUMBER":
+        return (
+          <input
+            type="number"
+            value={answer}
+            onChange={(e) => handleInputChange(field.id, e.target.value)}
+            className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-bold text-sm"
+            placeholder={`Digite seu ${field.label.toLowerCase()}`}
+          />
+        );
+      default:
+        return (
+          <input
+            type={field.type === 'EMAIL' ? 'email' : 'text'}
+            value={answer}
+            onChange={(e) => handleInputChange(field.id, e.target.value)}
+            className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-bold text-sm"
+            placeholder={`Digite seu ${field.label.toLowerCase()}`}
+          />
+        );
+    }
+  };
+
   const steps = [
     { id: 1, name: "Identificação", icon: UserIcon },
     { id: 2, name: "Informações Adicionais", icon: ClipboardDocumentCheckIcon },
@@ -179,16 +282,10 @@ function CheckoutContent() {
                 <div className="space-y-6">
                   {fields.length > 0 ? fields.map((field) => (
                     <div key={field.id} className="space-y-2">
-                      <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">
+                      <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1 mb-2 block">
                         {field.label} {field.required && <span className="text-primary">*</span>}
                       </label>
-                      <input 
-                        type={field.type === 'email' ? 'email' : 'text'}
-                        value={formAnswers[field.id] || ""}
-                        onChange={(e) => handleInputChange(field.id, e.target.value)}
-                        className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-bold text-sm"
-                        placeholder={`Digite seu ${field.label.toLowerCase()}`}
-                      />
+                      {renderField(field)}
                     </div>
                   )) : (
                     <div className="text-center py-12 text-muted-foreground font-medium italic">

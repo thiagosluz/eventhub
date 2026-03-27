@@ -149,6 +149,15 @@ model Event {
   seoTitle       String?
   seoDescription String?
 
+  // === Submission Module Config ===
+  submissionsEnabled       Boolean   @default(false)
+  submissionStartDate      DateTime?
+  submissionEndDate        DateTime?
+  reviewStartDate          DateTime?
+  reviewEndDate            DateTime?
+  scientificCommitteeHead  String?
+  scientificCommitteeEmail String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -162,6 +171,9 @@ model Event {
   raffleHistories      RaffleHistory[]
   badges               Badge[]
   userBadges           UserBadge[]
+  submissionModalities SubmissionModality[]
+  thematicAreas        ThematicArea[]
+  submissionRules      SubmissionRule[]
 
   @@unique([tenantId, slug])
 }
@@ -373,6 +385,12 @@ model Submission {
   fileUrl  String
   status   SubmissionStatus @default(SUBMITTED)
 
+  modalityId     String?
+  modality       SubmissionModality? @relation(fields: [modalityId], references: [id])
+
+  thematicAreaId String?
+  thematicArea   ThematicArea? @relation(fields: [thematicAreaId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -393,6 +411,49 @@ model Review {
   comments       String?
 
   createdAt DateTime @default(now())
+}
+
+model SubmissionModality {
+  id          String  @id @default(cuid())
+  eventId     String
+  event       Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  name        String
+  description String?
+  templateUrl String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  submissions Submission[]
+
+  @@unique([eventId, name])
+}
+
+model ThematicArea {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  name    String
+
+  createdAt DateTime @default(now())
+
+  submissions Submission[]
+
+  @@unique([eventId, name])
+}
+
+model SubmissionRule {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  title   String
+  fileUrl String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Attendance {

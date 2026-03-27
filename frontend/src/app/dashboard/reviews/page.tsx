@@ -10,7 +10,9 @@ import {
   StarIcon,
   ChatBubbleLeftEllipsisIcon,
   CheckCircleIcon,
-  InformationCircleIcon
+  InformationCircleIcon,
+  ClockIcon,
+  LockClosedIcon
 } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
 
@@ -99,7 +101,33 @@ export default function ReviewerDashboardPage() {
         </div>
       ) : reviews.length > 0 ? (
         <div className="space-y-4">
-          {reviews.map((review) => (
+          {/* Review deadline banners grouped by event */}
+          {(() => {
+            const eventDeadlines = new Map<string, { name: string; deadline: string; }>(); 
+            reviews.forEach(r => {
+              const event = r.submission?.event;
+              if (event?.reviewEndDate && !eventDeadlines.has(event.id)) {
+                eventDeadlines.set(event.id, { name: event.name, deadline: event.reviewEndDate });
+              }
+            });
+            return Array.from(eventDeadlines.entries()).map(([eventId, info]) => {
+              const isExpired = new Date() > new Date(info.deadline);
+              return (
+                <div key={eventId} className={`flex items-center gap-4 p-4 rounded-2xl border ${isExpired ? 'bg-destructive/10 border-destructive/20' : 'bg-amber-500/10 border-amber-500/20'}`}>
+                  {isExpired ? <LockClosedIcon className="w-5 h-5 text-destructive shrink-0" /> : <ClockIcon className="w-5 h-5 text-amber-600 shrink-0" />}
+                  <div>
+                    <p className={`text-sm font-black ${isExpired ? 'text-destructive' : 'text-amber-700'}`}>{info.name}</p>
+                    <p className={`text-xs font-bold ${isExpired ? 'text-destructive/70' : 'text-amber-600/70'}`}>
+                      {isExpired ? 'Prazo de revisão encerrado' : `Prazo: ${new Date(info.deadline).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}`}
+                    </p>
+                  </div>
+                </div>
+              );
+            });
+          })()}
+          {reviews.map((review) => {
+            const reviewExpired = review.submission?.event?.reviewEndDate && new Date() > new Date(review.submission.event.reviewEndDate);
+            return (
             <div key={review.id} className="premium-card bg-card border-border p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 group hover:border-primary/50 transition-all">
               <div className="flex gap-4">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
@@ -124,14 +152,16 @@ export default function ReviewerDashboardPage() {
                 </div>
                 <button 
                   onClick={() => setSelectedReview(review)}
-                  className="premium-button !py-2.5 !px-6 !text-xs !font-black flex items-center gap-2"
+                  disabled={!!reviewExpired && !review.score}
+                  className="premium-button !py-2.5 !px-6 !text-xs !font-black flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {review.score ? 'Ver Avaliação' : 'Avaliar'}
-                  <ChevronRightIcon className="w-4 h-4" />
+                  {reviewExpired && !review.score ? 'Prazo Encerrado' : review.score ? 'Ver Avaliação' : 'Avaliar'}
+                  {reviewExpired && !review.score ? <LockClosedIcon className="w-4 h-4" /> : <ChevronRightIcon className="w-4 h-4" />}
                 </button>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="premium-card p-12 bg-card border-border border-dashed border-2 flex flex-col items-center justify-center text-center space-y-4">

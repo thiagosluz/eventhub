@@ -188,8 +188,58 @@ export default function EventFormsPage({ params }: { params: Promise<{ id: strin
                           <option value="TEXTAREA">Texto Longo</option>
                           <option value="NUMBER">Número</option>
                           <option value="EMAIL">E-mail</option>
+                          <option value="DATE">Data</option>
+                          <option value="CHECKBOX">Aceite / Checagem (Única)</option>
+                          <option value="SELECT">Lista de Seleção (Única)</option>
+                          <option value="MULTISELECT">Múltipla Escolha (Várias)</option>
                         </select>
                       </div>
+
+                      {/* Builder de Opções (Option C) */}
+                      {(field.type === "SELECT" || field.type === "MULTISELECT") && (
+                        <div className="md:col-span-12 mt-2 space-y-3 p-5 bg-muted/30 rounded-xl border border-border">
+                          <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Alternativas de Escolha</label>
+                          
+                          <div className="space-y-2">
+                            {(Array.isArray(field.options) ? field.options : []).map((opt: string, optIdx: number) => (
+                              <div key={optIdx} className="flex items-center gap-2 group/opt animate-in fade-in slide-in-from-left-2">
+                                <div className="w-4 h-4 rounded-full border-2 border-muted-foreground/30 flex-shrink-0" />
+                                <input 
+                                  value={opt}
+                                  onChange={(e) => {
+                                    const newOpts = [...(Array.isArray(field.options) ? field.options : [])];
+                                    newOpts[optIdx] = e.target.value;
+                                    updateField(index, { options: newOpts });
+                                  }}
+                                  placeholder={`Opção ${optIdx + 1}`}
+                                  className="flex-1 h-10 px-4 rounded-lg border border-border bg-card focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none text-sm font-medium transition-all"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newOpts = [...(Array.isArray(field.options) ? field.options : [])].filter((_, i) => i !== optIdx);
+                                    updateField(index, { options: newOpts });
+                                  }}
+                                  className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg opacity-0 group-hover/opt:opacity-100 transition-all"
+                                >
+                                  <TrashIcon className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+
+                          <button 
+                            type="button"
+                            onClick={() => {
+                              const newOpts = [...(Array.isArray(field.options) ? field.options : []), ""];
+                              updateField(index, { options: newOpts });
+                            }}
+                            className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 hover:bg-primary/5 px-3 py-2 rounded-lg flex items-center gap-1 mt-2 transition-colors w-fit"
+                          >
+                            <PlusIcon className="w-3 h-3" /> Adicionar Alternativa
+                          </button>
+                        </div>
+                      )}
 
                       <div className="md:col-span-2 flex items-center pt-6">
                         <label className="flex items-center gap-2 cursor-pointer">
