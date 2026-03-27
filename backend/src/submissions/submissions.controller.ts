@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -15,6 +16,8 @@ import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../auth/roles.decorator";
 import { RolesGuard } from "../auth/roles.guard";
 import { UserRole } from "../auth/roles.types";
+import { AddReviewerDto } from "./dto/add-reviewer.dto";
+import { AssignReviewDto } from "./dto/assign-review.dto";
 import { CreateSubmissionDto } from "./dto/create-submission.dto";
 import { SubmitReviewDto } from "./dto/submit-review.dto";
 import { SubmissionsService } from "./submissions.service";
@@ -114,5 +117,46 @@ export class SubmissionsController {
       recommendation: body.recommendation,
       comments: body.comments,
     });
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get("events/:eventId/reviewers")
+  async listEventReviewers(@Param("eventId") eventId: string) {
+    return this.submissions.listEventReviewers(eventId);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post("events/:eventId/reviewers")
+  async addReviewerToEvent(
+    @Param("eventId") eventId: string,
+    @Body() body: AddReviewerDto,
+  ) {
+    return this.submissions.addReviewerToEvent(eventId, body.userId);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Delete("events/:eventId/reviewers/:userId")
+  async removeReviewerFromEvent(
+    @Param("eventId") eventId: string,
+    @Param("userId") userId: string,
+  ) {
+    return this.submissions.removeReviewerFromEvent(eventId, userId);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post("reviews/manual")
+  async manualAssignReview(@Body() body: AssignReviewDto) {
+    return this.submissions.manualAssignReview(body.submissionId, body.reviewerId);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Delete("reviews/:reviewId")
+  async deleteReview(@Param("reviewId") reviewId: string) {
+    return this.submissions.deleteReview(reviewId);
   }
 }

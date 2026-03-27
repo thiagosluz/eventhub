@@ -7,6 +7,7 @@ export interface User {
   bio?: string;
   tenantId?: string;
   isSpeaker?: boolean;
+  mustChangePassword?: boolean;
 }
 
 export interface AuthResponse {

@@ -13,12 +13,12 @@ export class AssignReviewsProcessor extends WorkerHost {
   async process(
     job: Job<{ submissionId: string; eventId: string; tenantId: string }>,
   ): Promise<void> {
-    const { submissionId, tenantId } = job.data;
-
+    const { submissionId, eventId } = job.data;
     const reviewers = await this.prisma.user.findMany({
       where: {
-        tenantId,
-        role: "REVIEWER",
+        eventReviewers: {
+          some: { eventId },
+        },
       },
     });
 

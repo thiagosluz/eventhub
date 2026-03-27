@@ -17,4 +17,8 @@ export const authService = {
   refresh: async (refresh_token: string): Promise<AuthResponse> => {
     return api.post<AuthResponse>('/auth/refresh', { refresh_token });
   },
+
+  changePasswordForced: async (newPassword: string): Promise<void> => {
+    return api.post('/auth/change-password-forced', { newPassword });
+  },
 };

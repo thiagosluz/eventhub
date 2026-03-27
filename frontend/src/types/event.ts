@@ -110,6 +110,11 @@ export interface Submission {
   thematicAreaId?: string;
   thematicArea?: ThematicArea;
   createdAt: string;
+  author?: {
+    id: string;
+    name: string;
+    email: string;
+  };
   reviews?: Review[];
 }
 
@@ -122,6 +127,11 @@ export interface Review {
   recommendation?: string;
   comments?: string;
   createdAt: string;
+  reviewer?: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }
 
 export interface SubmissionModality {

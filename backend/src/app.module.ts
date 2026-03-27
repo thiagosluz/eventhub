@@ -11,6 +11,8 @@ import { SubmissionsService } from "./submissions/submissions.service";
 import { AssignReviewsProcessor } from "./submissions/submissions.processor";
 import { SubmissionConfigController } from "./submissions/submission-config.controller";
 import { SubmissionConfigService } from "./submissions/submission-config.service";
+import { ReviewerManagementService } from "./submissions/reviewer-management.service";
+import { ReviewerManagementController } from "./submissions/reviewer-management.controller";
 import { ActivitiesProcessor } from "./activities/activities.processor";
 import { CheckoutController } from "./checkout/checkout.controller";
 import { CheckoutService } from "./checkout/checkout.service";
@@ -66,6 +68,7 @@ import { MailModule } from "./mail/mail.module";
     CheckoutController,
     CheckinController,
     CertificatesController,
+    ReviewerManagementController,
   ],
   providers: [
     EventsService,
@@ -79,6 +82,7 @@ import { MailModule } from "./mail/mail.module";
     CheckinService,
     CertificatePdfService,
     CertificateTemplatesService,
+    ReviewerManagementService,
   ],
 })
 export class AppModule {}

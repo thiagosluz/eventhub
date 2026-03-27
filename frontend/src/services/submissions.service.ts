@@ -1,4 +1,5 @@
 import { api } from '../lib/api';
+import { User } from '../types/auth';
 import { Submission, Review, SubmissionConfig, SubmissionModality, ThematicArea, SubmissionRule } from '../types/event';
 
 export const submissionsService = {
@@ -95,5 +96,47 @@ export const submissionsService = {
 
   deleteRule: async (eventId: string, ruleId: string) => {
     return api.delete(`/events/${eventId}/submissions/rules/${ruleId}`);
+  },
+
+  // === Reviewer Management ===
+
+  listEventReviewers: async (eventId: string): Promise<User[]> => {
+    return api.get<User[]>(`/events/${eventId}/reviewers`);
+  },
+
+  addReviewerToEvent: async (eventId: string, userId: string): Promise<void> => {
+    return api.post(`/events/${eventId}/reviewers`, { userId });
+  },
+
+  removeReviewerFromEvent: async (eventId: string, userId: string): Promise<void> => {
+    return api.delete(`/events/${eventId}/reviewers/${userId}`);
+  },
+
+  // === Manual Distribution ===
+
+  assignReview: async (submissionId: string, reviewerId: string): Promise<Review> => {
+    return api.post<Review>('/reviews/manual', { submissionId, reviewerId });
+  },
+
+  deleteReview: async (reviewId: string): Promise<void> => {
+    return api.delete(`/reviews/${reviewId}`);
+  },
+
+  // === Reviewer Onboarding ===
+
+  inviteReviewer: async (eventId: string, email: string): Promise<void> => {
+    return api.post(`/events/${eventId}/reviewer-invitations`, { email });
+  },
+
+  manualRegisterReviewer: async (eventId: string, data: { name: string; email: string; temporaryPassword: string }): Promise<void> => {
+    return api.post(`/events/${eventId}/reviewers/manual`, data);
+  },
+
+  getInvitation: async (token: string): Promise<{ email: string; event: { name: string } }> => {
+    return api.get(`/reviewer-invitations/${token}`);
+  },
+
+  acceptInvitation: async (data: { token: string; name: string; password: string }): Promise<void> => {
+    return api.post('/reviewer-invitations/accept', data);
   },
 };

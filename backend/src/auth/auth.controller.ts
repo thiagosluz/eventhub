@@ -45,6 +45,11 @@ class ResetPasswordDto {
   newPassword!: string;
 }
 
+class ChangeForcedPasswordDto {
+  @ApiProperty({ example: "newpassword123" })
+  newPassword!: string;
+}
+
 @ApiTags("auth")
 @Controller("auth")
 export class AuthController {
@@ -94,5 +99,13 @@ export class AuthController {
   @ApiOperation({ summary: "Reset password using token" })
   resetPassword(@Body() body: ResetPasswordDto) {
     return this.authService.resetPassword(body.token, body.newPassword);
+  }
+
+  @Post("change-password-forced")
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Change password when mustChangePassword flag is true" })
+  changeForcedPassword(@Body() body: ChangeForcedPasswordDto, @Request() req: any) {
+    return this.authService.changeForcedPassword(req.user.sub, body.newPassword);
   }
 }

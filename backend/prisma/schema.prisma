@@ -127,7 +127,11 @@ model User {
   submissions   Submission[]   @relation("SubmissionAuthor")
   userBadges    UserBadge[]
   claimCodes    BadgeClaimCode[]
-  speaker       Speaker?
+  eventReviewers      EventReviewer[]
+  reviewerInvitations ReviewerInvitation[] @relation("InvitedByUser")
+  acceptedInvitations ReviewerInvitation[] @relation("AcceptedByUser")
+  mustChangePassword  Boolean              @default(false)
+  speaker             Speaker?
 }
 
 model Event {
@@ -174,6 +178,8 @@ model Event {
   submissionModalities SubmissionModality[]
   thematicAreas        ThematicArea[]
   submissionRules      SubmissionRule[]
+  reviewers            EventReviewer[]
+  reviewerInvitations  ReviewerInvitation[]
 
   @@unique([tenantId, slug])
 }
@@ -413,6 +419,36 @@ model Review {
   createdAt DateTime @default(now())
 }
 
+model EventReviewer {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])
+}
+
+model ReviewerInvitation {
+  id          String           @id @default(cuid())
+  eventId     String
+  event       Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  email       String
+  token       String           @unique
+  status      InvitationStatus @default(PENDING)
+  expiresAt   DateTime
+  invitedById String
+  invitedBy   User             @relation("InvitedByUser", fields: [invitedById], references: [id])
+  acceptedById String?
+  acceptedBy  User?            @relation("AcceptedByUser", fields: [acceptedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([eventId, email])
+}
+
 model SubmissionModality {
   id          String  @id @default(cuid())
   eventId     String
@@ -646,5 +682,12 @@ model ActivityFeedback {
   registration   Registration? @relation(fields: [registrationId], references: [id])
 
   createdAt  DateTime @default(now())
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  EXPIRED
 }
 

@@ -122,21 +122,74 @@ export class SubmissionsService {
       throw new ForbiddenException("Evento não pertence a este tenant.");
     }
 
-    const submissions = await this.prisma.submission.findMany({
+    return this.prisma.submission.findMany({
       where: { eventId },
       include: {
-        reviews: true,
+        author: { select: { name: true, email: true } },
+        modality: true,
+        thematicArea: true,
+        reviews: {
+          include: {
+            reviewer: { select: { id: true, name: true, email: true } },
+          },
+        },
       },
     });
+  }
 
-    return submissions.map((s) => ({
-      id: s.id,
-      title: s.title,
-      abstract: s.abstract,
-      status: s.status,
-      createdAt: s.createdAt,
-      // double-blind: organizador vê tudo; autores/revisores são tratados em endpoints específicos
-    }));
+  async listEventReviewers(eventId: string) {
+    const items = await this.prisma.eventReviewer.findMany({
+      where: { eventId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            avatarUrl: true,
+          },
+        },
+      },
+    });
+    return items.map((i) => i.user);
+  }
+
+  async addReviewerToEvent(eventId: string, userId: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new NotFoundException("Usuário não encontrado.");
+    if (user.role !== "REVIEWER") {
+      throw new ForbiddenException("Usuário não possui papel de revisor.");
+    }
+
+    return this.prisma.eventReviewer.upsert({
+      where: { eventId_userId: { eventId, userId } },
+      create: { eventId, userId },
+      update: {},
+    });
+  }
+
+  async removeReviewerFromEvent(eventId: string, userId: string) {
+    return this.prisma.eventReviewer.deleteMany({
+      where: { eventId, userId },
+    });
+  }
+
+  async manualAssignReview(submissionId: string, reviewerId: string) {
+    const existing = await this.prisma.review.findFirst({
+      where: { submissionId, reviewerId },
+    });
+    if (existing) return existing;
+
+    return this.prisma.review.create({
+      data: { submissionId, reviewerId },
+    });
+  }
+
+  async deleteReview(reviewId: string) {
+    return this.prisma.review.delete({
+      where: { id: reviewId },
+    });
   }
 
   async listMySubmissions(authorId: string) {

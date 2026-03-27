@@ -22,12 +22,6 @@ export default function LoginPage() {
     try {
       const response = await authService.login({ email, password });
       login(response);
-      
-      if (response.user.role === 'ORGANIZER') {
-        router.push("/dashboard");
-      } else {
-        router.push("/");
-      }
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Falha ao entrar. Verifique suas credenciais.");

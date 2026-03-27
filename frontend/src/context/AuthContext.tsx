@@ -49,6 +49,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loadStoredAuth();
   }, []);
 
+  useEffect(() => {
+    if (user?.mustChangePassword && !window.location.pathname.includes('/force-password-change')) {
+      router.push("/dashboard/force-password-change");
+    }
+  }, [user, router]);
+
   const login = (authData: AuthResponse) => {
     setUser(authData.user);
     localStorage.setItem("eventhub_user", JSON.stringify(authData.user));
@@ -57,6 +63,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Sync with cookie for server-side auth
     Cookies.set("eventhub_token", authData.access_token, { expires: 7 });
     Cookies.set("eventhub_refresh_token", authData.refresh_token, { expires: 7 });
+
+    if (authData.user.mustChangePassword) {
+      router.push("/dashboard/force-password-change");
+    } else if (authData.user.role === 'ORGANIZER' || authData.user.role === 'REVIEWER') {
+      router.push("/dashboard");
+    } else {
+      router.push("/");
+    }
   };
 
   const logout = () => {

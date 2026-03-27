@@ -182,6 +182,18 @@ export class AuthService {
         password: passwordHash,
         resetPasswordToken: null,
         resetPasswordExpires: null,
+        mustChangePassword: false,
+      },
+    });
+  }
+
+  async changeForcedPassword(userId: string, newPassword: string) {
+    const passwordHash = await argon2.hash(newPassword);
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        password: passwordHash,
+        mustChangePassword: false,
       },
     });
   }
@@ -205,6 +217,7 @@ export class AuthService {
         role: user.role,
         tenantId: user.tenantId,
         isSpeaker: !!user.speaker || user.role === "SPEAKER",
+        mustChangePassword: user.mustChangePassword,
       },
     };
   }
@@ -216,6 +229,7 @@ export class AuthService {
       tenantId: user.tenantId,
       role: user.role,
       isSpeaker: !!user.speaker || user.role === "SPEAKER",
+      mustChangePassword: user.mustChangePassword,
     };
 
     return this.jwtService.signAsync(payload, { expiresIn: expiresIn as any });

@@ -143,7 +143,8 @@ exports.Prisma.UserScalarFieldEnum = {
   resetPasswordExpires: 'resetPasswordExpires',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  tenantId: 'tenantId'
+  tenantId: 'tenantId',
+  mustChangePassword: 'mustChangePassword'
 };
 
 exports.Prisma.EventScalarFieldEnum = {
@@ -308,6 +309,26 @@ exports.Prisma.ReviewScalarFieldEnum = {
   recommendation: 'recommendation',
   comments: 'comments',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.EventReviewerScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ReviewerInvitationScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  email: 'email',
+  token: 'token',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  invitedById: 'invitedById',
+  acceptedById: 'acceptedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SubmissionModalityScalarFieldEnum = {
@@ -546,6 +567,13 @@ exports.ReviewRecommendation = exports.$Enums.ReviewRecommendation = {
   STRONG_REJECT: 'STRONG_REJECT'
 };
 
+exports.InvitationStatus = exports.$Enums.InvitationStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED'
+};
+
 exports.SponsorSize = exports.$Enums.SponsorSize = {
   SMALL: 'SMALL',
   MEDIUM: 'MEDIUM',
@@ -591,6 +619,8 @@ exports.Prisma.ModelName = {
   CustomFormAnswer: 'CustomFormAnswer',
   Submission: 'Submission',
   Review: 'Review',
+  EventReviewer: 'EventReviewer',
+  ReviewerInvitation: 'ReviewerInvitation',
   SubmissionModality: 'SubmissionModality',
   ThematicArea: 'ThematicArea',
   SubmissionRule: 'SubmissionRule',
