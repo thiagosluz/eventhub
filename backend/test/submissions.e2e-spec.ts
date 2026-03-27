@@ -87,6 +87,7 @@ describe("Submissions (e2e)", () => {
       mockPrismaService.event.findUnique.mockResolvedValue({
         id: "event_1",
         tenantId: "tenant_1",
+        submissionsEnabled: true,
       });
       mockMinioService.uploadObject.mockResolvedValue("http://minio/file");
       mockPrismaService.submission.create.mockResolvedValue({
@@ -144,7 +145,14 @@ describe("Submissions (e2e)", () => {
         role: "REVIEWER",
       });
 
-      mockPrismaService.review.findFirst.mockResolvedValue({ id: "rev_rec_1" });
+      mockPrismaService.review.findFirst.mockResolvedValue({
+        id: "rev_rec_1",
+        submission: {
+          event: {
+            reviewEndDate: null,
+          },
+        },
+      });
       mockPrismaService.review.update.mockResolvedValue({
         id: "rev_rec_1",
         score: 4,
