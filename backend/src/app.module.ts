@@ -33,6 +33,7 @@ import { SponsorsModule } from "./sponsors/sponsors.module";
 import { UsersModule } from "./users/users.module";
 import { BadgesModule } from "./badges/badges.module";
 import { MailModule } from "./mail/mail.module";
+import { StaffManagementModule } from "./staff/staff.module";
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { MailModule } from "./mail/mail.module";
     UsersModule,
     BadgesModule,
     MailModule,
+    StaffManagementModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST ?? "localhost",

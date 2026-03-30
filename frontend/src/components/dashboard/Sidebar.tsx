@@ -27,6 +27,7 @@ const navigation = [
   { name: "Revisões", href: "/dashboard/reviews", icon: AcademicCapIcon },
   { name: "Financeiro", href: "/dashboard/finance", icon: CreditCardIcon },
   { name: "Configurações", href: "/dashboard/settings", icon: Cog6ToothIcon },
+  { name: "Minha Equipe", href: "/dashboard/settings/team", icon: UsersIcon },
   
   // Speaker specific
   { name: "Minha Agenda", href: "/speaker/activities", icon: CalendarIcon },
@@ -52,6 +53,11 @@ export function Sidebar({ tenant }: { tenant?: Tenant | null }) {
     // Para ORGANIZER ou ADMIN
     if (isSpeakerItem) {
       return !!user?.isSpeaker;
+    }
+
+    if (user?.role === "PARTICIPANT") {
+      // Monitors (Participants) only see the current page if it's the check-in scanner or similar
+      return [];
     }
 
     return true;

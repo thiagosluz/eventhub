@@ -24,8 +24,11 @@ import { activitiesService } from "@/services/activities.service";
 import { Activity } from "@/types/event";
 import { analyticsService, Participant } from "@/services/analytics.service";
 
+import { useAuth } from "@/context/AuthContext";
+
 export default function CheckinScannerPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const { user } = useAuth();
   const [event, setEvent] = useState<Event | null>(null);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivityId, setSelectedActivityId] = useState<string>("");
@@ -258,12 +261,14 @@ export default function CheckinScannerPage({ params }: { params: Promise<{ id: s
       <div className="w-full max-w-lg flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link 
-              href={`/dashboard/events/${id}`}
-              className="p-2 rounded-xl border border-border bg-white text-muted-foreground hover:bg-muted transition-colors"
-            >
-              <ChevronLeftIcon className="w-5 h-5" />
-            </Link>
+            {user?.role !== "PARTICIPANT" && (
+              <Link 
+                href={`/dashboard/events/${id}`}
+                className="p-2 rounded-xl border border-border bg-white text-muted-foreground hover:bg-muted transition-colors"
+              >
+                <ChevronLeftIcon className="w-5 h-5" />
+              </Link>
+            )}
             <div>
               <h1 className="text-xl font-black text-foreground">Sistema de Check-in</h1>
               <p className="text-[10px] font-bold uppercase tracking-widest text-primary italic leading-none">{event?.name}</p>

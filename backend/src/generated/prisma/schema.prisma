@@ -132,6 +132,7 @@ model User {
   acceptedInvitations ReviewerInvitation[] @relation("AcceptedByUser")
   mustChangePassword  Boolean              @default(false)
   speaker             Speaker?
+  eventMonitors       EventMonitor[]
 }
 
 model Event {
@@ -180,6 +181,7 @@ model Event {
   submissionRules      SubmissionRule[]
   reviewers            EventReviewer[]
   reviewerInvitations  ReviewerInvitation[]
+  monitors             EventMonitor[]
 
   @@unique([tenantId, slug])
 }
@@ -689,4 +691,15 @@ enum InvitationStatus {
   ACCEPTED
   REJECTED
   EXPIRED
+}
+
+model EventMonitor {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])
 }

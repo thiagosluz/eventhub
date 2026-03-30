@@ -46,17 +46,36 @@ export class CheckinService {
   async checkin(params: {
     qrCodeToken: string;
     activityId?: string;
+    performedByUserId: string;
   }): Promise<{ alreadyCheckedIn: boolean; attendanceId: string }> {
-    const { qrCodeToken, activityId } = params;
+    const { qrCodeToken, activityId, performedByUserId } = params;
 
     const ticket = await this.prisma.ticket.findUnique({
       where: { qrCodeToken, status: "COMPLETED" },
-      include: { attendances: true },
+      include: { attendances: true, event: true },
     });
 
     if (!ticket) {
       throw new NotFoundException("Ingresso inválido ou não aprovado.");
     }
+
+    // --- Permission Check ---
+    const staffUser = await this.prisma.user.findUnique({
+      where: { id: performedByUserId },
+    });
+
+    if (!staffUser) throw new ForbiddenException("Usuário não encontrado.");
+
+    const isOrganizer = staffUser.role === "ORGANIZER" && staffUser.tenantId === ticket.event.tenantId;
+    
+    const monitor = await this.prisma.eventMonitor.findUnique({
+      where: { eventId_userId: { eventId: ticket.eventId, userId: performedByUserId } },
+    });
+
+    if (!isOrganizer && !monitor) {
+      throw new ForbiddenException("Sem permissão para realizar check-in neste evento.");
+    }
+    // ------------------------
 
     if (activityId) {
       const activity = await this.prisma.activity.findUnique({

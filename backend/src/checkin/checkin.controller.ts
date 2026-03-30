@@ -50,10 +50,14 @@ export class CheckinController {
 
   @UseGuards(JwtAuthGuard)
   @Post("checkin")
-  async checkin(@Body() body: { qrCodeToken: string; activityId?: string }) {
+  async checkin(
+    @Req() req: any,
+    @Body() body: { qrCodeToken: string; activityId?: string },
+  ) {
     return this.checkinService.checkin({
       qrCodeToken: body.qrCodeToken,
       activityId: body.activityId,
+      performedByUserId: req.user.sub,
     });
   }
 

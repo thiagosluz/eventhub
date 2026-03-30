@@ -21,7 +21,7 @@ export default function DashboardLayout({
   const router = useRouter();
 
   useEffect(() => {
-    const allowedRoles = ["ORGANIZER", "REVIEWER"];
+    const allowedRoles = ["ORGANIZER", "REVIEWER", "PARTICIPANT"];
     if (!isLoading && (!isAuthenticated || !user || !allowedRoles.includes(user.role))) {
       router.push("/auth/login");
     }
@@ -46,7 +46,7 @@ export default function DashboardLayout({
     );
   }
 
-  const allowedRoles = ["ORGANIZER", "REVIEWER"];
+  const allowedRoles = ["ORGANIZER", "REVIEWER", "PARTICIPANT"];
   if (!isAuthenticated || !user || !allowedRoles.includes(user.role)) {
     return null;
   }

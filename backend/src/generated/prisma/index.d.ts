@@ -178,6 +178,11 @@ export type ActivityMaterial = $Result.DefaultSelection<Prisma.$ActivityMaterial
  * 
  */
 export type ActivityFeedback = $Result.DefaultSelection<Prisma.$ActivityFeedbackPayload>
+/**
+ * Model EventMonitor
+ * 
+ */
+export type EventMonitor = $Result.DefaultSelection<Prisma.$EventMonitorPayload>
 
 /**
  * Enums
@@ -842,6 +847,16 @@ export class PrismaClient<
     * ```
     */
   get activityFeedback(): Prisma.ActivityFeedbackDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.eventMonitor`: Exposes CRUD operations for the **EventMonitor** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EventMonitors
+    * const eventMonitors = await prisma.eventMonitor.findMany()
+    * ```
+    */
+  get eventMonitor(): Prisma.EventMonitorDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -892,8 +907,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.5.0
-   * Query Engine version: 280c870be64f457428992c43c1f6d557fab6e29e
+   * Prisma Client JS version: 7.6.0
+   * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
    */
   export type PrismaVersion = {
     client: string
@@ -1308,7 +1323,8 @@ export namespace Prisma {
     BadgeClaimCode: 'BadgeClaimCode',
     UserBadge: 'UserBadge',
     ActivityMaterial: 'ActivityMaterial',
-    ActivityFeedback: 'ActivityFeedback'
+    ActivityFeedback: 'ActivityFeedback',
+    EventMonitor: 'EventMonitor'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1324,7 +1340,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "eventReviewer" | "reviewerInvitation" | "submissionModality" | "thematicArea" | "submissionRule" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge" | "activityMaterial" | "activityFeedback"
+      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "eventReviewer" | "reviewerInvitation" | "submissionModality" | "thematicArea" | "submissionRule" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge" | "activityMaterial" | "activityFeedback" | "eventMonitor"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3770,6 +3786,80 @@ export namespace Prisma {
           }
         }
       }
+      EventMonitor: {
+        payload: Prisma.$EventMonitorPayload<ExtArgs>
+        fields: Prisma.EventMonitorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EventMonitorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EventMonitorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload>
+          }
+          findFirst: {
+            args: Prisma.EventMonitorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EventMonitorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload>
+          }
+          findMany: {
+            args: Prisma.EventMonitorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload>[]
+          }
+          create: {
+            args: Prisma.EventMonitorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload>
+          }
+          createMany: {
+            args: Prisma.EventMonitorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EventMonitorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload>[]
+          }
+          delete: {
+            args: Prisma.EventMonitorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload>
+          }
+          update: {
+            args: Prisma.EventMonitorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload>
+          }
+          deleteMany: {
+            args: Prisma.EventMonitorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EventMonitorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EventMonitorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload>[]
+          }
+          upsert: {
+            args: Prisma.EventMonitorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventMonitorPayload>
+          }
+          aggregate: {
+            args: Prisma.EventMonitorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEventMonitor>
+          }
+          groupBy: {
+            args: Prisma.EventMonitorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EventMonitorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EventMonitorCountArgs<ExtArgs>
+            result: $Utils.Optional<EventMonitorCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3911,6 +4001,7 @@ export namespace Prisma {
     userBadge?: UserBadgeOmit
     activityMaterial?: ActivityMaterialOmit
     activityFeedback?: ActivityFeedbackOmit
+    eventMonitor?: EventMonitorOmit
   }
 
   /* Types for Logging */
@@ -4075,6 +4166,7 @@ export namespace Prisma {
     eventReviewers: number
     reviewerInvitations: number
     acceptedInvitations: number
+    eventMonitors: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4086,6 +4178,7 @@ export namespace Prisma {
     eventReviewers?: boolean | UserCountOutputTypeCountEventReviewersArgs
     reviewerInvitations?: boolean | UserCountOutputTypeCountReviewerInvitationsArgs
     acceptedInvitations?: boolean | UserCountOutputTypeCountAcceptedInvitationsArgs
+    eventMonitors?: boolean | UserCountOutputTypeCountEventMonitorsArgs
   }
 
   // Custom InputTypes
@@ -4155,6 +4248,13 @@ export namespace Prisma {
     where?: ReviewerInvitationWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountEventMonitorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventMonitorWhereInput
+  }
+
 
   /**
    * Count Type EventCountOutputType
@@ -4176,6 +4276,7 @@ export namespace Prisma {
     submissionRules: number
     reviewers: number
     reviewerInvitations: number
+    monitors: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4194,6 +4295,7 @@ export namespace Prisma {
     submissionRules?: boolean | EventCountOutputTypeCountSubmissionRulesArgs
     reviewers?: boolean | EventCountOutputTypeCountReviewersArgs
     reviewerInvitations?: boolean | EventCountOutputTypeCountReviewerInvitationsArgs
+    monitors?: boolean | EventCountOutputTypeCountMonitorsArgs
   }
 
   // Custom InputTypes
@@ -4310,6 +4412,13 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountReviewerInvitationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ReviewerInvitationWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountMonitorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventMonitorWhereInput
   }
 
 
@@ -6382,6 +6491,7 @@ export namespace Prisma {
     reviewerInvitations?: boolean | User$reviewerInvitationsArgs<ExtArgs>
     acceptedInvitations?: boolean | User$acceptedInvitationsArgs<ExtArgs>
     speaker?: boolean | User$speakerArgs<ExtArgs>
+    eventMonitors?: boolean | User$eventMonitorsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6450,6 +6560,7 @@ export namespace Prisma {
     reviewerInvitations?: boolean | User$reviewerInvitationsArgs<ExtArgs>
     acceptedInvitations?: boolean | User$acceptedInvitationsArgs<ExtArgs>
     speaker?: boolean | User$speakerArgs<ExtArgs>
+    eventMonitors?: boolean | User$eventMonitorsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6472,6 +6583,7 @@ export namespace Prisma {
       reviewerInvitations: Prisma.$ReviewerInvitationPayload<ExtArgs>[]
       acceptedInvitations: Prisma.$ReviewerInvitationPayload<ExtArgs>[]
       speaker: Prisma.$SpeakerPayload<ExtArgs> | null
+      eventMonitors: Prisma.$EventMonitorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6892,6 +7004,7 @@ export namespace Prisma {
     reviewerInvitations<T extends User$reviewerInvitationsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewerInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewerInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     acceptedInvitations<T extends User$acceptedInvitationsArgs<ExtArgs> = {}>(args?: Subset<T, User$acceptedInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewerInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     speaker<T extends User$speakerArgs<ExtArgs> = {}>(args?: Subset<T, User$speakerArgs<ExtArgs>>): Prisma__SpeakerClient<$Result.GetResult<Prisma.$SpeakerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    eventMonitors<T extends User$eventMonitorsArgs<ExtArgs> = {}>(args?: Subset<T, User$eventMonitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7547,6 +7660,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.eventMonitors
+   */
+  export type User$eventMonitorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    where?: EventMonitorWhereInput
+    orderBy?: EventMonitorOrderByWithRelationInput | EventMonitorOrderByWithRelationInput[]
+    cursor?: EventMonitorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventMonitorScalarFieldEnum | EventMonitorScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7885,6 +8022,7 @@ export namespace Prisma {
     submissionRules?: boolean | Event$submissionRulesArgs<ExtArgs>
     reviewers?: boolean | Event$reviewersArgs<ExtArgs>
     reviewerInvitations?: boolean | Event$reviewerInvitationsArgs<ExtArgs>
+    monitors?: boolean | Event$monitorsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -7986,6 +8124,7 @@ export namespace Prisma {
     submissionRules?: boolean | Event$submissionRulesArgs<ExtArgs>
     reviewers?: boolean | Event$reviewersArgs<ExtArgs>
     reviewerInvitations?: boolean | Event$reviewerInvitationsArgs<ExtArgs>
+    monitors?: boolean | Event$monitorsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8014,6 +8153,7 @@ export namespace Prisma {
       submissionRules: Prisma.$SubmissionRulePayload<ExtArgs>[]
       reviewers: Prisma.$EventReviewerPayload<ExtArgs>[]
       reviewerInvitations: Prisma.$ReviewerInvitationPayload<ExtArgs>[]
+      monitors: Prisma.$EventMonitorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8449,6 +8589,7 @@ export namespace Prisma {
     submissionRules<T extends Event$submissionRulesArgs<ExtArgs> = {}>(args?: Subset<T, Event$submissionRulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviewers<T extends Event$reviewersArgs<ExtArgs> = {}>(args?: Subset<T, Event$reviewersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventReviewerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviewerInvitations<T extends Event$reviewerInvitationsArgs<ExtArgs> = {}>(args?: Subset<T, Event$reviewerInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewerInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    monitors<T extends Event$monitorsArgs<ExtArgs> = {}>(args?: Subset<T, Event$monitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9259,6 +9400,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ReviewerInvitationScalarFieldEnum | ReviewerInvitationScalarFieldEnum[]
+  }
+
+  /**
+   * Event.monitors
+   */
+  export type Event$monitorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    where?: EventMonitorWhereInput
+    orderBy?: EventMonitorOrderByWithRelationInput | EventMonitorOrderByWithRelationInput[]
+    cursor?: EventMonitorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventMonitorScalarFieldEnum | EventMonitorScalarFieldEnum[]
   }
 
   /**
@@ -43455,6 +43620,1064 @@ export namespace Prisma {
 
 
   /**
+   * Model EventMonitor
+   */
+
+  export type AggregateEventMonitor = {
+    _count: EventMonitorCountAggregateOutputType | null
+    _min: EventMonitorMinAggregateOutputType | null
+    _max: EventMonitorMaxAggregateOutputType | null
+  }
+
+  export type EventMonitorMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type EventMonitorMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type EventMonitorCountAggregateOutputType = {
+    id: number
+    eventId: number
+    userId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type EventMonitorMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type EventMonitorMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type EventMonitorCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type EventMonitorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventMonitor to aggregate.
+     */
+    where?: EventMonitorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventMonitors to fetch.
+     */
+    orderBy?: EventMonitorOrderByWithRelationInput | EventMonitorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EventMonitorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventMonitors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventMonitors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EventMonitors
+    **/
+    _count?: true | EventMonitorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EventMonitorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EventMonitorMaxAggregateInputType
+  }
+
+  export type GetEventMonitorAggregateType<T extends EventMonitorAggregateArgs> = {
+        [P in keyof T & keyof AggregateEventMonitor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEventMonitor[P]>
+      : GetScalarType<T[P], AggregateEventMonitor[P]>
+  }
+
+
+
+
+  export type EventMonitorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventMonitorWhereInput
+    orderBy?: EventMonitorOrderByWithAggregationInput | EventMonitorOrderByWithAggregationInput[]
+    by: EventMonitorScalarFieldEnum[] | EventMonitorScalarFieldEnum
+    having?: EventMonitorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EventMonitorCountAggregateInputType | true
+    _min?: EventMonitorMinAggregateInputType
+    _max?: EventMonitorMaxAggregateInputType
+  }
+
+  export type EventMonitorGroupByOutputType = {
+    id: string
+    eventId: string
+    userId: string
+    createdAt: Date
+    _count: EventMonitorCountAggregateOutputType | null
+    _min: EventMonitorMinAggregateOutputType | null
+    _max: EventMonitorMaxAggregateOutputType | null
+  }
+
+  type GetEventMonitorGroupByPayload<T extends EventMonitorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EventMonitorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EventMonitorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventMonitorGroupByOutputType[P]>
+            : GetScalarType<T[P], EventMonitorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EventMonitorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventMonitor"]>
+
+  export type EventMonitorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventMonitor"]>
+
+  export type EventMonitorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventMonitor"]>
+
+  export type EventMonitorSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+  }
+
+  export type EventMonitorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "userId" | "createdAt", ExtArgs["result"]["eventMonitor"]>
+  export type EventMonitorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type EventMonitorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type EventMonitorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $EventMonitorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EventMonitor"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      userId: string
+      createdAt: Date
+    }, ExtArgs["result"]["eventMonitor"]>
+    composites: {}
+  }
+
+  type EventMonitorGetPayload<S extends boolean | null | undefined | EventMonitorDefaultArgs> = $Result.GetResult<Prisma.$EventMonitorPayload, S>
+
+  type EventMonitorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EventMonitorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EventMonitorCountAggregateInputType | true
+    }
+
+  export interface EventMonitorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EventMonitor'], meta: { name: 'EventMonitor' } }
+    /**
+     * Find zero or one EventMonitor that matches the filter.
+     * @param {EventMonitorFindUniqueArgs} args - Arguments to find a EventMonitor
+     * @example
+     * // Get one EventMonitor
+     * const eventMonitor = await prisma.eventMonitor.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EventMonitorFindUniqueArgs>(args: SelectSubset<T, EventMonitorFindUniqueArgs<ExtArgs>>): Prisma__EventMonitorClient<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EventMonitor that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EventMonitorFindUniqueOrThrowArgs} args - Arguments to find a EventMonitor
+     * @example
+     * // Get one EventMonitor
+     * const eventMonitor = await prisma.eventMonitor.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EventMonitorFindUniqueOrThrowArgs>(args: SelectSubset<T, EventMonitorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EventMonitorClient<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventMonitor that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventMonitorFindFirstArgs} args - Arguments to find a EventMonitor
+     * @example
+     * // Get one EventMonitor
+     * const eventMonitor = await prisma.eventMonitor.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EventMonitorFindFirstArgs>(args?: SelectSubset<T, EventMonitorFindFirstArgs<ExtArgs>>): Prisma__EventMonitorClient<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventMonitor that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventMonitorFindFirstOrThrowArgs} args - Arguments to find a EventMonitor
+     * @example
+     * // Get one EventMonitor
+     * const eventMonitor = await prisma.eventMonitor.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EventMonitorFindFirstOrThrowArgs>(args?: SelectSubset<T, EventMonitorFindFirstOrThrowArgs<ExtArgs>>): Prisma__EventMonitorClient<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EventMonitors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventMonitorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EventMonitors
+     * const eventMonitors = await prisma.eventMonitor.findMany()
+     * 
+     * // Get first 10 EventMonitors
+     * const eventMonitors = await prisma.eventMonitor.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const eventMonitorWithIdOnly = await prisma.eventMonitor.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EventMonitorFindManyArgs>(args?: SelectSubset<T, EventMonitorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EventMonitor.
+     * @param {EventMonitorCreateArgs} args - Arguments to create a EventMonitor.
+     * @example
+     * // Create one EventMonitor
+     * const EventMonitor = await prisma.eventMonitor.create({
+     *   data: {
+     *     // ... data to create a EventMonitor
+     *   }
+     * })
+     * 
+     */
+    create<T extends EventMonitorCreateArgs>(args: SelectSubset<T, EventMonitorCreateArgs<ExtArgs>>): Prisma__EventMonitorClient<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EventMonitors.
+     * @param {EventMonitorCreateManyArgs} args - Arguments to create many EventMonitors.
+     * @example
+     * // Create many EventMonitors
+     * const eventMonitor = await prisma.eventMonitor.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EventMonitorCreateManyArgs>(args?: SelectSubset<T, EventMonitorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EventMonitors and returns the data saved in the database.
+     * @param {EventMonitorCreateManyAndReturnArgs} args - Arguments to create many EventMonitors.
+     * @example
+     * // Create many EventMonitors
+     * const eventMonitor = await prisma.eventMonitor.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EventMonitors and only return the `id`
+     * const eventMonitorWithIdOnly = await prisma.eventMonitor.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EventMonitorCreateManyAndReturnArgs>(args?: SelectSubset<T, EventMonitorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EventMonitor.
+     * @param {EventMonitorDeleteArgs} args - Arguments to delete one EventMonitor.
+     * @example
+     * // Delete one EventMonitor
+     * const EventMonitor = await prisma.eventMonitor.delete({
+     *   where: {
+     *     // ... filter to delete one EventMonitor
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EventMonitorDeleteArgs>(args: SelectSubset<T, EventMonitorDeleteArgs<ExtArgs>>): Prisma__EventMonitorClient<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EventMonitor.
+     * @param {EventMonitorUpdateArgs} args - Arguments to update one EventMonitor.
+     * @example
+     * // Update one EventMonitor
+     * const eventMonitor = await prisma.eventMonitor.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EventMonitorUpdateArgs>(args: SelectSubset<T, EventMonitorUpdateArgs<ExtArgs>>): Prisma__EventMonitorClient<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EventMonitors.
+     * @param {EventMonitorDeleteManyArgs} args - Arguments to filter EventMonitors to delete.
+     * @example
+     * // Delete a few EventMonitors
+     * const { count } = await prisma.eventMonitor.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EventMonitorDeleteManyArgs>(args?: SelectSubset<T, EventMonitorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventMonitors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventMonitorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EventMonitors
+     * const eventMonitor = await prisma.eventMonitor.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EventMonitorUpdateManyArgs>(args: SelectSubset<T, EventMonitorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventMonitors and returns the data updated in the database.
+     * @param {EventMonitorUpdateManyAndReturnArgs} args - Arguments to update many EventMonitors.
+     * @example
+     * // Update many EventMonitors
+     * const eventMonitor = await prisma.eventMonitor.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EventMonitors and only return the `id`
+     * const eventMonitorWithIdOnly = await prisma.eventMonitor.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EventMonitorUpdateManyAndReturnArgs>(args: SelectSubset<T, EventMonitorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EventMonitor.
+     * @param {EventMonitorUpsertArgs} args - Arguments to update or create a EventMonitor.
+     * @example
+     * // Update or create a EventMonitor
+     * const eventMonitor = await prisma.eventMonitor.upsert({
+     *   create: {
+     *     // ... data to create a EventMonitor
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EventMonitor we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EventMonitorUpsertArgs>(args: SelectSubset<T, EventMonitorUpsertArgs<ExtArgs>>): Prisma__EventMonitorClient<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EventMonitors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventMonitorCountArgs} args - Arguments to filter EventMonitors to count.
+     * @example
+     * // Count the number of EventMonitors
+     * const count = await prisma.eventMonitor.count({
+     *   where: {
+     *     // ... the filter for the EventMonitors we want to count
+     *   }
+     * })
+    **/
+    count<T extends EventMonitorCountArgs>(
+      args?: Subset<T, EventMonitorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EventMonitorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EventMonitor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventMonitorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EventMonitorAggregateArgs>(args: Subset<T, EventMonitorAggregateArgs>): Prisma.PrismaPromise<GetEventMonitorAggregateType<T>>
+
+    /**
+     * Group by EventMonitor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventMonitorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EventMonitorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EventMonitorGroupByArgs['orderBy'] }
+        : { orderBy?: EventMonitorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EventMonitorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEventMonitorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EventMonitor model
+   */
+  readonly fields: EventMonitorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EventMonitor.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EventMonitorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EventMonitor model
+   */
+  interface EventMonitorFieldRefs {
+    readonly id: FieldRef<"EventMonitor", 'String'>
+    readonly eventId: FieldRef<"EventMonitor", 'String'>
+    readonly userId: FieldRef<"EventMonitor", 'String'>
+    readonly createdAt: FieldRef<"EventMonitor", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EventMonitor findUnique
+   */
+  export type EventMonitorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    /**
+     * Filter, which EventMonitor to fetch.
+     */
+    where: EventMonitorWhereUniqueInput
+  }
+
+  /**
+   * EventMonitor findUniqueOrThrow
+   */
+  export type EventMonitorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    /**
+     * Filter, which EventMonitor to fetch.
+     */
+    where: EventMonitorWhereUniqueInput
+  }
+
+  /**
+   * EventMonitor findFirst
+   */
+  export type EventMonitorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    /**
+     * Filter, which EventMonitor to fetch.
+     */
+    where?: EventMonitorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventMonitors to fetch.
+     */
+    orderBy?: EventMonitorOrderByWithRelationInput | EventMonitorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventMonitors.
+     */
+    cursor?: EventMonitorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventMonitors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventMonitors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventMonitors.
+     */
+    distinct?: EventMonitorScalarFieldEnum | EventMonitorScalarFieldEnum[]
+  }
+
+  /**
+   * EventMonitor findFirstOrThrow
+   */
+  export type EventMonitorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    /**
+     * Filter, which EventMonitor to fetch.
+     */
+    where?: EventMonitorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventMonitors to fetch.
+     */
+    orderBy?: EventMonitorOrderByWithRelationInput | EventMonitorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventMonitors.
+     */
+    cursor?: EventMonitorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventMonitors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventMonitors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventMonitors.
+     */
+    distinct?: EventMonitorScalarFieldEnum | EventMonitorScalarFieldEnum[]
+  }
+
+  /**
+   * EventMonitor findMany
+   */
+  export type EventMonitorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    /**
+     * Filter, which EventMonitors to fetch.
+     */
+    where?: EventMonitorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventMonitors to fetch.
+     */
+    orderBy?: EventMonitorOrderByWithRelationInput | EventMonitorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EventMonitors.
+     */
+    cursor?: EventMonitorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventMonitors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventMonitors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventMonitors.
+     */
+    distinct?: EventMonitorScalarFieldEnum | EventMonitorScalarFieldEnum[]
+  }
+
+  /**
+   * EventMonitor create
+   */
+  export type EventMonitorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EventMonitor.
+     */
+    data: XOR<EventMonitorCreateInput, EventMonitorUncheckedCreateInput>
+  }
+
+  /**
+   * EventMonitor createMany
+   */
+  export type EventMonitorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EventMonitors.
+     */
+    data: EventMonitorCreateManyInput | EventMonitorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EventMonitor createManyAndReturn
+   */
+  export type EventMonitorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * The data used to create many EventMonitors.
+     */
+    data: EventMonitorCreateManyInput | EventMonitorCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventMonitor update
+   */
+  export type EventMonitorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EventMonitor.
+     */
+    data: XOR<EventMonitorUpdateInput, EventMonitorUncheckedUpdateInput>
+    /**
+     * Choose, which EventMonitor to update.
+     */
+    where: EventMonitorWhereUniqueInput
+  }
+
+  /**
+   * EventMonitor updateMany
+   */
+  export type EventMonitorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EventMonitors.
+     */
+    data: XOR<EventMonitorUpdateManyMutationInput, EventMonitorUncheckedUpdateManyInput>
+    /**
+     * Filter which EventMonitors to update
+     */
+    where?: EventMonitorWhereInput
+    /**
+     * Limit how many EventMonitors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventMonitor updateManyAndReturn
+   */
+  export type EventMonitorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * The data used to update EventMonitors.
+     */
+    data: XOR<EventMonitorUpdateManyMutationInput, EventMonitorUncheckedUpdateManyInput>
+    /**
+     * Filter which EventMonitors to update
+     */
+    where?: EventMonitorWhereInput
+    /**
+     * Limit how many EventMonitors to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventMonitor upsert
+   */
+  export type EventMonitorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EventMonitor to update in case it exists.
+     */
+    where: EventMonitorWhereUniqueInput
+    /**
+     * In case the EventMonitor found by the `where` argument doesn't exist, create a new EventMonitor with this data.
+     */
+    create: XOR<EventMonitorCreateInput, EventMonitorUncheckedCreateInput>
+    /**
+     * In case the EventMonitor was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EventMonitorUpdateInput, EventMonitorUncheckedUpdateInput>
+  }
+
+  /**
+   * EventMonitor delete
+   */
+  export type EventMonitorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+    /**
+     * Filter which EventMonitor to delete.
+     */
+    where: EventMonitorWhereUniqueInput
+  }
+
+  /**
+   * EventMonitor deleteMany
+   */
+  export type EventMonitorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventMonitors to delete
+     */
+    where?: EventMonitorWhereInput
+    /**
+     * Limit how many EventMonitors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventMonitor without action
+   */
+  export type EventMonitorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventMonitor
+     */
+    select?: EventMonitorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventMonitor
+     */
+    omit?: EventMonitorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventMonitorInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -43914,6 +45137,16 @@ export namespace Prisma {
   };
 
   export type ActivityFeedbackScalarFieldEnum = (typeof ActivityFeedbackScalarFieldEnum)[keyof typeof ActivityFeedbackScalarFieldEnum]
+
+
+  export const EventMonitorScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    userId: 'userId',
+    createdAt: 'createdAt'
+  };
+
+  export type EventMonitorScalarFieldEnum = (typeof EventMonitorScalarFieldEnum)[keyof typeof EventMonitorScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -44381,6 +45614,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationListRelationFilter
     acceptedInvitations?: ReviewerInvitationListRelationFilter
     speaker?: XOR<SpeakerNullableScalarRelationFilter, SpeakerWhereInput> | null
+    eventMonitors?: EventMonitorListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -44408,6 +45642,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationOrderByRelationAggregateInput
     acceptedInvitations?: ReviewerInvitationOrderByRelationAggregateInput
     speaker?: SpeakerOrderByWithRelationInput
+    eventMonitors?: EventMonitorOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -44438,6 +45673,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationListRelationFilter
     acceptedInvitations?: ReviewerInvitationListRelationFilter
     speaker?: XOR<SpeakerNullableScalarRelationFilter, SpeakerWhereInput> | null
+    eventMonitors?: EventMonitorListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -44523,6 +45759,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleListRelationFilter
     reviewers?: EventReviewerListRelationFilter
     reviewerInvitations?: ReviewerInvitationListRelationFilter
+    monitors?: EventMonitorListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -44565,6 +45802,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleOrderByRelationAggregateInput
     reviewers?: EventReviewerOrderByRelationAggregateInput
     reviewerInvitations?: ReviewerInvitationOrderByRelationAggregateInput
+    monitors?: EventMonitorOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -44611,6 +45849,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleListRelationFilter
     reviewers?: EventReviewerListRelationFilter
     reviewerInvitations?: ReviewerInvitationListRelationFilter
+    monitors?: EventMonitorListRelationFilter
   }, "id" | "tenantId_slug">
 
   export type EventOrderByWithAggregationInput = {
@@ -46787,6 +48026,60 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ActivityFeedback"> | Date | string
   }
 
+  export type EventMonitorWhereInput = {
+    AND?: EventMonitorWhereInput | EventMonitorWhereInput[]
+    OR?: EventMonitorWhereInput[]
+    NOT?: EventMonitorWhereInput | EventMonitorWhereInput[]
+    id?: StringFilter<"EventMonitor"> | string
+    eventId?: StringFilter<"EventMonitor"> | string
+    userId?: StringFilter<"EventMonitor"> | string
+    createdAt?: DateTimeFilter<"EventMonitor"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type EventMonitorOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type EventMonitorWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    eventId_userId?: EventMonitorEventIdUserIdCompoundUniqueInput
+    AND?: EventMonitorWhereInput | EventMonitorWhereInput[]
+    OR?: EventMonitorWhereInput[]
+    NOT?: EventMonitorWhereInput | EventMonitorWhereInput[]
+    eventId?: StringFilter<"EventMonitor"> | string
+    userId?: StringFilter<"EventMonitor"> | string
+    createdAt?: DateTimeFilter<"EventMonitor"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "eventId_userId">
+
+  export type EventMonitorOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    _count?: EventMonitorCountOrderByAggregateInput
+    _max?: EventMonitorMaxOrderByAggregateInput
+    _min?: EventMonitorMinOrderByAggregateInput
+  }
+
+  export type EventMonitorScalarWhereWithAggregatesInput = {
+    AND?: EventMonitorScalarWhereWithAggregatesInput | EventMonitorScalarWhereWithAggregatesInput[]
+    OR?: EventMonitorScalarWhereWithAggregatesInput[]
+    NOT?: EventMonitorScalarWhereWithAggregatesInput | EventMonitorScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EventMonitor"> | string
+    eventId?: StringWithAggregatesFilter<"EventMonitor"> | string
+    userId?: StringWithAggregatesFilter<"EventMonitor"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"EventMonitor"> | Date | string
+  }
+
   export type TenantCreateInput = {
     id?: string
     name: string
@@ -46905,6 +48198,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -46931,6 +48225,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -46957,6 +48252,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -46983,6 +48279,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -47074,6 +48371,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -47115,6 +48413,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -47156,6 +48455,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -47197,6 +48497,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -49405,6 +50706,53 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EventMonitorCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutMonitorsInput
+    user: UserCreateNestedOneWithoutEventMonitorsInput
+  }
+
+  export type EventMonitorUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type EventMonitorUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutMonitorsNestedInput
+    user?: UserUpdateOneRequiredWithoutEventMonitorsNestedInput
+  }
+
+  export type EventMonitorUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventMonitorCreateManyInput = {
+    id?: string
+    eventId: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type EventMonitorUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventMonitorUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -49713,6 +51061,12 @@ export namespace Prisma {
     isNot?: SpeakerWhereInput | null
   }
 
+  export type EventMonitorListRelationFilter = {
+    every?: EventMonitorWhereInput
+    some?: EventMonitorWhereInput
+    none?: EventMonitorWhereInput
+  }
+
   export type RegistrationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -49738,6 +51092,10 @@ export namespace Prisma {
   }
 
   export type ReviewerInvitationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EventMonitorOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -51564,6 +52922,32 @@ export namespace Prisma {
     rating?: SortOrder
   }
 
+  export type EventMonitorEventIdUserIdCompoundUniqueInput = {
+    eventId: string
+    userId: string
+  }
+
+  export type EventMonitorCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventMonitorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EventMonitorMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserCreateNestedManyWithoutTenantInput = {
     create?: XOR<UserCreateWithoutTenantInput, UserUncheckedCreateWithoutTenantInput> | UserCreateWithoutTenantInput[] | UserUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: UserCreateOrConnectWithoutTenantInput | UserCreateOrConnectWithoutTenantInput[]
@@ -51896,6 +53280,13 @@ export namespace Prisma {
     connect?: SpeakerWhereUniqueInput
   }
 
+  export type EventMonitorCreateNestedManyWithoutUserInput = {
+    create?: XOR<EventMonitorCreateWithoutUserInput, EventMonitorUncheckedCreateWithoutUserInput> | EventMonitorCreateWithoutUserInput[] | EventMonitorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventMonitorCreateOrConnectWithoutUserInput | EventMonitorCreateOrConnectWithoutUserInput[]
+    createMany?: EventMonitorCreateManyUserInputEnvelope
+    connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+  }
+
   export type RegistrationUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<RegistrationCreateWithoutUserInput, RegistrationUncheckedCreateWithoutUserInput> | RegistrationCreateWithoutUserInput[] | RegistrationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutUserInput | RegistrationCreateOrConnectWithoutUserInput[]
@@ -51956,6 +53347,13 @@ export namespace Prisma {
     create?: XOR<SpeakerCreateWithoutUserInput, SpeakerUncheckedCreateWithoutUserInput>
     connectOrCreate?: SpeakerCreateOrConnectWithoutUserInput
     connect?: SpeakerWhereUniqueInput
+  }
+
+  export type EventMonitorUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<EventMonitorCreateWithoutUserInput, EventMonitorUncheckedCreateWithoutUserInput> | EventMonitorCreateWithoutUserInput[] | EventMonitorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventMonitorCreateOrConnectWithoutUserInput | EventMonitorCreateOrConnectWithoutUserInput[]
+    createMany?: EventMonitorCreateManyUserInputEnvelope
+    connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
   }
 
   export type EnumUserRoleFieldUpdateOperationsInput = {
@@ -52100,6 +53498,20 @@ export namespace Prisma {
     update?: XOR<XOR<SpeakerUpdateToOneWithWhereWithoutUserInput, SpeakerUpdateWithoutUserInput>, SpeakerUncheckedUpdateWithoutUserInput>
   }
 
+  export type EventMonitorUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EventMonitorCreateWithoutUserInput, EventMonitorUncheckedCreateWithoutUserInput> | EventMonitorCreateWithoutUserInput[] | EventMonitorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventMonitorCreateOrConnectWithoutUserInput | EventMonitorCreateOrConnectWithoutUserInput[]
+    upsert?: EventMonitorUpsertWithWhereUniqueWithoutUserInput | EventMonitorUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EventMonitorCreateManyUserInputEnvelope
+    set?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    disconnect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    delete?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    update?: EventMonitorUpdateWithWhereUniqueWithoutUserInput | EventMonitorUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EventMonitorUpdateManyWithWhereWithoutUserInput | EventMonitorUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EventMonitorScalarWhereInput | EventMonitorScalarWhereInput[]
+  }
+
   export type RegistrationUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<RegistrationCreateWithoutUserInput, RegistrationUncheckedCreateWithoutUserInput> | RegistrationCreateWithoutUserInput[] | RegistrationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutUserInput | RegistrationCreateOrConnectWithoutUserInput[]
@@ -52222,6 +53634,20 @@ export namespace Prisma {
     update?: XOR<XOR<SpeakerUpdateToOneWithWhereWithoutUserInput, SpeakerUpdateWithoutUserInput>, SpeakerUncheckedUpdateWithoutUserInput>
   }
 
+  export type EventMonitorUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EventMonitorCreateWithoutUserInput, EventMonitorUncheckedCreateWithoutUserInput> | EventMonitorCreateWithoutUserInput[] | EventMonitorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EventMonitorCreateOrConnectWithoutUserInput | EventMonitorCreateOrConnectWithoutUserInput[]
+    upsert?: EventMonitorUpsertWithWhereUniqueWithoutUserInput | EventMonitorUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EventMonitorCreateManyUserInputEnvelope
+    set?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    disconnect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    delete?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    update?: EventMonitorUpdateWithWhereUniqueWithoutUserInput | EventMonitorUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EventMonitorUpdateManyWithWhereWithoutUserInput | EventMonitorUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EventMonitorScalarWhereInput | EventMonitorScalarWhereInput[]
+  }
+
   export type TenantCreateNestedOneWithoutEventsInput = {
     create?: XOR<TenantCreateWithoutEventsInput, TenantUncheckedCreateWithoutEventsInput>
     connectOrCreate?: TenantCreateOrConnectWithoutEventsInput
@@ -52333,6 +53759,13 @@ export namespace Prisma {
     connect?: ReviewerInvitationWhereUniqueInput | ReviewerInvitationWhereUniqueInput[]
   }
 
+  export type EventMonitorCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventMonitorCreateWithoutEventInput, EventMonitorUncheckedCreateWithoutEventInput> | EventMonitorCreateWithoutEventInput[] | EventMonitorUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventMonitorCreateOrConnectWithoutEventInput | EventMonitorCreateOrConnectWithoutEventInput[]
+    createMany?: EventMonitorCreateManyEventInputEnvelope
+    connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+  }
+
   export type ActivityUncheckedCreateNestedManyWithoutEventInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -52436,6 +53869,13 @@ export namespace Prisma {
     connectOrCreate?: ReviewerInvitationCreateOrConnectWithoutEventInput | ReviewerInvitationCreateOrConnectWithoutEventInput[]
     createMany?: ReviewerInvitationCreateManyEventInputEnvelope
     connect?: ReviewerInvitationWhereUniqueInput | ReviewerInvitationWhereUniqueInput[]
+  }
+
+  export type EventMonitorUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventMonitorCreateWithoutEventInput, EventMonitorUncheckedCreateWithoutEventInput> | EventMonitorCreateWithoutEventInput[] | EventMonitorUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventMonitorCreateOrConnectWithoutEventInput | EventMonitorCreateOrConnectWithoutEventInput[]
+    createMany?: EventMonitorCreateManyEventInputEnvelope
+    connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
   }
 
   export type EnumEventStatusFieldUpdateOperationsInput = {
@@ -52660,6 +54100,20 @@ export namespace Prisma {
     deleteMany?: ReviewerInvitationScalarWhereInput | ReviewerInvitationScalarWhereInput[]
   }
 
+  export type EventMonitorUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventMonitorCreateWithoutEventInput, EventMonitorUncheckedCreateWithoutEventInput> | EventMonitorCreateWithoutEventInput[] | EventMonitorUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventMonitorCreateOrConnectWithoutEventInput | EventMonitorCreateOrConnectWithoutEventInput[]
+    upsert?: EventMonitorUpsertWithWhereUniqueWithoutEventInput | EventMonitorUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventMonitorCreateManyEventInputEnvelope
+    set?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    disconnect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    delete?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    update?: EventMonitorUpdateWithWhereUniqueWithoutEventInput | EventMonitorUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventMonitorUpdateManyWithWhereWithoutEventInput | EventMonitorUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventMonitorScalarWhereInput | EventMonitorScalarWhereInput[]
+  }
+
   export type ActivityUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -52868,6 +54322,20 @@ export namespace Prisma {
     update?: ReviewerInvitationUpdateWithWhereUniqueWithoutEventInput | ReviewerInvitationUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: ReviewerInvitationUpdateManyWithWhereWithoutEventInput | ReviewerInvitationUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: ReviewerInvitationScalarWhereInput | ReviewerInvitationScalarWhereInput[]
+  }
+
+  export type EventMonitorUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventMonitorCreateWithoutEventInput, EventMonitorUncheckedCreateWithoutEventInput> | EventMonitorCreateWithoutEventInput[] | EventMonitorUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventMonitorCreateOrConnectWithoutEventInput | EventMonitorCreateOrConnectWithoutEventInput[]
+    upsert?: EventMonitorUpsertWithWhereUniqueWithoutEventInput | EventMonitorUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventMonitorCreateManyEventInputEnvelope
+    set?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    disconnect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    delete?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+    update?: EventMonitorUpdateWithWhereUniqueWithoutEventInput | EventMonitorUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventMonitorUpdateManyWithWhereWithoutEventInput | EventMonitorUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventMonitorScalarWhereInput | EventMonitorScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutActivityTypesInput = {
@@ -54934,6 +56402,34 @@ export namespace Prisma {
     update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutActivityFeedbacksInput, RegistrationUpdateWithoutActivityFeedbacksInput>, RegistrationUncheckedUpdateWithoutActivityFeedbacksInput>
   }
 
+  export type EventCreateNestedOneWithoutMonitorsInput = {
+    create?: XOR<EventCreateWithoutMonitorsInput, EventUncheckedCreateWithoutMonitorsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutMonitorsInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutEventMonitorsInput = {
+    create?: XOR<UserCreateWithoutEventMonitorsInput, UserUncheckedCreateWithoutEventMonitorsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEventMonitorsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EventUpdateOneRequiredWithoutMonitorsNestedInput = {
+    create?: XOR<EventCreateWithoutMonitorsInput, EventUncheckedCreateWithoutMonitorsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutMonitorsInput
+    upsert?: EventUpsertWithoutMonitorsInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutMonitorsInput, EventUpdateWithoutMonitorsInput>, EventUncheckedUpdateWithoutMonitorsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutEventMonitorsNestedInput = {
+    create?: XOR<UserCreateWithoutEventMonitorsInput, UserUncheckedCreateWithoutEventMonitorsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEventMonitorsInput
+    upsert?: UserUpsertWithoutEventMonitorsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEventMonitorsInput, UserUpdateWithoutEventMonitorsInput>, UserUncheckedUpdateWithoutEventMonitorsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -55486,6 +56982,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTenantInput = {
@@ -55511,6 +57008,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTenantInput = {
@@ -55561,6 +57059,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTenantInput = {
@@ -55601,6 +57100,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTenantInput = {
@@ -56250,6 +57750,28 @@ export namespace Prisma {
     create: XOR<SpeakerCreateWithoutUserInput, SpeakerUncheckedCreateWithoutUserInput>
   }
 
+  export type EventMonitorCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutMonitorsInput
+  }
+
+  export type EventMonitorUncheckedCreateWithoutUserInput = {
+    id?: string
+    eventId: string
+    createdAt?: Date | string
+  }
+
+  export type EventMonitorCreateOrConnectWithoutUserInput = {
+    where: EventMonitorWhereUniqueInput
+    create: XOR<EventMonitorCreateWithoutUserInput, EventMonitorUncheckedCreateWithoutUserInput>
+  }
+
+  export type EventMonitorCreateManyUserInputEnvelope = {
+    data: EventMonitorCreateManyUserInput | EventMonitorCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TenantUpsertWithoutUsersInput = {
     update: XOR<TenantUpdateWithoutUsersInput, TenantUncheckedUpdateWithoutUsersInput>
     create: XOR<TenantCreateWithoutUsersInput, TenantUncheckedCreateWithoutUsersInput>
@@ -56546,6 +58068,32 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivitySpeakerUncheckedUpdateManyWithoutSpeakerNestedInput
+  }
+
+  export type EventMonitorUpsertWithWhereUniqueWithoutUserInput = {
+    where: EventMonitorWhereUniqueInput
+    update: XOR<EventMonitorUpdateWithoutUserInput, EventMonitorUncheckedUpdateWithoutUserInput>
+    create: XOR<EventMonitorCreateWithoutUserInput, EventMonitorUncheckedCreateWithoutUserInput>
+  }
+
+  export type EventMonitorUpdateWithWhereUniqueWithoutUserInput = {
+    where: EventMonitorWhereUniqueInput
+    data: XOR<EventMonitorUpdateWithoutUserInput, EventMonitorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type EventMonitorUpdateManyWithWhereWithoutUserInput = {
+    where: EventMonitorScalarWhereInput
+    data: XOR<EventMonitorUpdateManyMutationInput, EventMonitorUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type EventMonitorScalarWhereInput = {
+    AND?: EventMonitorScalarWhereInput | EventMonitorScalarWhereInput[]
+    OR?: EventMonitorScalarWhereInput[]
+    NOT?: EventMonitorScalarWhereInput | EventMonitorScalarWhereInput[]
+    id?: StringFilter<"EventMonitor"> | string
+    eventId?: StringFilter<"EventMonitor"> | string
+    userId?: StringFilter<"EventMonitor"> | string
+    createdAt?: DateTimeFilter<"EventMonitor"> | Date | string
   }
 
   export type TenantCreateWithoutEventsInput = {
@@ -57073,6 +58621,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EventMonitorCreateWithoutEventInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutEventMonitorsInput
+  }
+
+  export type EventMonitorUncheckedCreateWithoutEventInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type EventMonitorCreateOrConnectWithoutEventInput = {
+    where: EventMonitorWhereUniqueInput
+    create: XOR<EventMonitorCreateWithoutEventInput, EventMonitorUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventMonitorCreateManyEventInputEnvelope = {
+    data: EventMonitorCreateManyEventInput | EventMonitorCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TenantUpsertWithoutEventsInput = {
     update: XOR<TenantUpdateWithoutEventsInput, TenantUncheckedUpdateWithoutEventsInput>
     create: XOR<TenantCreateWithoutEventsInput, TenantUncheckedCreateWithoutEventsInput>
@@ -57478,6 +59048,22 @@ export namespace Prisma {
     data: XOR<ReviewerInvitationUpdateManyMutationInput, ReviewerInvitationUncheckedUpdateManyWithoutEventInput>
   }
 
+  export type EventMonitorUpsertWithWhereUniqueWithoutEventInput = {
+    where: EventMonitorWhereUniqueInput
+    update: XOR<EventMonitorUpdateWithoutEventInput, EventMonitorUncheckedUpdateWithoutEventInput>
+    create: XOR<EventMonitorCreateWithoutEventInput, EventMonitorUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventMonitorUpdateWithWhereUniqueWithoutEventInput = {
+    where: EventMonitorWhereUniqueInput
+    data: XOR<EventMonitorUpdateWithoutEventInput, EventMonitorUncheckedUpdateWithoutEventInput>
+  }
+
+  export type EventMonitorUpdateManyWithWhereWithoutEventInput = {
+    where: EventMonitorScalarWhereInput
+    data: XOR<EventMonitorUpdateManyMutationInput, EventMonitorUncheckedUpdateManyWithoutEventInput>
+  }
+
   export type TenantCreateWithoutActivityTypesInput = {
     id?: string
     name: string
@@ -57785,6 +59371,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutActivitiesInput = {
@@ -57825,6 +59412,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutActivitiesInput = {
@@ -58050,6 +59638,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutActivitiesInput = {
@@ -58090,6 +59679,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityTypeUpsertWithoutActivitiesInput = {
@@ -58316,6 +59906,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerCreateNestedManyWithoutUserInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSpeakerInput = {
@@ -58341,6 +59932,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerUncheckedCreateNestedManyWithoutUserInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSpeakerInput = {
@@ -58443,6 +60035,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerUpdateManyWithoutUserNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSpeakerInput = {
@@ -58468,6 +60061,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerUncheckedUpdateManyWithoutUserNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ActivitySpeakerUpsertWithWhereUniqueWithoutSpeakerInput = {
@@ -58744,6 +60338,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -58784,6 +60379,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -58814,6 +60410,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRegistrationsInput = {
@@ -58839,6 +60436,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRegistrationsInput = {
@@ -59063,6 +60661,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -59103,6 +60702,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutRegistrationsInput = {
@@ -59139,6 +60739,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRegistrationsInput = {
@@ -59164,6 +60765,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TicketUpsertWithWhereUniqueWithoutRegistrationInput = {
@@ -59495,6 +61097,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTicketsInput = {
@@ -59535,6 +61138,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTicketsInput = {
@@ -59642,6 +61246,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTicketsInput = {
@@ -59682,6 +61287,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutTicketsInput = {
@@ -59773,6 +61379,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutFormsInput = {
@@ -59813,6 +61420,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutFormsInput = {
@@ -59929,6 +61537,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutFormsInput = {
@@ -59969,6 +61578,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type CustomFormResponseUpsertWithWhereUniqueWithoutFormInput = {
@@ -60506,6 +62116,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionsInput = {
@@ -60546,6 +62157,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionsInput = {
@@ -60576,6 +62188,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubmissionsInput = {
@@ -60601,6 +62214,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubmissionsInput = {
@@ -60755,6 +62369,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionsInput = {
@@ -60795,6 +62410,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutSubmissionsInput = {
@@ -60831,6 +62447,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubmissionsInput = {
@@ -60856,6 +62473,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SubmissionModalityUpsertWithoutSubmissionsInput = {
@@ -61004,6 +62622,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReviewsInput = {
@@ -61029,6 +62648,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReviewsInput = {
@@ -61111,6 +62731,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -61136,6 +62757,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutReviewersInput = {
@@ -61176,6 +62798,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutReviewersInput = {
@@ -61216,6 +62839,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutReviewersInput = {
@@ -61246,6 +62870,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEventReviewersInput = {
@@ -61271,6 +62896,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEventReviewersInput = {
@@ -61327,6 +62953,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutReviewersInput = {
@@ -61367,6 +62994,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutEventReviewersInput = {
@@ -61403,6 +63031,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEventReviewersInput = {
@@ -61428,6 +63057,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutReviewerInvitationsInput = {
@@ -61468,6 +63098,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutReviewerInvitationsInput = {
@@ -61508,6 +63139,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutReviewerInvitationsInput = {
@@ -61538,6 +63170,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerCreateNestedManyWithoutUserInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReviewerInvitationsInput = {
@@ -61563,6 +63196,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerUncheckedCreateNestedManyWithoutUserInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReviewerInvitationsInput = {
@@ -61593,6 +63227,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerCreateNestedManyWithoutUserInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAcceptedInvitationsInput = {
@@ -61618,6 +63253,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerUncheckedCreateNestedManyWithoutUserInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAcceptedInvitationsInput = {
@@ -61674,6 +63310,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutReviewerInvitationsInput = {
@@ -61714,6 +63351,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutReviewerInvitationsInput = {
@@ -61750,6 +63388,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerUpdateManyWithoutUserNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewerInvitationsInput = {
@@ -61775,6 +63414,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerUncheckedUpdateManyWithoutUserNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutAcceptedInvitationsInput = {
@@ -61811,6 +63451,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerUpdateManyWithoutUserNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAcceptedInvitationsInput = {
@@ -61836,6 +63477,7 @@ export namespace Prisma {
     eventReviewers?: EventReviewerUncheckedUpdateManyWithoutUserNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutSubmissionModalitiesInput = {
@@ -61876,6 +63518,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionModalitiesInput = {
@@ -61916,6 +63559,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionModalitiesInput = {
@@ -62012,6 +63656,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionModalitiesInput = {
@@ -62052,6 +63697,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SubmissionUpsertWithWhereUniqueWithoutModalityInput = {
@@ -62108,6 +63754,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutThematicAreasInput = {
@@ -62148,6 +63795,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutThematicAreasInput = {
@@ -62244,6 +63892,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutThematicAreasInput = {
@@ -62284,6 +63933,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SubmissionUpsertWithWhereUniqueWithoutThematicAreaInput = {
@@ -62340,6 +63990,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionRulesInput = {
@@ -62380,6 +64031,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionRulesInput = {
@@ -62436,6 +64088,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionRulesInput = {
@@ -62476,6 +64129,7 @@ export namespace Prisma {
     thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type TicketCreateWithoutAttendancesInput = {
@@ -62688,6 +64342,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutCertificateTemplatesInput = {
@@ -62728,6 +64383,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutCertificateTemplatesInput = {
@@ -62810,6 +64466,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutCertificateTemplatesInput = {
@@ -62850,6 +64507,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type IssuedCertificateUpsertWithWhereUniqueWithoutTemplateInput = {
@@ -63026,6 +64684,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSponsorCategoriesInput = {
@@ -63066,6 +64725,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSponsorCategoriesInput = {
@@ -63152,6 +64812,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSponsorCategoriesInput = {
@@ -63192,6 +64853,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SponsorUpsertWithWhereUniqueWithoutCategoryInput = {
@@ -63322,6 +64984,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRaffleHistoriesInput = {
@@ -63362,6 +65025,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRaffleHistoriesInput = {
@@ -63498,6 +65162,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRaffleHistoriesInput = {
@@ -63538,6 +65203,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityUpsertWithoutRaffleHistoriesInput = {
@@ -63705,6 +65371,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutBadgesInput = {
@@ -63745,6 +65412,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutBadgesInput = {
@@ -63894,6 +65562,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutBadgesInput = {
@@ -63934,6 +65603,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserBadgeUpsertWithWhereUniqueWithoutBadgeInput = {
@@ -64030,6 +65700,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClaimCodesInput = {
@@ -64055,6 +65726,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClaimCodesInput = {
@@ -64141,6 +65813,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClaimCodesInput = {
@@ -64166,6 +65839,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutUserBadgesInput = {
@@ -64191,6 +65865,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserBadgesInput = {
@@ -64216,6 +65891,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserBadgesInput = {
@@ -64300,6 +65976,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutUserBadgesInput = {
@@ -64340,6 +66017,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutUserBadgesInput = {
@@ -64381,6 +66059,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserBadgesInput = {
@@ -64406,6 +66085,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BadgeUpsertWithoutUserBadgesInput = {
@@ -64502,6 +66182,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutUserBadgesInput = {
@@ -64542,6 +66223,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityCreateWithoutMaterialsInput = {
@@ -64824,6 +66506,306 @@ export namespace Prisma {
     raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
+  export type EventCreateWithoutMonitorsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutEventsInput
+    activities?: ActivityCreateNestedManyWithoutEventInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    tickets?: TicketCreateNestedManyWithoutEventInput
+    forms?: CustomFormCreateNestedManyWithoutEventInput
+    submissions?: SubmissionCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
+    reviewers?: EventReviewerCreateNestedManyWithoutEventInput
+    reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutMonitorsInput = {
+    id?: string
+    tenantId: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
+    reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
+    reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutMonitorsInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutMonitorsInput, EventUncheckedCreateWithoutMonitorsInput>
+  }
+
+  export type UserCreateWithoutEventMonitorsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
+    refreshToken?: string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    mustChangePassword?: boolean
+    tenant: TenantCreateNestedOneWithoutUsersInput
+    registrations?: RegistrationCreateNestedManyWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutReviewerInput
+    submissions?: SubmissionCreateNestedManyWithoutAuthorInput
+    userBadges?: UserBadgeCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutUserInput
+    eventReviewers?: EventReviewerCreateNestedManyWithoutUserInput
+    reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
+    acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
+    speaker?: SpeakerCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutEventMonitorsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
+    refreshToken?: string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenantId: string
+    mustChangePassword?: boolean
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput
+    eventReviewers?: EventReviewerUncheckedCreateNestedManyWithoutUserInput
+    reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+    acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
+    speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutEventMonitorsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutEventMonitorsInput, UserUncheckedCreateWithoutEventMonitorsInput>
+  }
+
+  export type EventUpsertWithoutMonitorsInput = {
+    update: XOR<EventUpdateWithoutMonitorsInput, EventUncheckedUpdateWithoutMonitorsInput>
+    create: XOR<EventCreateWithoutMonitorsInput, EventUncheckedCreateWithoutMonitorsInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutMonitorsInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutMonitorsInput, EventUncheckedUpdateWithoutMonitorsInput>
+  }
+
+  export type EventUpdateWithoutMonitorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
+    activities?: ActivityUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    tickets?: TicketUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
+    reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
+    reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutMonitorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
+    reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
+    reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type UserUpsertWithoutEventMonitorsInput = {
+    update: XOR<UserUpdateWithoutEventMonitorsInput, UserUncheckedUpdateWithoutEventMonitorsInput>
+    create: XOR<UserCreateWithoutEventMonitorsInput, UserUncheckedCreateWithoutEventMonitorsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutEventMonitorsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEventMonitorsInput, UserUncheckedUpdateWithoutEventMonitorsInput>
+  }
+
+  export type UserUpdateWithoutEventMonitorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
+    registrations?: RegistrationUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutReviewerNestedInput
+    submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutUserNestedInput
+    eventReviewers?: EventReviewerUpdateManyWithoutUserNestedInput
+    reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
+    acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
+    speaker?: SpeakerUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutEventMonitorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
+    eventReviewers?: EventReviewerUncheckedUpdateManyWithoutUserNestedInput
+    reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+    acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
+    speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+  }
+
   export type UserCreateManyTenantInput = {
     id?: string
     email: string
@@ -64926,6 +66908,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTenantInput = {
@@ -64951,6 +66934,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTenantInput = {
@@ -65007,6 +66991,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTenantInput = {
@@ -65047,6 +67032,7 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutTenantInput = {
@@ -65270,6 +67256,12 @@ export namespace Prisma {
     invitedById: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type EventMonitorCreateManyUserInput = {
+    id?: string
+    eventId: string
+    createdAt?: Date | string
   }
 
   export type RegistrationUpdateWithoutUserInput = {
@@ -65510,6 +67502,24 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EventMonitorUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutMonitorsNestedInput
+  }
+
+  export type EventMonitorUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventMonitorUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ActivityCreateManyEventInput = {
     id?: string
     title: string
@@ -65655,6 +67665,12 @@ export namespace Prisma {
     acceptedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type EventMonitorCreateManyEventInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
   }
 
   export type ActivityUpdateWithoutEventInput = {
@@ -66142,6 +68158,24 @@ export namespace Prisma {
     acceptedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventMonitorUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEventMonitorsNestedInput
+  }
+
+  export type EventMonitorUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventMonitorUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ActivityCreateManyTypeInput = {
