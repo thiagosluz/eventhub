@@ -33,4 +33,8 @@ export const usersService = {
   getUsers: async (): Promise<User[]> => {
     return api.get<User[]>("/users");
   },
+
+  getMonitoredEvents: async (): Promise<{ eventId: string; event: any }[]> => {
+    return api.get<{ eventId: string; event: any }[]>("/users/me/monitored-events");
+  },
 };

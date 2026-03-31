@@ -1,9 +1,7 @@
 import { Controller, Get, Param, Query, Req, UseGuards } from "@nestjs/common";
 import { Request } from "express";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
-import { RolesGuard } from "../auth/roles.guard";
-import { Roles } from "../auth/roles.decorator";
-import { UserRole } from "../auth/roles.types";
+import { MonitorGuard } from "../auth/monitor.guard";
 import { AnalyticsService } from "./analytics.service";
 
 interface AuthRequest extends Request {
@@ -16,8 +14,7 @@ interface AuthRequest extends Request {
 }
 
 @Controller("analytics")
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.ORGANIZER)
+@UseGuards(JwtAuthGuard, MonitorGuard)
 export class AnalyticsController {
   constructor(private readonly analyticsService: AnalyticsService) {}
 

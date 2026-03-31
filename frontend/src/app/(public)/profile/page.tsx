@@ -75,6 +75,7 @@ function ProfileContent() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [certificates, setCertificates] = useState<IssuedCertificate[]>([]);
+  const [monitoredEventsCount, setMonitoredEventsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   // Tickets specific state
@@ -98,15 +99,17 @@ function ProfileContent() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const [uProfile, uTickets, uCerts] = await Promise.all([
+      const [uProfile, uTickets, uCerts, uMonitored] = await Promise.all([
         usersService.getMe(),
         eventsService.getMyTickets(),
-        certificatesService.listMyCertificates()
+        certificatesService.listMyCertificates(),
+        usersService.getMonitoredEvents()
       ]);
       setProfile(uProfile);
       setEditForm({ name: uProfile.name || "", email: uProfile.email || "", bio: uProfile.bio || "" });
       setTickets(uTickets);
       setCertificates(uCerts);
+      setMonitoredEventsCount(uMonitored.length);
     } catch (err: any) {
       if (err?.status === 401 || err?.response?.status === 401) {
         router.push("/auth/login?redirect=/profile");
@@ -253,6 +256,18 @@ function ProfileContent() {
            <button onClick={() => setActiveTab('badges')} className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black transition-all ${activeTab === 'badges' ? 'bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white shadow-lg shadow-purple-500/30' : 'bg-card text-fuchsia-600 hover:bg-muted border border-fuchsia-500/20'}`}>
              <TrophyIcon className="w-5 h-5" /> Conquistas
            </button>
+           {monitoredEventsCount > 0 && (
+             <>
+               <div className="h-px bg-border/60 my-4 w-full" />
+               <Link href="/monitor/events" className="w-full flex items-center justify-between gap-3 px-5 py-4 rounded-2xl font-black bg-slate-900 border border-slate-800 text-white hover:bg-slate-800 hover:scale-[1.02] shadow-xl shadow-black/20 transition-all group">
+                 <div className="flex items-center gap-3">
+                    <QrCodeIcon className="w-5 h-5 text-emerald-400" />
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-400 uppercase tracking-widest text-xs">Área do Monitor</span>
+                 </div>
+                 <span className="bg-emerald-500/20 text-emerald-400 text-xs px-2 py-0.5 rounded-md group-hover:bg-emerald-500/30">{monitoredEventsCount}</span>
+               </Link>
+             </>
+           )}
         </div>
 
         {/* Main Content Area */}

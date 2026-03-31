@@ -139,20 +139,63 @@ describe("Checkin (e2e)", () => {
         .expect(201);
     });
 
-    it("DELETE /checkin/:id - should undo a check-in", async () => {
+    it("DELETE /checkin/:id - should undo a check-in (Organizer)", async () => {
       const token = await jwtService.signAsync({
         sub: "org_1",
         tenantId: "tenant_1",
         role: "ORGANIZER",
       });
 
-      mockPrismaService.attendance.findUnique.mockResolvedValue({ id: "att1" });
+      mockPrismaService.attendance.findUnique.mockResolvedValue({
+        id: "att1",
+        ticket: { eventId: "e1", event: { tenantId: "tenant_1" } },
+      });
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "org_1", role: "ORGANIZER", tenantId: "tenant_1" });
       mockPrismaService.attendance.delete.mockResolvedValue({ id: "att1" });
 
       return request(app.getHttpServer())
         .delete("/checkin/att1")
         .set("Authorization", `Bearer ${token}`)
         .expect(204);
+    });
+
+    it("DELETE /checkin/:id - should undo a check-in (Monitor)", async () => {
+      const token = await jwtService.signAsync({
+        sub: "monitor_1",
+        role: "PARTICIPANT",
+      });
+
+      mockPrismaService.attendance.findUnique.mockResolvedValue({
+        id: "att1",
+        ticket: { eventId: "e1", event: { tenantId: "tenant_1" } },
+      });
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "monitor_1", role: "PARTICIPANT", tenantId: "tenant_1" });
+      mockPrismaService.eventMonitor.findUnique.mockResolvedValue({ id: "m1" });
+      mockPrismaService.attendance.delete.mockResolvedValue({ id: "att1" });
+
+      return request(app.getHttpServer())
+        .delete("/checkin/att1")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(204);
+    });
+
+    it("DELETE /checkin/:id - should return 403 for unauthorized participant", async () => {
+      const token = await jwtService.signAsync({
+        sub: "user_2",
+        role: "PARTICIPANT",
+      });
+
+      mockPrismaService.attendance.findUnique.mockResolvedValue({
+        id: "att1",
+        ticket: { eventId: "e1", event: { tenantId: "tenant_1" } },
+      });
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "user_2", role: "PARTICIPANT", tenantId: "tenant_1" });
+      mockPrismaService.eventMonitor.findUnique.mockResolvedValue(null);
+
+      return request(app.getHttpServer())
+        .delete("/checkin/att1")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(403);
     });
   });
 

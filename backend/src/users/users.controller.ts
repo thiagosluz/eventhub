@@ -89,4 +89,11 @@ export class UsersController {
   async findAll(@Req() req: AuthRequest) {
     return this.usersService.findAll(req.user!.tenantId);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "List events where current user is a monitor" })
+  @Get("me/monitored-events")
+  async getMyMonitoredEvents(@Req() req: AuthRequest) {
+    return this.usersService.findMyMonitoredEvents(req.user!.sub);
+  }
 }

@@ -13,6 +13,7 @@ import {
   IdentificationIcon
 } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
+import { ConfirmationModal } from "@/components/common/ConfirmationModal";
 
 export default function EventMonitorsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: eventId } = use(params);
@@ -22,6 +23,11 @@ export default function EventMonitorsPage({ params }: { params: Promise<{ id: st
   const [isAssigning, setIsAssigning] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  // States for the custom confirmation modal
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [monitorToDelete, setMonitorToDelete] = useState<string | null>(null);
+  const [isRemoving, setIsRemoving] = useState(false);
 
   const loadMonitors = async () => {
     try {
@@ -67,14 +73,25 @@ export default function EventMonitorsPage({ params }: { params: Promise<{ id: st
     }
   };
 
-  const handleRemove = async (userId: string) => {
+  const handleRemove = (userId: string) => {
+    setMonitorToDelete(userId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmRemove = async () => {
+    if (!monitorToDelete) return;
+
     try {
-      if (!confirm("Remover monitor? Ele perderá acesso ao check-in.")) return;
-      await staffService.removeMonitor(eventId, userId);
-      toast.success("Monitor removido.");
+      setIsRemoving(true);
+      await staffService.removeMonitor(eventId, monitorToDelete);
+      toast.success("Monitor removido com sucesso!");
+      setIsDeleteModalOpen(false);
+      setMonitorToDelete(null);
       loadMonitors();
     } catch (error: any) {
       toast.error(error.message || "Erro ao remover monitor.");
+    } finally {
+      setIsRemoving(false);
     }
   };
 
@@ -209,6 +226,15 @@ export default function EventMonitorsPage({ params }: { params: Promise<{ id: st
           </div>
         </div>
       )}
+      <ConfirmationModal 
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmRemove}
+        title="Remover Monitor?"
+        description="Tem certeza que deseja remover este monitor? Ele perderá o acesso imediato ao sistema de check-in deste evento."
+        confirmText="Remover"
+        isLoading={isRemoving}
+      />
     </div>
   );
 }

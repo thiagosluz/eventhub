@@ -50,31 +50,17 @@ export class CheckinService {
   }): Promise<{ alreadyCheckedIn: boolean; attendanceId: string }> {
     const { qrCodeToken, activityId, performedByUserId } = params;
 
+    // --- Permission Check ---
     const ticket = await this.prisma.ticket.findUnique({
       where: { qrCodeToken, status: "COMPLETED" },
-      include: { attendances: true, event: true },
+      include: { event: true },
     });
 
     if (!ticket) {
       throw new NotFoundException("Ingresso inválido ou não aprovado.");
     }
 
-    // --- Permission Check ---
-    const staffUser = await this.prisma.user.findUnique({
-      where: { id: performedByUserId },
-    });
-
-    if (!staffUser) throw new ForbiddenException("Usuário não encontrado.");
-
-    const isOrganizer = staffUser.role === "ORGANIZER" && staffUser.tenantId === ticket.event.tenantId;
-    
-    const monitor = await this.prisma.eventMonitor.findUnique({
-      where: { eventId_userId: { eventId: ticket.eventId, userId: performedByUserId } },
-    });
-
-    if (!isOrganizer && !monitor) {
-      throw new ForbiddenException("Sem permissão para realizar check-in neste evento.");
-    }
+    await this.checkStaffPermission(ticket.eventId, performedByUserId, ticket.event.tenantId);
     // ------------------------
 
     if (activityId) {
@@ -369,17 +355,38 @@ export class CheckinService {
     return updated;
   }
 
-  async undoCheckin(attendanceId: string): Promise<void> {
+  async undoCheckin(attendanceId: string, performedByUserId: string): Promise<void> {
     const attendance = await this.prisma.attendance.findUnique({
       where: { id: attendanceId },
+      include: { ticket: { include: { event: true } } },
     });
 
     if (!attendance) {
       throw new NotFoundException("Registro de presença não encontrado.");
     }
 
+    await this.checkStaffPermission(attendance.ticket.eventId, performedByUserId, attendance.ticket.event.tenantId);
+
     await this.prisma.attendance.delete({
       where: { id: attendanceId },
     });
+  }
+
+  private async checkStaffPermission(eventId: string, userId: string, tenantId: string): Promise<void> {
+    const staffUser = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!staffUser) throw new ForbiddenException("Usuário não encontrado.");
+
+    const isOrganizer = staffUser.role === "ORGANIZER" && staffUser.tenantId === tenantId;
+    
+    const monitor = await this.prisma.eventMonitor.findUnique({
+      where: { eventId_userId: { eventId, userId } },
+    });
+
+    if (!isOrganizer && !monitor) {
+      throw new ForbiddenException("Sem permissão para realizar esta operação neste evento.");
+    }
   }
 }

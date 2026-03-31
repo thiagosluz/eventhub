@@ -179,4 +179,24 @@ export class UsersService {
       orderBy: { name: "asc" },
     });
   }
+
+  async findMyMonitoredEvents(userId: string) {
+    return this.prisma.eventMonitor.findMany({
+      where: { userId },
+      include: {
+        event: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            startDate: true,
+            endDate: true,
+            bannerUrl: true,
+            status: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  }
 }

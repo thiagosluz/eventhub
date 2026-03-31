@@ -163,11 +163,10 @@ export class CheckinController {
     return this.checkinService.markPrizeReceived(tenantId, id, body.received);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ORGANIZER)
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete("checkin/:id")
-  async undoCheckin(@Param("id") id: string) {
-    return this.checkinService.undoCheckin(id);
+  async undoCheckin(@Param("id") id: string, @Req() req: any) {
+    return this.checkinService.undoCheckin(id, req.user.sub);
   }
 }

@@ -33,6 +33,9 @@ describe("Users (e2e)", () => {
     userBadge: {
       findUnique: jest.fn(),
     },
+    eventMonitor: {
+      findMany: jest.fn(),
+    },
   };
 
   const mockMinioService = {
@@ -105,6 +108,28 @@ describe("Users (e2e)", () => {
         .expect(200)
         .then((response) => {
           expect(response.body.email).toBe("user@test.com");
+        });
+    });
+
+    it("should return monitored events", async () => {
+      const token = await jwtService.signAsync({
+        sub: "user_1",
+        email: "user@test.com",
+        tenantId: "tenant_1",
+        role: "PARTICIPANT",
+      });
+
+      mockPrismaService.eventMonitor.findMany.mockResolvedValue([
+        { eventId: "evt_1", userId: "user_1", event: { name: "Test Event" } },
+      ]);
+
+      return request(app.getHttpServer())
+        .get("/users/me/monitored-events")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200)
+        .then((response) => {
+          expect(response.body).toHaveLength(1);
+          expect(response.body[0].eventId).toBe("evt_1");
         });
     });
   });

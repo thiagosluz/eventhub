@@ -25,6 +25,7 @@ import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { JwtService } from "@nestjs/jwt";
 import { MinioService } from "../storage/minio.service";
+import { MonitorGuard } from "../auth/monitor.guard";
 import {
   ApiBearerAuth,
   ApiBody,
@@ -89,8 +90,7 @@ export class EventsController {
     return this.eventsService.listEventsForTenant(tenantId);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ORGANIZER)
+  @UseGuards(JwtAuthGuard, MonitorGuard)
   @Get("events/:id")
   async getEvent(@Param("id") id: string, @Req() req: AuthRequest) {
     const tenantId = req.user?.tenantId;

@@ -14,6 +14,7 @@ import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../auth/roles.decorator";
 import { RolesGuard } from "../auth/roles.guard";
 import { UserRole } from "../auth/roles.types";
+import { MonitorGuard } from "../auth/monitor.guard";
 import { ActivitiesService } from "./activities.service";
 import { CreateActivityDto } from "./dto/create-activity.dto";
 import { UpdateActivityDto } from "./dto/update-activity.dto";
@@ -51,8 +52,7 @@ export class ActivitiesController {
     });
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ORGANIZER)
+  @UseGuards(JwtAuthGuard, MonitorGuard)
   @Get("events/:eventId/activities")
   async listActivitiesForEvent(
     @Param("eventId") eventId: string,
