@@ -9,6 +9,12 @@ describe("CheckinService", () => {
   let service: CheckinService;
 
   const mockPrismaService = {
+    user: {
+      findUnique: jest.fn().mockResolvedValue({ id: "u1", role: "ORGANIZER", tenantId: "t1" }),
+    },
+    eventMonitor: {
+      findUnique: jest.fn(),
+    },
     ticket: {
       findFirst: jest.fn(),
       findUnique: jest.fn(),
@@ -100,7 +106,7 @@ describe("CheckinService", () => {
   describe("checkin", () => {
     it("should throw NotFoundException if ticket is invalid", async () => {
       mockPrismaService.ticket.findUnique.mockResolvedValue(null);
-      await expect(service.checkin({ qrCodeToken: "invalid" })).rejects.toThrow(
+      await expect(service.checkin({ qrCodeToken: "invalid", performedByUserId: "u1" })).rejects.toThrow(
         NotFoundException,
       );
     });
@@ -109,6 +115,7 @@ describe("CheckinService", () => {
       mockPrismaService.ticket.findUnique.mockResolvedValue({
         id: "t1",
         eventId: "e1",
+        event: { tenantId: "t1" },
       });
       mockPrismaService.attendance.findFirst.mockResolvedValue(null);
       mockPrismaService.attendance.create.mockResolvedValue({
@@ -121,36 +128,36 @@ describe("CheckinService", () => {
         },
       });
 
-      const result = await service.checkin({ qrCodeToken: "token" });
+      const result = await service.checkin({ qrCodeToken: "token", performedByUserId: "u1" });
       expect(result.alreadyCheckedIn).toBe(false);
       expect(mockMailService.enqueue).toHaveBeenCalled();
       expect(mockBadgesService.checkAndAwardBadge).toHaveBeenCalled();
     });
 
     it("should return alreadyCheckedIn true if attendance exists", async () => {
-      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1" });
+      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1", eventId: "e1", event: { tenantId: "t1" } });
       mockPrismaService.attendance.findFirst.mockResolvedValue({ id: "att1" });
 
-      const result = await service.checkin({ qrCodeToken: "token" });
+      const result = await service.checkin({ qrCodeToken: "token", performedByUserId: "u1" });
       expect(result.alreadyCheckedIn).toBe(true);
       expect(mockPrismaService.attendance.create).not.toHaveBeenCalled();
     });
 
     it("should throw Forbidden if activity requires enrollment and user is not enrolled", async () => {
-      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1", eventId: "e1" });
+      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1", eventId: "e1", event: { tenantId: "t1" } });
       mockPrismaService.activity.findUnique.mockResolvedValue({ id: "a1", eventId: "e1", requiresEnrollment: true });
       mockPrismaService.activityEnrollment.findFirst.mockResolvedValue(null);
 
-      await expect(service.checkin({ qrCodeToken: "token", activityId: "a1" })).rejects.toThrow(
+      await expect(service.checkin({ qrCodeToken: "token", activityId: "a1", performedByUserId: "u1" })).rejects.toThrow(
         ForbiddenException,
       );
     });
 
     it("should throw NotFound if activity belongs to another event", async () => {
-      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1", eventId: "e1" });
+      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1", eventId: "e1", event: { tenantId: "t1" } });
       mockPrismaService.activity.findUnique.mockResolvedValue({ id: "a1", eventId: "e2" });
 
-      await expect(service.checkin({ qrCodeToken: "token", activityId: "a1" })).rejects.toThrow(
+      await expect(service.checkin({ qrCodeToken: "token", activityId: "a1", performedByUserId: "u1" })).rejects.toThrow(
         NotFoundException,
       );
     });

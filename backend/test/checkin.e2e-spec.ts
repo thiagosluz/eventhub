@@ -41,6 +41,9 @@ describe("Checkin (e2e)", () => {
       delete: jest.fn(),
     },
     user: {
+      findUnique: jest.fn().mockResolvedValue({ id: "org_1", role: "ORGANIZER", tenantId: "tenant_1" }),
+    },
+    eventMonitor: {
       findUnique: jest.fn(),
     },
   };
@@ -116,6 +119,7 @@ describe("Checkin (e2e)", () => {
         eventId: "e1",
         registrationId: "r1",
         attendances: [],
+        event: { tenantId: "tenant_1" },
       });
       mockPrismaService.attendance.findFirst.mockResolvedValue(null);
       mockPrismaService.attendance.create.mockResolvedValue({
