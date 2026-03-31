@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { usersService, UserProfile } from "@/services/users.service";
 import { eventsService } from "@/services/events.service";
 import { certificatesService } from "@/services/certificates.service";
+import { speakersService } from "@/services/speakers.service";
 import { Ticket } from "@/types/event";
 import { IssuedCertificate } from "@/types/certificate";
 import Image from "next/image";
@@ -23,7 +24,8 @@ import {
   QrCodeIcon,
   ChevronRightIcon,
   ChevronLeftIcon,
-  TrophyIcon
+  TrophyIcon,
+  MicrophoneIcon
 } from "@heroicons/react/24/outline";
 
 // Components for tabs
@@ -76,6 +78,7 @@ function ProfileContent() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [certificates, setCertificates] = useState<IssuedCertificate[]>([]);
   const [monitoredEventsCount, setMonitoredEventsCount] = useState(0);
+  const [speakerActivitiesCount, setSpeakerActivitiesCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   // Tickets specific state
@@ -110,6 +113,15 @@ function ProfileContent() {
       setTickets(uTickets);
       setCertificates(uCerts);
       setMonitoredEventsCount(uMonitored.length);
+
+      // Check if user is a speaker
+      try {
+        const myActivities = await speakersService.getMyActivities();
+        setSpeakerActivitiesCount(myActivities.length);
+      } catch (err) {
+        // Not a speaker or error, it's fine.
+        console.warn("User is not a speaker or could not fetch speaker data", err);
+      }
     } catch (err: any) {
       if (err?.status === 401 || err?.response?.status === 401) {
         router.push("/auth/login?redirect=/profile");
@@ -265,6 +277,19 @@ function ProfileContent() {
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-400 uppercase tracking-widest text-xs">Área do Monitor</span>
                  </div>
                  <span className="bg-emerald-500/20 text-emerald-400 text-xs px-2 py-0.5 rounded-md group-hover:bg-emerald-500/30">{monitoredEventsCount}</span>
+               </Link>
+             </>
+           )}
+
+           {speakerActivitiesCount > 0 && (
+             <>
+               <div className="h-px bg-border/60 my-4 w-full" />
+               <Link href="/speaker" className="w-full flex items-center justify-between gap-3 px-5 py-4 rounded-2xl font-black bg-slate-900 border border-slate-800 text-white hover:bg-slate-800 hover:scale-[1.02] shadow-xl shadow-black/20 transition-all group">
+                 <div className="flex items-center gap-3">
+                    <MicrophoneIcon className="w-5 h-5 text-indigo-400" />
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400 uppercase tracking-widest text-xs">Área do Palestrante</span>
+                 </div>
+                 <span className="bg-indigo-500/20 text-indigo-400 text-xs px-2 py-0.5 rounded-md group-hover:bg-indigo-500/30">{speakerActivitiesCount}</span>
                </Link>
              </>
            )}

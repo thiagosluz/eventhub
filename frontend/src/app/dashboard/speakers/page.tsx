@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usersService } from "@/services/users.service";
 import { User } from "@/types/auth";
 import { toast } from "react-hot-toast";
+import { ConfirmationModal } from "@/components/common/ConfirmationModal";
 
 export default function SpeakersPage() {
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
@@ -15,6 +16,12 @@ export default function SpeakersPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLinking, setIsLinking] = useState<Speaker | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Confirmation Modal State
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [confirmActionType, setConfirmActionType] = useState<"unlink" | "delete" | null>(null);
+  const [speakerActionTarget, setSpeakerActionTarget] = useState<string | null>(null);
+  const [isActionLoading, setIsActionLoading] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -47,25 +54,39 @@ export default function SpeakersPage() {
     }
   };
 
-  const handleUnlinkUser = async (speakerId: string) => {
-    if (!confirm("Deseja desvincular este usuário do perfil de palestrante? O acesso dele ao portal será removido.")) return;
-    try {
-      await speakersService.updateSpeaker(speakerId, { userId: null });
-      toast.success("Usuário desvinculado com sucesso!");
-      loadData();
-    } catch (error) {
-      toast.error("Erro ao desvincular usuário.");
-    }
+  const handleUnlinkUser = (speakerId: string) => {
+    setSpeakerActionTarget(speakerId);
+    setConfirmActionType("unlink");
+    setIsConfirmModalOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Tem certeza que deseja excluir este palestrante?")) return;
+  const handleDelete = (id: string) => {
+    setSpeakerActionTarget(id);
+    setConfirmActionType("delete");
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleExecuteAction = async () => {
+    if (!speakerActionTarget || !confirmActionType) return;
+
     try {
-      await speakersService.deleteSpeaker(id);
-      setSpeakers(speakers.filter(s => s.id !== id));
-      toast.success("Palestrante excluído.");
+      setIsActionLoading(true);
+      if (confirmActionType === "unlink") {
+        await speakersService.updateSpeaker(speakerActionTarget, { userId: null });
+        toast.success("Usuário desvinculado com sucesso!");
+        loadData();
+      } else {
+        await speakersService.deleteSpeaker(speakerActionTarget);
+        setSpeakers(speakers.filter(s => s.id !== speakerActionTarget));
+        toast.success("Palestrante excluído.");
+      }
+      setIsConfirmModalOpen(false);
+      setSpeakerActionTarget(null);
+      setConfirmActionType(null);
     } catch (error) {
-      toast.error("Erro ao excluir palestrante.");
+      toast.error(confirmActionType === "unlink" ? "Erro ao desvincular usuário." : "Erro ao excluir palestrante.");
+    } finally {
+      setIsActionLoading(false);
     }
   };
 
@@ -256,6 +277,20 @@ export default function SpeakersPage() {
           </div>
         </div>
       )}
+      
+      <ConfirmationModal 
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleExecuteAction}
+        isLoading={isActionLoading}
+        title={confirmActionType === 'unlink' ? "Desvincular Usuário?" : "Excluir Palestrante?"}
+        description={confirmActionType === 'unlink' 
+          ? "Deseja desvincular este usuário do perfil de palestrante? O acesso dele ao portal será removido."
+          : "Tem certeza que deseja excluir permanentemente este palestrante? Esta ação não pode ser desfeita."
+        }
+        confirmText={confirmActionType === 'unlink' ? "Desvincular" : "Excluir"}
+        variant="danger"
+      />
     </div>
   );
 }
