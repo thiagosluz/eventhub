@@ -3,6 +3,7 @@ import { CheckinService } from "./checkin.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { MailService } from "../mail/mail.service";
 import { BadgesService } from "../badges/badges.service";
+import { GamificationService } from "../gamification/gamification.service";
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
 
 describe("CheckinService", () => {
@@ -54,6 +55,10 @@ describe("CheckinService", () => {
     checkAndAwardBadge: jest.fn(),
   };
 
+  const mockGamificationService = {
+    awardXp: jest.fn().mockResolvedValue({ xpGained: 100, isLevelUp: false }),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -61,6 +66,7 @@ describe("CheckinService", () => {
         { provide: PrismaService, useValue: mockPrismaService },
         { provide: MailService, useValue: mockMailService },
         { provide: BadgesService, useValue: mockBadgesService },
+        { provide: GamificationService, useValue: mockGamificationService },
       ],
     }).compile();
 
@@ -100,6 +106,17 @@ describe("CheckinService", () => {
       });
       const result = await service.getQrCodePng("t1", "u1");
       expect(result).toBeInstanceOf(Buffer);
+    });
+
+    it("should throw NotFound if ticket has no qrCodeToken", async () => {
+      mockPrismaService.ticket.findFirst.mockResolvedValue({
+        id: "t1",
+        qrCodeToken: null,
+        registration: { userId: "u1" },
+      });
+      await expect(service.getQrCodePng( "t1", "u1")).rejects.toThrow(
+        "Ingresso sem token de QR Code.",
+      );
     });
   });
 
@@ -159,6 +176,16 @@ describe("CheckinService", () => {
 
       await expect(service.checkin({ qrCodeToken: "token", activityId: "a1", performedByUserId: "u1" })).rejects.toThrow(
         NotFoundException,
+      );
+    });
+
+    it("should throw Forbidden if staff has no permission", async () => {
+      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1", eventId: "e1", event: { tenantId: "t1" } });
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", role: "USER", tenantId: "t1" }); // Not an organizer
+      mockPrismaService.eventMonitor.findUnique.mockResolvedValue(null); // Not a monitor
+
+      await expect(service.checkin({ qrCodeToken: "token", performedByUserId: "u1" })).rejects.toThrow(
+        ForbiddenException,
       );
     });
   });
@@ -256,18 +283,27 @@ describe("CheckinService", () => {
       await service.markPrizeReceived("t1", "h1", true);
       expect(mockBadgesService.checkAndAwardBadge).toHaveBeenCalledWith("u1", "e1", "RAFFLE_WINNER");
     });
+
+    it("should throw Forbidden if raffle history tenant mismatch", async () => {
+        mockPrismaService.raffleHistory.findUnique.mockResolvedValue({ id: "h1", event: { tenantId: "t2" } });
+        await expect(service.markPrizeReceived("t1", "h1", true)).rejects.toThrow(ForbiddenException);
+    });
   });
 
   describe("undoCheckin", () => {
     it("should delete attendance", async () => {
-      mockPrismaService.attendance.findUnique.mockResolvedValue({ id: "att1" });
-      await service.undoCheckin("att1");
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", role: "ORGANIZER", tenantId: "t1" });
+      mockPrismaService.attendance.findUnique.mockResolvedValue({ 
+        id: "att1", 
+        ticket: { eventId: "e1", event: { tenantId: "t1" } } 
+      });
+      await service.undoCheckin("att1", "u1");
       expect(mockPrismaService.attendance.delete).toHaveBeenCalled();
     });
 
     it("should throw if not found", async () => {
       mockPrismaService.attendance.findUnique.mockResolvedValue(null);
-      await expect(service.undoCheckin("att1")).rejects.toThrow(NotFoundException);
+      await expect(service.undoCheckin("att1", "u1")).rejects.toThrow(NotFoundException);
     });
   });
 });

@@ -7,6 +7,7 @@ import * as QRCode from "qrcode";
 import { PrismaService } from "../prisma/prisma.service";
 import { MailService } from "../mail/mail.service";
 import { BadgesService } from "../badges/badges.service";
+import { GamificationService } from "../gamification/gamification.service";
 
 @Injectable()
 export class CheckinService {
@@ -16,6 +17,7 @@ export class CheckinService {
     private readonly prisma: PrismaService,
     private readonly mailService: MailService,
     private readonly badgesService: BadgesService,
+    private readonly gamificationService: GamificationService,
   ) {}
 
   async getQrCodePng(ticketId: string, userId: string): Promise<Buffer> {
@@ -47,7 +49,7 @@ export class CheckinService {
     qrCodeToken: string;
     activityId?: string;
     performedByUserId: string;
-  }): Promise<{ alreadyCheckedIn: boolean; attendanceId: string }> {
+  }): Promise<{ alreadyCheckedIn: boolean; attendanceId: string; xpGained?: number; isLevelUp?: boolean }> {
     const { qrCodeToken, activityId, performedByUserId } = params;
 
     // --- Permission Check ---
@@ -144,7 +146,22 @@ export class CheckinService {
       "ACTIVITY_HOURS",
     );
 
-    return { alreadyCheckedIn: false, attendanceId: attendance.id };
+    // Award XP
+    const xpAmount = activityId ? 50 : 200;
+    const uniqueKey = activityId ? `ACTIVITY_CHECKIN_${activityId}` : `EVENT_CHECKIN_${event.id}`;
+    const xpResult = await this.gamificationService.awardXp(
+      user.id,
+      xpAmount,
+      activityId ? "ACTIVITY_CHECKIN" : "EVENT_CHECKIN",
+      uniqueKey
+    );
+
+    return { 
+      alreadyCheckedIn: false, 
+      attendanceId: attendance.id,
+      xpGained: xpResult.xpGained,
+      isLevelUp: xpResult.isLevelUp 
+    };
   }
 
   async drawRaffle(params: {

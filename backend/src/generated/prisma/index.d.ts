@@ -183,6 +183,11 @@ export type ActivityFeedback = $Result.DefaultSelection<Prisma.$ActivityFeedback
  * 
  */
 export type EventMonitor = $Result.DefaultSelection<Prisma.$EventMonitorPayload>
+/**
+ * Model XpGainLog
+ * 
+ */
+export type XpGainLog = $Result.DefaultSelection<Prisma.$XpGainLogPayload>
 
 /**
  * Enums
@@ -857,6 +862,16 @@ export class PrismaClient<
     * ```
     */
   get eventMonitor(): Prisma.EventMonitorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.xpGainLog`: Exposes CRUD operations for the **XpGainLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more XpGainLogs
+    * const xpGainLogs = await prisma.xpGainLog.findMany()
+    * ```
+    */
+  get xpGainLog(): Prisma.XpGainLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1324,7 +1339,8 @@ export namespace Prisma {
     UserBadge: 'UserBadge',
     ActivityMaterial: 'ActivityMaterial',
     ActivityFeedback: 'ActivityFeedback',
-    EventMonitor: 'EventMonitor'
+    EventMonitor: 'EventMonitor',
+    XpGainLog: 'XpGainLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1340,7 +1356,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "eventReviewer" | "reviewerInvitation" | "submissionModality" | "thematicArea" | "submissionRule" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge" | "activityMaterial" | "activityFeedback" | "eventMonitor"
+      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "eventReviewer" | "reviewerInvitation" | "submissionModality" | "thematicArea" | "submissionRule" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge" | "activityMaterial" | "activityFeedback" | "eventMonitor" | "xpGainLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3860,6 +3876,80 @@ export namespace Prisma {
           }
         }
       }
+      XpGainLog: {
+        payload: Prisma.$XpGainLogPayload<ExtArgs>
+        fields: Prisma.XpGainLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.XpGainLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.XpGainLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload>
+          }
+          findFirst: {
+            args: Prisma.XpGainLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.XpGainLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload>
+          }
+          findMany: {
+            args: Prisma.XpGainLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload>[]
+          }
+          create: {
+            args: Prisma.XpGainLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload>
+          }
+          createMany: {
+            args: Prisma.XpGainLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.XpGainLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload>[]
+          }
+          delete: {
+            args: Prisma.XpGainLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload>
+          }
+          update: {
+            args: Prisma.XpGainLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.XpGainLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.XpGainLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.XpGainLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.XpGainLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$XpGainLogPayload>
+          }
+          aggregate: {
+            args: Prisma.XpGainLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateXpGainLog>
+          }
+          groupBy: {
+            args: Prisma.XpGainLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<XpGainLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.XpGainLogCountArgs<ExtArgs>
+            result: $Utils.Optional<XpGainLogCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4002,6 +4092,7 @@ export namespace Prisma {
     activityMaterial?: ActivityMaterialOmit
     activityFeedback?: ActivityFeedbackOmit
     eventMonitor?: EventMonitorOmit
+    xpGainLog?: XpGainLogOmit
   }
 
   /* Types for Logging */
@@ -4167,6 +4258,7 @@ export namespace Prisma {
     reviewerInvitations: number
     acceptedInvitations: number
     eventMonitors: number
+    xpLogs: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4179,6 +4271,7 @@ export namespace Prisma {
     reviewerInvitations?: boolean | UserCountOutputTypeCountReviewerInvitationsArgs
     acceptedInvitations?: boolean | UserCountOutputTypeCountAcceptedInvitationsArgs
     eventMonitors?: boolean | UserCountOutputTypeCountEventMonitorsArgs
+    xpLogs?: boolean | UserCountOutputTypeCountXpLogsArgs
   }
 
   // Custom InputTypes
@@ -4253,6 +4346,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountEventMonitorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EventMonitorWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountXpLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: XpGainLogWhereInput
   }
 
 
@@ -6251,8 +6351,22 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserAvgAggregateOutputType = {
+    xp: number | null
+    coins: number | null
+    level: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    xp: number | null
+    coins: number | null
+    level: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -6270,6 +6384,12 @@ export namespace Prisma {
     updatedAt: Date | null
     tenantId: string | null
     mustChangePassword: boolean | null
+    username: string | null
+    profileTheme: string | null
+    publicProfile: boolean | null
+    xp: number | null
+    coins: number | null
+    level: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -6287,6 +6407,12 @@ export namespace Prisma {
     updatedAt: Date | null
     tenantId: string | null
     mustChangePassword: boolean | null
+    username: string | null
+    profileTheme: string | null
+    publicProfile: boolean | null
+    xp: number | null
+    coins: number | null
+    level: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -6304,9 +6430,28 @@ export namespace Prisma {
     updatedAt: number
     tenantId: number
     mustChangePassword: number
+    username: number
+    interests: number
+    profileTheme: number
+    publicProfile: number
+    xp: number
+    coins: number
+    level: number
     _all: number
   }
 
+
+  export type UserAvgAggregateInputType = {
+    xp?: true
+    coins?: true
+    level?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    xp?: true
+    coins?: true
+    level?: true
+  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -6323,6 +6468,12 @@ export namespace Prisma {
     updatedAt?: true
     tenantId?: true
     mustChangePassword?: true
+    username?: true
+    profileTheme?: true
+    publicProfile?: true
+    xp?: true
+    coins?: true
+    level?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -6340,6 +6491,12 @@ export namespace Prisma {
     updatedAt?: true
     tenantId?: true
     mustChangePassword?: true
+    username?: true
+    profileTheme?: true
+    publicProfile?: true
+    xp?: true
+    coins?: true
+    level?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -6357,6 +6514,13 @@ export namespace Prisma {
     updatedAt?: true
     tenantId?: true
     mustChangePassword?: true
+    username?: true
+    interests?: true
+    profileTheme?: true
+    publicProfile?: true
+    xp?: true
+    coins?: true
+    level?: true
     _all?: true
   }
 
@@ -6398,6 +6562,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -6428,6 +6604,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -6447,7 +6625,16 @@ export namespace Prisma {
     updatedAt: Date
     tenantId: string
     mustChangePassword: boolean
+    username: string | null
+    interests: string[]
+    profileTheme: string | null
+    publicProfile: boolean
+    xp: number
+    coins: number
+    level: number
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -6481,6 +6668,13 @@ export namespace Prisma {
     updatedAt?: boolean
     tenantId?: boolean
     mustChangePassword?: boolean
+    username?: boolean
+    interests?: boolean
+    profileTheme?: boolean
+    publicProfile?: boolean
+    xp?: boolean
+    coins?: boolean
+    level?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     registrations?: boolean | User$registrationsArgs<ExtArgs>
     reviews?: boolean | User$reviewsArgs<ExtArgs>
@@ -6492,6 +6686,7 @@ export namespace Prisma {
     acceptedInvitations?: boolean | User$acceptedInvitationsArgs<ExtArgs>
     speaker?: boolean | User$speakerArgs<ExtArgs>
     eventMonitors?: boolean | User$eventMonitorsArgs<ExtArgs>
+    xpLogs?: boolean | User$xpLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6510,6 +6705,13 @@ export namespace Prisma {
     updatedAt?: boolean
     tenantId?: boolean
     mustChangePassword?: boolean
+    username?: boolean
+    interests?: boolean
+    profileTheme?: boolean
+    publicProfile?: boolean
+    xp?: boolean
+    coins?: boolean
+    level?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6528,6 +6730,13 @@ export namespace Prisma {
     updatedAt?: boolean
     tenantId?: boolean
     mustChangePassword?: boolean
+    username?: boolean
+    interests?: boolean
+    profileTheme?: boolean
+    publicProfile?: boolean
+    xp?: boolean
+    coins?: boolean
+    level?: boolean
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6546,9 +6755,16 @@ export namespace Prisma {
     updatedAt?: boolean
     tenantId?: boolean
     mustChangePassword?: boolean
+    username?: boolean
+    interests?: boolean
+    profileTheme?: boolean
+    publicProfile?: boolean
+    xp?: boolean
+    coins?: boolean
+    level?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "avatarUrl" | "bio" | "refreshToken" | "resetPasswordToken" | "resetPasswordExpires" | "createdAt" | "updatedAt" | "tenantId" | "mustChangePassword", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "avatarUrl" | "bio" | "refreshToken" | "resetPasswordToken" | "resetPasswordExpires" | "createdAt" | "updatedAt" | "tenantId" | "mustChangePassword" | "username" | "interests" | "profileTheme" | "publicProfile" | "xp" | "coins" | "level", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tenant?: boolean | TenantDefaultArgs<ExtArgs>
     registrations?: boolean | User$registrationsArgs<ExtArgs>
@@ -6561,6 +6777,7 @@ export namespace Prisma {
     acceptedInvitations?: boolean | User$acceptedInvitationsArgs<ExtArgs>
     speaker?: boolean | User$speakerArgs<ExtArgs>
     eventMonitors?: boolean | User$eventMonitorsArgs<ExtArgs>
+    xpLogs?: boolean | User$xpLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6584,6 +6801,7 @@ export namespace Prisma {
       acceptedInvitations: Prisma.$ReviewerInvitationPayload<ExtArgs>[]
       speaker: Prisma.$SpeakerPayload<ExtArgs> | null
       eventMonitors: Prisma.$EventMonitorPayload<ExtArgs>[]
+      xpLogs: Prisma.$XpGainLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6600,6 +6818,13 @@ export namespace Prisma {
       updatedAt: Date
       tenantId: string
       mustChangePassword: boolean
+      username: string | null
+      interests: string[]
+      profileTheme: string | null
+      publicProfile: boolean
+      xp: number
+      coins: number
+      level: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -7005,6 +7230,7 @@ export namespace Prisma {
     acceptedInvitations<T extends User$acceptedInvitationsArgs<ExtArgs> = {}>(args?: Subset<T, User$acceptedInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewerInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     speaker<T extends User$speakerArgs<ExtArgs> = {}>(args?: Subset<T, User$speakerArgs<ExtArgs>>): Prisma__SpeakerClient<$Result.GetResult<Prisma.$SpeakerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     eventMonitors<T extends User$eventMonitorsArgs<ExtArgs> = {}>(args?: Subset<T, User$eventMonitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    xpLogs<T extends User$xpLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$xpLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7048,6 +7274,13 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly tenantId: FieldRef<"User", 'String'>
     readonly mustChangePassword: FieldRef<"User", 'Boolean'>
+    readonly username: FieldRef<"User", 'String'>
+    readonly interests: FieldRef<"User", 'String[]'>
+    readonly profileTheme: FieldRef<"User", 'String'>
+    readonly publicProfile: FieldRef<"User", 'Boolean'>
+    readonly xp: FieldRef<"User", 'Int'>
+    readonly coins: FieldRef<"User", 'Int'>
+    readonly level: FieldRef<"User", 'Int'>
   }
     
 
@@ -7681,6 +7914,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EventMonitorScalarFieldEnum | EventMonitorScalarFieldEnum[]
+  }
+
+  /**
+   * User.xpLogs
+   */
+  export type User$xpLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    where?: XpGainLogWhereInput
+    orderBy?: XpGainLogOrderByWithRelationInput | XpGainLogOrderByWithRelationInput[]
+    cursor?: XpGainLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: XpGainLogScalarFieldEnum | XpGainLogScalarFieldEnum[]
   }
 
   /**
@@ -44678,6 +44935,1116 @@ export namespace Prisma {
 
 
   /**
+   * Model XpGainLog
+   */
+
+  export type AggregateXpGainLog = {
+    _count: XpGainLogCountAggregateOutputType | null
+    _avg: XpGainLogAvgAggregateOutputType | null
+    _sum: XpGainLogSumAggregateOutputType | null
+    _min: XpGainLogMinAggregateOutputType | null
+    _max: XpGainLogMaxAggregateOutputType | null
+  }
+
+  export type XpGainLogAvgAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type XpGainLogSumAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type XpGainLogMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    amount: number | null
+    reason: string | null
+    uniqueKey: string | null
+    createdAt: Date | null
+  }
+
+  export type XpGainLogMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    amount: number | null
+    reason: string | null
+    uniqueKey: string | null
+    createdAt: Date | null
+  }
+
+  export type XpGainLogCountAggregateOutputType = {
+    id: number
+    userId: number
+    amount: number
+    reason: number
+    uniqueKey: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type XpGainLogAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type XpGainLogSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type XpGainLogMinAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    reason?: true
+    uniqueKey?: true
+    createdAt?: true
+  }
+
+  export type XpGainLogMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    reason?: true
+    uniqueKey?: true
+    createdAt?: true
+  }
+
+  export type XpGainLogCountAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    reason?: true
+    uniqueKey?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type XpGainLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which XpGainLog to aggregate.
+     */
+    where?: XpGainLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of XpGainLogs to fetch.
+     */
+    orderBy?: XpGainLogOrderByWithRelationInput | XpGainLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: XpGainLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` XpGainLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` XpGainLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned XpGainLogs
+    **/
+    _count?: true | XpGainLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: XpGainLogAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: XpGainLogSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: XpGainLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: XpGainLogMaxAggregateInputType
+  }
+
+  export type GetXpGainLogAggregateType<T extends XpGainLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateXpGainLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateXpGainLog[P]>
+      : GetScalarType<T[P], AggregateXpGainLog[P]>
+  }
+
+
+
+
+  export type XpGainLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: XpGainLogWhereInput
+    orderBy?: XpGainLogOrderByWithAggregationInput | XpGainLogOrderByWithAggregationInput[]
+    by: XpGainLogScalarFieldEnum[] | XpGainLogScalarFieldEnum
+    having?: XpGainLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: XpGainLogCountAggregateInputType | true
+    _avg?: XpGainLogAvgAggregateInputType
+    _sum?: XpGainLogSumAggregateInputType
+    _min?: XpGainLogMinAggregateInputType
+    _max?: XpGainLogMaxAggregateInputType
+  }
+
+  export type XpGainLogGroupByOutputType = {
+    id: string
+    userId: string
+    amount: number
+    reason: string
+    uniqueKey: string | null
+    createdAt: Date
+    _count: XpGainLogCountAggregateOutputType | null
+    _avg: XpGainLogAvgAggregateOutputType | null
+    _sum: XpGainLogSumAggregateOutputType | null
+    _min: XpGainLogMinAggregateOutputType | null
+    _max: XpGainLogMaxAggregateOutputType | null
+  }
+
+  type GetXpGainLogGroupByPayload<T extends XpGainLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<XpGainLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof XpGainLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], XpGainLogGroupByOutputType[P]>
+            : GetScalarType<T[P], XpGainLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type XpGainLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    reason?: boolean
+    uniqueKey?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["xpGainLog"]>
+
+  export type XpGainLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    reason?: boolean
+    uniqueKey?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["xpGainLog"]>
+
+  export type XpGainLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    reason?: boolean
+    uniqueKey?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["xpGainLog"]>
+
+  export type XpGainLogSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    reason?: boolean
+    uniqueKey?: boolean
+    createdAt?: boolean
+  }
+
+  export type XpGainLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "amount" | "reason" | "uniqueKey" | "createdAt", ExtArgs["result"]["xpGainLog"]>
+  export type XpGainLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type XpGainLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type XpGainLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $XpGainLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "XpGainLog"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      amount: number
+      reason: string
+      uniqueKey: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["xpGainLog"]>
+    composites: {}
+  }
+
+  type XpGainLogGetPayload<S extends boolean | null | undefined | XpGainLogDefaultArgs> = $Result.GetResult<Prisma.$XpGainLogPayload, S>
+
+  type XpGainLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<XpGainLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: XpGainLogCountAggregateInputType | true
+    }
+
+  export interface XpGainLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['XpGainLog'], meta: { name: 'XpGainLog' } }
+    /**
+     * Find zero or one XpGainLog that matches the filter.
+     * @param {XpGainLogFindUniqueArgs} args - Arguments to find a XpGainLog
+     * @example
+     * // Get one XpGainLog
+     * const xpGainLog = await prisma.xpGainLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends XpGainLogFindUniqueArgs>(args: SelectSubset<T, XpGainLogFindUniqueArgs<ExtArgs>>): Prisma__XpGainLogClient<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one XpGainLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {XpGainLogFindUniqueOrThrowArgs} args - Arguments to find a XpGainLog
+     * @example
+     * // Get one XpGainLog
+     * const xpGainLog = await prisma.xpGainLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends XpGainLogFindUniqueOrThrowArgs>(args: SelectSubset<T, XpGainLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__XpGainLogClient<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first XpGainLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {XpGainLogFindFirstArgs} args - Arguments to find a XpGainLog
+     * @example
+     * // Get one XpGainLog
+     * const xpGainLog = await prisma.xpGainLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends XpGainLogFindFirstArgs>(args?: SelectSubset<T, XpGainLogFindFirstArgs<ExtArgs>>): Prisma__XpGainLogClient<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first XpGainLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {XpGainLogFindFirstOrThrowArgs} args - Arguments to find a XpGainLog
+     * @example
+     * // Get one XpGainLog
+     * const xpGainLog = await prisma.xpGainLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends XpGainLogFindFirstOrThrowArgs>(args?: SelectSubset<T, XpGainLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__XpGainLogClient<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more XpGainLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {XpGainLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all XpGainLogs
+     * const xpGainLogs = await prisma.xpGainLog.findMany()
+     * 
+     * // Get first 10 XpGainLogs
+     * const xpGainLogs = await prisma.xpGainLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const xpGainLogWithIdOnly = await prisma.xpGainLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends XpGainLogFindManyArgs>(args?: SelectSubset<T, XpGainLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a XpGainLog.
+     * @param {XpGainLogCreateArgs} args - Arguments to create a XpGainLog.
+     * @example
+     * // Create one XpGainLog
+     * const XpGainLog = await prisma.xpGainLog.create({
+     *   data: {
+     *     // ... data to create a XpGainLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends XpGainLogCreateArgs>(args: SelectSubset<T, XpGainLogCreateArgs<ExtArgs>>): Prisma__XpGainLogClient<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many XpGainLogs.
+     * @param {XpGainLogCreateManyArgs} args - Arguments to create many XpGainLogs.
+     * @example
+     * // Create many XpGainLogs
+     * const xpGainLog = await prisma.xpGainLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends XpGainLogCreateManyArgs>(args?: SelectSubset<T, XpGainLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many XpGainLogs and returns the data saved in the database.
+     * @param {XpGainLogCreateManyAndReturnArgs} args - Arguments to create many XpGainLogs.
+     * @example
+     * // Create many XpGainLogs
+     * const xpGainLog = await prisma.xpGainLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many XpGainLogs and only return the `id`
+     * const xpGainLogWithIdOnly = await prisma.xpGainLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends XpGainLogCreateManyAndReturnArgs>(args?: SelectSubset<T, XpGainLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a XpGainLog.
+     * @param {XpGainLogDeleteArgs} args - Arguments to delete one XpGainLog.
+     * @example
+     * // Delete one XpGainLog
+     * const XpGainLog = await prisma.xpGainLog.delete({
+     *   where: {
+     *     // ... filter to delete one XpGainLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends XpGainLogDeleteArgs>(args: SelectSubset<T, XpGainLogDeleteArgs<ExtArgs>>): Prisma__XpGainLogClient<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one XpGainLog.
+     * @param {XpGainLogUpdateArgs} args - Arguments to update one XpGainLog.
+     * @example
+     * // Update one XpGainLog
+     * const xpGainLog = await prisma.xpGainLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends XpGainLogUpdateArgs>(args: SelectSubset<T, XpGainLogUpdateArgs<ExtArgs>>): Prisma__XpGainLogClient<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more XpGainLogs.
+     * @param {XpGainLogDeleteManyArgs} args - Arguments to filter XpGainLogs to delete.
+     * @example
+     * // Delete a few XpGainLogs
+     * const { count } = await prisma.xpGainLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends XpGainLogDeleteManyArgs>(args?: SelectSubset<T, XpGainLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more XpGainLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {XpGainLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many XpGainLogs
+     * const xpGainLog = await prisma.xpGainLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends XpGainLogUpdateManyArgs>(args: SelectSubset<T, XpGainLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more XpGainLogs and returns the data updated in the database.
+     * @param {XpGainLogUpdateManyAndReturnArgs} args - Arguments to update many XpGainLogs.
+     * @example
+     * // Update many XpGainLogs
+     * const xpGainLog = await prisma.xpGainLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more XpGainLogs and only return the `id`
+     * const xpGainLogWithIdOnly = await prisma.xpGainLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends XpGainLogUpdateManyAndReturnArgs>(args: SelectSubset<T, XpGainLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one XpGainLog.
+     * @param {XpGainLogUpsertArgs} args - Arguments to update or create a XpGainLog.
+     * @example
+     * // Update or create a XpGainLog
+     * const xpGainLog = await prisma.xpGainLog.upsert({
+     *   create: {
+     *     // ... data to create a XpGainLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the XpGainLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends XpGainLogUpsertArgs>(args: SelectSubset<T, XpGainLogUpsertArgs<ExtArgs>>): Prisma__XpGainLogClient<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of XpGainLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {XpGainLogCountArgs} args - Arguments to filter XpGainLogs to count.
+     * @example
+     * // Count the number of XpGainLogs
+     * const count = await prisma.xpGainLog.count({
+     *   where: {
+     *     // ... the filter for the XpGainLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends XpGainLogCountArgs>(
+      args?: Subset<T, XpGainLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], XpGainLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a XpGainLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {XpGainLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends XpGainLogAggregateArgs>(args: Subset<T, XpGainLogAggregateArgs>): Prisma.PrismaPromise<GetXpGainLogAggregateType<T>>
+
+    /**
+     * Group by XpGainLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {XpGainLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends XpGainLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: XpGainLogGroupByArgs['orderBy'] }
+        : { orderBy?: XpGainLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, XpGainLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetXpGainLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the XpGainLog model
+   */
+  readonly fields: XpGainLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for XpGainLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__XpGainLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the XpGainLog model
+   */
+  interface XpGainLogFieldRefs {
+    readonly id: FieldRef<"XpGainLog", 'String'>
+    readonly userId: FieldRef<"XpGainLog", 'String'>
+    readonly amount: FieldRef<"XpGainLog", 'Int'>
+    readonly reason: FieldRef<"XpGainLog", 'String'>
+    readonly uniqueKey: FieldRef<"XpGainLog", 'String'>
+    readonly createdAt: FieldRef<"XpGainLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * XpGainLog findUnique
+   */
+  export type XpGainLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    /**
+     * Filter, which XpGainLog to fetch.
+     */
+    where: XpGainLogWhereUniqueInput
+  }
+
+  /**
+   * XpGainLog findUniqueOrThrow
+   */
+  export type XpGainLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    /**
+     * Filter, which XpGainLog to fetch.
+     */
+    where: XpGainLogWhereUniqueInput
+  }
+
+  /**
+   * XpGainLog findFirst
+   */
+  export type XpGainLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    /**
+     * Filter, which XpGainLog to fetch.
+     */
+    where?: XpGainLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of XpGainLogs to fetch.
+     */
+    orderBy?: XpGainLogOrderByWithRelationInput | XpGainLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for XpGainLogs.
+     */
+    cursor?: XpGainLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` XpGainLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` XpGainLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of XpGainLogs.
+     */
+    distinct?: XpGainLogScalarFieldEnum | XpGainLogScalarFieldEnum[]
+  }
+
+  /**
+   * XpGainLog findFirstOrThrow
+   */
+  export type XpGainLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    /**
+     * Filter, which XpGainLog to fetch.
+     */
+    where?: XpGainLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of XpGainLogs to fetch.
+     */
+    orderBy?: XpGainLogOrderByWithRelationInput | XpGainLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for XpGainLogs.
+     */
+    cursor?: XpGainLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` XpGainLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` XpGainLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of XpGainLogs.
+     */
+    distinct?: XpGainLogScalarFieldEnum | XpGainLogScalarFieldEnum[]
+  }
+
+  /**
+   * XpGainLog findMany
+   */
+  export type XpGainLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    /**
+     * Filter, which XpGainLogs to fetch.
+     */
+    where?: XpGainLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of XpGainLogs to fetch.
+     */
+    orderBy?: XpGainLogOrderByWithRelationInput | XpGainLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing XpGainLogs.
+     */
+    cursor?: XpGainLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` XpGainLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` XpGainLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of XpGainLogs.
+     */
+    distinct?: XpGainLogScalarFieldEnum | XpGainLogScalarFieldEnum[]
+  }
+
+  /**
+   * XpGainLog create
+   */
+  export type XpGainLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a XpGainLog.
+     */
+    data: XOR<XpGainLogCreateInput, XpGainLogUncheckedCreateInput>
+  }
+
+  /**
+   * XpGainLog createMany
+   */
+  export type XpGainLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many XpGainLogs.
+     */
+    data: XpGainLogCreateManyInput | XpGainLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * XpGainLog createManyAndReturn
+   */
+  export type XpGainLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many XpGainLogs.
+     */
+    data: XpGainLogCreateManyInput | XpGainLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * XpGainLog update
+   */
+  export type XpGainLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a XpGainLog.
+     */
+    data: XOR<XpGainLogUpdateInput, XpGainLogUncheckedUpdateInput>
+    /**
+     * Choose, which XpGainLog to update.
+     */
+    where: XpGainLogWhereUniqueInput
+  }
+
+  /**
+   * XpGainLog updateMany
+   */
+  export type XpGainLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update XpGainLogs.
+     */
+    data: XOR<XpGainLogUpdateManyMutationInput, XpGainLogUncheckedUpdateManyInput>
+    /**
+     * Filter which XpGainLogs to update
+     */
+    where?: XpGainLogWhereInput
+    /**
+     * Limit how many XpGainLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * XpGainLog updateManyAndReturn
+   */
+  export type XpGainLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * The data used to update XpGainLogs.
+     */
+    data: XOR<XpGainLogUpdateManyMutationInput, XpGainLogUncheckedUpdateManyInput>
+    /**
+     * Filter which XpGainLogs to update
+     */
+    where?: XpGainLogWhereInput
+    /**
+     * Limit how many XpGainLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * XpGainLog upsert
+   */
+  export type XpGainLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the XpGainLog to update in case it exists.
+     */
+    where: XpGainLogWhereUniqueInput
+    /**
+     * In case the XpGainLog found by the `where` argument doesn't exist, create a new XpGainLog with this data.
+     */
+    create: XOR<XpGainLogCreateInput, XpGainLogUncheckedCreateInput>
+    /**
+     * In case the XpGainLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<XpGainLogUpdateInput, XpGainLogUncheckedUpdateInput>
+  }
+
+  /**
+   * XpGainLog delete
+   */
+  export type XpGainLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    /**
+     * Filter which XpGainLog to delete.
+     */
+    where: XpGainLogWhereUniqueInput
+  }
+
+  /**
+   * XpGainLog deleteMany
+   */
+  export type XpGainLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which XpGainLogs to delete
+     */
+    where?: XpGainLogWhereInput
+    /**
+     * Limit how many XpGainLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * XpGainLog without action
+   */
+  export type XpGainLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -44718,7 +46085,14 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     tenantId: 'tenantId',
-    mustChangePassword: 'mustChangePassword'
+    mustChangePassword: 'mustChangePassword',
+    username: 'username',
+    interests: 'interests',
+    profileTheme: 'profileTheme',
+    publicProfile: 'publicProfile',
+    xp: 'xp',
+    coins: 'coins',
+    level: 'level'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -45149,6 +46523,18 @@ export namespace Prisma {
   export type EventMonitorScalarFieldEnum = (typeof EventMonitorScalarFieldEnum)[keyof typeof EventMonitorScalarFieldEnum]
 
 
+  export const XpGainLogScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    amount: 'amount',
+    reason: 'reason',
+    uniqueKey: 'uniqueKey',
+    createdAt: 'createdAt'
+  };
+
+  export type XpGainLogScalarFieldEnum = (typeof XpGainLogScalarFieldEnum)[keyof typeof XpGainLogScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -45266,20 +46652,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'EventStatus'
-   */
-  export type EnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'EventStatus[]'
-   */
-  export type ListEnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -45290,6 +46662,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'EventStatus'
+   */
+  export type EnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'EventStatus[]'
+   */
+  export type ListEnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus[]'>
     
 
 
@@ -45604,6 +46990,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     tenantId?: StringFilter<"User"> | string
     mustChangePassword?: BoolFilter<"User"> | boolean
+    username?: StringNullableFilter<"User"> | string | null
+    interests?: StringNullableListFilter<"User">
+    profileTheme?: StringNullableFilter<"User"> | string | null
+    publicProfile?: BoolFilter<"User"> | boolean
+    xp?: IntFilter<"User"> | number
+    coins?: IntFilter<"User"> | number
+    level?: IntFilter<"User"> | number
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
     registrations?: RegistrationListRelationFilter
     reviews?: ReviewListRelationFilter
@@ -45615,6 +47008,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationListRelationFilter
     speaker?: XOR<SpeakerNullableScalarRelationFilter, SpeakerWhereInput> | null
     eventMonitors?: EventMonitorListRelationFilter
+    xpLogs?: XpGainLogListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -45632,6 +47026,13 @@ export namespace Prisma {
     updatedAt?: SortOrder
     tenantId?: SortOrder
     mustChangePassword?: SortOrder
+    username?: SortOrderInput | SortOrder
+    interests?: SortOrder
+    profileTheme?: SortOrderInput | SortOrder
+    publicProfile?: SortOrder
+    xp?: SortOrder
+    coins?: SortOrder
+    level?: SortOrder
     tenant?: TenantOrderByWithRelationInput
     registrations?: RegistrationOrderByRelationAggregateInput
     reviews?: ReviewOrderByRelationAggregateInput
@@ -45643,11 +47044,13 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationOrderByRelationAggregateInput
     speaker?: SpeakerOrderByWithRelationInput
     eventMonitors?: EventMonitorOrderByRelationAggregateInput
+    xpLogs?: XpGainLogOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
+    username?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -45663,6 +47066,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     tenantId?: StringFilter<"User"> | string
     mustChangePassword?: BoolFilter<"User"> | boolean
+    interests?: StringNullableListFilter<"User">
+    profileTheme?: StringNullableFilter<"User"> | string | null
+    publicProfile?: BoolFilter<"User"> | boolean
+    xp?: IntFilter<"User"> | number
+    coins?: IntFilter<"User"> | number
+    level?: IntFilter<"User"> | number
     tenant?: XOR<TenantScalarRelationFilter, TenantWhereInput>
     registrations?: RegistrationListRelationFilter
     reviews?: ReviewListRelationFilter
@@ -45674,7 +47083,8 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationListRelationFilter
     speaker?: XOR<SpeakerNullableScalarRelationFilter, SpeakerWhereInput> | null
     eventMonitors?: EventMonitorListRelationFilter
-  }, "id" | "email">
+    xpLogs?: XpGainLogListRelationFilter
+  }, "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -45691,9 +47101,18 @@ export namespace Prisma {
     updatedAt?: SortOrder
     tenantId?: SortOrder
     mustChangePassword?: SortOrder
+    username?: SortOrderInput | SortOrder
+    interests?: SortOrder
+    profileTheme?: SortOrderInput | SortOrder
+    publicProfile?: SortOrder
+    xp?: SortOrder
+    coins?: SortOrder
+    level?: SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -45714,6 +47133,13 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     tenantId?: StringWithAggregatesFilter<"User"> | string
     mustChangePassword?: BoolWithAggregatesFilter<"User"> | boolean
+    username?: StringNullableWithAggregatesFilter<"User"> | string | null
+    interests?: StringNullableListFilter<"User">
+    profileTheme?: StringNullableWithAggregatesFilter<"User"> | string | null
+    publicProfile?: BoolWithAggregatesFilter<"User"> | boolean
+    xp?: IntWithAggregatesFilter<"User"> | number
+    coins?: IntWithAggregatesFilter<"User"> | number
+    level?: IntWithAggregatesFilter<"User"> | number
   }
 
   export type EventWhereInput = {
@@ -48080,6 +49506,69 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"EventMonitor"> | Date | string
   }
 
+  export type XpGainLogWhereInput = {
+    AND?: XpGainLogWhereInput | XpGainLogWhereInput[]
+    OR?: XpGainLogWhereInput[]
+    NOT?: XpGainLogWhereInput | XpGainLogWhereInput[]
+    id?: StringFilter<"XpGainLog"> | string
+    userId?: StringFilter<"XpGainLog"> | string
+    amount?: IntFilter<"XpGainLog"> | number
+    reason?: StringFilter<"XpGainLog"> | string
+    uniqueKey?: StringNullableFilter<"XpGainLog"> | string | null
+    createdAt?: DateTimeFilter<"XpGainLog"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type XpGainLogOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    reason?: SortOrder
+    uniqueKey?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type XpGainLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_uniqueKey?: XpGainLogUserIdUniqueKeyCompoundUniqueInput
+    AND?: XpGainLogWhereInput | XpGainLogWhereInput[]
+    OR?: XpGainLogWhereInput[]
+    NOT?: XpGainLogWhereInput | XpGainLogWhereInput[]
+    userId?: StringFilter<"XpGainLog"> | string
+    amount?: IntFilter<"XpGainLog"> | number
+    reason?: StringFilter<"XpGainLog"> | string
+    uniqueKey?: StringNullableFilter<"XpGainLog"> | string | null
+    createdAt?: DateTimeFilter<"XpGainLog"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_uniqueKey">
+
+  export type XpGainLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    reason?: SortOrder
+    uniqueKey?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: XpGainLogCountOrderByAggregateInput
+    _avg?: XpGainLogAvgOrderByAggregateInput
+    _max?: XpGainLogMaxOrderByAggregateInput
+    _min?: XpGainLogMinOrderByAggregateInput
+    _sum?: XpGainLogSumOrderByAggregateInput
+  }
+
+  export type XpGainLogScalarWhereWithAggregatesInput = {
+    AND?: XpGainLogScalarWhereWithAggregatesInput | XpGainLogScalarWhereWithAggregatesInput[]
+    OR?: XpGainLogScalarWhereWithAggregatesInput[]
+    NOT?: XpGainLogScalarWhereWithAggregatesInput | XpGainLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"XpGainLog"> | string
+    userId?: StringWithAggregatesFilter<"XpGainLog"> | string
+    amount?: IntWithAggregatesFilter<"XpGainLog"> | number
+    reason?: StringWithAggregatesFilter<"XpGainLog"> | string
+    uniqueKey?: StringNullableWithAggregatesFilter<"XpGainLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"XpGainLog"> | Date | string
+  }
+
   export type TenantCreateInput = {
     id?: string
     name: string
@@ -48188,6 +49677,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
@@ -48199,6 +49695,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -48216,6 +49713,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
@@ -48226,6 +49730,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -48242,6 +49747,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
@@ -48253,6 +49765,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -48270,6 +49783,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
@@ -48280,6 +49800,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -48297,6 +49818,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
   }
 
   export type UserUpdateManyMutationInput = {
@@ -48313,6 +49841,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -48330,6 +49865,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
   }
 
   export type EventCreateInput = {
@@ -50753,6 +52295,68 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type XpGainLogCreateInput = {
+    id?: string
+    amount: number
+    reason: string
+    uniqueKey?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutXpLogsInput
+  }
+
+  export type XpGainLogUncheckedCreateInput = {
+    id?: string
+    userId: string
+    amount: number
+    reason: string
+    uniqueKey?: string | null
+    createdAt?: Date | string
+  }
+
+  export type XpGainLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutXpLogsNestedInput
+  }
+
+  export type XpGainLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type XpGainLogCreateManyInput = {
+    id?: string
+    userId: string
+    amount: number
+    reason: string
+    uniqueKey?: string | null
+    createdAt?: Date | string
+  }
+
+  export type XpGainLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type XpGainLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -51009,6 +52613,25 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type TenantScalarRelationFilter = {
     is?: TenantWhereInput
     isNot?: TenantWhereInput
@@ -51067,6 +52690,12 @@ export namespace Prisma {
     none?: EventMonitorWhereInput
   }
 
+  export type XpGainLogListRelationFilter = {
+    every?: XpGainLogWhereInput
+    some?: XpGainLogWhereInput
+    none?: XpGainLogWhereInput
+  }
+
   export type RegistrationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -51099,6 +52728,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type XpGainLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -51114,6 +52747,19 @@ export namespace Prisma {
     updatedAt?: SortOrder
     tenantId?: SortOrder
     mustChangePassword?: SortOrder
+    username?: SortOrder
+    interests?: SortOrder
+    profileTheme?: SortOrder
+    publicProfile?: SortOrder
+    xp?: SortOrder
+    coins?: SortOrder
+    level?: SortOrder
+  }
+
+  export type UserAvgOrderByAggregateInput = {
+    xp?: SortOrder
+    coins?: SortOrder
+    level?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -51131,6 +52777,12 @@ export namespace Prisma {
     updatedAt?: SortOrder
     tenantId?: SortOrder
     mustChangePassword?: SortOrder
+    username?: SortOrder
+    profileTheme?: SortOrder
+    publicProfile?: SortOrder
+    xp?: SortOrder
+    coins?: SortOrder
+    level?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -51148,6 +52800,18 @@ export namespace Prisma {
     updatedAt?: SortOrder
     tenantId?: SortOrder
     mustChangePassword?: SortOrder
+    username?: SortOrder
+    profileTheme?: SortOrder
+    publicProfile?: SortOrder
+    xp?: SortOrder
+    coins?: SortOrder
+    level?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    xp?: SortOrder
+    coins?: SortOrder
+    level?: SortOrder
   }
 
   export type EnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -51180,6 +52844,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumEventStatusFilter<$PrismaModel = never> = {
@@ -51930,17 +53610,6 @@ export namespace Prisma {
     not?: NestedEnumFormFieldTypeFilter<$PrismaModel> | $Enums.FormFieldType
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type CustomFormScalarRelationFilter = {
     is?: CustomFormWhereInput
     isNot?: CustomFormWhereInput
@@ -52006,22 +53675,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumFormFieldTypeFilter<$PrismaModel>
     _max?: NestedEnumFormFieldTypeFilter<$PrismaModel>
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type RegistrationNullableScalarRelationFilter = {
@@ -52948,6 +54601,46 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type XpGainLogUserIdUniqueKeyCompoundUniqueInput = {
+    userId: string
+    uniqueKey: string
+  }
+
+  export type XpGainLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    reason?: SortOrder
+    uniqueKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type XpGainLogAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type XpGainLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    reason?: SortOrder
+    uniqueKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type XpGainLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    reason?: SortOrder
+    uniqueKey?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type XpGainLogSumOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
   export type UserCreateNestedManyWithoutTenantInput = {
     create?: XOR<UserCreateWithoutTenantInput, UserUncheckedCreateWithoutTenantInput> | UserCreateWithoutTenantInput[] | UserUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: UserCreateOrConnectWithoutTenantInput | UserCreateOrConnectWithoutTenantInput[]
@@ -53212,6 +54905,10 @@ export namespace Prisma {
     deleteMany?: BadgeScalarWhereInput | BadgeScalarWhereInput[]
   }
 
+  export type UserCreateinterestsInput = {
+    set: string[]
+  }
+
   export type TenantCreateNestedOneWithoutUsersInput = {
     create?: XOR<TenantCreateWithoutUsersInput, TenantUncheckedCreateWithoutUsersInput>
     connectOrCreate?: TenantCreateOrConnectWithoutUsersInput
@@ -53287,6 +54984,13 @@ export namespace Prisma {
     connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
   }
 
+  export type XpGainLogCreateNestedManyWithoutUserInput = {
+    create?: XOR<XpGainLogCreateWithoutUserInput, XpGainLogUncheckedCreateWithoutUserInput> | XpGainLogCreateWithoutUserInput[] | XpGainLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: XpGainLogCreateOrConnectWithoutUserInput | XpGainLogCreateOrConnectWithoutUserInput[]
+    createMany?: XpGainLogCreateManyUserInputEnvelope
+    connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+  }
+
   export type RegistrationUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<RegistrationCreateWithoutUserInput, RegistrationUncheckedCreateWithoutUserInput> | RegistrationCreateWithoutUserInput[] | RegistrationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutUserInput | RegistrationCreateOrConnectWithoutUserInput[]
@@ -53356,6 +55060,13 @@ export namespace Prisma {
     connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
   }
 
+  export type XpGainLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<XpGainLogCreateWithoutUserInput, XpGainLogUncheckedCreateWithoutUserInput> | XpGainLogCreateWithoutUserInput[] | XpGainLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: XpGainLogCreateOrConnectWithoutUserInput | XpGainLogCreateOrConnectWithoutUserInput[]
+    createMany?: XpGainLogCreateManyUserInputEnvelope
+    connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+  }
+
   export type EnumUserRoleFieldUpdateOperationsInput = {
     set?: $Enums.UserRole
   }
@@ -53366,6 +55077,19 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type UserUpdateinterestsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type TenantUpdateOneRequiredWithoutUsersNestedInput = {
@@ -53512,6 +55236,20 @@ export namespace Prisma {
     deleteMany?: EventMonitorScalarWhereInput | EventMonitorScalarWhereInput[]
   }
 
+  export type XpGainLogUpdateManyWithoutUserNestedInput = {
+    create?: XOR<XpGainLogCreateWithoutUserInput, XpGainLogUncheckedCreateWithoutUserInput> | XpGainLogCreateWithoutUserInput[] | XpGainLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: XpGainLogCreateOrConnectWithoutUserInput | XpGainLogCreateOrConnectWithoutUserInput[]
+    upsert?: XpGainLogUpsertWithWhereUniqueWithoutUserInput | XpGainLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: XpGainLogCreateManyUserInputEnvelope
+    set?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    disconnect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    delete?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    update?: XpGainLogUpdateWithWhereUniqueWithoutUserInput | XpGainLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: XpGainLogUpdateManyWithWhereWithoutUserInput | XpGainLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
+  }
+
   export type RegistrationUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<RegistrationCreateWithoutUserInput, RegistrationUncheckedCreateWithoutUserInput> | RegistrationCreateWithoutUserInput[] | RegistrationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutUserInput | RegistrationCreateOrConnectWithoutUserInput[]
@@ -53646,6 +55384,20 @@ export namespace Prisma {
     update?: EventMonitorUpdateWithWhereUniqueWithoutUserInput | EventMonitorUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: EventMonitorUpdateManyWithWhereWithoutUserInput | EventMonitorUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: EventMonitorScalarWhereInput | EventMonitorScalarWhereInput[]
+  }
+
+  export type XpGainLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<XpGainLogCreateWithoutUserInput, XpGainLogUncheckedCreateWithoutUserInput> | XpGainLogCreateWithoutUserInput[] | XpGainLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: XpGainLogCreateOrConnectWithoutUserInput | XpGainLogCreateOrConnectWithoutUserInput[]
+    upsert?: XpGainLogUpsertWithWhereUniqueWithoutUserInput | XpGainLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: XpGainLogCreateManyUserInputEnvelope
+    set?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    disconnect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    delete?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    update?: XpGainLogUpdateWithWhereUniqueWithoutUserInput | XpGainLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: XpGainLogUpdateManyWithWhereWithoutUserInput | XpGainLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutEventsInput = {
@@ -55384,14 +57136,6 @@ export namespace Prisma {
     set?: $Enums.FormFieldType
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type CustomFormUpdateOneRequiredWithoutFieldsNestedInput = {
     create?: XOR<CustomFormCreateWithoutFieldsInput, CustomFormUncheckedCreateWithoutFieldsInput>
     connectOrCreate?: CustomFormCreateOrConnectWithoutFieldsInput
@@ -56430,6 +58174,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEventMonitorsInput, UserUpdateWithoutEventMonitorsInput>, UserUncheckedUpdateWithoutEventMonitorsInput>
   }
 
+  export type UserCreateNestedOneWithoutXpLogsInput = {
+    create?: XOR<UserCreateWithoutXpLogsInput, UserUncheckedCreateWithoutXpLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutXpLogsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutXpLogsNestedInput = {
+    create?: XOR<UserCreateWithoutXpLogsInput, UserUncheckedCreateWithoutXpLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutXpLogsInput
+    upsert?: UserUpsertWithoutXpLogsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutXpLogsInput, UserUpdateWithoutXpLogsInput>, UserUncheckedUpdateWithoutXpLogsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -56617,6 +58375,33 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type NestedEnumEventStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
     in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
@@ -56790,33 +58575,6 @@ export namespace Prisma {
     _max?: NestedEnumFormFieldTypeFilter<$PrismaModel>
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type NestedEnumSubmissionStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.SubmissionStatus | EnumSubmissionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
@@ -56973,6 +58731,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionCreateNestedManyWithoutAuthorInput
@@ -56983,6 +58748,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTenantInput = {
@@ -56999,6 +58765,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
@@ -57009,6 +58782,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTenantInput = {
@@ -57273,6 +59047,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     tenantId?: StringFilter<"User"> | string
     mustChangePassword?: BoolFilter<"User"> | boolean
+    username?: StringNullableFilter<"User"> | string | null
+    interests?: StringNullableListFilter<"User">
+    profileTheme?: StringNullableFilter<"User"> | string | null
+    publicProfile?: BoolFilter<"User"> | boolean
+    xp?: IntFilter<"User"> | number
+    coins?: IntFilter<"User"> | number
+    level?: IntFilter<"User"> | number
   }
 
   export type EventUpsertWithWhereUniqueWithoutTenantInput = {
@@ -57772,6 +59553,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type XpGainLogCreateWithoutUserInput = {
+    id?: string
+    amount: number
+    reason: string
+    uniqueKey?: string | null
+    createdAt?: Date | string
+  }
+
+  export type XpGainLogUncheckedCreateWithoutUserInput = {
+    id?: string
+    amount: number
+    reason: string
+    uniqueKey?: string | null
+    createdAt?: Date | string
+  }
+
+  export type XpGainLogCreateOrConnectWithoutUserInput = {
+    where: XpGainLogWhereUniqueInput
+    create: XOR<XpGainLogCreateWithoutUserInput, XpGainLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type XpGainLogCreateManyUserInputEnvelope = {
+    data: XpGainLogCreateManyUserInput | XpGainLogCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TenantUpsertWithoutUsersInput = {
     update: XOR<TenantUpdateWithoutUsersInput, TenantUncheckedUpdateWithoutUsersInput>
     create: XOR<TenantCreateWithoutUsersInput, TenantUncheckedCreateWithoutUsersInput>
@@ -58094,6 +59901,34 @@ export namespace Prisma {
     eventId?: StringFilter<"EventMonitor"> | string
     userId?: StringFilter<"EventMonitor"> | string
     createdAt?: DateTimeFilter<"EventMonitor"> | Date | string
+  }
+
+  export type XpGainLogUpsertWithWhereUniqueWithoutUserInput = {
+    where: XpGainLogWhereUniqueInput
+    update: XOR<XpGainLogUpdateWithoutUserInput, XpGainLogUncheckedUpdateWithoutUserInput>
+    create: XOR<XpGainLogCreateWithoutUserInput, XpGainLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type XpGainLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: XpGainLogWhereUniqueInput
+    data: XOR<XpGainLogUpdateWithoutUserInput, XpGainLogUncheckedUpdateWithoutUserInput>
+  }
+
+  export type XpGainLogUpdateManyWithWhereWithoutUserInput = {
+    where: XpGainLogScalarWhereInput
+    data: XOR<XpGainLogUpdateManyMutationInput, XpGainLogUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type XpGainLogScalarWhereInput = {
+    AND?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
+    OR?: XpGainLogScalarWhereInput[]
+    NOT?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
+    id?: StringFilter<"XpGainLog"> | string
+    userId?: StringFilter<"XpGainLog"> | string
+    amount?: IntFilter<"XpGainLog"> | number
+    reason?: StringFilter<"XpGainLog"> | string
+    uniqueKey?: StringNullableFilter<"XpGainLog"> | string | null
+    createdAt?: DateTimeFilter<"XpGainLog"> | Date | string
   }
 
   export type TenantCreateWithoutEventsInput = {
@@ -59897,6 +61732,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
@@ -59907,6 +61749,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSpeakerInput = {
@@ -59924,6 +61767,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
@@ -59933,6 +61783,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSpeakerInput = {
@@ -60026,6 +61877,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
@@ -60036,6 +61894,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSpeakerInput = {
@@ -60053,6 +61912,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
@@ -60062,6 +61928,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ActivitySpeakerUpsertWithWhereUniqueWithoutSpeakerInput = {
@@ -60401,6 +62268,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionCreateNestedManyWithoutAuthorInput
@@ -60411,6 +62285,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRegistrationsInput = {
@@ -60428,6 +62303,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -60437,6 +62319,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRegistrationsInput = {
@@ -60730,6 +62613,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
@@ -60740,6 +62630,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRegistrationsInput = {
@@ -60757,6 +62648,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -60766,6 +62664,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TicketUpsertWithWhereUniqueWithoutRegistrationInput = {
@@ -62179,6 +64078,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
@@ -62189,6 +64095,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubmissionsInput = {
@@ -62206,6 +64113,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -62215,6 +64129,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubmissionsInput = {
@@ -62438,6 +64353,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
@@ -62448,6 +64370,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubmissionsInput = {
@@ -62465,6 +64388,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -62474,6 +64404,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SubmissionModalityUpsertWithoutSubmissionsInput = {
@@ -62613,6 +64544,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     submissions?: SubmissionCreateNestedManyWithoutAuthorInput
@@ -62623,6 +64561,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReviewsInput = {
@@ -62640,6 +64579,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
     userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -62649,6 +64595,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReviewsInput = {
@@ -62722,6 +64669,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
@@ -62732,6 +64686,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -62749,6 +64704,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
     userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -62758,6 +64720,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutReviewersInput = {
@@ -62861,6 +64824,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
@@ -62871,6 +64841,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEventReviewersInput = {
@@ -62888,6 +64859,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
@@ -62897,6 +64875,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEventReviewersInput = {
@@ -63022,6 +65001,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
@@ -63032,6 +65018,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEventReviewersInput = {
@@ -63049,6 +65036,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
@@ -63058,6 +65052,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutReviewerInvitationsInput = {
@@ -63161,6 +65156,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
@@ -63171,6 +65173,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReviewerInvitationsInput = {
@@ -63188,6 +65191,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
@@ -63197,6 +65207,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReviewerInvitationsInput = {
@@ -63218,6 +65229,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
@@ -63228,6 +65246,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAcceptedInvitationsInput = {
@@ -63245,6 +65264,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
@@ -63254,6 +65280,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAcceptedInvitationsInput = {
@@ -63379,6 +65406,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
@@ -63389,6 +65423,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewerInvitationsInput = {
@@ -63406,6 +65441,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
@@ -63415,6 +65457,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutAcceptedInvitationsInput = {
@@ -63442,6 +65485,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
@@ -63452,6 +65502,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAcceptedInvitationsInput = {
@@ -63469,6 +65520,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
@@ -63478,6 +65536,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutSubmissionModalitiesInput = {
@@ -65691,6 +67750,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
@@ -65701,6 +67767,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClaimCodesInput = {
@@ -65718,6 +67785,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
@@ -65727,6 +67801,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClaimCodesInput = {
@@ -65804,6 +67879,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
@@ -65814,6 +67896,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClaimCodesInput = {
@@ -65831,6 +67914,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
@@ -65840,6 +67930,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutUserBadgesInput = {
@@ -65856,6 +67947,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
@@ -65866,6 +67964,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserBadgesInput = {
@@ -65883,6 +67982,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
@@ -65892,6 +67998,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserBadgesInput = {
@@ -66050,6 +68157,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
@@ -66060,6 +68174,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserBadgesInput = {
@@ -66077,6 +68192,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
@@ -66086,6 +68208,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BadgeUpsertWithoutUserBadgesInput = {
@@ -66607,6 +68730,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     tenant: TenantCreateNestedOneWithoutUsersInput
     registrations?: RegistrationCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutReviewerInput
@@ -66617,6 +68747,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEventMonitorsInput = {
@@ -66634,6 +68765,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     tenantId: string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
     registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
     submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
@@ -66643,6 +68781,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEventMonitorsInput = {
@@ -66768,6 +68907,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
@@ -66778,6 +68924,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEventMonitorsInput = {
@@ -66795,6 +68942,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tenantId?: StringFieldUpdateOperationsInput | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
@@ -66804,6 +68958,159 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutXpLogsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
+    refreshToken?: string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
+    tenant: TenantCreateNestedOneWithoutUsersInput
+    registrations?: RegistrationCreateNestedManyWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutReviewerInput
+    submissions?: SubmissionCreateNestedManyWithoutAuthorInput
+    userBadges?: UserBadgeCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutUserInput
+    eventReviewers?: EventReviewerCreateNestedManyWithoutUserInput
+    reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
+    acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
+    speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutXpLogsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
+    refreshToken?: string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenantId: string
+    mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput
+    eventReviewers?: EventReviewerUncheckedCreateNestedManyWithoutUserInput
+    reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+    acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
+    speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutXpLogsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutXpLogsInput, UserUncheckedCreateWithoutXpLogsInput>
+  }
+
+  export type UserUpsertWithoutXpLogsInput = {
+    update: XOR<UserUpdateWithoutXpLogsInput, UserUncheckedUpdateWithoutXpLogsInput>
+    create: XOR<UserCreateWithoutXpLogsInput, UserUncheckedCreateWithoutXpLogsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutXpLogsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutXpLogsInput, UserUncheckedUpdateWithoutXpLogsInput>
+  }
+
+  export type UserUpdateWithoutXpLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
+    registrations?: RegistrationUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutReviewerNestedInput
+    submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutUserNestedInput
+    eventReviewers?: EventReviewerUpdateManyWithoutUserNestedInput
+    reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
+    acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
+    speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutXpLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
+    eventReviewers?: EventReviewerUncheckedUpdateManyWithoutUserNestedInput
+    reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+    acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
+    speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyTenantInput = {
@@ -66820,6 +69127,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
   }
 
   export type EventCreateManyTenantInput = {
@@ -66899,6 +69213,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
@@ -66909,6 +69230,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTenantInput = {
@@ -66925,6 +69247,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
     registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
     submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
@@ -66935,6 +69264,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTenantInput = {
@@ -66951,6 +69281,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
   }
 
   export type EventUpdateWithoutTenantInput = {
@@ -67264,6 +69601,14 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type XpGainLogCreateManyUserInput = {
+    id?: string
+    amount: number
+    reason: string
+    uniqueKey?: string | null
+    createdAt?: Date | string
+  }
+
   export type RegistrationUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67517,6 +69862,30 @@ export namespace Prisma {
   export type EventMonitorUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type XpGainLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type XpGainLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type XpGainLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

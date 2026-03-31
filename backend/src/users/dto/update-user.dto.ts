@@ -16,6 +16,24 @@ export class UpdateProfileDto {
   @IsString()
   @IsOptional()
   bio?: string;
+
+  @ApiProperty({ example: "thiago", required: false })
+  @IsString()
+  @IsOptional()
+  username?: string;
+
+  @ApiProperty({ example: ["javascript", "react"], required: false })
+  @IsOptional()
+  interests?: string[];
+
+  @ApiProperty({ example: "zinc", required: false })
+  @IsString()
+  @IsOptional()
+  profileTheme?: string;
+
+  @ApiProperty({ example: true, required: false })
+  @IsOptional()
+  publicProfile?: boolean;
 }
 
 export class UpdatePasswordDto {

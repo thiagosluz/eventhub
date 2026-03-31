@@ -34,6 +34,7 @@ import { UsersModule } from "./users/users.module";
 import { BadgesModule } from "./badges/badges.module";
 import { MailModule } from "./mail/mail.module";
 import { StaffManagementModule } from "./staff/staff.module";
+import { GamificationModule } from "./gamification/gamification.module";
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { StaffManagementModule } from "./staff/staff.module";
     BadgesModule,
     MailModule,
     StaffManagementModule,
+    GamificationModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST ?? "localhost",

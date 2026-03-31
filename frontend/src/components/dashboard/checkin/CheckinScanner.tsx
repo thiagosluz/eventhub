@@ -25,9 +25,10 @@ import { Activity } from "@/types/event";
 import { analyticsService, Participant } from "@/services/analytics.service";
 
 import { useAuth } from "@/context/AuthContext";
+import { showXpGain } from "@/utils/xp-toast";
 
 export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?: string }) {
-  const { user } = useAuth();
+  const { user: _user } = useAuth();
   const [event, setEvent] = useState<Event | null>(null);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivityId, setSelectedActivityId] = useState<string>("");
@@ -36,7 +37,6 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   
-  // New states for manual check-in
   const [activeTab, setActiveTab] = useState<'scanner' | 'manual'>('scanner');
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -47,7 +47,6 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
   const isTransitioningRef = useRef(false);
   const selectedActivityIdRef = useRef(selectedActivityId);
 
-  // Sync ref with state
   useEffect(() => {
     selectedActivityIdRef.current = selectedActivityId;
   }, [selectedActivityId]);
@@ -61,7 +60,8 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
     
     setIsLoading(true);
     try {
-      const result = await operationsService.checkin(decodedText, selectedActivityIdRef.current || undefined);
+      const result = await operationsService.checkin(decodedText, selectedActivityIdRef.current || undefined) as any;
+      
       if (result.alreadyCheckedIn) {
         setLastResult({ 
           success: false, 
@@ -69,11 +69,16 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
           submessage: "Este participante já fez o check-in." 
         });
       } else {
+        const xpInfo = result.xpGained ? ` (+${result.xpGained} XP)` : "";
         setLastResult({ 
           success: true, 
-          message: "Check-in Sucesso!", 
+          message: `Check-in Sucesso!${xpInfo}`, 
           submessage: selectedActivityIdRef.current ? "Presença confirmada na atividade." : "Bem-vindo ao evento!" 
         });
+
+        if (result.xpGained) {
+          showXpGain(result.xpGained, result.isLevelUp);
+        }
       }
     } catch (error: any) {
       setLastResult({ 
@@ -87,61 +92,66 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
     }
   }, []);
 
-  const stopScanner = useCallback(async () => {
-    if (isTransitioningRef.current) return;
-    if (scannerRef.current && scannerRef.current.isScanning) {
-      try {
-        isTransitioningRef.current = true;
-        await scannerRef.current.stop();
-        setIsScanning(false);
-      } catch (err) {
-        console.error("Failed to stop scanner:", err);
-      } finally {
-        isTransitioningRef.current = false;
-      }
-    }
-  }, []);
-
   const startScanner = useCallback(async () => {
-    if (isTransitioningRef.current) return;
-    if (activeTab !== 'scanner') return;
-
-    if (!scannerRef.current) {
-      scannerRef.current = new Html5Qrcode("reader");
-    }
-
-    if (scannerRef.current.isScanning) {
-      await stopScanner();
-    }
+    if (isTransitioningRef.current || isScanning) return;
+    isTransitioningRef.current = true;
 
     try {
-      isTransitioningRef.current = true;
+      if (scannerRef.current) {
+        await scannerRef.current.stop().catch(() => {});
+      }
+      
+      const scanner = new Html5Qrcode("reader");
+      scannerRef.current = scanner;
       setHasError(false);
-      await scannerRef.current.start(
+      
+      await scanner.start(
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
         onScanSuccess,
         () => {}
       );
       setIsScanning(true);
-    } catch (err) {
-      console.error("Failed to start scanner:", err);
-      setHasError(true);
+    } catch (err: any) {
+      // If error is "Cannot transition to a new state", it means we're in a race.
+      // We log but don't break the component.
+      console.warn("Failed to start scanner during transition", err);
+      if (!err?.toString()?.includes("transition")) {
+         setHasError(true);
+      }
       setIsScanning(false);
     } finally {
       isTransitioningRef.current = false;
     }
-  }, [onScanSuccess, stopScanner, activeTab]);
+  }, [onScanSuccess, isScanning]);
+
+  const stopScanner = useCallback(async () => {
+    if (isTransitioningRef.current || !isScanning) return;
+    isTransitioningRef.current = true;
+
+    try {
+      if (scannerRef.current) {
+        await scannerRef.current.stop();
+        scannerRef.current = null;
+        setIsScanning(false);
+      }
+    } catch (err: any) {
+      console.warn("Failed to stop scanner during transition", err);
+    } finally {
+      isTransitioningRef.current = false;
+      // Force reset state if stopping failed or was caught in transition
+      if (scannerRef.current && !isScanning) {
+        scannerRef.current = null;
+      }
+    }
+  }, [isScanning]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Here we attempt to fetch event data. For monitors, they might not have access to getOrganizerEventById.
-        // But let's keep getOrganizerEventById for now. If we get 403, we could just catch it and maybe fall back 
-        // to a simpler name fetch if needed. We'll leave it as is, or we could change to a standard event endpoint if we had one.
         const [eventData, activitiesData] = await Promise.all([
           eventsService.getOrganizerEventById(eventId)
-            .catch(() => ({ name: "Evento Monitorado" } as unknown as Event)), // Minimal fallback for monitors if 403 happens
+            .catch(() => ({ name: "Evento Monitorado" } as unknown as Event)),
           activitiesService.getActivitiesForEvent(eventId)
         ]);
         setEvent(eventData as Event);
@@ -156,7 +166,6 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
       startScanner();
     } else {
       stopScanner();
-      // Fetch participants for manual mode if not already fetched
       if (participants.length === 0) {
         setIsFetchingParticipants(true);
         analyticsService.getEventParticipants(eventId)
@@ -169,16 +178,16 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
     return () => {
       stopScanner();
     };
-  }, [eventId, activeTab, startScanner, stopScanner, participants.length]);
+  }, [eventId, activeTab, startScanner, stopScanner]);
 
   const filteredParticipants = useMemo(() => {
-    if (!searchQuery) return participants.slice(0, 10); // Show only top 10 if no search
+    if (!searchQuery) return participants.slice(0, 10);
     const query = searchQuery.toLowerCase();
     return participants.filter(p => 
       p.name.toLowerCase().includes(query) || 
       p.email.toLowerCase().includes(query) ||
       p.qrCodeToken?.toLowerCase().includes(query)
-    ).slice(0, 20); // Limit to 20 results for performance
+    ).slice(0, 20);
   }, [participants, searchQuery]);
 
   const handleManualCheckin = async (participant: Participant) => {
@@ -186,9 +195,8 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
     
     setIsLoading(true);
     try {
-      const result = await operationsService.checkin(participant.qrCodeToken, selectedActivityIdRef.current || undefined);
+      const result = await operationsService.checkin(participant.qrCodeToken, selectedActivityIdRef.current || undefined) as any;
       
-      // Update local state for immediate feedback
       setParticipants(prev => prev.map(p => {
         if (p.id === participant.id) {
           const newAttendance = { id: result.attendanceId, activityId: selectedActivityIdRef.current || null };
@@ -207,11 +215,16 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
           submessage: "Este participante já fez o check-in." 
         });
       } else {
+        const xpInfo = result.xpGained ? ` (+${result.xpGained} XP)` : "";
         setLastResult({ 
           success: true, 
-          message: "Check-in Sucesso!", 
+          message: `Check-in Sucesso!${xpInfo}`, 
           submessage: selectedActivityIdRef.current ? "Presença confirmada na atividade." : "Bem-vindo ao evento!" 
         });
+
+        if (result.xpGained) {
+          showXpGain(result.xpGained, result.isLevelUp);
+        }
       }
     } catch (error: any) {
       setLastResult({ 
@@ -230,7 +243,6 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
     try {
       await operationsService.undoCheckin(attendanceId);
       
-      // Update local state
       setParticipants(prev => prev.map(p => {
         if (p.id === participant.id) {
           return {
@@ -260,7 +272,6 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center p-6 space-y-8 animate-in fade-in duration-700">
-      {/* Header */}
       <div className="w-full max-w-lg flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -282,7 +293,6 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
           </div>
         </div>
 
-        {/* Tab Switcher */}
         <div className="flex p-1 bg-slate-200/50 rounded-2xl border border-border/50">
           <button
             onClick={() => setActiveTab('scanner')}
@@ -308,7 +318,6 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
           </button>
         </div>
 
-        {/* Activity Selector */}
         <div className="bg-white border border-border rounded-2xl p-4 shadow-sm">
           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground px-1 block mb-2">Modo de Check-in</label>
           <select
@@ -326,10 +335,9 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
         </div>
       </div>
 
-      {/* Main Content Area */}
       <div className="w-full max-w-lg relative">
         {activeTab === 'scanner' ? (
-          <div className="premium-card bg-white border-border overflow-hidden shadow-2xl relative">
+          <div className="premium-card bg-white border-border overflow-hidden shadow-2xl relative min-h-[400px]">
             <div id="reader" className="w-full h-full min-h-[400px] bg-slate-100" />
             
             {hasError && (
@@ -434,11 +442,6 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
                       </div>
                     </div>
                   ))}
-                  {searchQuery && filteredParticipants.length === 20 && (
-                    <p className="text-center text-[10px] font-bold text-muted-foreground italic mt-2">
-                      Muitos resultados... tente refinar sua busca.
-                    </p>
-                  )}
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center py-12 text-center space-y-3 opacity-50">
@@ -450,7 +453,6 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
           </div>
         )}
 
-        {/* Global Overlays */}
         {isLoading && (
           <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-30 flex flex-col items-center justify-center space-y-4 rounded-[2rem]">
             <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
@@ -458,13 +460,12 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
           </div>
         )}
 
-        {/* Result Overlay */}
         {lastResult && (
           <div className={`absolute inset-0 z-40 flex flex-col items-center justify-center p-8 text-center space-y-4 animate-in zoom-in slide-in-from-bottom-8 duration-500 ${lastResult.success ? 'bg-emerald-500/90' : 'bg-rose-500/90'} backdrop-blur-lg rounded-[2rem]`}>
             {lastResult.success ? (
               <CheckCircleIcon className="w-24 h-24 text-white animate-bounce" />
             ) : (
-              <XCircleIcon className="w-24 h-24 text-white animate-shake" />
+              <XCircleIcon className="w-24 h-24 text-white" />
             )}
             <div className="space-y-1">
               <h2 className="text-3xl font-black text-white">{lastResult.message}</h2>
@@ -473,8 +474,7 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
           </div>
         )}
 
-        {/* Status Bar */}
-        <div className="mt-6 premium-card !p-4 bg-white border-border flex items-center justify-between">
+        <div className="mt-6 premium-card !p-4 bg-white border-border flex items-center justify-between shadow-sm">
            <div className="flex items-center gap-3">
               <div className={`w-2 h-2 rounded-full ${isScanning || activeTab === 'manual' ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
               <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
@@ -487,7 +487,6 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
         </div>
       </div>
 
-      {/* Instructions */}
       <div className="w-full max-w-lg grid grid-cols-2 gap-4">
         <div className="premium-card !p-4 bg-white/50 border-border border-dashed flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">

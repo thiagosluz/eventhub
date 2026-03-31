@@ -144,7 +144,14 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   tenantId: 'tenantId',
-  mustChangePassword: 'mustChangePassword'
+  mustChangePassword: 'mustChangePassword',
+  username: 'username',
+  interests: 'interests',
+  profileTheme: 'profileTheme',
+  publicProfile: 'publicProfile',
+  xp: 'xp',
+  coins: 'coins',
+  level: 'level'
 };
 
 exports.Prisma.EventScalarFieldEnum = {
@@ -476,6 +483,15 @@ exports.Prisma.EventMonitorScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.XpGainLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amount: 'amount',
+  reason: 'reason',
+  uniqueKey: 'uniqueKey',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -642,7 +658,8 @@ exports.Prisma.ModelName = {
   UserBadge: 'UserBadge',
   ActivityMaterial: 'ActivityMaterial',
   ActivityFeedback: 'ActivityFeedback',
-  EventMonitor: 'EventMonitor'
+  EventMonitor: 'EventMonitor',
+  XpGainLog: 'XpGainLog'
 };
 
 /**

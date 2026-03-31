@@ -3,6 +3,7 @@ import { EventsController } from "./events.controller";
 import { EventsService } from "./events.service";
 import { MinioService } from "../storage/minio.service";
 import { JwtService } from "@nestjs/jwt";
+import { PrismaService } from "../prisma/prisma.service";
 import { BadRequestException } from "@nestjs/common";
 
 describe("EventsController", () => {
@@ -25,6 +26,15 @@ describe("EventsController", () => {
     decode: jest.fn(),
   };
 
+  const mockPrismaService = {
+    eventMonitor: {
+      findUnique: jest.fn(),
+    },
+    user: {
+      findUnique: jest.fn(),
+    },
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [EventsController],
@@ -32,6 +42,7 @@ describe("EventsController", () => {
         { provide: EventsService, useValue: mockEventsService },
         { provide: MinioService, useValue: mockMinioService },
         { provide: JwtService, useValue: mockJwtService },
+        { provide: PrismaService, useValue: mockPrismaService },
       ],
     }).compile();
 

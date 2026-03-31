@@ -9,6 +9,15 @@ export interface UserProfile extends Omit<User, "tenantId"> {
   avatarUrl?: string;
   bio?: string;
   tenantId: string;
+  username?: string;
+  interests?: string[];
+  profileTheme?: string;
+  publicProfile?: boolean;
+  xp?: number;
+  coins?: number;
+  level?: number;
+  xpGained?: number;
+  isLevelUp?: boolean;
 }
 
 export const usersService = {
@@ -28,6 +37,10 @@ export const usersService = {
     const formData = new FormData();
     formData.append("file", file);
     return api.post("/users/me/avatar", formData);
+  },
+
+  getPublicProfile: async (username: string): Promise<any> => {
+    return api.get(`/users/p/${username}`);
   },
 
   getUsers: async (): Promise<User[]> => {

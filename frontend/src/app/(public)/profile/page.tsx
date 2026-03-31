@@ -25,7 +25,11 @@ import {
   ChevronRightIcon,
   ChevronLeftIcon,
   TrophyIcon,
-  MicrophoneIcon
+  MicrophoneIcon,
+  GlobeAltIcon,
+  XMarkIcon,
+  CheckIcon,
+  SparklesIcon
 } from "@heroicons/react/24/outline";
 
 // Components for tabs
@@ -33,6 +37,8 @@ import { CertificatesList } from "@/components/certificates/CertificatesList";
 import { SubmissionsList } from "@/components/submissions/SubmissionsList";
 import { ActivityEnrollmentList } from "@/components/activities/ActivityEnrollmentList";
 import { BadgesShowcase } from "@/components/profile/BadgesShowcase";
+import { AvatarWithBorder } from "@/components/profile/AvatarWithBorder";
+import { showXpGain } from "@/utils/xp-toast";
 import { ShareIcon, IdentificationIcon } from "@heroicons/react/24/solid";
 
 function QRCodeImage({ ticketId }: { ticketId: string }) {
@@ -90,7 +96,15 @@ function ProfileContent() {
 
   // Profile Edit State
   const [isEditing, setIsEditing] = useState(false);
-  const [editForm, setEditForm] = useState({ name: "", email: "", bio: "" });
+  const [editForm, setEditForm] = useState({ 
+    name: "", 
+    email: "", 
+    bio: "",
+    username: "",
+    interests: [] as string[],
+    profileTheme: "zinc",
+    publicProfile: false
+  });
   const [passForm, setPassForm] = useState({ currentPassword: "", newPassword: "" });
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
@@ -109,7 +123,15 @@ function ProfileContent() {
         usersService.getMonitoredEvents()
       ]);
       setProfile(uProfile);
-      setEditForm({ name: uProfile.name || "", email: uProfile.email || "", bio: uProfile.bio || "" });
+      setEditForm({ 
+        name: uProfile.name || "", 
+        email: uProfile.email || "", 
+        bio: uProfile.bio || "",
+        username: uProfile.username || "",
+        interests: uProfile.interests || [],
+        profileTheme: uProfile.profileTheme || "zinc",
+        publicProfile: uProfile.publicProfile || false
+      });
       setTickets(uTickets);
       setCertificates(uCerts);
       setMonitoredEventsCount(uMonitored.length);
@@ -155,8 +177,13 @@ function ProfileContent() {
       const updated = await usersService.updateProfile(editForm);
       setProfile(updated);
       setIsEditing(false);
-      setSuccessMsg("Perfil atualizado com sucesso!");
-      setTimeout(() => setSuccessMsg(""), 3000);
+      
+      if (updated.xpGained && updated.xpGained > 0) {
+        showXpGain(updated.xpGained, updated.isLevelUp);
+      } else {
+        setSuccessMsg("Perfil atualizado com sucesso!");
+        setTimeout(() => setSuccessMsg(""), 3000);
+      }
     } catch (err: any) {
       setErrorMsg(err.response?.data?.message || err.message || "Erro ao salvar perfil");
     }
@@ -205,47 +232,61 @@ function ProfileContent() {
     <div className="max-w-7xl mx-auto px-4 pt-24 pb-12 md:pt-32 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       
       {/* Gamified Top Banner */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center gap-8 justify-between border border-border/10">
-        <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[150%] bg-primary/20 blur-[100px] pointer-events-none rounded-full" />
+      <div className={`relative overflow-hidden rounded-[2rem] bg-slate-950 p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center gap-8 justify-between border border-white/5`}>
+        {/* Dynamic theme background blob */}
+        <div className={`absolute top-[-20%] right-[-10%] w-[50%] h-[150%] blur-[100px] pointer-events-none rounded-full opacity-30 ${
+          profile?.profileTheme === 'indigo' ? 'bg-indigo-500' :
+          profile?.profileTheme === 'rose' ? 'bg-rose-500' :
+          profile?.profileTheme === 'emerald' ? 'bg-emerald-500' :
+          profile?.profileTheme === 'amber' ? 'bg-amber-500' :
+          profile?.profileTheme === 'fuchsia' ? 'bg-fuchsia-500' :
+          profile?.profileTheme === 'sky' ? 'bg-sky-500' :
+          'bg-primary'
+        }`} />
         
         <div className="flex items-center gap-6 relative z-10 w-full md:w-auto">
-          <div className="relative group">
-            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-slate-800 bg-slate-900 overflow-hidden relative shadow-2xl flex items-center justify-center flex-shrink-0">
-              {profile?.avatarUrl ? (
-                <Image src={profile.avatarUrl} alt="Avatar" fill className="object-cover" />
-              ) : (
-                <span className="text-3xl font-black text-white/20 uppercase">{profile?.name.substring(0,2)}</span>
-              )}
-              <label className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                <CameraIcon className="w-8 h-8 text-white" />
-                <input type="file" className="hidden" accept="image/*" onChange={handleAvatarChange} />
-              </label>
-            </div>
-            {profile?.role === 'ORGANIZER' && (
-              <div className="absolute -bottom-2 -right-2 bg-primary text-white text-[10px] font-black uppercase px-3 py-1 rounded-full border-2 border-slate-950 shadow-lg">
-                Organizador
-              </div>
-            )}
-          </div>
+          <AvatarWithBorder 
+            avatarUrl={profile?.avatarUrl}
+            name={profile?.name || ""}
+            level={profile?.level || 1}
+            size="lg"
+            editable={true}
+            onAvatarChange={handleAvatarChange}
+          />
           <div>
-            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">{profile?.name}</h1>
-            <p className="text-slate-400 font-medium">{profile?.email}</p>
-            {profile?.bio && <p className="text-sm text-slate-500 mt-2 max-w-md line-clamp-2 md:line-clamp-none">{profile.bio}</p>}
+            <div className="flex items-center gap-3">
+               <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">{profile?.name}</h1>
+               {profile?.publicProfile && <GlobeAltIcon className="w-5 h-5 text-emerald-400" title="Perfil Público Ativo" />}
+            </div>
+            <p className="text-slate-400 font-medium">@{profile?.username || profile?.email}</p>
+            <div className="mt-3 flex items-center gap-4">
+               <div className="flex-1 h-2 bg-slate-800 rounded-full max-w-[200px] overflow-hidden border border-white/5">
+                  <div 
+                    className="h-full bg-gradient-to-r from-primary to-blue-400 transition-all duration-1000" 
+                    style={{ width: `${Math.min(((profile?.xp || 0) % 1000) / 10, 100)}%` }} 
+                  />
+               </div>
+               <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{profile?.xp || 0} XP</span>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 md:gap-8 w-full md:w-auto relative z-10">
-           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10">
-             <div className="text-3xl font-black text-primary mb-1">{tickets.length}</div>
-             <div className="text-[10px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><TicketIcon className="w-3 h-3"/> Eventos</div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full md:w-auto relative z-10">
+           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10 min-w-[100px]">
+             <div className="text-2xl font-black text-primary mb-0.5">{tickets.length}</div>
+             <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><TicketIcon className="w-3 h-3"/> Eventos</div>
            </div>
-           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10">
-             <div className="text-3xl font-black text-emerald-400 mb-1">{certificates.length}</div>
-             <div className="text-[10px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><CheckBadgeIcon className="w-3 h-3"/> Certificados</div>
+           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10 min-w-[100px]">
+             <div className="text-2xl font-black text-amber-400 mb-0.5">{profile?.coins || 0}</div>
+             <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><SparklesIcon className="w-3 h-3"/> EH Coins</div>
            </div>
-           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10">
-             <div className="text-3xl font-black text-amber-400 mb-1">{calculateHours()}h</div>
-             <div className="text-[10px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><ClockIcon className="w-3 h-3"/> Horas</div>
+           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10 min-w-[100px]">
+             <div className="text-2xl font-black text-emerald-400 mb-0.5">{certificates.length}</div>
+             <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><CheckBadgeIcon className="w-3 h-3"/> Certs</div>
+           </div>
+           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10 min-w-[100px]">
+             <div className="text-2xl font-black text-sky-400 mb-0.5">{calculateHours()}h</div>
+             <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><ClockIcon className="w-3 h-3"/> Horas</div>
            </div>
         </div>
       </div>
@@ -406,12 +447,117 @@ function ProfileContent() {
                           <p className="font-medium text-foreground">{profile?.bio || <span className="text-muted-foreground/50 italic">Sem biografia</span>}</p>
                        )}
                      </div>
-                     {isEditing && (
-                        <div className="pt-4 flex justify-end gap-3">
-                           <button onClick={() => setIsEditing(false)} className="px-6 py-2 rounded-xl border border-border font-bold text-sm text-muted-foreground hover:bg-muted">Cancelar</button>
-                           <button onClick={handleSaveProfile} className="premium-button !py-2 !text-sm">Salvar Alterações</button>
+
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-border/50">
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Username Único (@)</label>
+                          {isEditing ? (
+                             <div className="relative">
+                               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">@</span>
+                               <input type="text" value={editForm.username} onChange={e => setEditForm({...editForm, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '')})} className="w-full bg-slate-50 border border-border rounded-xl pl-8 pr-4 py-3 text-sm font-medium" placeholder="seunome" />
+                             </div>
+                          ) : (
+                             <p className="font-bold text-primary">@{profile?.username || <span className="text-muted-foreground/30 font-medium italic">não definido</span>}</p>
+                          )}
                         </div>
-                     )}
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Visibilidade</label>
+                          {isEditing ? (
+                             <button 
+                               onClick={() => setEditForm({...editForm, publicProfile: !editForm.publicProfile})}
+                               className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all ${editForm.publicProfile ? 'bg-emerald-500/10 border-emerald-500 text-emerald-600' : 'bg-slate-100 border-border text-muted-foreground'}`}
+                             >
+                               <div className={`w-4 h-4 rounded-full border-2 ${editForm.publicProfile ? 'bg-emerald-500 border-emerald-600' : 'bg-white border-slate-300'}`} />
+                               <span className="text-xs font-black uppercase tracking-widest">{editForm.publicProfile ? 'Perfil Público' : 'Perfil Privado'}</span>
+                             </button>
+                          ) : (
+                             <p className={`text-xs font-black uppercase tracking-widest ${profile?.publicProfile ? 'text-emerald-500' : 'text-slate-400'}`}>
+                               {profile?.publicProfile ? '✓ Público (Visível para todos)' : '✗ Privado (Apenas você vê)'}
+                             </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {profile?.publicProfile && profile?.username && !isEditing && (
+                        <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10 flex items-center justify-between">
+                           <div className="flex items-center gap-3">
+                              <GlobeAltIcon className="w-5 h-5 text-primary" />
+                              <div>
+                                 <p className="text-xs font-black uppercase tracking-widest text-primary">Seu Perfil Público está Ativo!</p>
+                                 <p className="text-[10px] text-muted-foreground">Compartilhe sua jornada com o mundo.</p>
+                              </div>
+                           </div>
+                           <Link href={`/u/${profile.username}`} target="_blank" className="text-[10px] font-black uppercase tracking-widest bg-primary text-white px-4 py-2 rounded-lg hover:scale-105 transition-transform shadow-lg shadow-primary/20">Ver Perfil</Link>
+                        </div>
+                      )}
+
+                      <div className="pt-4">
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3">Interesses e Especialidades</label>
+                        {isEditing ? (
+                           <div className="space-y-3">
+                              <div className="flex flex-wrap gap-2 mb-2">
+                                 {editForm.interests.map(tag => (
+                                    <span key={tag} className="px-3 py-1 bg-primary/10 text-primary rounded-lg text-xs font-bold flex items-center gap-1 group">
+                                       {tag}
+                                       <button onClick={() => setEditForm({...editForm, interests: editForm.interests.filter(t => t !== tag)})} className="hover:text-red-500"><XMarkIcon className="w-3 h-3" /></button>
+                                    </span>
+                                 ))}
+                              </div>
+                              <input 
+                                 type="text" 
+                                 placeholder="Adicione um interesse (ex: React, Design...) e aperte Enter" 
+                                 className="w-full bg-slate-50 border border-border rounded-xl px-4 py-3 text-sm font-medium"
+                                 onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                       e.preventDefault();
+                                       const val = e.currentTarget.value.trim().toLowerCase();
+                                       if (val && !editForm.interests.includes(val)) {
+                                          setEditForm({...editForm, interests: [...editForm.interests, val]});
+                                          e.currentTarget.value = "";
+                                       }
+                                    }
+                                 }}
+                              />
+                           </div>
+                        ) : (
+                           <div className="flex flex-wrap gap-2">
+                              {profile?.interests && profile.interests.length > 0 ? profile.interests.map(tag => (
+                                 <span key={tag} className="px-3 py-1 bg-muted rounded-lg text-xs font-bold text-muted-foreground">#{tag}</span>
+                              )) : <p className="text-xs text-muted-foreground/50 italic">Nenhum interesse adicionado.</p>}
+                           </div>
+                        )}
+                      </div>
+
+                      <div className="pt-4 mb-4">
+                         <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3">Tema do Perfil</label>
+                         <div className="flex gap-3">
+                            {['zinc', 'indigo', 'rose', 'emerald', 'amber', 'fuchsia', 'sky'].map(theme => (
+                               <button 
+                                 key={theme} 
+                                 onClick={() => isEditing && setEditForm({...editForm, profileTheme: theme})}
+                                 disabled={!isEditing}
+                                 className={`w-10 h-10 rounded-full transition-all flex items-center justify-center ${
+                                    theme === 'zinc' ? 'bg-slate-700' : 
+                                    theme === 'indigo' ? 'bg-indigo-500' :
+                                    theme === 'rose' ? 'bg-rose-500' :
+                                    theme === 'emerald' ? 'bg-emerald-500' :
+                                    theme === 'amber' ? 'bg-amber-500' :
+                                    theme === 'fuchsia' ? 'bg-fuchsia-500' :
+                                    'bg-sky-500'
+                                 } ${isEditing && editForm.profileTheme === theme ? 'ring-4 ring-offset-2 ring-primary scale-110' : ''} ${!isEditing && profile?.profileTheme === theme ? 'ring-2 ring-offset-2 ring-border scale-90' : ''}`}
+                               >
+                                  {((isEditing && editForm.profileTheme === theme) || (!isEditing && profile?.profileTheme === theme)) && <CheckIcon className="w-5 h-5 text-white" />}
+                               </button>
+                            ))}
+                         </div>
+                      </div>
+
+                      {isEditing && (
+                         <div className="pt-6 flex justify-end gap-3 border-t border-border/50">
+                            <button onClick={() => setIsEditing(false)} className="px-6 py-2 rounded-xl border border-border font-bold text-xs text-muted-foreground hover:bg-muted font-black uppercase tracking-widest">Cancelar</button>
+                            <button onClick={handleSaveProfile} className="premium-button !py-2 !text-sm">Salvar Alterações</button>
+                         </div>
+                      )}
                   </div>
                </div>
 

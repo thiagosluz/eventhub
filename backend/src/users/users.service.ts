@@ -9,6 +9,7 @@ import { UpdateProfileDto, UpdatePasswordDto } from "./dto/update-user.dto";
 import * as argon2 from "argon2";
 import { MinioService } from "../storage/minio.service";
 import { BadgesService } from "../badges/badges.service";
+import { GamificationService } from "../gamification/gamification.service";
 
 @Injectable()
 export class UsersService {
@@ -16,6 +17,7 @@ export class UsersService {
     private readonly prisma: PrismaService,
     private readonly minio: MinioService,
     private readonly badgesService: BadgesService,
+    private readonly gamificationService: GamificationService,
   ) {}
 
   async findMe(userId: string) {
@@ -29,6 +31,13 @@ export class UsersService {
         avatarUrl: true,
         bio: true,
         tenantId: true,
+        username: true,
+        interests: true,
+        profileTheme: true,
+        publicProfile: true,
+        xp: true,
+        coins: true,
+        level: true,
       },
     });
     if (!user) throw new NotFoundException("Usuário não encontrado.");
@@ -36,6 +45,13 @@ export class UsersService {
   }
 
   async updateProfile(userId: string, dto: UpdateProfileDto) {
+    const userBefore = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true, email: true, bio: true, username: true, avatarUrl: true, interests: true },
+    });
+
+    if (!userBefore) throw new NotFoundException("Usuário não encontrado.");
+
     if (dto.email) {
       const existing = await this.prisma.user.findFirst({
         where: { email: dto.email, id: { not: userId } },
@@ -58,6 +74,13 @@ export class UsersService {
         avatarUrl: true,
         bio: true,
         tenantId: true,
+        username: true,
+        interests: true,
+        profileTheme: true,
+        publicProfile: true,
+        xp: true,
+        coins: true,
+        level: true,
       },
     });
 
@@ -75,7 +98,39 @@ export class UsersService {
       "PROFILE_COMPLETED",
     );
 
-    return updatedUser;
+    // Check for XP Award (Profile Completion)
+    const isNowComplete = !!(
+      updatedUser.name &&
+      updatedUser.email &&
+      updatedUser.bio &&
+      updatedUser.username &&
+      updatedUser.avatarUrl &&
+      updatedUser.interests.length > 0
+    );
+
+    const wasAlreadyAwarded = await this.prisma.xpGainLog.findFirst({
+      where: { userId, reason: "PROFILE_COMPLETED" },
+    });
+
+    let xpGain = 0;
+    let isLevelUp = false;
+
+    if (isNowComplete && !wasAlreadyAwarded) {
+      const xpResult = await this.gamificationService.awardXp(
+        userId, 
+        150, 
+        "PROFILE_COMPLETED",
+        "PROFILE_COMPLETED"
+      );
+      xpGain = xpResult.xpGained;
+      isLevelUp = xpResult.isLevelUp || false;
+    }
+
+    return { 
+      ...updatedUser, 
+      xpGained: xpGain, 
+      isLevelUp 
+    };
   }
 
   async updatePassword(userId: string, dto: UpdatePasswordDto) {
@@ -198,5 +253,46 @@ export class UsersService {
       },
       orderBy: { createdAt: "desc" },
     });
+  }
+
+  async findByUsername(username: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { username, publicProfile: true },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        avatarUrl: true,
+        bio: true,
+        interests: true,
+        profileTheme: true,
+        xp: true,
+        level: true,
+        registrations: {
+          where: { tickets: { some: { status: "COMPLETED" } } },
+          include: {
+            event: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                bannerUrl: true,
+              },
+            },
+          },
+        },
+        userBadges: {
+          include: {
+            badge: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException("Perfil público não encontrado.");
+    }
+
+    return user;
   }
 }

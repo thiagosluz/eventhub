@@ -6,6 +6,7 @@ import { PrismaService } from "./../src/prisma/prisma.service";
 import { JwtService } from "@nestjs/jwt";
 import { BadgesService } from "./../src/badges/badges.service";
 import { MailService } from "./../src/mail/mail.service";
+import { GamificationService } from "./../src/gamification/gamification.service";
 
 describe("Checkin (e2e)", () => {
   let app: INestApplication;
@@ -46,6 +47,10 @@ describe("Checkin (e2e)", () => {
     eventMonitor: {
       findUnique: jest.fn(),
     },
+    xpGainLog: {
+      findFirst: jest.fn(),
+      create: jest.fn(),
+    },
   };
 
   const mockBadgesService = {
@@ -54,6 +59,10 @@ describe("Checkin (e2e)", () => {
 
   const mockMailService = {
     enqueue: jest.fn(),
+  };
+
+  const mockGamificationService = {
+    awardXp: jest.fn().mockResolvedValue({ xpGained: 100, isLevelUp: false }),
   };
 
   beforeAll(async () => {
@@ -66,6 +75,8 @@ describe("Checkin (e2e)", () => {
       .useValue(mockBadgesService)
       .overrideProvider(MailService)
       .useValue(mockMailService)
+      .overrideProvider(GamificationService)
+      .useValue(mockGamificationService)
       .compile();
 
     app = moduleFixture.createNestApplication();

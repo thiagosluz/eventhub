@@ -23,6 +23,12 @@ describe("Analytics (e2e)", () => {
     attendance: {
       findMany: jest.fn(),
     },
+    eventMonitor: {
+      findUnique: jest.fn(),
+    },
+    user: {
+      findUnique: jest.fn(),
+    },
   };
 
   const mockQueue = { add: jest.fn() };

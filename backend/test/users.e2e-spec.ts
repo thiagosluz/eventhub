@@ -10,6 +10,7 @@ import { MailProcessor } from "./../src/mail/mail.processor";
 import { getQueueToken } from "@nestjs/bullmq";
 import { MinioService } from "./../src/storage/minio.service";
 import { BadgesService } from "./../src/badges/badges.service";
+import { GamificationService } from "./../src/gamification/gamification.service";
 import * as argon2 from "argon2";
 
 describe("Users (e2e)", () => {
@@ -36,6 +37,10 @@ describe("Users (e2e)", () => {
     eventMonitor: {
       findMany: jest.fn(),
     },
+    xpGainLog: {
+      findFirst: jest.fn(),
+      create: jest.fn(),
+    },
   };
 
   const mockMinioService = {
@@ -47,6 +52,10 @@ describe("Users (e2e)", () => {
   };
 
   const mockQueue = { add: jest.fn() };
+
+  const mockGamificationService = {
+    awardXp: jest.fn().mockResolvedValue({ xpGained: 100, isLevelUp: false }),
+  };
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -70,6 +79,8 @@ describe("Users (e2e)", () => {
       .useValue({ process: jest.fn() })
       .overrideProvider(MailProcessor)
       .useValue({ process: jest.fn() })
+      .overrideProvider(GamificationService)
+      .useValue(mockGamificationService)
       .compile();
 
     app = moduleFixture.createNestApplication();

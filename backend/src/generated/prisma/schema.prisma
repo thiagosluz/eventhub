@@ -133,6 +133,16 @@ model User {
   mustChangePassword  Boolean              @default(false)
   speaker             Speaker?
   eventMonitors       EventMonitor[]
+  xpLogs              XpGainLog[]
+
+  // Gamification & Identity
+  username      String?  @unique
+  interests     String[] @default([])
+  profileTheme  String?  @default("zinc")
+  publicProfile Boolean  @default(false)
+  xp            Int      @default(0)
+  coins         Int      @default(0)
+  level         Int      @default(1)
 }
 
 model Event {
@@ -702,4 +712,17 @@ model EventMonitor {
   createdAt DateTime @default(now())
 
   @@unique([eventId, userId])
+}
+
+model XpGainLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount    Int
+  reason    String // e.g., 'CHECKIN', 'PROFILE_COMPLETED'
+  uniqueKey String? // Optional unique key to prevent duplicate rewards (e.g., 'ACTIVITY_123')
+  createdAt DateTime @default(now())
+
+  @@unique([userId, uniqueKey])
+  @@index([userId, createdAt])
 }

@@ -1,28 +1,47 @@
-# PLAN.md - Restauração do Sorteio e Correções de UI
+# 🎼 Backend Stabilization Plan
 
-Foi detectado que a funcionalidade de "Sorteio" desapareceu do dashboard do evento após a última atualização. Este plano visa restaurar o acesso e garantir a estabilidade do build do frontend.
+This plan outlines the steps to fix failing unit and E2E tests in the backend, ensuring full system stability.
 
-## Agentes Envolvidos (Mínimo 3)
-1. **project-planner**: Coordenação do plano de restauração.
-2. **frontend-specialist**: Correção visual e adição do link faltante.
-3. **test-engineer**: Verificação completa do build e links operacionais.
+## 1. ANALYSIS
 
-## Alterações Propostas
+The following test suites are currently failing:
 
-### Frontend
+### Unit Tests
+- `src/users/users.service.spec.ts`: Missing dependencies (`TestingInstanceLoader` error).
+- `src/events/events.controller.spec.ts`: Missing dependencies (`TestingInstanceLoader` error).
+- `src/checkin/checkin.service.spec.ts`: Missing `performedByUserId` in `undoCheckin` calls.
 
-#### [MODIFY] [page.tsx](file:///home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/page.tsx)
-- Restaurar o link de Sorteio (Operations Raffle).
-- Adicionar o link de Equipe de Monitores (Operations Monitors).
-- Manter o link de Scanner Check-in.
+### E2E Tests
+- `test/users.e2e-spec.ts`: `PATCH /users/profile` returns 500.
+- `test/checkin.e2e-spec.ts`: `POST /checkin` failure (likely due to recent schema/logic changes).
+- `test/analytics.e2e-spec.ts`: `GET /analytics/events/:id` returns 500 instead of 403.
 
-#### [VERIFY] [team/page.tsx](file:///home/thiago/Projetos/eventhub/frontend/src/app/dashboard/settings/team/page.tsx)
-- Garantir que não há mais referências a componentes Shadcn/UI (Dialog, Input, Table, etc.) e sim ao Tailwind puro conforme a última correção.
+## 2. PLANNING
 
-## Plano de Verificação
+### Phase 1: Unit Test Stabilization
+- [ ] Fix `checkin.service.spec.ts` by updating method signatures.
+- [ ] Debug and fix `users.service.spec.ts` and `events.controller.spec.ts` by adding missing mocked providers.
 
-### Automação (test-engineer)
-- `npm run build` no diretório `/frontend`.
+### Phase 2: E2E Fixes & Backend Logic
+- [ ] Investigate 500 errors in E2E tests for Users, Check-in, and Analytics.
+- [ ] Implement fixes in service/controller logic if recent changes introduced regressions.
 
-### Testes Manuais
-- Verificar se os 3 botões de operação estão visíveis e funcionais.
+### Phase 3: Verification
+- [ ] Run full test suite: `npm run test` and `npm run test:e2e`.
+- [ ] Run security scan: `python .agent/skills/vulnerability-scanner/scripts/security_scan.py .`.
+- [ ] Run lint: `npm run lint`.
+
+## 3. SOLUTIONING
+
+### Checkin Module
+Update `undoCheckin` usage in tests. It seems the function was updated to require the user ID of the person performing the action for auditing/gamification purposes.
+
+### Missing Dependencies
+Likely due to the introduction of `GamificationModule` or similar globally used services that were not added to the mock providers in the existing tests.
+
+## 4. IMPLEMENTATION (Pending Approval)
+
+The following agents will be used in parallel after approval:
+- `backend-specialist`: For core logic fixes.
+- `test-engineer`: For test suite stabilization.
+- `debugger`: For root cause analysis of 500 errors.
