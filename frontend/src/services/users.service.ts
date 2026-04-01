@@ -50,4 +50,16 @@ export const usersService = {
   getMonitoredEvents: async (): Promise<{ eventId: string; event: any }[]> => {
     return api.get<{ eventId: string; event: any }[]>("/users/me/monitored-events");
   },
+
+  checkUsernameAvailability: async (username: string): Promise<{ available: boolean }> => {
+    return api.get<{ available: boolean }>(`/users/check-username/${username}`);
+  },
+
+  getSpeakerProfile: async (id: string): Promise<any> => {
+    return api.get(`/speakers/${id}`);
+  },
+
+  getMySpeakerProfile: async (): Promise<any> => {
+    return api.get("/speakers/me");
+  }
 };

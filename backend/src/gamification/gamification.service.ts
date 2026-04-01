@@ -20,10 +20,13 @@ export class GamificationService {
    * Awards XP to a user, enforcing daily limits and calculating level-ups.
    * Now supporting a uniqueKey to prevent duplicate awards for the same action.
    */
-  async awardXp(userId: string, amount: number, reason: string, uniqueKey?: string) {
+  /**
+   * Awards XP to a user, enforcing daily limits and calculating level-ups.
+   * Supports eventId for scoped auditing and automatic spike alerts.
+   */
+  async awardXp(userId: string, amount: number, reason: string, uniqueKey?: string, eventId?: string) {
     return await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       // 0. LOCK the user row to serialize all awardXp calls for this user
-      // This prevents race conditions in daily limit calculation
       await tx.$executeRawUnsafe(`SELECT id FROM "User" WHERE id = $1 FOR UPDATE`, userId);
 
       // 1. Check for duplicate uniqueKey if provided
@@ -42,7 +45,7 @@ export class GamificationService {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      // 2. Get today's total XP gain (inside transaction for consistency)
+      // 2. Get today's total XP gain
       const logsToday = await tx.xpGainLog.aggregate({
         where: {
           userId,
@@ -63,7 +66,7 @@ export class GamificationService {
         return { xpGained: 0, isLevelUp: false, reason: "DAILY_LIMIT_REACHED" };
       }
 
-      // 4. Update User (FETCH INSIDE TRANSACTION TO AVOID STALE STATE)
+      // 4. Update User
       const user = await tx.user.findUnique({
         where: { id: userId },
         select: { xp: true, level: true },
@@ -75,7 +78,6 @@ export class GamificationService {
       const newLevel = this.calculateLevel(newXp);
       const isLevelUp = newLevel > user.level;
 
-      // 5. Commit changes
       await tx.user.update({
         where: { id: userId },
         data: {
@@ -84,14 +86,42 @@ export class GamificationService {
         },
       });
 
+      // 5. Create Log
       await tx.xpGainLog.create({
         data: {
           userId,
+          eventId,
           amount: finalAmount,
           reason,
           uniqueKey,
         },
       });
+
+      // 6. Check for Spike Alerts (1000 XP in 5 minutes)
+      if (eventId) {
+        const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+        const recentGains = await tx.xpGainLog.aggregate({
+          where: {
+            userId,
+            eventId,
+            createdAt: { gte: fiveMinutesAgo },
+          },
+          _sum: { amount: true },
+        });
+
+        const totalRecent = recentGains._sum.amount || 0;
+        if (totalRecent >= 1000) {
+          await tx.gamificationAlert.create({
+            data: {
+              eventId,
+              userId,
+              type: "XP_SPIKE",
+              message: `Usuário ganhou ${totalRecent} XP nos últimos 5 minutos.`,
+              metadata: { totalXp: totalRecent, windowMinutes: 5 },
+            },
+          });
+        }
+      }
 
       return {
         xpGained: finalAmount,
@@ -100,11 +130,78 @@ export class GamificationService {
         totalXp: newXp
       };
     }).catch(err => {
-      // Handle potential race condition where unique constraint is hit between check and create
       if (err.code === 'P2002') {
         return { xpGained: 0, isLevelUp: false, reason: "ALREADY_AWARDED" };
       }
       throw err;
+    });
+  }
+
+  async getEventStats(eventId: string) {
+    const [totalXp, badgeCount, activeAlerts, participantCount] = await Promise.all([
+      this.prisma.xpGainLog.aggregate({
+        where: { eventId },
+        _sum: { amount: true },
+      }),
+      this.prisma.userBadge.count({
+        where: { eventId },
+      }),
+      this.prisma.gamificationAlert.count({
+        where: { eventId, resolved: false },
+      }),
+      this.prisma.registration.count({
+        where: { eventId },
+      }),
+    ]);
+  
+    return {
+      totalXpDistributed: totalXp._sum.amount || 0,
+      totalBadgesAwarded: badgeCount,
+      activeAlertsCount: activeAlerts,
+      totalParticipants: participantCount || 0,
+    };
+  }
+
+  async getEventRanking(eventId: string, limit = 100) {
+    // Note: We sum XP from logs to get "XP earned in this event"
+    const ranking = await this.prisma.xpGainLog.groupBy({
+      by: ['userId'],
+      where: { eventId },
+      _sum: { amount: true },
+      orderBy: { _sum: { amount: 'desc' } },
+      take: limit,
+    });
+
+    const userIds = ranking.map(r => r.userId);
+    const users = await this.prisma.user.findMany({
+      where: { id: { in: userIds } },
+      select: { id: true, name: true, avatarUrl: true, level: true },
+    });
+
+    return ranking.map(r => {
+      const user = users.find(u => u.id === r.userId);
+      return {
+        userId: r.userId,
+        userName: user?.name || "Usuário Desconhecido",
+        avatarUrl: user?.avatarUrl,
+        globalLevel: user?.level || 1,
+        eventXp: r._sum.amount || 0,
+      };
+    });
+  }
+
+  async getEventAlerts(eventId: string) {
+    return await this.prisma.gamificationAlert.findMany({
+      where: { eventId },
+      include: { user: { select: { name: true, email: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async resolveAlert(alertId: string) {
+    return await this.prisma.gamificationAlert.update({
+      where: { id: alertId },
+      data: { resolved: true },
     });
   }
 }

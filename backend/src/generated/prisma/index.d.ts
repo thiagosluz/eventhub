@@ -188,6 +188,11 @@ export type EventMonitor = $Result.DefaultSelection<Prisma.$EventMonitorPayload>
  * 
  */
 export type XpGainLog = $Result.DefaultSelection<Prisma.$XpGainLogPayload>
+/**
+ * Model GamificationAlert
+ * 
+ */
+export type GamificationAlert = $Result.DefaultSelection<Prisma.$GamificationAlertPayload>
 
 /**
  * Enums
@@ -872,6 +877,16 @@ export class PrismaClient<
     * ```
     */
   get xpGainLog(): Prisma.XpGainLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.gamificationAlert`: Exposes CRUD operations for the **GamificationAlert** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GamificationAlerts
+    * const gamificationAlerts = await prisma.gamificationAlert.findMany()
+    * ```
+    */
+  get gamificationAlert(): Prisma.GamificationAlertDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1340,7 +1355,8 @@ export namespace Prisma {
     ActivityMaterial: 'ActivityMaterial',
     ActivityFeedback: 'ActivityFeedback',
     EventMonitor: 'EventMonitor',
-    XpGainLog: 'XpGainLog'
+    XpGainLog: 'XpGainLog',
+    GamificationAlert: 'GamificationAlert'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1356,7 +1372,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "eventReviewer" | "reviewerInvitation" | "submissionModality" | "thematicArea" | "submissionRule" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge" | "activityMaterial" | "activityFeedback" | "eventMonitor" | "xpGainLog"
+      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "eventReviewer" | "reviewerInvitation" | "submissionModality" | "thematicArea" | "submissionRule" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge" | "activityMaterial" | "activityFeedback" | "eventMonitor" | "xpGainLog" | "gamificationAlert"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3950,6 +3966,80 @@ export namespace Prisma {
           }
         }
       }
+      GamificationAlert: {
+        payload: Prisma.$GamificationAlertPayload<ExtArgs>
+        fields: Prisma.GamificationAlertFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GamificationAlertFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GamificationAlertFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload>
+          }
+          findFirst: {
+            args: Prisma.GamificationAlertFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GamificationAlertFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload>
+          }
+          findMany: {
+            args: Prisma.GamificationAlertFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload>[]
+          }
+          create: {
+            args: Prisma.GamificationAlertCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload>
+          }
+          createMany: {
+            args: Prisma.GamificationAlertCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GamificationAlertCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload>[]
+          }
+          delete: {
+            args: Prisma.GamificationAlertDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload>
+          }
+          update: {
+            args: Prisma.GamificationAlertUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload>
+          }
+          deleteMany: {
+            args: Prisma.GamificationAlertDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GamificationAlertUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GamificationAlertUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload>[]
+          }
+          upsert: {
+            args: Prisma.GamificationAlertUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GamificationAlertPayload>
+          }
+          aggregate: {
+            args: Prisma.GamificationAlertAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGamificationAlert>
+          }
+          groupBy: {
+            args: Prisma.GamificationAlertGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GamificationAlertGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GamificationAlertCountArgs<ExtArgs>
+            result: $Utils.Optional<GamificationAlertCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4093,6 +4183,7 @@ export namespace Prisma {
     activityFeedback?: ActivityFeedbackOmit
     eventMonitor?: EventMonitorOmit
     xpGainLog?: XpGainLogOmit
+    gamificationAlert?: GamificationAlertOmit
   }
 
   /* Types for Logging */
@@ -4259,6 +4350,7 @@ export namespace Prisma {
     acceptedInvitations: number
     eventMonitors: number
     xpLogs: number
+    gamificationAlerts: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4272,6 +4364,7 @@ export namespace Prisma {
     acceptedInvitations?: boolean | UserCountOutputTypeCountAcceptedInvitationsArgs
     eventMonitors?: boolean | UserCountOutputTypeCountEventMonitorsArgs
     xpLogs?: boolean | UserCountOutputTypeCountXpLogsArgs
+    gamificationAlerts?: boolean | UserCountOutputTypeCountGamificationAlertsArgs
   }
 
   // Custom InputTypes
@@ -4355,6 +4448,13 @@ export namespace Prisma {
     where?: XpGainLogWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountGamificationAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GamificationAlertWhereInput
+  }
+
 
   /**
    * Count Type EventCountOutputType
@@ -4377,6 +4477,8 @@ export namespace Prisma {
     reviewers: number
     reviewerInvitations: number
     monitors: number
+    xpLogs: number
+    gamificationAlerts: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4396,6 +4498,8 @@ export namespace Prisma {
     reviewers?: boolean | EventCountOutputTypeCountReviewersArgs
     reviewerInvitations?: boolean | EventCountOutputTypeCountReviewerInvitationsArgs
     monitors?: boolean | EventCountOutputTypeCountMonitorsArgs
+    xpLogs?: boolean | EventCountOutputTypeCountXpLogsArgs
+    gamificationAlerts?: boolean | EventCountOutputTypeCountGamificationAlertsArgs
   }
 
   // Custom InputTypes
@@ -4519,6 +4623,20 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountMonitorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EventMonitorWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountXpLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: XpGainLogWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountGamificationAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GamificationAlertWhereInput
   }
 
 
@@ -6687,6 +6805,7 @@ export namespace Prisma {
     speaker?: boolean | User$speakerArgs<ExtArgs>
     eventMonitors?: boolean | User$eventMonitorsArgs<ExtArgs>
     xpLogs?: boolean | User$xpLogsArgs<ExtArgs>
+    gamificationAlerts?: boolean | User$gamificationAlertsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6778,6 +6897,7 @@ export namespace Prisma {
     speaker?: boolean | User$speakerArgs<ExtArgs>
     eventMonitors?: boolean | User$eventMonitorsArgs<ExtArgs>
     xpLogs?: boolean | User$xpLogsArgs<ExtArgs>
+    gamificationAlerts?: boolean | User$gamificationAlertsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6802,6 +6922,7 @@ export namespace Prisma {
       speaker: Prisma.$SpeakerPayload<ExtArgs> | null
       eventMonitors: Prisma.$EventMonitorPayload<ExtArgs>[]
       xpLogs: Prisma.$XpGainLogPayload<ExtArgs>[]
+      gamificationAlerts: Prisma.$GamificationAlertPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7231,6 +7352,7 @@ export namespace Prisma {
     speaker<T extends User$speakerArgs<ExtArgs> = {}>(args?: Subset<T, User$speakerArgs<ExtArgs>>): Prisma__SpeakerClient<$Result.GetResult<Prisma.$SpeakerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     eventMonitors<T extends User$eventMonitorsArgs<ExtArgs> = {}>(args?: Subset<T, User$eventMonitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     xpLogs<T extends User$xpLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$xpLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    gamificationAlerts<T extends User$gamificationAlertsArgs<ExtArgs> = {}>(args?: Subset<T, User$gamificationAlertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7941,6 +8063,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.gamificationAlerts
+   */
+  export type User$gamificationAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    where?: GamificationAlertWhereInput
+    orderBy?: GamificationAlertOrderByWithRelationInput | GamificationAlertOrderByWithRelationInput[]
+    cursor?: GamificationAlertWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GamificationAlertScalarFieldEnum | GamificationAlertScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8280,6 +8426,8 @@ export namespace Prisma {
     reviewers?: boolean | Event$reviewersArgs<ExtArgs>
     reviewerInvitations?: boolean | Event$reviewerInvitationsArgs<ExtArgs>
     monitors?: boolean | Event$monitorsArgs<ExtArgs>
+    xpLogs?: boolean | Event$xpLogsArgs<ExtArgs>
+    gamificationAlerts?: boolean | Event$gamificationAlertsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -8382,6 +8530,8 @@ export namespace Prisma {
     reviewers?: boolean | Event$reviewersArgs<ExtArgs>
     reviewerInvitations?: boolean | Event$reviewerInvitationsArgs<ExtArgs>
     monitors?: boolean | Event$monitorsArgs<ExtArgs>
+    xpLogs?: boolean | Event$xpLogsArgs<ExtArgs>
+    gamificationAlerts?: boolean | Event$gamificationAlertsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8411,6 +8561,8 @@ export namespace Prisma {
       reviewers: Prisma.$EventReviewerPayload<ExtArgs>[]
       reviewerInvitations: Prisma.$ReviewerInvitationPayload<ExtArgs>[]
       monitors: Prisma.$EventMonitorPayload<ExtArgs>[]
+      xpLogs: Prisma.$XpGainLogPayload<ExtArgs>[]
+      gamificationAlerts: Prisma.$GamificationAlertPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8847,6 +8999,8 @@ export namespace Prisma {
     reviewers<T extends Event$reviewersArgs<ExtArgs> = {}>(args?: Subset<T, Event$reviewersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventReviewerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviewerInvitations<T extends Event$reviewerInvitationsArgs<ExtArgs> = {}>(args?: Subset<T, Event$reviewerInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewerInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     monitors<T extends Event$monitorsArgs<ExtArgs> = {}>(args?: Subset<T, Event$monitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    xpLogs<T extends Event$xpLogsArgs<ExtArgs> = {}>(args?: Subset<T, Event$xpLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    gamificationAlerts<T extends Event$gamificationAlertsArgs<ExtArgs> = {}>(args?: Subset<T, Event$gamificationAlertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9681,6 +9835,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EventMonitorScalarFieldEnum | EventMonitorScalarFieldEnum[]
+  }
+
+  /**
+   * Event.xpLogs
+   */
+  export type Event$xpLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the XpGainLog
+     */
+    select?: XpGainLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the XpGainLog
+     */
+    omit?: XpGainLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: XpGainLogInclude<ExtArgs> | null
+    where?: XpGainLogWhereInput
+    orderBy?: XpGainLogOrderByWithRelationInput | XpGainLogOrderByWithRelationInput[]
+    cursor?: XpGainLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: XpGainLogScalarFieldEnum | XpGainLogScalarFieldEnum[]
+  }
+
+  /**
+   * Event.gamificationAlerts
+   */
+  export type Event$gamificationAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    where?: GamificationAlertWhereInput
+    orderBy?: GamificationAlertOrderByWithRelationInput | GamificationAlertOrderByWithRelationInput[]
+    cursor?: GamificationAlertWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GamificationAlertScalarFieldEnum | GamificationAlertScalarFieldEnum[]
   }
 
   /**
@@ -44957,6 +45159,7 @@ export namespace Prisma {
   export type XpGainLogMinAggregateOutputType = {
     id: string | null
     userId: string | null
+    eventId: string | null
     amount: number | null
     reason: string | null
     uniqueKey: string | null
@@ -44966,6 +45169,7 @@ export namespace Prisma {
   export type XpGainLogMaxAggregateOutputType = {
     id: string | null
     userId: string | null
+    eventId: string | null
     amount: number | null
     reason: string | null
     uniqueKey: string | null
@@ -44975,6 +45179,7 @@ export namespace Prisma {
   export type XpGainLogCountAggregateOutputType = {
     id: number
     userId: number
+    eventId: number
     amount: number
     reason: number
     uniqueKey: number
@@ -44994,6 +45199,7 @@ export namespace Prisma {
   export type XpGainLogMinAggregateInputType = {
     id?: true
     userId?: true
+    eventId?: true
     amount?: true
     reason?: true
     uniqueKey?: true
@@ -45003,6 +45209,7 @@ export namespace Prisma {
   export type XpGainLogMaxAggregateInputType = {
     id?: true
     userId?: true
+    eventId?: true
     amount?: true
     reason?: true
     uniqueKey?: true
@@ -45012,6 +45219,7 @@ export namespace Prisma {
   export type XpGainLogCountAggregateInputType = {
     id?: true
     userId?: true
+    eventId?: true
     amount?: true
     reason?: true
     uniqueKey?: true
@@ -45108,6 +45316,7 @@ export namespace Prisma {
   export type XpGainLogGroupByOutputType = {
     id: string
     userId: string
+    eventId: string | null
     amount: number
     reason: string
     uniqueKey: string | null
@@ -45136,61 +45345,73 @@ export namespace Prisma {
   export type XpGainLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    eventId?: boolean
     amount?: boolean
     reason?: boolean
     uniqueKey?: boolean
     createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | XpGainLog$eventArgs<ExtArgs>
   }, ExtArgs["result"]["xpGainLog"]>
 
   export type XpGainLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    eventId?: boolean
     amount?: boolean
     reason?: boolean
     uniqueKey?: boolean
     createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | XpGainLog$eventArgs<ExtArgs>
   }, ExtArgs["result"]["xpGainLog"]>
 
   export type XpGainLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    eventId?: boolean
     amount?: boolean
     reason?: boolean
     uniqueKey?: boolean
     createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | XpGainLog$eventArgs<ExtArgs>
   }, ExtArgs["result"]["xpGainLog"]>
 
   export type XpGainLogSelectScalar = {
     id?: boolean
     userId?: boolean
+    eventId?: boolean
     amount?: boolean
     reason?: boolean
     uniqueKey?: boolean
     createdAt?: boolean
   }
 
-  export type XpGainLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "amount" | "reason" | "uniqueKey" | "createdAt", ExtArgs["result"]["xpGainLog"]>
+  export type XpGainLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "eventId" | "amount" | "reason" | "uniqueKey" | "createdAt", ExtArgs["result"]["xpGainLog"]>
   export type XpGainLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | XpGainLog$eventArgs<ExtArgs>
   }
   export type XpGainLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | XpGainLog$eventArgs<ExtArgs>
   }
   export type XpGainLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | XpGainLog$eventArgs<ExtArgs>
   }
 
   export type $XpGainLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "XpGainLog"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      event: Prisma.$EventPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
+      eventId: string | null
       amount: number
       reason: string
       uniqueKey: string | null
@@ -45590,6 +45811,7 @@ export namespace Prisma {
   export interface Prisma__XpGainLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    event<T extends XpGainLog$eventArgs<ExtArgs> = {}>(args?: Subset<T, XpGainLog$eventArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -45621,6 +45843,7 @@ export namespace Prisma {
   interface XpGainLogFieldRefs {
     readonly id: FieldRef<"XpGainLog", 'String'>
     readonly userId: FieldRef<"XpGainLog", 'String'>
+    readonly eventId: FieldRef<"XpGainLog", 'String'>
     readonly amount: FieldRef<"XpGainLog", 'Int'>
     readonly reason: FieldRef<"XpGainLog", 'String'>
     readonly uniqueKey: FieldRef<"XpGainLog", 'String'>
@@ -46026,6 +46249,25 @@ export namespace Prisma {
   }
 
   /**
+   * XpGainLog.event
+   */
+  export type XpGainLog$eventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Event
+     */
+    select?: EventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Event
+     */
+    omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    where?: EventWhereInput
+  }
+
+  /**
    * XpGainLog without action
    */
   export type XpGainLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -46041,6 +46283,1112 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: XpGainLogInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GamificationAlert
+   */
+
+  export type AggregateGamificationAlert = {
+    _count: GamificationAlertCountAggregateOutputType | null
+    _min: GamificationAlertMinAggregateOutputType | null
+    _max: GamificationAlertMaxAggregateOutputType | null
+  }
+
+  export type GamificationAlertMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    userId: string | null
+    type: string | null
+    message: string | null
+    resolved: boolean | null
+    createdAt: Date | null
+  }
+
+  export type GamificationAlertMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    userId: string | null
+    type: string | null
+    message: string | null
+    resolved: boolean | null
+    createdAt: Date | null
+  }
+
+  export type GamificationAlertCountAggregateOutputType = {
+    id: number
+    eventId: number
+    userId: number
+    type: number
+    message: number
+    metadata: number
+    resolved: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type GamificationAlertMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    type?: true
+    message?: true
+    resolved?: true
+    createdAt?: true
+  }
+
+  export type GamificationAlertMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    type?: true
+    message?: true
+    resolved?: true
+    createdAt?: true
+  }
+
+  export type GamificationAlertCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    type?: true
+    message?: true
+    metadata?: true
+    resolved?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type GamificationAlertAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GamificationAlert to aggregate.
+     */
+    where?: GamificationAlertWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GamificationAlerts to fetch.
+     */
+    orderBy?: GamificationAlertOrderByWithRelationInput | GamificationAlertOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GamificationAlertWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GamificationAlerts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GamificationAlerts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GamificationAlerts
+    **/
+    _count?: true | GamificationAlertCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GamificationAlertMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GamificationAlertMaxAggregateInputType
+  }
+
+  export type GetGamificationAlertAggregateType<T extends GamificationAlertAggregateArgs> = {
+        [P in keyof T & keyof AggregateGamificationAlert]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGamificationAlert[P]>
+      : GetScalarType<T[P], AggregateGamificationAlert[P]>
+  }
+
+
+
+
+  export type GamificationAlertGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GamificationAlertWhereInput
+    orderBy?: GamificationAlertOrderByWithAggregationInput | GamificationAlertOrderByWithAggregationInput[]
+    by: GamificationAlertScalarFieldEnum[] | GamificationAlertScalarFieldEnum
+    having?: GamificationAlertScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GamificationAlertCountAggregateInputType | true
+    _min?: GamificationAlertMinAggregateInputType
+    _max?: GamificationAlertMaxAggregateInputType
+  }
+
+  export type GamificationAlertGroupByOutputType = {
+    id: string
+    eventId: string
+    userId: string
+    type: string
+    message: string
+    metadata: JsonValue | null
+    resolved: boolean
+    createdAt: Date
+    _count: GamificationAlertCountAggregateOutputType | null
+    _min: GamificationAlertMinAggregateOutputType | null
+    _max: GamificationAlertMaxAggregateOutputType | null
+  }
+
+  type GetGamificationAlertGroupByPayload<T extends GamificationAlertGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GamificationAlertGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GamificationAlertGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GamificationAlertGroupByOutputType[P]>
+            : GetScalarType<T[P], GamificationAlertGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GamificationAlertSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    type?: boolean
+    message?: boolean
+    metadata?: boolean
+    resolved?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["gamificationAlert"]>
+
+  export type GamificationAlertSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    type?: boolean
+    message?: boolean
+    metadata?: boolean
+    resolved?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["gamificationAlert"]>
+
+  export type GamificationAlertSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    type?: boolean
+    message?: boolean
+    metadata?: boolean
+    resolved?: boolean
+    createdAt?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["gamificationAlert"]>
+
+  export type GamificationAlertSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    type?: boolean
+    message?: boolean
+    metadata?: boolean
+    resolved?: boolean
+    createdAt?: boolean
+  }
+
+  export type GamificationAlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "userId" | "type" | "message" | "metadata" | "resolved" | "createdAt", ExtArgs["result"]["gamificationAlert"]>
+  export type GamificationAlertInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type GamificationAlertIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type GamificationAlertIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $GamificationAlertPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GamificationAlert"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      userId: string
+      type: string
+      message: string
+      metadata: Prisma.JsonValue | null
+      resolved: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["gamificationAlert"]>
+    composites: {}
+  }
+
+  type GamificationAlertGetPayload<S extends boolean | null | undefined | GamificationAlertDefaultArgs> = $Result.GetResult<Prisma.$GamificationAlertPayload, S>
+
+  type GamificationAlertCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GamificationAlertFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GamificationAlertCountAggregateInputType | true
+    }
+
+  export interface GamificationAlertDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GamificationAlert'], meta: { name: 'GamificationAlert' } }
+    /**
+     * Find zero or one GamificationAlert that matches the filter.
+     * @param {GamificationAlertFindUniqueArgs} args - Arguments to find a GamificationAlert
+     * @example
+     * // Get one GamificationAlert
+     * const gamificationAlert = await prisma.gamificationAlert.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GamificationAlertFindUniqueArgs>(args: SelectSubset<T, GamificationAlertFindUniqueArgs<ExtArgs>>): Prisma__GamificationAlertClient<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GamificationAlert that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GamificationAlertFindUniqueOrThrowArgs} args - Arguments to find a GamificationAlert
+     * @example
+     * // Get one GamificationAlert
+     * const gamificationAlert = await prisma.gamificationAlert.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GamificationAlertFindUniqueOrThrowArgs>(args: SelectSubset<T, GamificationAlertFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GamificationAlertClient<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GamificationAlert that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GamificationAlertFindFirstArgs} args - Arguments to find a GamificationAlert
+     * @example
+     * // Get one GamificationAlert
+     * const gamificationAlert = await prisma.gamificationAlert.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GamificationAlertFindFirstArgs>(args?: SelectSubset<T, GamificationAlertFindFirstArgs<ExtArgs>>): Prisma__GamificationAlertClient<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GamificationAlert that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GamificationAlertFindFirstOrThrowArgs} args - Arguments to find a GamificationAlert
+     * @example
+     * // Get one GamificationAlert
+     * const gamificationAlert = await prisma.gamificationAlert.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GamificationAlertFindFirstOrThrowArgs>(args?: SelectSubset<T, GamificationAlertFindFirstOrThrowArgs<ExtArgs>>): Prisma__GamificationAlertClient<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GamificationAlerts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GamificationAlertFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GamificationAlerts
+     * const gamificationAlerts = await prisma.gamificationAlert.findMany()
+     * 
+     * // Get first 10 GamificationAlerts
+     * const gamificationAlerts = await prisma.gamificationAlert.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const gamificationAlertWithIdOnly = await prisma.gamificationAlert.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GamificationAlertFindManyArgs>(args?: SelectSubset<T, GamificationAlertFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GamificationAlert.
+     * @param {GamificationAlertCreateArgs} args - Arguments to create a GamificationAlert.
+     * @example
+     * // Create one GamificationAlert
+     * const GamificationAlert = await prisma.gamificationAlert.create({
+     *   data: {
+     *     // ... data to create a GamificationAlert
+     *   }
+     * })
+     * 
+     */
+    create<T extends GamificationAlertCreateArgs>(args: SelectSubset<T, GamificationAlertCreateArgs<ExtArgs>>): Prisma__GamificationAlertClient<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GamificationAlerts.
+     * @param {GamificationAlertCreateManyArgs} args - Arguments to create many GamificationAlerts.
+     * @example
+     * // Create many GamificationAlerts
+     * const gamificationAlert = await prisma.gamificationAlert.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GamificationAlertCreateManyArgs>(args?: SelectSubset<T, GamificationAlertCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GamificationAlerts and returns the data saved in the database.
+     * @param {GamificationAlertCreateManyAndReturnArgs} args - Arguments to create many GamificationAlerts.
+     * @example
+     * // Create many GamificationAlerts
+     * const gamificationAlert = await prisma.gamificationAlert.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GamificationAlerts and only return the `id`
+     * const gamificationAlertWithIdOnly = await prisma.gamificationAlert.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GamificationAlertCreateManyAndReturnArgs>(args?: SelectSubset<T, GamificationAlertCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GamificationAlert.
+     * @param {GamificationAlertDeleteArgs} args - Arguments to delete one GamificationAlert.
+     * @example
+     * // Delete one GamificationAlert
+     * const GamificationAlert = await prisma.gamificationAlert.delete({
+     *   where: {
+     *     // ... filter to delete one GamificationAlert
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GamificationAlertDeleteArgs>(args: SelectSubset<T, GamificationAlertDeleteArgs<ExtArgs>>): Prisma__GamificationAlertClient<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GamificationAlert.
+     * @param {GamificationAlertUpdateArgs} args - Arguments to update one GamificationAlert.
+     * @example
+     * // Update one GamificationAlert
+     * const gamificationAlert = await prisma.gamificationAlert.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GamificationAlertUpdateArgs>(args: SelectSubset<T, GamificationAlertUpdateArgs<ExtArgs>>): Prisma__GamificationAlertClient<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GamificationAlerts.
+     * @param {GamificationAlertDeleteManyArgs} args - Arguments to filter GamificationAlerts to delete.
+     * @example
+     * // Delete a few GamificationAlerts
+     * const { count } = await prisma.gamificationAlert.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GamificationAlertDeleteManyArgs>(args?: SelectSubset<T, GamificationAlertDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GamificationAlerts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GamificationAlertUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GamificationAlerts
+     * const gamificationAlert = await prisma.gamificationAlert.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GamificationAlertUpdateManyArgs>(args: SelectSubset<T, GamificationAlertUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GamificationAlerts and returns the data updated in the database.
+     * @param {GamificationAlertUpdateManyAndReturnArgs} args - Arguments to update many GamificationAlerts.
+     * @example
+     * // Update many GamificationAlerts
+     * const gamificationAlert = await prisma.gamificationAlert.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GamificationAlerts and only return the `id`
+     * const gamificationAlertWithIdOnly = await prisma.gamificationAlert.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GamificationAlertUpdateManyAndReturnArgs>(args: SelectSubset<T, GamificationAlertUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GamificationAlert.
+     * @param {GamificationAlertUpsertArgs} args - Arguments to update or create a GamificationAlert.
+     * @example
+     * // Update or create a GamificationAlert
+     * const gamificationAlert = await prisma.gamificationAlert.upsert({
+     *   create: {
+     *     // ... data to create a GamificationAlert
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GamificationAlert we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GamificationAlertUpsertArgs>(args: SelectSubset<T, GamificationAlertUpsertArgs<ExtArgs>>): Prisma__GamificationAlertClient<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GamificationAlerts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GamificationAlertCountArgs} args - Arguments to filter GamificationAlerts to count.
+     * @example
+     * // Count the number of GamificationAlerts
+     * const count = await prisma.gamificationAlert.count({
+     *   where: {
+     *     // ... the filter for the GamificationAlerts we want to count
+     *   }
+     * })
+    **/
+    count<T extends GamificationAlertCountArgs>(
+      args?: Subset<T, GamificationAlertCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GamificationAlertCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GamificationAlert.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GamificationAlertAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GamificationAlertAggregateArgs>(args: Subset<T, GamificationAlertAggregateArgs>): Prisma.PrismaPromise<GetGamificationAlertAggregateType<T>>
+
+    /**
+     * Group by GamificationAlert.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GamificationAlertGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GamificationAlertGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GamificationAlertGroupByArgs['orderBy'] }
+        : { orderBy?: GamificationAlertGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GamificationAlertGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGamificationAlertGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GamificationAlert model
+   */
+  readonly fields: GamificationAlertFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GamificationAlert.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GamificationAlertClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GamificationAlert model
+   */
+  interface GamificationAlertFieldRefs {
+    readonly id: FieldRef<"GamificationAlert", 'String'>
+    readonly eventId: FieldRef<"GamificationAlert", 'String'>
+    readonly userId: FieldRef<"GamificationAlert", 'String'>
+    readonly type: FieldRef<"GamificationAlert", 'String'>
+    readonly message: FieldRef<"GamificationAlert", 'String'>
+    readonly metadata: FieldRef<"GamificationAlert", 'Json'>
+    readonly resolved: FieldRef<"GamificationAlert", 'Boolean'>
+    readonly createdAt: FieldRef<"GamificationAlert", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GamificationAlert findUnique
+   */
+  export type GamificationAlertFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    /**
+     * Filter, which GamificationAlert to fetch.
+     */
+    where: GamificationAlertWhereUniqueInput
+  }
+
+  /**
+   * GamificationAlert findUniqueOrThrow
+   */
+  export type GamificationAlertFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    /**
+     * Filter, which GamificationAlert to fetch.
+     */
+    where: GamificationAlertWhereUniqueInput
+  }
+
+  /**
+   * GamificationAlert findFirst
+   */
+  export type GamificationAlertFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    /**
+     * Filter, which GamificationAlert to fetch.
+     */
+    where?: GamificationAlertWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GamificationAlerts to fetch.
+     */
+    orderBy?: GamificationAlertOrderByWithRelationInput | GamificationAlertOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GamificationAlerts.
+     */
+    cursor?: GamificationAlertWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GamificationAlerts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GamificationAlerts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GamificationAlerts.
+     */
+    distinct?: GamificationAlertScalarFieldEnum | GamificationAlertScalarFieldEnum[]
+  }
+
+  /**
+   * GamificationAlert findFirstOrThrow
+   */
+  export type GamificationAlertFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    /**
+     * Filter, which GamificationAlert to fetch.
+     */
+    where?: GamificationAlertWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GamificationAlerts to fetch.
+     */
+    orderBy?: GamificationAlertOrderByWithRelationInput | GamificationAlertOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GamificationAlerts.
+     */
+    cursor?: GamificationAlertWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GamificationAlerts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GamificationAlerts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GamificationAlerts.
+     */
+    distinct?: GamificationAlertScalarFieldEnum | GamificationAlertScalarFieldEnum[]
+  }
+
+  /**
+   * GamificationAlert findMany
+   */
+  export type GamificationAlertFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    /**
+     * Filter, which GamificationAlerts to fetch.
+     */
+    where?: GamificationAlertWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GamificationAlerts to fetch.
+     */
+    orderBy?: GamificationAlertOrderByWithRelationInput | GamificationAlertOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GamificationAlerts.
+     */
+    cursor?: GamificationAlertWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GamificationAlerts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GamificationAlerts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GamificationAlerts.
+     */
+    distinct?: GamificationAlertScalarFieldEnum | GamificationAlertScalarFieldEnum[]
+  }
+
+  /**
+   * GamificationAlert create
+   */
+  export type GamificationAlertCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GamificationAlert.
+     */
+    data: XOR<GamificationAlertCreateInput, GamificationAlertUncheckedCreateInput>
+  }
+
+  /**
+   * GamificationAlert createMany
+   */
+  export type GamificationAlertCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GamificationAlerts.
+     */
+    data: GamificationAlertCreateManyInput | GamificationAlertCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GamificationAlert createManyAndReturn
+   */
+  export type GamificationAlertCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * The data used to create many GamificationAlerts.
+     */
+    data: GamificationAlertCreateManyInput | GamificationAlertCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GamificationAlert update
+   */
+  export type GamificationAlertUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GamificationAlert.
+     */
+    data: XOR<GamificationAlertUpdateInput, GamificationAlertUncheckedUpdateInput>
+    /**
+     * Choose, which GamificationAlert to update.
+     */
+    where: GamificationAlertWhereUniqueInput
+  }
+
+  /**
+   * GamificationAlert updateMany
+   */
+  export type GamificationAlertUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GamificationAlerts.
+     */
+    data: XOR<GamificationAlertUpdateManyMutationInput, GamificationAlertUncheckedUpdateManyInput>
+    /**
+     * Filter which GamificationAlerts to update
+     */
+    where?: GamificationAlertWhereInput
+    /**
+     * Limit how many GamificationAlerts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GamificationAlert updateManyAndReturn
+   */
+  export type GamificationAlertUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * The data used to update GamificationAlerts.
+     */
+    data: XOR<GamificationAlertUpdateManyMutationInput, GamificationAlertUncheckedUpdateManyInput>
+    /**
+     * Filter which GamificationAlerts to update
+     */
+    where?: GamificationAlertWhereInput
+    /**
+     * Limit how many GamificationAlerts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GamificationAlert upsert
+   */
+  export type GamificationAlertUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GamificationAlert to update in case it exists.
+     */
+    where: GamificationAlertWhereUniqueInput
+    /**
+     * In case the GamificationAlert found by the `where` argument doesn't exist, create a new GamificationAlert with this data.
+     */
+    create: XOR<GamificationAlertCreateInput, GamificationAlertUncheckedCreateInput>
+    /**
+     * In case the GamificationAlert was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GamificationAlertUpdateInput, GamificationAlertUncheckedUpdateInput>
+  }
+
+  /**
+   * GamificationAlert delete
+   */
+  export type GamificationAlertDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
+    /**
+     * Filter which GamificationAlert to delete.
+     */
+    where: GamificationAlertWhereUniqueInput
+  }
+
+  /**
+   * GamificationAlert deleteMany
+   */
+  export type GamificationAlertDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GamificationAlerts to delete
+     */
+    where?: GamificationAlertWhereInput
+    /**
+     * Limit how many GamificationAlerts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GamificationAlert without action
+   */
+  export type GamificationAlertDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GamificationAlert
+     */
+    select?: GamificationAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GamificationAlert
+     */
+    omit?: GamificationAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GamificationAlertInclude<ExtArgs> | null
   }
 
 
@@ -46526,6 +47874,7 @@ export namespace Prisma {
   export const XpGainLogScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
+    eventId: 'eventId',
     amount: 'amount',
     reason: 'reason',
     uniqueKey: 'uniqueKey',
@@ -46533,6 +47882,20 @@ export namespace Prisma {
   };
 
   export type XpGainLogScalarFieldEnum = (typeof XpGainLogScalarFieldEnum)[keyof typeof XpGainLogScalarFieldEnum]
+
+
+  export const GamificationAlertScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    userId: 'userId',
+    type: 'type',
+    message: 'message',
+    metadata: 'metadata',
+    resolved: 'resolved',
+    createdAt: 'createdAt'
+  };
+
+  export type GamificationAlertScalarFieldEnum = (typeof GamificationAlertScalarFieldEnum)[keyof typeof GamificationAlertScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -47009,6 +48372,7 @@ export namespace Prisma {
     speaker?: XOR<SpeakerNullableScalarRelationFilter, SpeakerWhereInput> | null
     eventMonitors?: EventMonitorListRelationFilter
     xpLogs?: XpGainLogListRelationFilter
+    gamificationAlerts?: GamificationAlertListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -47045,6 +48409,7 @@ export namespace Prisma {
     speaker?: SpeakerOrderByWithRelationInput
     eventMonitors?: EventMonitorOrderByRelationAggregateInput
     xpLogs?: XpGainLogOrderByRelationAggregateInput
+    gamificationAlerts?: GamificationAlertOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -47084,6 +48449,7 @@ export namespace Prisma {
     speaker?: XOR<SpeakerNullableScalarRelationFilter, SpeakerWhereInput> | null
     eventMonitors?: EventMonitorListRelationFilter
     xpLogs?: XpGainLogListRelationFilter
+    gamificationAlerts?: GamificationAlertListRelationFilter
   }, "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -47186,6 +48552,8 @@ export namespace Prisma {
     reviewers?: EventReviewerListRelationFilter
     reviewerInvitations?: ReviewerInvitationListRelationFilter
     monitors?: EventMonitorListRelationFilter
+    xpLogs?: XpGainLogListRelationFilter
+    gamificationAlerts?: GamificationAlertListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -47229,6 +48597,8 @@ export namespace Prisma {
     reviewers?: EventReviewerOrderByRelationAggregateInput
     reviewerInvitations?: ReviewerInvitationOrderByRelationAggregateInput
     monitors?: EventMonitorOrderByRelationAggregateInput
+    xpLogs?: XpGainLogOrderByRelationAggregateInput
+    gamificationAlerts?: GamificationAlertOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -47276,6 +48646,8 @@ export namespace Prisma {
     reviewers?: EventReviewerListRelationFilter
     reviewerInvitations?: ReviewerInvitationListRelationFilter
     monitors?: EventMonitorListRelationFilter
+    xpLogs?: XpGainLogListRelationFilter
+    gamificationAlerts?: GamificationAlertListRelationFilter
   }, "id" | "tenantId_slug">
 
   export type EventOrderByWithAggregationInput = {
@@ -49512,21 +50884,25 @@ export namespace Prisma {
     NOT?: XpGainLogWhereInput | XpGainLogWhereInput[]
     id?: StringFilter<"XpGainLog"> | string
     userId?: StringFilter<"XpGainLog"> | string
+    eventId?: StringNullableFilter<"XpGainLog"> | string | null
     amount?: IntFilter<"XpGainLog"> | number
     reason?: StringFilter<"XpGainLog"> | string
     uniqueKey?: StringNullableFilter<"XpGainLog"> | string | null
     createdAt?: DateTimeFilter<"XpGainLog"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
   }
 
   export type XpGainLogOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
+    eventId?: SortOrderInput | SortOrder
     amount?: SortOrder
     reason?: SortOrder
     uniqueKey?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     user?: UserOrderByWithRelationInput
+    event?: EventOrderByWithRelationInput
   }
 
   export type XpGainLogWhereUniqueInput = Prisma.AtLeast<{
@@ -49536,16 +50912,19 @@ export namespace Prisma {
     OR?: XpGainLogWhereInput[]
     NOT?: XpGainLogWhereInput | XpGainLogWhereInput[]
     userId?: StringFilter<"XpGainLog"> | string
+    eventId?: StringNullableFilter<"XpGainLog"> | string | null
     amount?: IntFilter<"XpGainLog"> | number
     reason?: StringFilter<"XpGainLog"> | string
     uniqueKey?: StringNullableFilter<"XpGainLog"> | string | null
     createdAt?: DateTimeFilter<"XpGainLog"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
   }, "id" | "userId_uniqueKey">
 
   export type XpGainLogOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
+    eventId?: SortOrderInput | SortOrder
     amount?: SortOrder
     reason?: SortOrder
     uniqueKey?: SortOrderInput | SortOrder
@@ -49563,10 +50942,84 @@ export namespace Prisma {
     NOT?: XpGainLogScalarWhereWithAggregatesInput | XpGainLogScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"XpGainLog"> | string
     userId?: StringWithAggregatesFilter<"XpGainLog"> | string
+    eventId?: StringNullableWithAggregatesFilter<"XpGainLog"> | string | null
     amount?: IntWithAggregatesFilter<"XpGainLog"> | number
     reason?: StringWithAggregatesFilter<"XpGainLog"> | string
     uniqueKey?: StringNullableWithAggregatesFilter<"XpGainLog"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"XpGainLog"> | Date | string
+  }
+
+  export type GamificationAlertWhereInput = {
+    AND?: GamificationAlertWhereInput | GamificationAlertWhereInput[]
+    OR?: GamificationAlertWhereInput[]
+    NOT?: GamificationAlertWhereInput | GamificationAlertWhereInput[]
+    id?: StringFilter<"GamificationAlert"> | string
+    eventId?: StringFilter<"GamificationAlert"> | string
+    userId?: StringFilter<"GamificationAlert"> | string
+    type?: StringFilter<"GamificationAlert"> | string
+    message?: StringFilter<"GamificationAlert"> | string
+    metadata?: JsonNullableFilter<"GamificationAlert">
+    resolved?: BoolFilter<"GamificationAlert"> | boolean
+    createdAt?: DateTimeFilter<"GamificationAlert"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type GamificationAlertOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    message?: SortOrder
+    metadata?: SortOrderInput | SortOrder
+    resolved?: SortOrder
+    createdAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type GamificationAlertWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: GamificationAlertWhereInput | GamificationAlertWhereInput[]
+    OR?: GamificationAlertWhereInput[]
+    NOT?: GamificationAlertWhereInput | GamificationAlertWhereInput[]
+    eventId?: StringFilter<"GamificationAlert"> | string
+    userId?: StringFilter<"GamificationAlert"> | string
+    type?: StringFilter<"GamificationAlert"> | string
+    message?: StringFilter<"GamificationAlert"> | string
+    metadata?: JsonNullableFilter<"GamificationAlert">
+    resolved?: BoolFilter<"GamificationAlert"> | boolean
+    createdAt?: DateTimeFilter<"GamificationAlert"> | Date | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type GamificationAlertOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    message?: SortOrder
+    metadata?: SortOrderInput | SortOrder
+    resolved?: SortOrder
+    createdAt?: SortOrder
+    _count?: GamificationAlertCountOrderByAggregateInput
+    _max?: GamificationAlertMaxOrderByAggregateInput
+    _min?: GamificationAlertMinOrderByAggregateInput
+  }
+
+  export type GamificationAlertScalarWhereWithAggregatesInput = {
+    AND?: GamificationAlertScalarWhereWithAggregatesInput | GamificationAlertScalarWhereWithAggregatesInput[]
+    OR?: GamificationAlertScalarWhereWithAggregatesInput[]
+    NOT?: GamificationAlertScalarWhereWithAggregatesInput | GamificationAlertScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GamificationAlert"> | string
+    eventId?: StringWithAggregatesFilter<"GamificationAlert"> | string
+    userId?: StringWithAggregatesFilter<"GamificationAlert"> | string
+    type?: StringWithAggregatesFilter<"GamificationAlert"> | string
+    message?: StringWithAggregatesFilter<"GamificationAlert"> | string
+    metadata?: JsonNullableWithAggregatesFilter<"GamificationAlert">
+    resolved?: BoolWithAggregatesFilter<"GamificationAlert"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"GamificationAlert"> | Date | string
   }
 
   export type TenantCreateInput = {
@@ -49696,6 +51149,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -49731,6 +51185,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -49766,6 +51221,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -49801,6 +51257,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -49914,6 +51371,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -49956,6 +51415,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -49998,6 +51459,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -50040,6 +51503,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -52302,11 +53767,13 @@ export namespace Prisma {
     uniqueKey?: string | null
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutXpLogsInput
+    event?: EventCreateNestedOneWithoutXpLogsInput
   }
 
   export type XpGainLogUncheckedCreateInput = {
     id?: string
     userId: string
+    eventId?: string | null
     amount: number
     reason: string
     uniqueKey?: string | null
@@ -52320,11 +53787,13 @@ export namespace Prisma {
     uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutXpLogsNestedInput
+    event?: EventUpdateOneWithoutXpLogsNestedInput
   }
 
   export type XpGainLogUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52334,6 +53803,7 @@ export namespace Prisma {
   export type XpGainLogCreateManyInput = {
     id?: string
     userId: string
+    eventId?: string | null
     amount: number
     reason: string
     uniqueKey?: string | null
@@ -52351,9 +53821,85 @@ export namespace Prisma {
   export type XpGainLogUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GamificationAlertCreateInput = {
+    id?: string
+    type: string
+    message: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: boolean
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutGamificationAlertsInput
+    user: UserCreateNestedOneWithoutGamificationAlertsInput
+  }
+
+  export type GamificationAlertUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    userId: string
+    type: string
+    message: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: boolean
+    createdAt?: Date | string
+  }
+
+  export type GamificationAlertUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutGamificationAlertsNestedInput
+    user?: UserUpdateOneRequiredWithoutGamificationAlertsNestedInput
+  }
+
+  export type GamificationAlertUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GamificationAlertCreateManyInput = {
+    id?: string
+    eventId: string
+    userId: string
+    type: string
+    message: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: boolean
+    createdAt?: Date | string
+  }
+
+  export type GamificationAlertUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GamificationAlertUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -52696,6 +54242,12 @@ export namespace Prisma {
     none?: XpGainLogWhereInput
   }
 
+  export type GamificationAlertListRelationFilter = {
+    every?: GamificationAlertWhereInput
+    some?: GamificationAlertWhereInput
+    none?: GamificationAlertWhereInput
+  }
+
   export type RegistrationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -52729,6 +54281,10 @@ export namespace Prisma {
   }
 
   export type XpGainLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type GamificationAlertOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -54609,6 +56165,7 @@ export namespace Prisma {
   export type XpGainLogCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    eventId?: SortOrder
     amount?: SortOrder
     reason?: SortOrder
     uniqueKey?: SortOrder
@@ -54622,6 +56179,7 @@ export namespace Prisma {
   export type XpGainLogMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    eventId?: SortOrder
     amount?: SortOrder
     reason?: SortOrder
     uniqueKey?: SortOrder
@@ -54631,6 +56189,7 @@ export namespace Prisma {
   export type XpGainLogMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    eventId?: SortOrder
     amount?: SortOrder
     reason?: SortOrder
     uniqueKey?: SortOrder
@@ -54639,6 +56198,37 @@ export namespace Prisma {
 
   export type XpGainLogSumOrderByAggregateInput = {
     amount?: SortOrder
+  }
+
+  export type GamificationAlertCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    message?: SortOrder
+    metadata?: SortOrder
+    resolved?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type GamificationAlertMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    message?: SortOrder
+    resolved?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type GamificationAlertMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    message?: SortOrder
+    resolved?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type UserCreateNestedManyWithoutTenantInput = {
@@ -54991,6 +56581,13 @@ export namespace Prisma {
     connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
   }
 
+  export type GamificationAlertCreateNestedManyWithoutUserInput = {
+    create?: XOR<GamificationAlertCreateWithoutUserInput, GamificationAlertUncheckedCreateWithoutUserInput> | GamificationAlertCreateWithoutUserInput[] | GamificationAlertUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GamificationAlertCreateOrConnectWithoutUserInput | GamificationAlertCreateOrConnectWithoutUserInput[]
+    createMany?: GamificationAlertCreateManyUserInputEnvelope
+    connect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+  }
+
   export type RegistrationUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<RegistrationCreateWithoutUserInput, RegistrationUncheckedCreateWithoutUserInput> | RegistrationCreateWithoutUserInput[] | RegistrationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutUserInput | RegistrationCreateOrConnectWithoutUserInput[]
@@ -55065,6 +56662,13 @@ export namespace Prisma {
     connectOrCreate?: XpGainLogCreateOrConnectWithoutUserInput | XpGainLogCreateOrConnectWithoutUserInput[]
     createMany?: XpGainLogCreateManyUserInputEnvelope
     connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+  }
+
+  export type GamificationAlertUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<GamificationAlertCreateWithoutUserInput, GamificationAlertUncheckedCreateWithoutUserInput> | GamificationAlertCreateWithoutUserInput[] | GamificationAlertUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GamificationAlertCreateOrConnectWithoutUserInput | GamificationAlertCreateOrConnectWithoutUserInput[]
+    createMany?: GamificationAlertCreateManyUserInputEnvelope
+    connect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
   }
 
   export type EnumUserRoleFieldUpdateOperationsInput = {
@@ -55250,6 +56854,20 @@ export namespace Prisma {
     deleteMany?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
   }
 
+  export type GamificationAlertUpdateManyWithoutUserNestedInput = {
+    create?: XOR<GamificationAlertCreateWithoutUserInput, GamificationAlertUncheckedCreateWithoutUserInput> | GamificationAlertCreateWithoutUserInput[] | GamificationAlertUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GamificationAlertCreateOrConnectWithoutUserInput | GamificationAlertCreateOrConnectWithoutUserInput[]
+    upsert?: GamificationAlertUpsertWithWhereUniqueWithoutUserInput | GamificationAlertUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: GamificationAlertCreateManyUserInputEnvelope
+    set?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    disconnect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    delete?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    connect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    update?: GamificationAlertUpdateWithWhereUniqueWithoutUserInput | GamificationAlertUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: GamificationAlertUpdateManyWithWhereWithoutUserInput | GamificationAlertUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: GamificationAlertScalarWhereInput | GamificationAlertScalarWhereInput[]
+  }
+
   export type RegistrationUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<RegistrationCreateWithoutUserInput, RegistrationUncheckedCreateWithoutUserInput> | RegistrationCreateWithoutUserInput[] | RegistrationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutUserInput | RegistrationCreateOrConnectWithoutUserInput[]
@@ -55400,6 +57018,20 @@ export namespace Prisma {
     deleteMany?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
   }
 
+  export type GamificationAlertUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<GamificationAlertCreateWithoutUserInput, GamificationAlertUncheckedCreateWithoutUserInput> | GamificationAlertCreateWithoutUserInput[] | GamificationAlertUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GamificationAlertCreateOrConnectWithoutUserInput | GamificationAlertCreateOrConnectWithoutUserInput[]
+    upsert?: GamificationAlertUpsertWithWhereUniqueWithoutUserInput | GamificationAlertUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: GamificationAlertCreateManyUserInputEnvelope
+    set?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    disconnect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    delete?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    connect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    update?: GamificationAlertUpdateWithWhereUniqueWithoutUserInput | GamificationAlertUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: GamificationAlertUpdateManyWithWhereWithoutUserInput | GamificationAlertUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: GamificationAlertScalarWhereInput | GamificationAlertScalarWhereInput[]
+  }
+
   export type TenantCreateNestedOneWithoutEventsInput = {
     create?: XOR<TenantCreateWithoutEventsInput, TenantUncheckedCreateWithoutEventsInput>
     connectOrCreate?: TenantCreateOrConnectWithoutEventsInput
@@ -55518,6 +57150,20 @@ export namespace Prisma {
     connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
   }
 
+  export type XpGainLogCreateNestedManyWithoutEventInput = {
+    create?: XOR<XpGainLogCreateWithoutEventInput, XpGainLogUncheckedCreateWithoutEventInput> | XpGainLogCreateWithoutEventInput[] | XpGainLogUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: XpGainLogCreateOrConnectWithoutEventInput | XpGainLogCreateOrConnectWithoutEventInput[]
+    createMany?: XpGainLogCreateManyEventInputEnvelope
+    connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+  }
+
+  export type GamificationAlertCreateNestedManyWithoutEventInput = {
+    create?: XOR<GamificationAlertCreateWithoutEventInput, GamificationAlertUncheckedCreateWithoutEventInput> | GamificationAlertCreateWithoutEventInput[] | GamificationAlertUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: GamificationAlertCreateOrConnectWithoutEventInput | GamificationAlertCreateOrConnectWithoutEventInput[]
+    createMany?: GamificationAlertCreateManyEventInputEnvelope
+    connect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+  }
+
   export type ActivityUncheckedCreateNestedManyWithoutEventInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -55628,6 +57274,20 @@ export namespace Prisma {
     connectOrCreate?: EventMonitorCreateOrConnectWithoutEventInput | EventMonitorCreateOrConnectWithoutEventInput[]
     createMany?: EventMonitorCreateManyEventInputEnvelope
     connect?: EventMonitorWhereUniqueInput | EventMonitorWhereUniqueInput[]
+  }
+
+  export type XpGainLogUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<XpGainLogCreateWithoutEventInput, XpGainLogUncheckedCreateWithoutEventInput> | XpGainLogCreateWithoutEventInput[] | XpGainLogUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: XpGainLogCreateOrConnectWithoutEventInput | XpGainLogCreateOrConnectWithoutEventInput[]
+    createMany?: XpGainLogCreateManyEventInputEnvelope
+    connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+  }
+
+  export type GamificationAlertUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<GamificationAlertCreateWithoutEventInput, GamificationAlertUncheckedCreateWithoutEventInput> | GamificationAlertCreateWithoutEventInput[] | GamificationAlertUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: GamificationAlertCreateOrConnectWithoutEventInput | GamificationAlertCreateOrConnectWithoutEventInput[]
+    createMany?: GamificationAlertCreateManyEventInputEnvelope
+    connect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
   }
 
   export type EnumEventStatusFieldUpdateOperationsInput = {
@@ -55866,6 +57526,34 @@ export namespace Prisma {
     deleteMany?: EventMonitorScalarWhereInput | EventMonitorScalarWhereInput[]
   }
 
+  export type XpGainLogUpdateManyWithoutEventNestedInput = {
+    create?: XOR<XpGainLogCreateWithoutEventInput, XpGainLogUncheckedCreateWithoutEventInput> | XpGainLogCreateWithoutEventInput[] | XpGainLogUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: XpGainLogCreateOrConnectWithoutEventInput | XpGainLogCreateOrConnectWithoutEventInput[]
+    upsert?: XpGainLogUpsertWithWhereUniqueWithoutEventInput | XpGainLogUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: XpGainLogCreateManyEventInputEnvelope
+    set?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    disconnect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    delete?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    update?: XpGainLogUpdateWithWhereUniqueWithoutEventInput | XpGainLogUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: XpGainLogUpdateManyWithWhereWithoutEventInput | XpGainLogUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
+  }
+
+  export type GamificationAlertUpdateManyWithoutEventNestedInput = {
+    create?: XOR<GamificationAlertCreateWithoutEventInput, GamificationAlertUncheckedCreateWithoutEventInput> | GamificationAlertCreateWithoutEventInput[] | GamificationAlertUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: GamificationAlertCreateOrConnectWithoutEventInput | GamificationAlertCreateOrConnectWithoutEventInput[]
+    upsert?: GamificationAlertUpsertWithWhereUniqueWithoutEventInput | GamificationAlertUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: GamificationAlertCreateManyEventInputEnvelope
+    set?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    disconnect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    delete?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    connect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    update?: GamificationAlertUpdateWithWhereUniqueWithoutEventInput | GamificationAlertUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: GamificationAlertUpdateManyWithWhereWithoutEventInput | GamificationAlertUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: GamificationAlertScalarWhereInput | GamificationAlertScalarWhereInput[]
+  }
+
   export type ActivityUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -56088,6 +57776,34 @@ export namespace Prisma {
     update?: EventMonitorUpdateWithWhereUniqueWithoutEventInput | EventMonitorUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: EventMonitorUpdateManyWithWhereWithoutEventInput | EventMonitorUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: EventMonitorScalarWhereInput | EventMonitorScalarWhereInput[]
+  }
+
+  export type XpGainLogUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<XpGainLogCreateWithoutEventInput, XpGainLogUncheckedCreateWithoutEventInput> | XpGainLogCreateWithoutEventInput[] | XpGainLogUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: XpGainLogCreateOrConnectWithoutEventInput | XpGainLogCreateOrConnectWithoutEventInput[]
+    upsert?: XpGainLogUpsertWithWhereUniqueWithoutEventInput | XpGainLogUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: XpGainLogCreateManyEventInputEnvelope
+    set?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    disconnect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    delete?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+    update?: XpGainLogUpdateWithWhereUniqueWithoutEventInput | XpGainLogUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: XpGainLogUpdateManyWithWhereWithoutEventInput | XpGainLogUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
+  }
+
+  export type GamificationAlertUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<GamificationAlertCreateWithoutEventInput, GamificationAlertUncheckedCreateWithoutEventInput> | GamificationAlertCreateWithoutEventInput[] | GamificationAlertUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: GamificationAlertCreateOrConnectWithoutEventInput | GamificationAlertCreateOrConnectWithoutEventInput[]
+    upsert?: GamificationAlertUpsertWithWhereUniqueWithoutEventInput | GamificationAlertUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: GamificationAlertCreateManyEventInputEnvelope
+    set?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    disconnect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    delete?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    connect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+    update?: GamificationAlertUpdateWithWhereUniqueWithoutEventInput | GamificationAlertUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: GamificationAlertUpdateManyWithWhereWithoutEventInput | GamificationAlertUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: GamificationAlertScalarWhereInput | GamificationAlertScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutActivityTypesInput = {
@@ -58180,12 +59896,56 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type EventCreateNestedOneWithoutXpLogsInput = {
+    create?: XOR<EventCreateWithoutXpLogsInput, EventUncheckedCreateWithoutXpLogsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutXpLogsInput
+    connect?: EventWhereUniqueInput
+  }
+
   export type UserUpdateOneRequiredWithoutXpLogsNestedInput = {
     create?: XOR<UserCreateWithoutXpLogsInput, UserUncheckedCreateWithoutXpLogsInput>
     connectOrCreate?: UserCreateOrConnectWithoutXpLogsInput
     upsert?: UserUpsertWithoutXpLogsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutXpLogsInput, UserUpdateWithoutXpLogsInput>, UserUncheckedUpdateWithoutXpLogsInput>
+  }
+
+  export type EventUpdateOneWithoutXpLogsNestedInput = {
+    create?: XOR<EventCreateWithoutXpLogsInput, EventUncheckedCreateWithoutXpLogsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutXpLogsInput
+    upsert?: EventUpsertWithoutXpLogsInput
+    disconnect?: EventWhereInput | boolean
+    delete?: EventWhereInput | boolean
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutXpLogsInput, EventUpdateWithoutXpLogsInput>, EventUncheckedUpdateWithoutXpLogsInput>
+  }
+
+  export type EventCreateNestedOneWithoutGamificationAlertsInput = {
+    create?: XOR<EventCreateWithoutGamificationAlertsInput, EventUncheckedCreateWithoutGamificationAlertsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutGamificationAlertsInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutGamificationAlertsInput = {
+    create?: XOR<UserCreateWithoutGamificationAlertsInput, UserUncheckedCreateWithoutGamificationAlertsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGamificationAlertsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EventUpdateOneRequiredWithoutGamificationAlertsNestedInput = {
+    create?: XOR<EventCreateWithoutGamificationAlertsInput, EventUncheckedCreateWithoutGamificationAlertsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutGamificationAlertsInput
+    upsert?: EventUpsertWithoutGamificationAlertsInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutGamificationAlertsInput, EventUpdateWithoutGamificationAlertsInput>, EventUncheckedUpdateWithoutGamificationAlertsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutGamificationAlertsNestedInput = {
+    create?: XOR<UserCreateWithoutGamificationAlertsInput, UserUncheckedCreateWithoutGamificationAlertsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGamificationAlertsInput
+    upsert?: UserUpsertWithoutGamificationAlertsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGamificationAlertsInput, UserUpdateWithoutGamificationAlertsInput>, UserUncheckedUpdateWithoutGamificationAlertsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -58749,6 +60509,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTenantInput = {
@@ -58783,6 +60544,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTenantInput = {
@@ -58834,6 +60596,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTenantInput = {
@@ -58875,6 +60639,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTenantInput = {
@@ -59559,10 +61325,12 @@ export namespace Prisma {
     reason: string
     uniqueKey?: string | null
     createdAt?: Date | string
+    event?: EventCreateNestedOneWithoutXpLogsInput
   }
 
   export type XpGainLogUncheckedCreateWithoutUserInput = {
     id?: string
+    eventId?: string | null
     amount: number
     reason: string
     uniqueKey?: string | null
@@ -59576,6 +61344,36 @@ export namespace Prisma {
 
   export type XpGainLogCreateManyUserInputEnvelope = {
     data: XpGainLogCreateManyUserInput | XpGainLogCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GamificationAlertCreateWithoutUserInput = {
+    id?: string
+    type: string
+    message: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: boolean
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutGamificationAlertsInput
+  }
+
+  export type GamificationAlertUncheckedCreateWithoutUserInput = {
+    id?: string
+    eventId: string
+    type: string
+    message: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: boolean
+    createdAt?: Date | string
+  }
+
+  export type GamificationAlertCreateOrConnectWithoutUserInput = {
+    where: GamificationAlertWhereUniqueInput
+    create: XOR<GamificationAlertCreateWithoutUserInput, GamificationAlertUncheckedCreateWithoutUserInput>
+  }
+
+  export type GamificationAlertCreateManyUserInputEnvelope = {
+    data: GamificationAlertCreateManyUserInput | GamificationAlertCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -59925,10 +61723,41 @@ export namespace Prisma {
     NOT?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
     id?: StringFilter<"XpGainLog"> | string
     userId?: StringFilter<"XpGainLog"> | string
+    eventId?: StringNullableFilter<"XpGainLog"> | string | null
     amount?: IntFilter<"XpGainLog"> | number
     reason?: StringFilter<"XpGainLog"> | string
     uniqueKey?: StringNullableFilter<"XpGainLog"> | string | null
     createdAt?: DateTimeFilter<"XpGainLog"> | Date | string
+  }
+
+  export type GamificationAlertUpsertWithWhereUniqueWithoutUserInput = {
+    where: GamificationAlertWhereUniqueInput
+    update: XOR<GamificationAlertUpdateWithoutUserInput, GamificationAlertUncheckedUpdateWithoutUserInput>
+    create: XOR<GamificationAlertCreateWithoutUserInput, GamificationAlertUncheckedCreateWithoutUserInput>
+  }
+
+  export type GamificationAlertUpdateWithWhereUniqueWithoutUserInput = {
+    where: GamificationAlertWhereUniqueInput
+    data: XOR<GamificationAlertUpdateWithoutUserInput, GamificationAlertUncheckedUpdateWithoutUserInput>
+  }
+
+  export type GamificationAlertUpdateManyWithWhereWithoutUserInput = {
+    where: GamificationAlertScalarWhereInput
+    data: XOR<GamificationAlertUpdateManyMutationInput, GamificationAlertUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type GamificationAlertScalarWhereInput = {
+    AND?: GamificationAlertScalarWhereInput | GamificationAlertScalarWhereInput[]
+    OR?: GamificationAlertScalarWhereInput[]
+    NOT?: GamificationAlertScalarWhereInput | GamificationAlertScalarWhereInput[]
+    id?: StringFilter<"GamificationAlert"> | string
+    eventId?: StringFilter<"GamificationAlert"> | string
+    userId?: StringFilter<"GamificationAlert"> | string
+    type?: StringFilter<"GamificationAlert"> | string
+    message?: StringFilter<"GamificationAlert"> | string
+    metadata?: JsonNullableFilter<"GamificationAlert">
+    resolved?: BoolFilter<"GamificationAlert"> | boolean
+    createdAt?: DateTimeFilter<"GamificationAlert"> | Date | string
   }
 
   export type TenantCreateWithoutEventsInput = {
@@ -60478,6 +62307,64 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type XpGainLogCreateWithoutEventInput = {
+    id?: string
+    amount: number
+    reason: string
+    uniqueKey?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutXpLogsInput
+  }
+
+  export type XpGainLogUncheckedCreateWithoutEventInput = {
+    id?: string
+    userId: string
+    amount: number
+    reason: string
+    uniqueKey?: string | null
+    createdAt?: Date | string
+  }
+
+  export type XpGainLogCreateOrConnectWithoutEventInput = {
+    where: XpGainLogWhereUniqueInput
+    create: XOR<XpGainLogCreateWithoutEventInput, XpGainLogUncheckedCreateWithoutEventInput>
+  }
+
+  export type XpGainLogCreateManyEventInputEnvelope = {
+    data: XpGainLogCreateManyEventInput | XpGainLogCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GamificationAlertCreateWithoutEventInput = {
+    id?: string
+    type: string
+    message: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutGamificationAlertsInput
+  }
+
+  export type GamificationAlertUncheckedCreateWithoutEventInput = {
+    id?: string
+    userId: string
+    type: string
+    message: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: boolean
+    createdAt?: Date | string
+  }
+
+  export type GamificationAlertCreateOrConnectWithoutEventInput = {
+    where: GamificationAlertWhereUniqueInput
+    create: XOR<GamificationAlertCreateWithoutEventInput, GamificationAlertUncheckedCreateWithoutEventInput>
+  }
+
+  export type GamificationAlertCreateManyEventInputEnvelope = {
+    data: GamificationAlertCreateManyEventInput | GamificationAlertCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TenantUpsertWithoutEventsInput = {
     update: XOR<TenantUpdateWithoutEventsInput, TenantUncheckedUpdateWithoutEventsInput>
     create: XOR<TenantCreateWithoutEventsInput, TenantUncheckedCreateWithoutEventsInput>
@@ -60899,6 +62786,38 @@ export namespace Prisma {
     data: XOR<EventMonitorUpdateManyMutationInput, EventMonitorUncheckedUpdateManyWithoutEventInput>
   }
 
+  export type XpGainLogUpsertWithWhereUniqueWithoutEventInput = {
+    where: XpGainLogWhereUniqueInput
+    update: XOR<XpGainLogUpdateWithoutEventInput, XpGainLogUncheckedUpdateWithoutEventInput>
+    create: XOR<XpGainLogCreateWithoutEventInput, XpGainLogUncheckedCreateWithoutEventInput>
+  }
+
+  export type XpGainLogUpdateWithWhereUniqueWithoutEventInput = {
+    where: XpGainLogWhereUniqueInput
+    data: XOR<XpGainLogUpdateWithoutEventInput, XpGainLogUncheckedUpdateWithoutEventInput>
+  }
+
+  export type XpGainLogUpdateManyWithWhereWithoutEventInput = {
+    where: XpGainLogScalarWhereInput
+    data: XOR<XpGainLogUpdateManyMutationInput, XpGainLogUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type GamificationAlertUpsertWithWhereUniqueWithoutEventInput = {
+    where: GamificationAlertWhereUniqueInput
+    update: XOR<GamificationAlertUpdateWithoutEventInput, GamificationAlertUncheckedUpdateWithoutEventInput>
+    create: XOR<GamificationAlertCreateWithoutEventInput, GamificationAlertUncheckedCreateWithoutEventInput>
+  }
+
+  export type GamificationAlertUpdateWithWhereUniqueWithoutEventInput = {
+    where: GamificationAlertWhereUniqueInput
+    data: XOR<GamificationAlertUpdateWithoutEventInput, GamificationAlertUncheckedUpdateWithoutEventInput>
+  }
+
+  export type GamificationAlertUpdateManyWithWhereWithoutEventInput = {
+    where: GamificationAlertScalarWhereInput
+    data: XOR<GamificationAlertUpdateManyMutationInput, GamificationAlertUncheckedUpdateManyWithoutEventInput>
+  }
+
   export type TenantCreateWithoutActivityTypesInput = {
     id?: string
     name: string
@@ -61207,6 +63126,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutActivitiesInput = {
@@ -61248,6 +63169,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutActivitiesInput = {
@@ -61474,6 +63397,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutActivitiesInput = {
@@ -61515,6 +63440,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityTypeUpsertWithoutActivitiesInput = {
@@ -61750,6 +63677,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSpeakerInput = {
@@ -61784,6 +63712,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSpeakerInput = {
@@ -61895,6 +63824,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSpeakerInput = {
@@ -61929,6 +63859,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ActivitySpeakerUpsertWithWhereUniqueWithoutSpeakerInput = {
@@ -62206,6 +64137,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -62247,6 +64180,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -62286,6 +64221,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRegistrationsInput = {
@@ -62320,6 +64256,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRegistrationsInput = {
@@ -62545,6 +64482,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -62586,6 +64525,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutRegistrationsInput = {
@@ -62631,6 +64572,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRegistrationsInput = {
@@ -62665,6 +64607,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TicketUpsertWithWhereUniqueWithoutRegistrationInput = {
@@ -62997,6 +64940,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTicketsInput = {
@@ -63038,6 +64983,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTicketsInput = {
@@ -63146,6 +65093,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTicketsInput = {
@@ -63187,6 +65136,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutTicketsInput = {
@@ -63279,6 +65230,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutFormsInput = {
@@ -63320,6 +65273,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutFormsInput = {
@@ -63437,6 +65392,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutFormsInput = {
@@ -63478,6 +65435,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type CustomFormResponseUpsertWithWhereUniqueWithoutFormInput = {
@@ -64016,6 +65975,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionsInput = {
@@ -64057,6 +66018,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionsInput = {
@@ -64096,6 +66059,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubmissionsInput = {
@@ -64130,6 +66094,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubmissionsInput = {
@@ -64285,6 +66250,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionsInput = {
@@ -64326,6 +66293,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutSubmissionsInput = {
@@ -64371,6 +66340,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubmissionsInput = {
@@ -64405,6 +66375,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SubmissionModalityUpsertWithoutSubmissionsInput = {
@@ -64562,6 +66533,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReviewsInput = {
@@ -64596,6 +66568,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReviewsInput = {
@@ -64687,6 +66660,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -64721,6 +66695,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutReviewersInput = {
@@ -64762,6 +66737,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutReviewersInput = {
@@ -64803,6 +66780,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutReviewersInput = {
@@ -64842,6 +66821,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEventReviewersInput = {
@@ -64876,6 +66856,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEventReviewersInput = {
@@ -64933,6 +66914,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutReviewersInput = {
@@ -64974,6 +66957,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutEventReviewersInput = {
@@ -65019,6 +67004,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEventReviewersInput = {
@@ -65053,6 +67039,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutReviewerInvitationsInput = {
@@ -65094,6 +67081,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutReviewerInvitationsInput = {
@@ -65135,6 +67124,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutReviewerInvitationsInput = {
@@ -65174,6 +67165,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReviewerInvitationsInput = {
@@ -65208,6 +67200,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReviewerInvitationsInput = {
@@ -65247,6 +67240,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAcceptedInvitationsInput = {
@@ -65281,6 +67275,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAcceptedInvitationsInput = {
@@ -65338,6 +67333,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutReviewerInvitationsInput = {
@@ -65379,6 +67376,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutReviewerInvitationsInput = {
@@ -65424,6 +67423,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewerInvitationsInput = {
@@ -65458,6 +67458,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutAcceptedInvitationsInput = {
@@ -65503,6 +67504,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAcceptedInvitationsInput = {
@@ -65537,6 +67539,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutSubmissionModalitiesInput = {
@@ -65578,6 +67581,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionModalitiesInput = {
@@ -65619,6 +67624,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionModalitiesInput = {
@@ -65716,6 +67723,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionModalitiesInput = {
@@ -65757,6 +67766,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SubmissionUpsertWithWhereUniqueWithoutModalityInput = {
@@ -65814,6 +67825,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutThematicAreasInput = {
@@ -65855,6 +67868,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutThematicAreasInput = {
@@ -65952,6 +67967,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutThematicAreasInput = {
@@ -65993,6 +68010,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SubmissionUpsertWithWhereUniqueWithoutThematicAreaInput = {
@@ -66050,6 +68069,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionRulesInput = {
@@ -66091,6 +68112,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionRulesInput = {
@@ -66148,6 +68171,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionRulesInput = {
@@ -66189,6 +68214,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type TicketCreateWithoutAttendancesInput = {
@@ -66402,6 +68429,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutCertificateTemplatesInput = {
@@ -66443,6 +68472,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutCertificateTemplatesInput = {
@@ -66526,6 +68557,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutCertificateTemplatesInput = {
@@ -66567,6 +68600,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type IssuedCertificateUpsertWithWhereUniqueWithoutTemplateInput = {
@@ -66744,6 +68779,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSponsorCategoriesInput = {
@@ -66785,6 +68822,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSponsorCategoriesInput = {
@@ -66872,6 +68911,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSponsorCategoriesInput = {
@@ -66913,6 +68954,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SponsorUpsertWithWhereUniqueWithoutCategoryInput = {
@@ -67044,6 +69087,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRaffleHistoriesInput = {
@@ -67085,6 +69130,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRaffleHistoriesInput = {
@@ -67222,6 +69269,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRaffleHistoriesInput = {
@@ -67263,6 +69312,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityUpsertWithoutRaffleHistoriesInput = {
@@ -67431,6 +69482,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutBadgesInput = {
@@ -67472,6 +69525,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutBadgesInput = {
@@ -67622,6 +69677,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutBadgesInput = {
@@ -67663,6 +69720,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserBadgeUpsertWithWhereUniqueWithoutBadgeInput = {
@@ -67768,6 +69827,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClaimCodesInput = {
@@ -67802,6 +69862,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClaimCodesInput = {
@@ -67897,6 +69958,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClaimCodesInput = {
@@ -67931,6 +69993,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutUserBadgesInput = {
@@ -67965,6 +70028,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserBadgesInput = {
@@ -67999,6 +70063,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserBadgesInput = {
@@ -68084,6 +70149,8 @@ export namespace Prisma {
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutUserBadgesInput = {
@@ -68125,6 +70192,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutUserBadgesInput = {
@@ -68175,6 +70244,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserBadgesInput = {
@@ -68209,6 +70279,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BadgeUpsertWithoutUserBadgesInput = {
@@ -68306,6 +70377,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutUserBadgesInput = {
@@ -68347,6 +70420,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityCreateWithoutMaterialsInput = {
@@ -68668,6 +70743,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutMonitorsInput = {
@@ -68709,6 +70786,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
     reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutMonitorsInput = {
@@ -68748,6 +70827,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEventMonitorsInput = {
@@ -68782,6 +70862,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEventMonitorsInput = {
@@ -68839,6 +70920,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutMonitorsInput = {
@@ -68880,6 +70963,8 @@ export namespace Prisma {
     submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutEventMonitorsInput = {
@@ -68925,6 +71010,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEventMonitorsInput = {
@@ -68959,6 +71045,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutXpLogsInput = {
@@ -68993,6 +71080,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutXpLogsInput = {
@@ -69027,11 +71115,103 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutXpLogsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutXpLogsInput, UserUncheckedCreateWithoutXpLogsInput>
+  }
+
+  export type EventCreateWithoutXpLogsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutEventsInput
+    activities?: ActivityCreateNestedManyWithoutEventInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    tickets?: TicketCreateNestedManyWithoutEventInput
+    forms?: CustomFormCreateNestedManyWithoutEventInput
+    submissions?: SubmissionCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
+    reviewers?: EventReviewerCreateNestedManyWithoutEventInput
+    reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutXpLogsInput = {
+    id?: string
+    tenantId: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
+    reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
+    reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutXpLogsInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutXpLogsInput, EventUncheckedCreateWithoutXpLogsInput>
   }
 
   export type UserUpsertWithoutXpLogsInput = {
@@ -69077,6 +71257,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutXpLogsInput = {
@@ -69111,6 +71292,448 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type EventUpsertWithoutXpLogsInput = {
+    update: XOR<EventUpdateWithoutXpLogsInput, EventUncheckedUpdateWithoutXpLogsInput>
+    create: XOR<EventCreateWithoutXpLogsInput, EventUncheckedCreateWithoutXpLogsInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutXpLogsInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutXpLogsInput, EventUncheckedUpdateWithoutXpLogsInput>
+  }
+
+  export type EventUpdateWithoutXpLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
+    activities?: ActivityUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    tickets?: TicketUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
+    reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
+    reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutXpLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
+    reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
+    reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventCreateWithoutGamificationAlertsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutEventsInput
+    activities?: ActivityCreateNestedManyWithoutEventInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    tickets?: TicketCreateNestedManyWithoutEventInput
+    forms?: CustomFormCreateNestedManyWithoutEventInput
+    submissions?: SubmissionCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
+    reviewers?: EventReviewerCreateNestedManyWithoutEventInput
+    reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutGamificationAlertsInput = {
+    id?: string
+    tenantId: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
+    reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
+    reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutGamificationAlertsInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutGamificationAlertsInput, EventUncheckedCreateWithoutGamificationAlertsInput>
+  }
+
+  export type UserCreateWithoutGamificationAlertsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
+    refreshToken?: string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
+    tenant: TenantCreateNestedOneWithoutUsersInput
+    registrations?: RegistrationCreateNestedManyWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutReviewerInput
+    submissions?: SubmissionCreateNestedManyWithoutAuthorInput
+    userBadges?: UserBadgeCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutUserInput
+    eventReviewers?: EventReviewerCreateNestedManyWithoutUserInput
+    reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
+    acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
+    speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutGamificationAlertsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
+    refreshToken?: string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenantId: string
+    mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput
+    eventReviewers?: EventReviewerUncheckedCreateNestedManyWithoutUserInput
+    reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+    acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
+    speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutGamificationAlertsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutGamificationAlertsInput, UserUncheckedCreateWithoutGamificationAlertsInput>
+  }
+
+  export type EventUpsertWithoutGamificationAlertsInput = {
+    update: XOR<EventUpdateWithoutGamificationAlertsInput, EventUncheckedUpdateWithoutGamificationAlertsInput>
+    create: XOR<EventCreateWithoutGamificationAlertsInput, EventUncheckedCreateWithoutGamificationAlertsInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutGamificationAlertsInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutGamificationAlertsInput, EventUncheckedUpdateWithoutGamificationAlertsInput>
+  }
+
+  export type EventUpdateWithoutGamificationAlertsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
+    activities?: ActivityUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    tickets?: TicketUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
+    reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
+    reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutGamificationAlertsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
+    reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
+    reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type UserUpsertWithoutGamificationAlertsInput = {
+    update: XOR<UserUpdateWithoutGamificationAlertsInput, UserUncheckedUpdateWithoutGamificationAlertsInput>
+    create: XOR<UserCreateWithoutGamificationAlertsInput, UserUncheckedCreateWithoutGamificationAlertsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutGamificationAlertsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutGamificationAlertsInput, UserUncheckedUpdateWithoutGamificationAlertsInput>
+  }
+
+  export type UserUpdateWithoutGamificationAlertsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
+    registrations?: RegistrationUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutReviewerNestedInput
+    submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutUserNestedInput
+    eventReviewers?: EventReviewerUpdateManyWithoutUserNestedInput
+    reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
+    acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
+    speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutGamificationAlertsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
+    eventReviewers?: EventReviewerUncheckedUpdateManyWithoutUserNestedInput
+    reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+    acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
+    speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyTenantInput = {
@@ -69231,6 +71854,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTenantInput = {
@@ -69265,6 +71889,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTenantInput = {
@@ -69329,6 +71954,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTenantInput = {
@@ -69370,6 +71997,8 @@ export namespace Prisma {
     reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutTenantInput = {
@@ -69603,9 +72232,20 @@ export namespace Prisma {
 
   export type XpGainLogCreateManyUserInput = {
     id?: string
+    eventId?: string | null
     amount: number
     reason: string
     uniqueKey?: string | null
+    createdAt?: Date | string
+  }
+
+  export type GamificationAlertCreateManyUserInput = {
+    id?: string
+    eventId: string
+    type: string
+    message: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: boolean
     createdAt?: Date | string
   }
 
@@ -69871,10 +72511,12 @@ export namespace Prisma {
     reason?: StringFieldUpdateOperationsInput | string
     uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneWithoutXpLogsNestedInput
   }
 
   export type XpGainLogUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69883,9 +72525,40 @@ export namespace Prisma {
 
   export type XpGainLogUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GamificationAlertUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutGamificationAlertsNestedInput
+  }
+
+  export type GamificationAlertUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GamificationAlertUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -70039,6 +72712,25 @@ export namespace Prisma {
   export type EventMonitorCreateManyEventInput = {
     id?: string
     userId: string
+    createdAt?: Date | string
+  }
+
+  export type XpGainLogCreateManyEventInput = {
+    id?: string
+    userId: string
+    amount: number
+    reason: string
+    uniqueKey?: string | null
+    createdAt?: Date | string
+  }
+
+  export type GamificationAlertCreateManyEventInput = {
+    id?: string
+    userId: string
+    type: string
+    message: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: boolean
     createdAt?: Date | string
   }
 
@@ -70544,6 +73236,63 @@ export namespace Prisma {
   export type EventMonitorUncheckedUpdateManyWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type XpGainLogUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutXpLogsNestedInput
+  }
+
+  export type XpGainLogUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type XpGainLogUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    uniqueKey?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GamificationAlertUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGamificationAlertsNestedInput
+  }
+
+  export type GamificationAlertUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GamificationAlertUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    resolved?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

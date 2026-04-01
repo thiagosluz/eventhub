@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  ForbiddenException,
 } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 
@@ -370,6 +371,43 @@ export class BadgesService {
       where: { badgeId },
       include: { user: { select: { name: true, email: true } } },
       orderBy: { createdAt: "desc" },
+    });
+  }
+
+  async getAwardedHistory(tenantId: string, eventId: string) {
+    // 1. Get all badges for this event
+    const eventBadges = await this.prisma.badge.findMany({
+      where: { eventId, tenantId },
+      select: { id: true, name: true, iconUrl: true },
+    });
+
+    const badgeIds = eventBadges.map((b) => b.id);
+
+    // 2. Get all awards
+    const awards = await this.prisma.userBadge.findMany({
+      where: { badgeId: { in: badgeIds }, eventId },
+      include: {
+        user: { select: { name: true, email: true } },
+        badge: { select: { name: true, iconUrl: true, color: true } },
+      },
+      orderBy: { earnedAt: "desc" },
+    });
+
+    return awards;
+  }
+
+  async revokeBadge(tenantId: string, userBadgeId: string) {
+    const userBadge = await this.prisma.userBadge.findUnique({
+      where: { id: userBadgeId },
+      include: { badge: true },
+    });
+
+    if (!userBadge) throw new NotFoundException("Conquista não encontrada");
+    if (userBadge.badge.tenantId !== tenantId)
+      throw new ForbiddenException("Sem permissão para revogar esta conquista");
+
+    return this.prisma.userBadge.delete({
+      where: { id: userBadgeId },
     });
   }
 }

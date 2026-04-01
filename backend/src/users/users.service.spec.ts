@@ -82,11 +82,28 @@ describe("UsersService", () => {
   });
 
   describe("updateProfile", () => {
+    it("should throw NotFound if user missing", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue(null);
+      await expect(service.updateProfile("u1", {})).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
     it("should throw ConflictException if email in use", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
       mockPrismaService.user.findFirst.mockResolvedValue({ id: "u2" });
       await expect(
         service.updateProfile("u1", { email: "used@test.com" }),
+      ).rejects.toThrow(ConflictException);
+    });
+
+    it("should throw ConflictException if username in use", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
+      // If we only provide username, findFirst is called once for username
+      mockPrismaService.user.findFirst.mockResolvedValue({ id: "u2" });
+      
+      await expect(
+        service.updateProfile("u1", { username: "taken" }),
       ).rejects.toThrow(ConflictException);
     });
 
@@ -96,8 +113,10 @@ describe("UsersService", () => {
       mockPrismaService.user.update.mockResolvedValue({
         id: "u1",
         name: "New Name",
+        interests: [],
       });
       mockPrismaService.speaker.findUnique.mockResolvedValue({ id: "s1" });
+      mockPrismaService.xpGainLog.findFirst.mockResolvedValue({}); // Already awarded
 
       const result = await service.updateProfile("u1", { name: "New Name" });
 
@@ -111,54 +130,111 @@ describe("UsersService", () => {
     });
 
     it("should award XP if profile becomes complete and not previously awarded", async () => {
-        mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
-        mockPrismaService.user.findFirst.mockResolvedValue(null);
-        mockPrismaService.xpGainLog.findFirst.mockResolvedValue(null);
-        mockPrismaService.user.update.mockResolvedValue({ 
-            id: "u1", 
-            name: "N", 
-            email: "e@t.com", 
-            bio: "B", 
-            username: "u", 
-            avatarUrl: "a", 
-            interests: ["I"] 
-        });
-        
-        const result = await service.updateProfile("u1", { name: "N" });
-        expect(result.xpGained).toBe(100);
-        expect(mockGamificationService.awardXp).toHaveBeenCalled();
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+      mockPrismaService.xpGainLog.findFirst.mockResolvedValue(null);
+      mockPrismaService.user.update.mockResolvedValue({
+        id: "u1",
+        name: "N",
+        email: "e@t.com",
+        bio: "B",
+        username: "u",
+        avatarUrl: "a",
+        interests: ["I"],
+      });
+
+      const result = await service.updateProfile("u1", { name: "N" });
+      expect(result.xpGained).toBe(100);
+      expect(mockGamificationService.awardXp).toHaveBeenCalled();
+    });
+
+    it("should NOT award XP if profile already awarded even if complete", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+      mockPrismaService.xpGainLog.findFirst.mockResolvedValue({ id: "log1" });
+      mockPrismaService.user.update.mockResolvedValue({
+        id: "u1",
+        name: "N",
+        email: "e@t.com",
+        bio: "B",
+        username: "u",
+        avatarUrl: "a",
+        interests: ["I"],
+      });
+
+      const result = await service.updateProfile("u1", { name: "N" });
+      expect(result.xpGained).toBe(0);
+      expect(mockGamificationService.awardXp).not.toHaveBeenCalled();
     });
   });
 
   describe("updatePassword", () => {
+    it("should throw NotFound if user missing", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue(null);
+      await expect(
+        service.updatePassword("u1", {
+          currentPassword: "o",
+          newPassword: "n",
+        }),
+      ).rejects.toThrow(NotFoundException);
+    });
+
     it("should update password if correct current password", async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", password: "hashed" });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "u1",
+        password: "hashed",
+      });
       (argon2.verify as jest.Mock).mockResolvedValue(true);
       (argon2.hash as jest.Mock).mockResolvedValue("new_hashed");
 
-      await service.updatePassword("u1", { currentPassword: "old", newPassword: "new" });
+      await service.updatePassword("u1", {
+        currentPassword: "old",
+        newPassword: "new",
+      });
 
       expect(mockPrismaService.user.update).toHaveBeenCalled();
     });
 
     it("should throw Unauthorized if password doesn't match", async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", password: "hashed" });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "u1",
+        password: "hashed",
+      });
       (argon2.verify as jest.Mock).mockResolvedValue(false);
 
-      await expect(service.updatePassword("u1", { currentPassword: "wrong", newPassword: "new" })).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        service.updatePassword("u1", {
+          currentPassword: "wrong",
+          newPassword: "new",
+        }),
+      ).rejects.toThrow(UnauthorizedException);
     });
   });
 
   describe("uploadAvatar", () => {
+    it("should throw NotFound if user missing", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue(null);
+      await expect(
+        service.uploadAvatar("u1", {
+          buffer: Buffer.from(""),
+          mimetype: "image/png",
+        }),
+      ).rejects.toThrow(NotFoundException);
+    });
+
     it("should upload avatar and sync to speaker", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
       mockMinioService.uploadObject.mockResolvedValue("http://avatar.com");
-      mockPrismaService.user.update.mockResolvedValue({ id: "u1", avatarUrl: "http://avatar.com" });
+      mockPrismaService.user.update.mockResolvedValue({
+        id: "u1",
+        avatarUrl: "http://avatar.com",
+      });
       mockPrismaService.speaker.findUnique.mockResolvedValue({ id: "s1" });
 
-      const result = await service.uploadAvatar("u1", { buffer: Buffer.from(""), mimetype: "image/png" });
+      const result = await service.uploadAvatar("u1", {
+        buffer: Buffer.from(""),
+        mimetype: "image/png",
+      });
       expect(result.avatarUrl).toBe("http://avatar.com");
       expect(mockPrismaService.speaker.update).toHaveBeenCalled();
     });
@@ -174,7 +250,9 @@ describe("UsersService", () => {
 
   describe("findMyMonitoredEvents", () => {
     it("should list monitored events", async () => {
-      mockPrismaService.eventMonitor.findMany.mockResolvedValue([{ event: { id: "e1" } }]);
+      mockPrismaService.eventMonitor.findMany.mockResolvedValue([
+        { event: { id: "e1" } },
+      ]);
       const result = await service.findMyMonitoredEvents("u1");
       expect(result).toHaveLength(1);
     });
@@ -182,14 +260,45 @@ describe("UsersService", () => {
 
   describe("findByUsername", () => {
     it("should return public profile", async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", username: "test" });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "u1",
+        username: "test",
+      });
       const result = await service.findByUsername("test");
       expect(result.username).toBe("test");
     });
 
     it("should throw NotFound if profile missing or private", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
-      await expect(service.findByUsername("test")).rejects.toThrow(NotFoundException);
+      await expect(service.findByUsername("test")).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe("checkUsernameAvailability", () => {
+    it("should return true if username is available", async () => {
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+      const result = await service.checkUsernameAvailability("new");
+      expect(result.available).toBe(true);
+    });
+
+    it("should return false if username is taken", async () => {
+      mockPrismaService.user.findFirst.mockResolvedValue({ id: "u2" });
+      const result = await service.checkUsernameAvailability("taken");
+      expect(result.available).toBe(false);
+    });
+
+    it("should exclude current user when checking", async () => {
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+      await service.checkUsernameAvailability("current", "u1");
+      expect(mockPrismaService.user.findFirst).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            id: { not: "u1" }
+          })
+        })
+      );
     });
   });
 });

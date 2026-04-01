@@ -63,6 +63,17 @@ export class UsersService {
       }
     }
 
+    if (dto.username) {
+      const existing = await this.prisma.user.findFirst({
+        where: { username: dto.username, id: { not: userId } },
+      });
+      if (existing) {
+        throw new ConflictException(
+          "Este username já está em uso por outro usuário.",
+        );
+      }
+    }
+
     const updatedUser = await this.prisma.user.update({
       where: { id: userId },
       data: dto,
@@ -294,5 +305,16 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async checkUsernameAvailability(username: string, excludeUserId?: string) {
+    const existing = await this.prisma.user.findFirst({
+      where: {
+        username: { equals: username, mode: "insensitive" },
+        id: excludeUserId ? { not: excludeUserId } : undefined,
+      },
+      select: { id: true },
+    });
+    return { available: !existing };
   }
 }

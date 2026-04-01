@@ -108,6 +108,27 @@ function ProfileContent() {
   const [passForm, setPassForm] = useState({ currentPassword: "", newPassword: "" });
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'unavailable'>('idle');
+
+  useEffect(() => {
+    if (!isEditing || !editForm.username || editForm.username === profile?.username) {
+      setUsernameStatus('idle');
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setUsernameStatus('checking');
+      try {
+        const { available } = await usersService.checkUsernameAvailability(editForm.username);
+        setUsernameStatus(available ? 'available' : 'unavailable');
+      } catch (err) {
+        console.error("Erro ao verificar username", err);
+        setUsernameStatus('idle');
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [editForm.username, isEditing, profile?.username]);
 
   useEffect(() => {
     fetchData();
@@ -450,15 +471,36 @@ function ProfileContent() {
 
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-border/50">
                         <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Username Único (@)</label>
-                          {isEditing ? (
-                             <div className="relative">
-                               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">@</span>
-                               <input type="text" value={editForm.username} onChange={e => setEditForm({...editForm, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '')})} className="w-full bg-slate-50 border border-border rounded-xl pl-8 pr-4 py-3 text-sm font-medium" placeholder="seunome" />
-                             </div>
-                          ) : (
-                             <p className="font-bold text-primary">@{profile?.username || <span className="text-muted-foreground/30 font-medium italic">não definido</span>}</p>
-                          )}
+                           <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Username Único (@)</label>
+                           {isEditing ? (
+                              <div className="relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">@</span>
+                                <input 
+                                  type="text" 
+                                  value={editForm.username} 
+                                  onChange={e => setEditForm({...editForm, username: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '')})} 
+                                  className={`w-full bg-slate-50 border rounded-xl pl-8 pr-12 py-3 text-sm font-medium transition-all ${
+                                    usernameStatus === 'available' ? 'border-emerald-500 ring-4 ring-emerald-500/10' : 
+                                    usernameStatus === 'unavailable' ? 'border-rose-500 ring-4 ring-rose-500/10' : 
+                                    'border-border'
+                                  }`} 
+                                  placeholder="seunome" 
+                                />
+                                <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                                   {usernameStatus === 'checking' && <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />}
+                                   {usernameStatus === 'available' && <CheckIcon className="w-5 h-5 text-emerald-500 animate-in zoom-in" />}
+                                   {usernameStatus === 'unavailable' && <XMarkIcon className="w-5 h-5 text-rose-500 animate-in zoom-in" />}
+                                </div>
+                              </div>
+                           ) : (
+                              <p className="font-bold text-primary">@{profile?.username || <span className="text-muted-foreground/30 font-medium italic">não definido</span>}</p>
+                           )}
+                           {isEditing && usernameStatus === 'unavailable' && (
+                             <p className="text-[10px] text-rose-500 font-bold mt-1 animate-in slide-in-from-top-1">Este username já está sendo usado por outra pessoa.</p>
+                           )}
+                           {isEditing && usernameStatus === 'available' && (
+                             <p className="text-[10px] text-emerald-600 font-bold mt-1 animate-in slide-in-from-top-1">Username disponível!</p>
+                           )}
                         </div>
                         <div>
                           <label className="block text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Visibilidade</label>
@@ -555,7 +597,13 @@ function ProfileContent() {
                       {isEditing && (
                          <div className="pt-6 flex justify-end gap-3 border-t border-border/50">
                             <button onClick={() => setIsEditing(false)} className="px-6 py-2 rounded-xl border border-border font-bold text-xs text-muted-foreground hover:bg-muted font-black uppercase tracking-widest">Cancelar</button>
-                            <button onClick={handleSaveProfile} className="premium-button !py-2 !text-sm">Salvar Alterações</button>
+                            <button 
+                                onClick={handleSaveProfile} 
+                                disabled={usernameStatus === 'checking' || usernameStatus === 'unavailable'}
+                                className="premium-button !py-2 !text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                             >
+                                Salvar Alterações
+                             </button>
                          </div>
                       )}
                   </div>

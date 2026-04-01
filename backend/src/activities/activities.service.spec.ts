@@ -116,6 +116,17 @@ describe("ActivitiesService", () => {
     });
   });
 
+  describe("onModuleInit", () => {
+    it("should add cleanup job to queue", async () => {
+      await service.onModuleInit();
+      expect(mockQueue.add).toHaveBeenCalledWith(
+        "cleanup-expired-enrollments",
+        {},
+        expect.any(Object),
+      );
+    });
+  });
+
   describe("enrollInActivity", () => {
     it("should throw ForbiddenException on time conflict", async () => {
       const activity = {
@@ -178,40 +189,87 @@ describe("ActivitiesService", () => {
       await service.enrollInActivity({ userId: "u1", activityId: "a1" });
       expect(mockPrismaService.activityEnrollment.create).toHaveBeenCalled();
     });
+
     it("should throw NotFound if activity missing", async () => {
       mockPrismaService.activity.findUnique.mockResolvedValue(null);
-      await expect(service.enrollInActivity({ userId: 'u1', activityId: 'a1' })).rejects.toThrow(NotFoundException);
+      await expect(
+        service.enrollInActivity({ userId: "u1", activityId: "a1" }),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it("should throw Forbidden if registration missing", async () => {
+      mockPrismaService.activity.findUnique.mockResolvedValue({ id: "a1" });
+      mockPrismaService.registration.findFirst.mockResolvedValue(null);
+      await expect(
+        service.enrollInActivity({ userId: "u1", activityId: "a1" }),
+      ).rejects.toThrow(ForbiddenException);
     });
 
     it("should return early if already enrolled", async () => {
-        mockPrismaService.activity.findUnique.mockResolvedValue({ id: 'a1', enrollments: [{ registrationId: 'reg1' }] });
-        mockPrismaService.registration.findFirst.mockResolvedValue({ id: 'reg1' });
-        mockPrismaService.activityEnrollment.findMany.mockResolvedValue([]);
-        mockPrismaService.activityEnrollment.findFirst.mockResolvedValue({ id: 'en1' });
+      mockPrismaService.activity.findUnique.mockResolvedValue({
+        id: "a1",
+        enrollments: [],
+      });
+      mockPrismaService.registration.findFirst.mockResolvedValue({
+        id: "reg1",
+      });
+      mockPrismaService.activityEnrollment.findMany.mockResolvedValue([]);
+      mockPrismaService.activityEnrollment.findFirst.mockResolvedValue({
+        id: "en1",
+      });
 
-        const result = await service.enrollInActivity({ userId: 'u1', activityId: 'a1' });
-        expect(result?.id).toBe('a1');
-        expect(mockPrismaService.activityEnrollment.create).not.toHaveBeenCalled();
+      const result = await service.enrollInActivity({
+        userId: "u1",
+        activityId: "a1",
+      });
+      expect(result?.id).toBe("a1");
+      expect(
+        mockPrismaService.activityEnrollment.create,
+      ).not.toHaveBeenCalled();
     });
   });
 
   describe("unrollFromActivity", () => {
-      it("should delete enrollment if exists", async () => {
-          mockPrismaService.activity.findUnique.mockResolvedValue({ id: 'a1', eventId: 'e1' });
-          mockPrismaService.registration.findFirst.mockResolvedValue({ id: 'reg1' });
-          mockPrismaService.activityEnrollment.findFirst.mockResolvedValue({ id: 'en1' });
-          
-          await service.unrollFromActivity({ userId: 'u1', activityId: 'a1' });
-          expect(mockPrismaService.activityEnrollment.delete).toHaveBeenCalledWith({ where: { id: 'en1' } });
+    it("should delete enrollment if exists", async () => {
+      mockPrismaService.activity.findUnique.mockResolvedValue({
+        id: "a1",
+        eventId: "e1",
+      });
+      mockPrismaService.registration.findFirst.mockResolvedValue({
+        id: "reg1",
+      });
+      mockPrismaService.activityEnrollment.findFirst.mockResolvedValue({
+        id: "en1",
       });
 
-      it("should throw NotFound if enrollment missing", async () => {
-          mockPrismaService.activity.findUnique.mockResolvedValue({ id: 'a1', eventId: 'e1' });
-          mockPrismaService.registration.findFirst.mockResolvedValue({ id: 'reg1' });
-          mockPrismaService.activityEnrollment.findFirst.mockResolvedValue(null);
-
-          await expect(service.unrollFromActivity({ userId: 'u1', activityId: 'a1' })).rejects.toThrow(NotFoundException);
+      await service.unrollFromActivity({ userId: "u1", activityId: "a1" });
+      expect(mockPrismaService.activityEnrollment.delete).toHaveBeenCalledWith({
+        where: { id: "en1" },
       });
+    });
+
+    it("should throw NotFound if enrollment missing", async () => {
+      mockPrismaService.activity.findUnique.mockResolvedValue({
+        id: "a1",
+        eventId: "e1",
+      });
+      mockPrismaService.registration.findFirst.mockResolvedValue({
+        id: "reg1",
+      });
+      mockPrismaService.activityEnrollment.findFirst.mockResolvedValue(null);
+
+      await expect(
+        service.unrollFromActivity({ userId: "u1", activityId: "a1" }),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it("should throw Forbidden if not registered for event", async () => {
+      mockPrismaService.activity.findUnique.mockResolvedValue({ id: "a1" });
+      mockPrismaService.registration.findFirst.mockResolvedValue(null);
+      await expect(
+        service.unrollFromActivity({ userId: "u1", activityId: "a1" }),
+      ).rejects.toThrow(ForbiddenException);
+    });
   });
 
   describe("listActivitiesForEvent", () => {
@@ -229,6 +287,26 @@ describe("ActivitiesService", () => {
 
       const result = await service.listActivitiesForEvent("t1", "e1");
       expect(result[0].remainingSpots).toBe(8);
+    });
+  });
+
+  describe("getActivitiesForParticipant", () => {
+    it("should list activities for participant", async () => {
+      mockPrismaService.activity.findMany.mockResolvedValue([
+        {
+          id: "a1",
+          capacity: 10,
+          enrollments: [{}],
+          _count: { enrollments: 1 },
+          speakers: [],
+        },
+      ]);
+      const result = await service.getActivitiesForParticipant({
+        userId: "u1",
+        eventId: "e1",
+      });
+      expect(result[0].id).toBe("a1");
+      expect(result[0].isEnrolled).toBe(true);
     });
   });
 
@@ -254,6 +332,32 @@ describe("ActivitiesService", () => {
       expect(mockPrismaService.activitySpeaker.deleteMany).toHaveBeenCalled();
       expect(mockPrismaService.activitySpeaker.createMany).toHaveBeenCalled();
     });
+
+    it("should auto-enroll if enrollment requirement is removed", async () => {
+      mockPrismaService.activity.findFirst.mockResolvedValue({
+        id: "a1",
+        requiresEnrollment: false,
+        speakers: [],
+        enrollments: [],
+      });
+      mockPrismaService.activity.findUnique.mockResolvedValue({
+        id: "a1",
+        eventId: "e1",
+      });
+      mockPrismaService.registration.findMany.mockResolvedValue([
+        { id: "reg1" },
+      ]);
+
+      await service.updateActivity({
+        tenantId: "t1",
+        activityId: "a1",
+        data: { requiresEnrollment: false },
+      });
+
+      expect(
+        mockPrismaService.activityEnrollment.createMany,
+      ).toHaveBeenCalled();
+    });
   });
 
   describe("deleteActivity", () => {
@@ -270,6 +374,7 @@ describe("ActivitiesService", () => {
       expect(
         mockPrismaService.activityEnrollment.deleteMany,
       ).toHaveBeenCalled();
+      expect(mockPrismaService.attendance.deleteMany).toHaveBeenCalled();
       expect(mockPrismaService.activity.delete).toHaveBeenCalled();
     });
   });
@@ -288,6 +393,13 @@ describe("ActivitiesService", () => {
       await service.removeType("t1", "type1");
       expect(mockPrismaService.activityType.delete).toHaveBeenCalled();
     });
+
+    it("should throw NotFound if type missing on remove", async () => {
+      mockPrismaService.activityType.findFirst.mockResolvedValue(null);
+      await expect(service.removeType("t1", "type1")).rejects.toThrow(
+        NotFoundException,
+      );
+    });
   });
 
   describe("Enrollment Management", () => {
@@ -303,10 +415,6 @@ describe("ActivitiesService", () => {
       mockPrismaService.activityEnrollment.findUnique.mockResolvedValue({
         id: "en1",
         status: "PENDING",
-      });
-      mockPrismaService.activityEnrollment.findUnique.mockResolvedValue({
-        id: "en1",
-        status: "PENDING",
         activityId: "a1",
       });
       await service.confirmEnrollment("t1", "a1", "en1");
@@ -314,17 +422,33 @@ describe("ActivitiesService", () => {
     });
 
     it("should throw NotFound if enrollment missing", async () => {
-        mockPrismaService.activity.findFirst.mockResolvedValue({ id: 'a1', speakers: [], enrollments: [] });
-        mockPrismaService.activityEnrollment.findUnique.mockResolvedValue(null);
-        await expect(service.confirmEnrollment("t1", "a1", "en1")).rejects.toThrow(NotFoundException);
+      mockPrismaService.activity.findFirst.mockResolvedValue({
+        id: "a1",
+        speakers: [],
+        enrollments: [],
+      });
+      mockPrismaService.activityEnrollment.findUnique.mockResolvedValue(null);
+      await expect(service.confirmEnrollment("t1", "a1", "en1")).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it("should return early if already confirmed", async () => {
-        mockPrismaService.activity.findFirst.mockResolvedValue({ id: 'a1', speakers: [], enrollments: [] });
-        mockPrismaService.activityEnrollment.findUnique.mockResolvedValue({ id: 'en1', status: 'CONFIRMED', activityId: 'a1' });
-        const result = await service.confirmEnrollment("t1", "a1", "en1");
-        expect(result?.status).toBe('CONFIRMED');
-        expect(mockPrismaService.activityEnrollment.update).not.toHaveBeenCalled();
+      mockPrismaService.activity.findFirst.mockResolvedValue({
+        id: "a1",
+        speakers: [],
+        enrollments: [],
+      });
+      mockPrismaService.activityEnrollment.findUnique.mockResolvedValue({
+        id: "en1",
+        status: "CONFIRMED",
+        activityId: "a1",
+      });
+      const result = await service.confirmEnrollment("t1", "a1", "en1");
+      expect(result?.status).toBe("CONFIRMED");
+      expect(
+        mockPrismaService.activityEnrollment.update,
+      ).not.toHaveBeenCalled();
     });
   });
 });

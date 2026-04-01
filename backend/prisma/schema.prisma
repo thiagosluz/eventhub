@@ -143,6 +143,7 @@ model User {
   xp             Int      @default(0)
   coins          Int      @default(0)
   level          Int      @default(1)
+  gamificationAlerts GamificationAlert[]
 }
 
 model Event {
@@ -192,6 +193,8 @@ model Event {
   reviewers            EventReviewer[]
   reviewerInvitations  ReviewerInvitation[]
   monitors             EventMonitor[]
+  xpLogs               XpGainLog[]
+  gamificationAlerts   GamificationAlert[]
 
   @@unique([tenantId, slug])
 }
@@ -718,6 +721,8 @@ model XpGainLog {
   id        String   @id @default(cuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId   String?
+  event     Event?   @relation(fields: [eventId], references: [id], onDelete: SetNull)
   amount    Int
   reason    String   // e.g., 'CHECKIN', 'PROFILE_COMPLETED'
   uniqueKey String?  // Optional unique key to prevent duplicate rewards (e.g., 'ACTIVITY_123')
@@ -725,5 +730,22 @@ model XpGainLog {
 
   @@unique([userId, uniqueKey])
   @@index([userId, createdAt])
+  @@index([eventId, createdAt])
+}
+
+model GamificationAlert {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type      String   // e.g., 'XP_SPIKE'
+  message   String
+  metadata  Json?    // e.g., { totalXp: 1200, windowMinutes: 5 }
+  resolved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([eventId, createdAt])
 }
 

@@ -153,7 +153,8 @@ export class CheckinService {
       user.id,
       xpAmount,
       activityId ? "ACTIVITY_CHECKIN" : "EVENT_CHECKIN",
-      uniqueKey
+      uniqueKey,
+      event.id
     );
 
     return { 

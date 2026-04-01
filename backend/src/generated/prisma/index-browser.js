@@ -486,9 +486,21 @@ exports.Prisma.EventMonitorScalarFieldEnum = {
 exports.Prisma.XpGainLogScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  eventId: 'eventId',
   amount: 'amount',
   reason: 'reason',
   uniqueKey: 'uniqueKey',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.GamificationAlertScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  userId: 'userId',
+  type: 'type',
+  message: 'message',
+  metadata: 'metadata',
+  resolved: 'resolved',
   createdAt: 'createdAt'
 };
 
@@ -659,7 +671,8 @@ exports.Prisma.ModelName = {
   ActivityMaterial: 'ActivityMaterial',
   ActivityFeedback: 'ActivityFeedback',
   EventMonitor: 'EventMonitor',
-  XpGainLog: 'XpGainLog'
+  XpGainLog: 'XpGainLog',
+  GamificationAlert: 'GamificationAlert'
 };
 
 /**

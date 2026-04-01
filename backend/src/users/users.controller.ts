@@ -5,6 +5,7 @@ import {
   Patch,
   Post,
   Req,
+  Param,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -95,5 +96,15 @@ export class UsersController {
   @Get("me/monitored-events")
   async getMyMonitoredEvents(@Req() req: AuthRequest) {
     return this.usersService.findMyMonitoredEvents(req.user!.sub);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "Check username availability" })
+  @Get("check-username/:username")
+  async checkUsername(
+    @Param("username") username: string,
+    @Req() req: AuthRequest,
+  ) {
+    return this.usersService.checkUsernameAvailability(username, req.user!.sub);
   }
 }

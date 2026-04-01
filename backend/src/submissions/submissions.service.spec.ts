@@ -198,23 +198,40 @@ describe("SubmissionsService", () => {
 
   describe("Reviewer Management", () => {
     it("should list event reviewers", async () => {
-      mockPrismaService.eventReviewer.findMany.mockResolvedValue([{ 
-        user: { id: "u1", name: "R1" } 
-      }]);
+      mockPrismaService.eventReviewer.findMany.mockResolvedValue([
+        {
+          user: { id: "u1", name: "R1" },
+        },
+      ]);
       const result = await service.listEventReviewers("e1");
       expect(result[0].name).toBe("R1");
     });
 
     it("should add reviewer to event", async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", role: "REVIEWER" });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "u1",
+        role: "REVIEWER",
+      });
       mockPrismaService.eventReviewer.upsert.mockResolvedValue({});
       await service.addReviewerToEvent("e1", "u1");
       expect(mockPrismaService.eventReviewer.upsert).toHaveBeenCalled();
     });
 
+    it("should throw NotFound if adding non-existent user", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue(null);
+      await expect(service.addReviewerToEvent("e1", "u1")).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
     it("should throw Forbidden if adding non-reviewer", async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", role: "USER" });
-      await expect(service.addReviewerToEvent("e1", "u1")).rejects.toThrow(ForbiddenException);
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "u1",
+        role: "USER",
+      });
+      await expect(service.addReviewerToEvent("e1", "u1")).rejects.toThrow(
+        ForbiddenException,
+      );
     });
 
     it("should remove reviewer from event", async () => {
@@ -230,10 +247,18 @@ describe("SubmissionsService", () => {
       expect(mockPrismaService.review.create).toHaveBeenCalled();
     });
 
+    it("should return early if manual assign review already exists", async () => {
+      mockPrismaService.review.findFirst.mockResolvedValue({ id: "r1" });
+      mockPrismaService.review.create.mockClear();
+      const result = await service.manualAssignReview("s1", "rev1");
+      expect(result.id).toBe("r1");
+      expect(mockPrismaService.review.create).not.toHaveBeenCalled();
+    });
+
     it("should delete review", async () => {
-        mockPrismaService.review.delete.mockResolvedValue({});
-        await service.deleteReview("r1");
-        expect(mockPrismaService.review.delete).toHaveBeenCalled();
+      mockPrismaService.review.delete.mockResolvedValue({});
+      await service.deleteReview("r1");
+      expect(mockPrismaService.review.delete).toHaveBeenCalled();
     });
   });
 });

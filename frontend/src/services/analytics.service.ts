@@ -50,6 +50,42 @@ export interface Checkin {
   activityName: string;
 }
 
+export interface GamificationStats {
+  totalXpDistributed: number;
+  totalBadgesAwarded: number;
+  activeAlertsCount: number;
+  totalParticipants: number;
+}
+
+export interface RankingEntry {
+  userId: string;
+  userName: string;
+  avatarUrl?: string;
+  globalLevel: number;
+  eventXp: number;
+}
+
+export interface GamificationAlert {
+  id: string;
+  userId: string;
+  type: string;
+  message: string;
+  metadata: any;
+  resolved: boolean;
+  createdAt: string;
+  user: { name: string; email: string };
+}
+
+export interface AwardedBadgeHistory {
+  id: string;
+  userId: string;
+  badgeId: string;
+  eventId: string;
+  earnedAt: string;
+  user: { name: string; email: string };
+  badge: { name: string; iconUrl: string; color: string };
+}
+
 export const analyticsService = {
   getEventAnalytics: async (eventId: string): Promise<EventAnalytics> => {
     return api.get(`/analytics/events/${eventId}`);
@@ -63,5 +99,30 @@ export const analyticsService = {
     return api.get(`/analytics/events/${eventId}/checkins`, {
       params: { activityId },
     });
+  },
+
+  // --- Gamification ---
+  getGamificationStats: async (eventId: string): Promise<GamificationStats> => {
+    return api.get(`/analytics/events/${eventId}/gamification/stats`);
+  },
+
+  getGamificationRanking: async (eventId: string): Promise<RankingEntry[]> => {
+    return api.get(`/analytics/events/${eventId}/gamification/ranking`);
+  },
+
+  getGamificationAlerts: async (eventId: string): Promise<GamificationAlert[]> => {
+    return api.get(`/analytics/events/${eventId}/gamification/alerts`);
+  },
+
+  resolveAlert: async (alertId: string): Promise<void> => {
+    return api.patch(`/analytics/gamification/alerts/${alertId}/resolve`);
+  },
+
+  getAwardedBadgesHistory: async (eventId: string): Promise<AwardedBadgeHistory[]> => {
+    return api.get(`/analytics/events/${eventId}/gamification/badges-history`);
+  },
+
+  revokeBadge: async (userBadgeId: string): Promise<void> => {
+    return api.delete(`/analytics/gamification/badges/${userBadgeId}/revoke`);
   },
 };

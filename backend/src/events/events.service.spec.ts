@@ -57,17 +57,14 @@ describe("EventsService", () => {
       );
     });
 
-    it("should create event if data is valid", async () => {
+    it("should throw error if dates are invalid", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue(null);
-      mockPrismaService.event.create.mockResolvedValue({
-        id: "new_event",
-        ...createDto,
-      });
-
-      const result = await service.createEvent({ tenantId, data: createDto });
-
-      expect(result).toBeDefined();
-      expect(mockPrismaService.event.create).toHaveBeenCalled();
+      await expect(
+        service.createEvent({
+          tenantId,
+          data: { ...createDto, startDate: "invalid" },
+        }),
+      ).rejects.toThrow("As datas de início e término devem ser válidas.");
     });
   });
 
@@ -115,7 +112,10 @@ describe("EventsService", () => {
 
     it("should update event if owner", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
-      mockPrismaService.event.update.mockResolvedValue({ id: "e1", name: "Upd" });
+      mockPrismaService.event.update.mockResolvedValue({
+        id: "e1",
+        name: "Upd",
+      });
 
       const result = await service.updateEvent({
         tenantId: "t1",
@@ -136,7 +136,11 @@ describe("EventsService", () => {
   describe("listParticipants", () => {
     it("should list participants for tenant", async () => {
       mockPrismaService.registration.findMany.mockResolvedValue([{ id: "r1" }]);
-      const result = await service.listParticipants("t1", {});
+      const result = await service.listParticipants("t1", {
+        eventId: "e1",
+        search: "foo",
+        status: "CONFIRMED",
+      });
       expect(result).toHaveLength(1);
     });
   });
@@ -161,6 +165,13 @@ describe("EventsService", () => {
         "Apenas eventos em rascunho podem ser excluídos.",
       );
     });
+
+    it("should throw NotFound if event missing", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue(null);
+      await expect(service.deleteEvent("t1", "e1")).rejects.toThrow(
+        NotFoundException,
+      );
+    });
   });
 
   describe("Participant Detail & Tickets", () => {
@@ -175,10 +186,20 @@ describe("EventsService", () => {
         id: "r1",
         userId: "u1",
         event: { tenantId: "t1" },
+        enrollments: [{ activity: { type: { name: "Workshop" } } }],
       });
-      mockPrismaService.registration.findMany.mockResolvedValue([{ id: "r_old" }]);
+      mockPrismaService.registration.findMany.mockResolvedValue([
+        { id: "r_old", event: { name: "Old" } },
+      ]);
       const result = await service.findParticipantDetail("t1", "r1");
       expect(result.history).toHaveLength(1);
+    });
+
+    it("should throw NotFound if registration missing or wrong tenant", async () => {
+      mockPrismaService.registration.findUnique.mockResolvedValue(null);
+      await expect(
+        service.findParticipantDetail("t1", "r1"),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -190,14 +211,19 @@ describe("EventsService", () => {
     });
 
     it("should find public event by slug", async () => {
-      mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1", slug: "s" });
-      const result = await service.findPublicBySlug("s");
+      mockPrismaService.event.findFirst.mockResolvedValue({
+        id: "e1",
+        slug: "s",
+      });
+      const result = await service.findPublicBySlug("s", "t1");
       expect(result.id).toBe("e1");
     });
 
     it("should throw NotFound if public event slug doesn't exist", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue(null);
-      await expect(service.findPublicBySlug("s")).rejects.toThrow(NotFoundException);
+      await expect(service.findPublicBySlug("s")).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });
