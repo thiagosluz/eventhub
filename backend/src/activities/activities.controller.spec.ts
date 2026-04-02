@@ -1,15 +1,15 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { ActivitiesController } from "./activities.controller";
-import { ActivitiesService } from "./activities.service";
-import { CreateActivityDto } from "./dto/create-activity.dto";
-import { UpdateActivityDto } from "./dto/update-activity.dto";
-import { MonitorGuard } from "../auth/monitor.guard";
-import { JwtAuthGuard } from "../auth/jwt-auth.guard";
-import { RolesGuard } from "../auth/roles.guard";
-import { PrismaService } from "../prisma/prisma.service";
-import { JwtService } from "@nestjs/jwt";
+import { Test, TestingModule } from '@nestjs/testing';
+import { ActivitiesController } from './activities.controller';
+import { ActivitiesService } from './activities.service';
+import { CreateActivityDto } from './dto/create-activity.dto';
+import { UpdateActivityDto } from './dto/update-activity.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { MonitorGuard } from 'src/auth/monitor.guard';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Reflector } from '@nestjs/core';
 
-describe("ActivitiesController", () => {
+describe('ActivitiesController', () => {
   let controller: ActivitiesController;
   let service: ActivitiesService;
 
@@ -28,14 +28,6 @@ describe("ActivitiesController", () => {
     confirmEnrollment: jest.fn(),
   };
 
-  const mockRequest = {
-    user: {
-      sub: "user_id",
-      tenantId: "tenant_id",
-      role: "ORGANIZER",
-    },
-  } as any;
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ActivitiesController],
@@ -49,151 +41,191 @@ describe("ActivitiesController", () => {
           useValue: {},
         },
         {
-          provide: JwtService,
-          useValue: {},
+          provide: Reflector,
+          useValue: {
+            getAllAndOverride: jest.fn(),
+          },
         },
       ],
     })
-      .overrideGuard(MonitorGuard)
-      .useValue({ canActivate: () => true })
       .overrideGuard(JwtAuthGuard)
       .useValue({ canActivate: () => true })
       .overrideGuard(RolesGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(MonitorGuard)
       .useValue({ canActivate: () => true })
       .compile();
 
     controller = module.get<ActivitiesController>(ActivitiesController);
     service = module.get<ActivitiesService>(ActivitiesService);
+    jest.clearAllMocks();
   });
 
-  it("should be defined", () => {
-    expect(controller).toBeDefined();
-  });
+  const mockRequest = {
+    user: {
+      sub: 'user-id',
+      tenantId: 'tenant-id',
+    },
+  } as any;
 
-  describe("createActivity", () => {
-    it("should call activities.createActivity", async () => {
-      const dto: CreateActivityDto = {
-        title: "Test",
-        typeId: "type1",
-        startAt: "2024-01-01T10:00:00Z",
-        endAt: "2024-01-01T11:00:00Z",
-      };
-      await controller.createActivity("event1", dto, mockRequest);
+  describe('createActivity', () => {
+    it('should create an activity', async () => {
+      const dto: CreateActivityDto = { name: 'Test' } as any;
+      await controller.createActivity('event-id', dto, mockRequest);
       expect(service.createActivity).toHaveBeenCalledWith({
-        tenantId: "tenant_id",
-        eventId: "event1",
+        tenantId: 'tenant-id',
+        eventId: 'event-id',
         data: dto,
       });
     });
 
-    it("should throw error if tenantId missing", async () => {
+    it('should throw error if tenantId is missing', async () => {
       await expect(
-        controller.createActivity("event1", {} as any, { user: {} } as any),
-      ).rejects.toThrow("Missing tenantId on token payload.");
+        controller.createActivity('event-id', {} as any, { user: {} } as any),
+      ).rejects.toThrow('Missing tenantId on token payload.');
     });
   });
 
-  describe("listActivitiesForEvent", () => {
-    it("should call activities.listActivitiesForEvent", async () => {
-      await controller.listActivitiesForEvent("event1", mockRequest);
-      expect(service.listActivitiesForEvent).toHaveBeenCalledWith(
-        "tenant_id",
-        "event1",
-      );
+  describe('listActivitiesForEvent', () => {
+    it('should list activities', async () => {
+      await controller.listActivitiesForEvent('event-id', mockRequest);
+      expect(service.listActivitiesForEvent).toHaveBeenCalledWith('tenant-id', 'event-id');
+    });
+
+    it('should throw error if tenantId is missing', async () => {
+      await expect(
+        controller.listActivitiesForEvent('event-id', { user: {} } as any),
+      ).rejects.toThrow('Missing tenantId on token payload.');
     });
   });
 
-  describe("getMyEnrollments", () => {
-    it("should call activities.getActivitiesForParticipant", async () => {
-      await controller.getMyEnrollments("event1", mockRequest);
+  describe('getMyEnrollments', () => {
+    it('should get enrollments', async () => {
+      await controller.getMyEnrollments('event-id', mockRequest);
       expect(service.getActivitiesForParticipant).toHaveBeenCalledWith({
-        userId: "user_id",
-        eventId: "event1",
+        userId: 'user-id',
+        eventId: 'event-id',
       });
     });
 
-    it("should throw error if userId missing", async () => {
+    it('should throw error if userId is missing', async () => {
       await expect(
-        controller.getMyEnrollments("event1", { user: {} } as any),
-      ).rejects.toThrow("Missing userId on token payload.");
+        controller.getMyEnrollments('event-id', { user: {} } as any),
+      ).rejects.toThrow('Missing userId on token payload.');
     });
   });
 
-  describe("updateActivity", () => {
-    it("should call activities.updateActivity", async () => {
-      const dto: UpdateActivityDto = { title: "Updated" };
-      await controller.updateActivity("activity1", dto, mockRequest);
+  describe('updateActivity', () => {
+    it('should update an activity', async () => {
+      const dto: UpdateActivityDto = { name: 'Updated' } as any;
+      await controller.updateActivity('activity-id', dto, mockRequest);
       expect(service.updateActivity).toHaveBeenCalledWith({
-        tenantId: "tenant_id",
-        activityId: "activity1",
+        tenantId: 'tenant-id',
+        activityId: 'activity-id',
         data: dto,
       });
     });
+
+    it('should throw error if tenantId is missing', async () => {
+      await expect(
+        controller.updateActivity('activity-id', {} as any, { user: {} } as any),
+      ).rejects.toThrow('Missing tenantId on token payload.');
+    });
   });
 
-  describe("enrollInActivity", () => {
-    it("should call activities.enrollInActivity", async () => {
-      await controller.enrollInActivity("activity1", mockRequest);
+  describe('enrollInActivity', () => {
+    it('should enroll in an activity', async () => {
+      await controller.enrollInActivity('activity-id', mockRequest);
       expect(service.enrollInActivity).toHaveBeenCalledWith({
-        userId: "user_id",
-        activityId: "activity1",
+        userId: 'user-id',
+        activityId: 'activity-id',
       });
     });
-  });
 
-  describe("deleteActivity", () => {
-    it("should call activities.deleteActivity", async () => {
-      await controller.deleteActivity("activity1", mockRequest);
-      expect(service.deleteActivity).toHaveBeenCalledWith(
-        "tenant_id",
-        "activity1",
-      );
+    it('should throw error if userId is missing', async () => {
+      await expect(
+        controller.enrollInActivity('activity-id', { user: {} } as any),
+      ).rejects.toThrow('Missing user id on token payload.');
     });
   });
 
-  describe("unrollFromActivity", () => {
-    it("should call activities.unrollFromActivity", async () => {
-      await controller.unrollFromActivity("activity1", mockRequest);
+  describe('deleteActivity', () => {
+    it('should delete an activity', async () => {
+      await controller.deleteActivity('activity-id', mockRequest);
+      expect(service.deleteActivity).toHaveBeenCalledWith('tenant-id', 'activity-id');
+    });
+
+    it('should throw error if tenantId is missing', async () => {
+      await expect(
+        controller.deleteActivity('activity-id', { user: {} } as any),
+      ).rejects.toThrow('Missing tenantId on token payload.');
+    });
+  });
+
+  describe('unrollFromActivity', () => {
+    it('should unroll from an activity', async () => {
+      await controller.unrollFromActivity('activity-id', mockRequest);
       expect(service.unrollFromActivity).toHaveBeenCalledWith({
-        userId: "user_id",
-        activityId: "activity1",
+        userId: 'user-id',
+        activityId: 'activity-id',
       });
     });
+
+    it('should throw error if userId is missing', async () => {
+      await expect(
+        controller.unrollFromActivity('activity-id', { user: {} } as any),
+      ).rejects.toThrow('Missing user id on token payload.');
+    });
   });
 
-  describe("Activity Types", () => {
-    it("should create type", async () => {
-      await controller.createType(mockRequest, "Workshop");
-      expect(service.createType).toHaveBeenCalledWith("tenant_id", "Workshop");
+  describe('Activity Types', () => {
+    it('createType should work', async () => {
+      await controller.createType(mockRequest, 'Type A');
+      expect(service.createType).toHaveBeenCalledWith('tenant-id', 'Type A');
     });
 
-    it("should find all types", async () => {
+    it('createType should throw if tenantId missing', async () => {
+      await expect(controller.createType({ user: {} } as any, 'Type A')).rejects.toThrow('Missing tenantId');
+    });
+
+    it('findAllTypes should work', async () => {
       await controller.findAllTypes(mockRequest);
-      expect(service.findAllTypes).toHaveBeenCalledWith("tenant_id");
+      expect(service.findAllTypes).toHaveBeenCalledWith('tenant-id');
     });
 
-    it("should remove type", async () => {
-      await controller.removeType(mockRequest, "type1");
-      expect(service.removeType).toHaveBeenCalledWith("tenant_id", "type1");
+    it('findAllTypes should throw if tenantId missing', async () => {
+      await expect(controller.findAllTypes({ user: {} } as any)).rejects.toThrow('Missing tenantId');
+    });
+
+    it('removeType should work', async () => {
+      await controller.removeType(mockRequest, 'type-id');
+      expect(service.removeType).toHaveBeenCalledWith('tenant-id', 'type-id');
+    });
+
+    it('removeType should throw if tenantId missing', async () => {
+      await expect(controller.removeType({ user: {} } as any, 'type-id')).rejects.toThrow('Missing tenantId');
     });
   });
 
-  describe("Enrollments", () => {
-    it("should list enrollments", async () => {
-      await controller.listEnrollments("activity1", mockRequest);
-      expect(service.listEnrollments).toHaveBeenCalledWith(
-        "tenant_id",
-        "activity1",
-      );
+  describe('listEnrollments', () => {
+    it('should work', async () => {
+      await controller.listEnrollments('activity-id', mockRequest);
+      expect(service.listEnrollments).toHaveBeenCalledWith('tenant-id', 'activity-id');
     });
 
-    it("should confirm enrollment", async () => {
-      await controller.confirmEnrollment("act1", "enr1", mockRequest);
-      expect(service.confirmEnrollment).toHaveBeenCalledWith(
-        "tenant_id",
-        "act1",
-        "enr1",
-      );
+    it('should throw if tenantId missing', async () => {
+      await expect(controller.listEnrollments('activity-id', { user: {} } as any)).rejects.toThrow('Missing tenantId');
+    });
+  });
+
+  describe('confirmEnrollment', () => {
+    it('should work', async () => {
+      await controller.confirmEnrollment('activity-id', 'enrollment-id', mockRequest);
+      expect(service.confirmEnrollment).toHaveBeenCalledWith('tenant-id', 'activity-id', 'enrollment-id');
+    });
+
+    it('should throw if tenantId missing', async () => {
+      await expect(controller.confirmEnrollment('activity-id', 'enrollment-id', { user: {} } as any)).rejects.toThrow('Missing tenantId');
     });
   });
 });

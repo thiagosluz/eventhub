@@ -166,6 +166,33 @@ describe("UsersService", () => {
       expect(result.xpGained).toBe(0);
       expect(mockGamificationService.awardXp).not.toHaveBeenCalled();
     });
+
+    it("should NOT award XP if profile is incomplete", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+      mockPrismaService.xpGainLog.findFirst.mockResolvedValue(null);
+      mockPrismaService.user.update.mockResolvedValue({
+        id: "u1",
+        name: "N",
+        email: "e@t.com",
+        bio: "", // Incomplete
+        interests: [],
+      });
+
+      const result = await service.updateProfile("u1", { name: "N" });
+      expect(result.xpGained).toBe(0);
+      expect(mockGamificationService.awardXp).not.toHaveBeenCalled();
+    });
+
+    it("should skip syncToSpeaker if speaker profile does not exist", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+      mockPrismaService.user.update.mockResolvedValue({ id: "u1", interests: [] });
+      mockPrismaService.speaker.findUnique.mockResolvedValue(null);
+
+      await service.updateProfile("u1", { name: "N" });
+      expect(mockPrismaService.speaker.update).not.toHaveBeenCalled();
+    });
   });
 
   describe("updatePassword", () => {

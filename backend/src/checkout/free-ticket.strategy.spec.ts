@@ -11,6 +11,10 @@ describe("FreeTicketStrategy", () => {
     },
   };
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -45,6 +49,18 @@ describe("FreeTicketStrategy", () => {
       expect(result.tickets).toHaveLength(2); // 1 for event, 1 for activity
       expect(result.totalAmount).toBe("0.00");
       expect(mockPrismaService.ticket.create).toHaveBeenCalledTimes(2);
+    });
+
+    it("should create only event ticket if no activityIds provided", async () => {
+      mockPrismaService.ticket.create.mockImplementation((args) => ({
+        id: "ticket_" + Math.random(),
+        ...args.data,
+      }));
+
+      const result = await strategy.process({ ...context, activityIds: [] });
+
+      expect(result.tickets).toHaveLength(1);
+      expect(mockPrismaService.ticket.create).toHaveBeenCalledTimes(1);
     });
   });
 });
