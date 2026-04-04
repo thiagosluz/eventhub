@@ -33,6 +33,17 @@ docker compose up -d --build
 
 Isso fará com que o banco de dados (na porta 5432), o Redis (na porta 6379) e o MinIO (nas portas 9000/9001) fiquem disponíveis para a aplicação.
 
+### Verificar se os containers estão rodando:
+
+```bash
+docker compose ps
+```
+
+Resultado esperado (3 containers running):
+- `eventhub-postgres` — PostgreSQL 16 (porta 5432)
+- `eventhub-redis` — Redis 7 (porta 6379)
+- `eventhub-minio` — MinIO (portas 9000/9001)
+
 ---
 
 ## Passo 3: Configurar e Rodar o Backend
@@ -53,7 +64,15 @@ cd backend
    ```bash
    cp .env.example .env
    ```
-   *(Verifique se as credenciais do banco de dados no `.env` estão corretas de acordo com as definidas no `docker-compose.yml` - Ex: Usuário/Senha/DB `eventhub`)*.
+   
+   > **Variáveis padrão do `.env`:**
+   > - `DATABASE_URL` — Conexão com PostgreSQL (`postgresql://eventhub:eventhub@localhost:5432/eventhub`)
+   > - `JWT_SECRET` — Chave secreta para tokens JWT
+   > - `REDIS_HOST` / `REDIS_PORT` — Conexão com Redis
+   > - `SMTP_*` — Configuração de e-mail (opcional em dev)
+   > - `MAIL_FROM` — Remetente de e-mails
+   > 
+   > Verifique se as credenciais do banco estão alinhadas com o `docker-compose.yml`.
 
 3. **Banco de Dados (Migrations e Prisma Client):**
    Execute as migrations para criar as tabelas no PostgreSQL e gere o cliente de acesso aos dados:
@@ -74,6 +93,10 @@ cd backend
    npm run start:dev
    ```
 
+   O servidor estará disponível em: **`http://localhost:3000`**
+
+   > A documentação da API (Swagger) estará em: **`http://localhost:3000/api/docs`**
+
 ---
 
 ## Passo 4: Configurar e Rodar o Frontend
@@ -88,7 +111,6 @@ cd frontend
    ```bash
    npm install
    ```
-   *Se necessário, também crie um arquivo `.env` baseando-se no `.env.example`, caso ele exista.*
 
 2. **Iniciar a Aplicação:**
    Inicie o servidor de desenvolvimento do Next.js (utilizando a porta 3001 para evitar conflitos):
@@ -106,10 +128,86 @@ Com tudo rodando corretamente, abra seu navegador de preferência e acesse:
 
 Para realizar o login inicial, utilize os dados criados durante a etapa de *seed* do backend. As credenciais padrões disponíveis são (Senha para todos: `123456`):
 
-- **Administrador:** `admin@eventhub.com.br`
-- **Organizador:** `organizador@eventhub.com.br`
-- **Participante:** `participante@eventhub.com.br`
-- **Revisor:** `revisor@eventhub.com.br`
+| E-mail | Role | Acesso |
+|--------|------|--------|
+| `admin@eventhub.com.br` | Administrador (ORGANIZER) | Dashboard completo |
+| `organizador@eventhub.com.br` | Organizador (ORGANIZER) | Dashboard completo |
+| `participante@eventhub.com.br` | Participante (PARTICIPANT) | Portal público + Perfil |
+| `revisor@eventhub.com.br` | Revisor (REVIEWER) | Dashboard + Painel de revisão |
+
+---
+
+## Portas Utilizadas
+
+| Serviço | Porta | URL |
+|---------|:-----:|-----|
+| Frontend (Next.js) | 3001 | http://localhost:3001 |
+| Backend (NestJS) | 3000 | http://localhost:3000 |
+| API Docs (Swagger) | 3000 | http://localhost:3000/api/docs |
+| PostgreSQL | 5432 | - |
+| Redis | 6379 | - |
+| MinIO (S3 API) | 9000 | - |
+| MinIO (Console) | 9001 | http://localhost:9001 |
+
+---
+
+## Comandos Úteis (Referência Rápida)
+
+### Backend
+
+```bash
+npm run start:dev      # Iniciar backend em dev
+npm run build          # Build de produção
+npm run test           # Testes unitários
+npm run test:cov       # Testes com cobertura
+npm run test:e2e       # Testes end-to-end
+npm run lint           # Verificar linting
+npm run lint:fix       # Corrigir linting automaticamente
+npm run prisma:migrate # Rodar migrations
+npm run prisma:generate # Gerar Prisma Client
+npx prisma db seed     # Rodar seed
+npx prisma studio      # Abrir Prisma Studio (GUI do banco)
+```
+
+### Frontend
+
+```bash
+npm run dev            # Iniciar frontend em dev
+npm run build          # Build de produção
+npm run lint           # Verificar linting
+npm run test           # Testes unitários (Vitest)
+npm run test:e2e       # Testes E2E (Playwright)
+```
+
+### Docker
+
+```bash
+docker compose up -d --build  # Subir infraestrutura
+docker compose ps             # Verificar status
+docker compose down           # Parar infraestrutura
+docker compose logs -f        # Ver logs em tempo real
+```
+
+---
+
+## Solução de Problemas
+
+### Erro de conexão com banco de dados
+- Verifique se os containers Docker estão rodando: `docker compose ps`
+- Confirme se a `DATABASE_URL` no `.env` está correta
+- Tente reiniciar: `docker compose down && docker compose up -d --build`
+
+### Porta já em uso
+- Verifique processos ocupando a porta: `lsof -i :3000` ou `lsof -i :3001`
+- Encerre o processo: `kill -9 <PID>`
+
+### Erro nas migrations
+- Se houver conflito, tente resetar: `npx prisma migrate reset`
+- Isso apaga todos os dados e recria tudo do zero
+
+### MinIO não conecta
+- Verifique se o container está rodando na porta 9000
+- Console MinIO: http://localhost:9001 (Login: `minioadmin` / `minioadmin`)
 
 ---
 *Pronto! O seu ambiente local está totalmente configurado e pronto para uso e desenvolvimento.*
