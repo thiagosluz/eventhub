@@ -89,14 +89,22 @@ describe("FormsService", () => {
       await service.saveRegistrationForm("t1", "e1", {
         name: "New Name",
         fields: [
-          { id: "field-to-keep", label: "Updated", type: "TEXT", required: true, order: 1 },
+          {
+            id: "field-to-keep",
+            label: "Updated",
+            type: "TEXT",
+            required: true,
+            order: 1,
+          },
           { label: "New Field", type: "TEXT", required: false, order: 2 },
         ],
       });
 
-      expect(mockPrismaService.customFormField.deleteMany).toHaveBeenCalledWith({
-        where: { id: { in: ["field-to-delete"] } },
-      });
+      expect(mockPrismaService.customFormField.deleteMany).toHaveBeenCalledWith(
+        {
+          where: { id: { in: ["field-to-delete"] } },
+        },
+      );
       expect(mockPrismaService.customFormField.update).toHaveBeenCalledWith({
         where: { id: "field-to-keep" },
         data: expect.objectContaining({ label: "Updated" }),

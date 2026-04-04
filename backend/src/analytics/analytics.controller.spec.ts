@@ -67,17 +67,27 @@ describe("AnalyticsController", () => {
   describe("Event Analytics", () => {
     it("should call getEventAnalytics", async () => {
       await controller.getEventAnalytics("e1", mockRequest);
-      expect(mockAnalyticsService.getEventAnalytics).toHaveBeenCalledWith("tenant_id", "e1");
+      expect(mockAnalyticsService.getEventAnalytics).toHaveBeenCalledWith(
+        "tenant_id",
+        "e1",
+      );
     });
 
     it("should call getEventParticipants", async () => {
       await controller.getEventParticipants("e1", mockRequest);
-      expect(mockAnalyticsService.getEventParticipants).toHaveBeenCalledWith("tenant_id", "e1");
+      expect(mockAnalyticsService.getEventParticipants).toHaveBeenCalledWith(
+        "tenant_id",
+        "e1",
+      );
     });
 
     it("should call getEventCheckins", async () => {
       await controller.getEventCheckins("e1", "act1", mockRequest);
-      expect(mockAnalyticsService.getEventCheckins).toHaveBeenCalledWith("tenant_id", "e1", "act1");
+      expect(mockAnalyticsService.getEventCheckins).toHaveBeenCalledWith(
+        "tenant_id",
+        "e1",
+        "act1",
+      );
     });
   });
 
@@ -89,7 +99,9 @@ describe("AnalyticsController", () => {
 
     it("should call getRanking", async () => {
       await controller.getRanking("e1");
-      expect(mockGamificationService.getEventRanking).toHaveBeenCalledWith("e1");
+      expect(mockGamificationService.getEventRanking).toHaveBeenCalledWith(
+        "e1",
+      );
     });
 
     it("should call getAlerts", async () => {
@@ -106,12 +118,18 @@ describe("AnalyticsController", () => {
   describe("Badges", () => {
     it("should call getBadgesHistory", async () => {
       await controller.getBadgesHistory("e1", mockRequest);
-      expect(mockBadgesService.getAwardedHistory).toHaveBeenCalledWith("tenant_id", "e1");
+      expect(mockBadgesService.getAwardedHistory).toHaveBeenCalledWith(
+        "tenant_id",
+        "e1",
+      );
     });
 
     it("should call revokeBadge", async () => {
       await controller.revokeBadge("ub1", mockRequest);
-      expect(mockBadgesService.revokeBadge).toHaveBeenCalledWith("tenant_id", "ub1");
+      expect(mockBadgesService.revokeBadge).toHaveBeenCalledWith(
+        "tenant_id",
+        "ub1",
+      );
     });
   });
 });

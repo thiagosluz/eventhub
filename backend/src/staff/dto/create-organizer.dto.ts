@@ -10,6 +10,8 @@ export class CreateOrganizerDto {
   name!: string;
 
   @IsString()
-  @MinLength(6, { message: "A senha temporária deve ter pelo menos 6 caracteres" })
+  @MinLength(6, {
+    message: "A senha temporária deve ter pelo menos 6 caracteres",
+  })
   temporaryPassword!: string;
 }

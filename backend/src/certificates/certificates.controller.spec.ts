@@ -52,7 +52,10 @@ describe("CertificatesController", () => {
       controllers: [CertificatesController],
       providers: [
         { provide: CertificatePdfService, useValue: mockPdfService },
-        { provide: CertificateTemplatesService, useValue: mockTemplatesService },
+        {
+          provide: CertificateTemplatesService,
+          useValue: mockTemplatesService,
+        },
         { provide: MailService, useValue: mockMailService },
         { provide: PrismaService, useValue: mockPrismaService },
       ],
@@ -64,7 +67,9 @@ describe("CertificatesController", () => {
       .compile();
 
     controller = module.get<CertificatesController>(CertificatesController);
-    templatesService = module.get<CertificateTemplatesService>(CertificateTemplatesService);
+    templatesService = module.get<CertificateTemplatesService>(
+      CertificateTemplatesService,
+    );
   });
 
   it("should be defined", () => {
@@ -74,19 +79,30 @@ describe("CertificatesController", () => {
   describe("Templates", () => {
     it("should list templates", async () => {
       await controller.listTemplates("e1", mockRequest);
-      expect(templatesService.listByEvent).toHaveBeenCalledWith("tenant_id", "e1");
+      expect(templatesService.listByEvent).toHaveBeenCalledWith(
+        "tenant_id",
+        "e1",
+      );
     });
 
     it("should create template", async () => {
       const body = { name: "T1", backgroundUrl: "url" };
       await controller.createTemplate("e1", body, mockRequest);
-      expect(templatesService.create).toHaveBeenCalledWith("tenant_id", "e1", expect.objectContaining({ name: "T1" }));
+      expect(templatesService.create).toHaveBeenCalledWith(
+        "tenant_id",
+        "e1",
+        expect.objectContaining({ name: "T1" }),
+      );
     });
 
     it("should update template", async () => {
       const body = { name: "T2" };
       await controller.updateTemplate("t1", body, mockRequest);
-      expect(templatesService.update).toHaveBeenCalledWith("tenant_id", "t1", body);
+      expect(templatesService.update).toHaveBeenCalledWith(
+        "tenant_id",
+        "t1",
+        body,
+      );
     });
 
     it("should upload background", async () => {
@@ -110,7 +126,10 @@ describe("CertificatesController", () => {
       } as any;
       mockPdfService.generatePreview.mockResolvedValue(Buffer.from("pdf"));
 
-      await controller.previewTemplate({ backgroundUrl: "url", layoutConfig: {} }, res);
+      await controller.previewTemplate(
+        { backgroundUrl: "url", layoutConfig: {} },
+        res,
+      );
 
       expect(res.set).toHaveBeenCalled();
       expect(res.end).toHaveBeenCalledWith(Buffer.from("pdf"));
@@ -119,21 +138,33 @@ describe("CertificatesController", () => {
 
   describe("Issuance", () => {
     it("should issue bulk certificates", async () => {
-      mockTemplatesService.findOne.mockResolvedValue({ id: "t1", eventId: "e1" });
+      mockTemplatesService.findOne.mockResolvedValue({
+        id: "t1",
+        eventId: "e1",
+      });
       (mockPrismaService.registration.findMany as jest.Mock).mockResolvedValue([
         { id: "reg1", user: { email: "u1@t.com" } },
       ]);
       mockPdfService.generateAndStore.mockResolvedValue({ fileUrl: "url1" });
 
-      const result = await controller.issueBulk("t1", { sendEmail: true }, mockRequest);
+      const result = await controller.issueBulk(
+        "t1",
+        { sendEmail: true },
+        mockRequest,
+      );
 
       expect(result.total).toBe(1);
       expect(mockMailService.enqueue).toHaveBeenCalled();
     });
 
     it("should issue single certificate", async () => {
-      mockPdfService.generateAndStore.mockResolvedValue({ fileUrl: "url1", issuedId: "i1" });
-      (mockPrismaService.registration.findUnique as jest.Mock).mockResolvedValue({ user: { email: "u1@t.com" } });
+      mockPdfService.generateAndStore.mockResolvedValue({
+        fileUrl: "url1",
+        issuedId: "i1",
+      });
+      (
+        mockPrismaService.registration.findUnique as jest.Mock
+      ).mockResolvedValue({ user: { email: "u1@t.com" } });
 
       const result = await controller.issueCertificate({
         templateId: "t1",
@@ -155,7 +186,9 @@ describe("CertificatesController", () => {
 
   describe("Validation", () => {
     it("should validate certificate", async () => {
-      (mockPrismaService.issuedCertificate.findUnique as jest.Mock).mockResolvedValue({
+      (
+        mockPrismaService.issuedCertificate.findUnique as jest.Mock
+      ).mockResolvedValue({
         validationHash: "hash1",
         registration: { user: { name: "U1" } },
         template: { event: { name: "E1" } },
@@ -166,8 +199,12 @@ describe("CertificatesController", () => {
     });
 
     it("should throw NotFound if hash invalid", async () => {
-      (mockPrismaService.issuedCertificate.findUnique as jest.Mock).mockResolvedValue(null);
-      await expect(controller.validateCertificate("bad")).rejects.toThrow(NotFoundException);
+      (
+        mockPrismaService.issuedCertificate.findUnique as jest.Mock
+      ).mockResolvedValue(null);
+      await expect(controller.validateCertificate("bad")).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

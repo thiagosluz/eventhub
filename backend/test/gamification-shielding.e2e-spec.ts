@@ -1,6 +1,8 @@
 import * as dotenv from "dotenv";
 dotenv.config();
-process.env.DATABASE_URL = process.env.DATABASE_URL || "postgresql://eventhub:eventhub@localhost:5432/eventhub";
+process.env.DATABASE_URL =
+  process.env.DATABASE_URL ||
+  "postgresql://eventhub:eventhub@localhost:5432/eventhub";
 
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication } from "@nestjs/common";
@@ -73,13 +75,20 @@ describe("Gamification Shielding (e2e)", () => {
         Array(concurrentRequests)
           .fill(null)
           .map(() =>
-            gamificationService.awardXp(testUser.id, amount, "STRESS_TEST", uniqueKey)
-          )
+            gamificationService.awardXp(
+              testUser.id,
+              amount,
+              "STRESS_TEST",
+              uniqueKey,
+            ),
+          ),
       );
 
       // Verify results
       const successes = results.filter((r) => r.xpGained > 0);
-      const alreadyAwarded = results.filter((r) => r.reason === "ALREADY_AWARDED");
+      const alreadyAwarded = results.filter(
+        (r) => r.reason === "ALREADY_AWARDED",
+      );
 
       expect(successes.length).toBe(1);
       expect(alreadyAwarded.length).toBe(concurrentRequests - 1);
@@ -119,9 +128,9 @@ describe("Gamification Shielding (e2e)", () => {
               testUser.id,
               amountPerRequest,
               "DAILY_LIMIT_TEST",
-              `LIMIT_TEST_${i}_${randomUUID()}`
-            )
-          )
+              `LIMIT_TEST_${i}_${randomUUID()}`,
+            ),
+          ),
       );
 
       // Total XP awarded should be exactly 1500
@@ -136,7 +145,10 @@ describe("Gamification Shielding (e2e)", () => {
       expect(dbUser?.xp).toBe(1500);
 
       // The last request should have partially awarded only what's left
-      const cappedResults = results.filter((r) => r.reason === "DAILY_LIMIT_REACHED" || r.xpGained < amountPerRequest);
+      const cappedResults = results.filter(
+        (r) =>
+          r.reason === "DAILY_LIMIT_REACHED" || r.xpGained < amountPerRequest,
+      );
       expect(cappedResults.length).toBeGreaterThan(0);
     });
   });

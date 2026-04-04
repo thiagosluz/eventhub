@@ -1,9 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { MonitorGuard } from './monitor.guard';
-import { PrismaService } from '../prisma/prisma.service';
-import { ExecutionContext, ForbiddenException } from '@nestjs/common';
+import { Test, TestingModule } from "@nestjs/testing";
+import { MonitorGuard } from "./monitor.guard";
+import { PrismaService } from "../prisma/prisma.service";
+import { ExecutionContext, ForbiddenException } from "@nestjs/common";
 
-describe('MonitorGuard', () => {
+describe("MonitorGuard", () => {
   let guard: MonitorGuard;
   let prisma: PrismaService;
 
@@ -29,16 +29,16 @@ describe('MonitorGuard', () => {
     prisma = module.get<PrismaService>(PrismaService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(guard).toBeDefined();
   });
 
-  it('should return true if user is ADMIN', async () => {
+  it("should return true if user is ADMIN", async () => {
     const context = {
       switchToHttp: jest.fn().mockReturnValue({
         getRequest: jest.fn().mockReturnValue({
-          user: { sub: 'user1', role: 'ORGANIZER' },
-          params: { eventId: 'event1' },
+          user: { sub: "user1", role: "ORGANIZER" },
+          params: { eventId: "event1" },
         }),
       }),
     } as unknown as ExecutionContext;
@@ -46,49 +46,53 @@ describe('MonitorGuard', () => {
     expect(await guard.canActivate(context)).toBe(true);
   });
 
-  it('should return true if user is monitor of the event', async () => {
+  it("should return true if user is monitor of the event", async () => {
     const context = {
       switchToHttp: jest.fn().mockReturnValue({
         getRequest: jest.fn().mockReturnValue({
-          user: { sub: 'user1', role: 'USER' },
-          params: { eventId: 'event1' },
+          user: { sub: "user1", role: "USER" },
+          params: { eventId: "event1" },
         }),
       }),
     } as unknown as ExecutionContext;
 
-    (prisma.eventMonitor.findUnique as jest.Mock).mockResolvedValue({ id: 'em1' });
+    (prisma.eventMonitor.findUnique as jest.Mock).mockResolvedValue({
+      id: "em1",
+    });
 
     expect(await guard.canActivate(context)).toBe(true);
     expect(prisma.eventMonitor.findUnique).toHaveBeenCalledWith({
       where: {
         eventId_userId: {
-          eventId: 'event1',
-          userId: 'user1',
+          eventId: "event1",
+          userId: "user1",
         },
       },
     });
   });
 
-  it('should throw ForbiddenException if user is not monitor', async () => {
+  it("should throw ForbiddenException if user is not monitor", async () => {
     const context = {
       switchToHttp: jest.fn().mockReturnValue({
         getRequest: jest.fn().mockReturnValue({
-          user: { sub: 'user1', role: 'USER' },
-          params: { eventId: 'event1' },
+          user: { sub: "user1", role: "USER" },
+          params: { eventId: "event1" },
         }),
       }),
     } as unknown as ExecutionContext;
 
     (prisma.eventMonitor.findUnique as jest.Mock).mockResolvedValue(null);
 
-    await expect(guard.canActivate(context)).rejects.toThrow(ForbiddenException);
+    await expect(guard.canActivate(context)).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 
-  it('should return false if eventId is missing', async () => {
+  it("should return false if eventId is missing", async () => {
     const context = {
       switchToHttp: jest.fn().mockReturnValue({
         getRequest: jest.fn().mockReturnValue({
-          user: { sub: 'user1', role: 'USER' },
+          user: { sub: "user1", role: "USER" },
           params: {},
         }),
       }),

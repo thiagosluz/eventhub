@@ -428,9 +428,9 @@ describe("ActivitiesService", () => {
         enrollments: [],
       });
       mockPrismaService.activityEnrollment.findUnique.mockResolvedValue(null);
-      await expect(service.confirmEnrollment("t1", "a1", "en1")).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.confirmEnrollment("t1", "a1", "en1"),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it("should return early if already confirmed", async () => {

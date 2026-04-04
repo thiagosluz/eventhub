@@ -104,8 +104,16 @@ export class AuthController {
   @Post("change-password-forced")
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: "Change password when mustChangePassword flag is true" })
-  changeForcedPassword(@Body() body: ChangeForcedPasswordDto, @Request() req: any) {
-    return this.authService.changeForcedPassword(req.user.sub, body.newPassword);
+  @ApiOperation({
+    summary: "Change password when mustChangePassword flag is true",
+  })
+  changeForcedPassword(
+    @Body() body: ChangeForcedPasswordDto,
+    @Request() req: any,
+  ) {
+    return this.authService.changeForcedPassword(
+      req.user.sub,
+      body.newPassword,
+    );
   }
 }

@@ -18,14 +18,16 @@ export class RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const user = request.user as { role?: UserRole; isSpeaker?: boolean } | undefined;
+    const user = request.user as
+      | { role?: UserRole; isSpeaker?: boolean }
+      | undefined;
 
     if (!user?.role) {
       return false;
     }
 
     const hasRequiredRole = requiredRoles.includes(user.role);
-    
+
     // Especial case: allow ORGANIZER access to SPEAKER routes if they have a speaker profile
     const isSpeakerRoute = requiredRoles.includes(UserRole.SPEAKER);
     if (isSpeakerRoute && (user as any).isSpeaker) {

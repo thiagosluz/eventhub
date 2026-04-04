@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { HttpExceptionFilter } from './http-exception.filter';
-import { HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
+import { Test, TestingModule } from "@nestjs/testing";
+import { HttpExceptionFilter } from "./http-exception.filter";
+import { HttpException, ArgumentsHost, HttpStatus } from "@nestjs/common";
 
-describe('HttpExceptionFilter', () => {
+describe("HttpExceptionFilter", () => {
   let filter: HttpExceptionFilter;
 
   beforeEach(async () => {
@@ -13,16 +13,16 @@ describe('HttpExceptionFilter', () => {
     filter = module.get<HttpExceptionFilter>(HttpExceptionFilter);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(filter).toBeDefined();
   });
 
-  it('should catch HttpException and return formatted response', () => {
+  it("should catch HttpException and return formatted response", () => {
     const mockStatus = HttpStatus.BAD_REQUEST;
     const mockResponse = {
       statusCode: mockStatus,
-      message: 'Bad Request',
-      error: 'Bad Request',
+      message: "Bad Request",
+      error: "Bad Request",
     };
     const exception = new HttpException(mockResponse, mockStatus);
 
@@ -32,7 +32,7 @@ describe('HttpExceptionFilter', () => {
       status: mockStatusFn,
     });
     const mockGetRequest = jest.fn().mockReturnValue({
-      url: '/test',
+      url: "/test",
     });
 
     const host = {
@@ -48,14 +48,14 @@ describe('HttpExceptionFilter', () => {
     expect(mockJson).toHaveBeenCalledWith({
       statusCode: mockStatus,
       timestamp: expect.any(String),
-      path: '/test',
-      message: 'Bad Request',
+      path: "/test",
+      message: "Bad Request",
     });
   });
 
-  it('should handle non-object exception responses', () => {
+  it("should handle non-object exception responses", () => {
     const mockStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-    const exception = new HttpException('Internal Server Error', mockStatus);
+    const exception = new HttpException("Internal Server Error", mockStatus);
 
     const mockJson = jest.fn();
     const mockStatusFn = jest.fn().mockReturnValue({ json: mockJson });
@@ -63,7 +63,7 @@ describe('HttpExceptionFilter', () => {
       status: mockStatusFn,
     });
     const mockGetRequest = jest.fn().mockReturnValue({
-      url: '/test',
+      url: "/test",
     });
 
     const host = {
@@ -78,8 +78,8 @@ describe('HttpExceptionFilter', () => {
     expect(mockJson).toHaveBeenCalledWith({
       statusCode: mockStatus,
       timestamp: expect.any(String),
-      path: '/test',
-      message: 'Internal Server Error',
+      path: "/test",
+      message: "Internal Server Error",
     });
   });
 });

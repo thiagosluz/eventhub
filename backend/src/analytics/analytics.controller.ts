@@ -98,7 +98,10 @@ export class AnalyticsController {
 
   @Roles(UserRole.ORGANIZER)
   @Get("events/:id/gamification/badges-history")
-  async getBadgesHistory(@Param("id") eventId: string, @Req() req: AuthRequest) {
+  async getBadgesHistory(
+    @Param("id") eventId: string,
+    @Req() req: AuthRequest,
+  ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) throw new ForbiddenException("Tenant ID missing");
     return this.badgesService.getAwardedHistory(tenantId, eventId);
@@ -106,7 +109,10 @@ export class AnalyticsController {
 
   @Roles(UserRole.ORGANIZER)
   @Delete("gamification/badges/:userBadgeId/revoke")
-  async revokeBadge(@Param("userBadgeId") userBadgeId: string, @Req() req: AuthRequest) {
+  async revokeBadge(
+    @Param("userBadgeId") userBadgeId: string,
+    @Req() req: AuthRequest,
+  ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) throw new ForbiddenException("Tenant ID missing");
     return this.badgesService.revokeBadge(tenantId, userBadgeId);

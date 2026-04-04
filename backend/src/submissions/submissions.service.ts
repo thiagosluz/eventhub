@@ -29,7 +29,15 @@ export class SubmissionsService {
   ) {}
 
   async createSubmission(params: CreateSubmissionParams) {
-    const { authorId, eventId, title, abstract, modalityId, thematicAreaId, file } = params;
+    const {
+      authorId,
+      eventId,
+      title,
+      abstract,
+      modalityId,
+      thematicAreaId,
+      file,
+    } = params;
 
     const event = await this.prisma.event.findUnique({
       where: { id: eventId },
@@ -56,9 +64,7 @@ export class SubmissionsService {
     }
 
     if (event.submissionEndDate && now > event.submissionEndDate) {
-      throw new ForbiddenException(
-        "O prazo para submissões já encerrou.",
-      );
+      throw new ForbiddenException("O prazo para submissões já encerrou.");
     }
 
     const objectName = `events/${eventId}/submissions/${Date.now()}`;
@@ -271,9 +277,7 @@ export class SubmissionsService {
     const now = new Date();
 
     if (event.reviewEndDate && now > event.reviewEndDate) {
-      throw new ForbiddenException(
-        "O prazo para revisões já encerrou.",
-      );
+      throw new ForbiddenException("O prazo para revisões já encerrou.");
     }
 
     return this.prisma.review.update({

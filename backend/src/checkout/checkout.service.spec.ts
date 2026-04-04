@@ -129,9 +129,15 @@ describe("CheckoutService", () => {
       mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
       mockFreeTicketStrategy.process.mockResolvedValue({});
 
-      await service.processCheckout({ eventId: "e1", userId: "u1", activityIds: [] });
+      await service.processCheckout({
+        eventId: "e1",
+        userId: "u1",
+        activityIds: [],
+      });
 
-      expect(mockPrismaService.activityEnrollment.createMany).toHaveBeenCalled();
+      expect(
+        mockPrismaService.activityEnrollment.createMany,
+      ).toHaveBeenCalled();
     });
 
     it("should process custom form responses if provided", async () => {
@@ -140,7 +146,9 @@ describe("CheckoutService", () => {
       mockPrismaService.activity.findMany.mockResolvedValue([]);
       mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
       mockFreeTicketStrategy.process.mockResolvedValue({});
-      mockPrismaService.customFormResponse.create.mockResolvedValue({ id: "resp1" });
+      mockPrismaService.customFormResponse.create.mockResolvedValue({
+        id: "resp1",
+      });
 
       await service.processCheckout({
         eventId: "e1",

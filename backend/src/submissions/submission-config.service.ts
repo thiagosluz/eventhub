@@ -65,8 +65,7 @@ export class SubmissionConfigService {
       throw new NotFoundException("Evento não encontrado para este tenant.");
     }
 
-    const parseDate = (val?: string) =>
-      val ? new Date(val) : undefined;
+    const parseDate = (val?: string) => (val ? new Date(val) : undefined);
 
     return this.prisma.event.update({
       where: { id: eventId },
@@ -146,11 +145,7 @@ export class SubmissionConfigService {
     });
   }
 
-  async deleteThematicArea(
-    tenantId: string,
-    eventId: string,
-    areaId: string,
-  ) {
+  async deleteThematicArea(tenantId: string, eventId: string, areaId: string) {
     await this.ensureEventOwnership(tenantId, eventId);
 
     const area = await this.prisma.thematicArea.findFirst({

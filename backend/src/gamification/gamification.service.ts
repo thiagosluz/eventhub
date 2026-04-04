@@ -24,136 +24,153 @@ export class GamificationService {
    * Awards XP to a user, enforcing daily limits and calculating level-ups.
    * Supports eventId for scoped auditing and automatic spike alerts.
    */
-  async awardXp(userId: string, amount: number, reason: string, uniqueKey?: string, eventId?: string) {
-    return await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-      // 0. LOCK the user row to serialize all awardXp calls for this user
-      await tx.$executeRawUnsafe(`SELECT id FROM "User" WHERE id = $1 FOR UPDATE`, userId);
+  async awardXp(
+    userId: string,
+    amount: number,
+    reason: string,
+    uniqueKey?: string,
+    eventId?: string,
+  ) {
+    return await this.prisma
+      .$transaction(async (tx: Prisma.TransactionClient) => {
+        // 0. LOCK the user row to serialize all awardXp calls for this user
+        await tx.$executeRawUnsafe(
+          `SELECT id FROM "User" WHERE id = $1 FOR UPDATE`,
+          userId,
+        );
 
-      // 1. Check for duplicate uniqueKey if provided
-      if (uniqueKey) {
-        const existingLog = await tx.xpGainLog.findUnique({
-          where: {
-            userId_uniqueKey: { userId, uniqueKey },
-          },
-        });
+        // 1. Check for duplicate uniqueKey if provided
+        if (uniqueKey) {
+          const existingLog = await tx.xpGainLog.findUnique({
+            where: {
+              userId_uniqueKey: { userId, uniqueKey },
+            },
+          });
 
-        if (existingLog) {
-          return { xpGained: 0, isLevelUp: false, reason: "ALREADY_AWARDED" };
+          if (existingLog) {
+            return { xpGained: 0, isLevelUp: false, reason: "ALREADY_AWARDED" };
+          }
         }
-      }
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
-      // 2. Get today's total XP gain
-      const logsToday = await tx.xpGainLog.aggregate({
-        where: {
-          userId,
-          createdAt: { gte: today },
-        },
-        _sum: { amount: true },
-      });
-
-      const currentDailyTotal = logsToday._sum.amount || 0;
-
-      // 3. Enforce daily limit
-      let finalAmount = amount;
-      if (currentDailyTotal + amount > this.DAILY_XP_LIMIT) {
-        finalAmount = Math.max(0, this.DAILY_XP_LIMIT - currentDailyTotal);
-      }
-
-      if (finalAmount <= 0) {
-        return { xpGained: 0, isLevelUp: false, reason: "DAILY_LIMIT_REACHED" };
-      }
-
-      // 4. Update User
-      const user = await tx.user.findUnique({
-        where: { id: userId },
-        select: { xp: true, level: true },
-      });
-
-      if (!user) return { xpGained: 0, isLevelUp: false, reason: "USER_NOT_FOUND" };
-
-      const newXp = user.xp + finalAmount;
-      const newLevel = this.calculateLevel(newXp);
-      const isLevelUp = newLevel > user.level;
-
-      await tx.user.update({
-        where: { id: userId },
-        data: {
-          xp: newXp,
-          level: newLevel,
-        },
-      });
-
-      // 5. Create Log
-      await tx.xpGainLog.create({
-        data: {
-          userId,
-          eventId,
-          amount: finalAmount,
-          reason,
-          uniqueKey,
-        },
-      });
-
-      // 6. Check for Spike Alerts (1000 XP in 5 minutes)
-      if (eventId) {
-        const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
-        const recentGains = await tx.xpGainLog.aggregate({
+        // 2. Get today's total XP gain
+        const logsToday = await tx.xpGainLog.aggregate({
           where: {
             userId,
-            eventId,
-            createdAt: { gte: fiveMinutesAgo },
+            createdAt: { gte: today },
           },
           _sum: { amount: true },
         });
 
-        const totalRecent = recentGains._sum.amount || 0;
-        if (totalRecent >= 1000) {
-          await tx.gamificationAlert.create({
-            data: {
-              eventId,
-              userId,
-              type: "XP_SPIKE",
-              message: `Usuário ganhou ${totalRecent} XP nos últimos 5 minutos.`,
-              metadata: { totalXp: totalRecent, windowMinutes: 5 },
-            },
-          });
-        }
-      }
+        const currentDailyTotal = logsToday._sum.amount || 0;
 
-      return {
-        xpGained: finalAmount,
-        newLevel,
-        isLevelUp,
-        totalXp: newXp
-      };
-    }).catch(err => {
-      if (err.code === 'P2002') {
-        return { xpGained: 0, isLevelUp: false, reason: "ALREADY_AWARDED" };
-      }
-      throw err;
-    });
+        // 3. Enforce daily limit
+        let finalAmount = amount;
+        if (currentDailyTotal + amount > this.DAILY_XP_LIMIT) {
+          finalAmount = Math.max(0, this.DAILY_XP_LIMIT - currentDailyTotal);
+        }
+
+        if (finalAmount <= 0) {
+          return {
+            xpGained: 0,
+            isLevelUp: false,
+            reason: "DAILY_LIMIT_REACHED",
+          };
+        }
+
+        // 4. Update User
+        const user = await tx.user.findUnique({
+          where: { id: userId },
+          select: { xp: true, level: true },
+        });
+
+        if (!user)
+          return { xpGained: 0, isLevelUp: false, reason: "USER_NOT_FOUND" };
+
+        const newXp = user.xp + finalAmount;
+        const newLevel = this.calculateLevel(newXp);
+        const isLevelUp = newLevel > user.level;
+
+        await tx.user.update({
+          where: { id: userId },
+          data: {
+            xp: newXp,
+            level: newLevel,
+          },
+        });
+
+        // 5. Create Log
+        await tx.xpGainLog.create({
+          data: {
+            userId,
+            eventId,
+            amount: finalAmount,
+            reason,
+            uniqueKey,
+          },
+        });
+
+        // 6. Check for Spike Alerts (1000 XP in 5 minutes)
+        if (eventId) {
+          const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+          const recentGains = await tx.xpGainLog.aggregate({
+            where: {
+              userId,
+              eventId,
+              createdAt: { gte: fiveMinutesAgo },
+            },
+            _sum: { amount: true },
+          });
+
+          const totalRecent = recentGains._sum.amount || 0;
+          if (totalRecent >= 1000) {
+            await tx.gamificationAlert.create({
+              data: {
+                eventId,
+                userId,
+                type: "XP_SPIKE",
+                message: `Usuário ganhou ${totalRecent} XP nos últimos 5 minutos.`,
+                metadata: { totalXp: totalRecent, windowMinutes: 5 },
+              },
+            });
+          }
+        }
+
+        return {
+          xpGained: finalAmount,
+          newLevel,
+          isLevelUp,
+          totalXp: newXp,
+        };
+      })
+      .catch((err) => {
+        if (err.code === "P2002") {
+          return { xpGained: 0, isLevelUp: false, reason: "ALREADY_AWARDED" };
+        }
+        throw err;
+      });
   }
 
   async getEventStats(eventId: string) {
-    const [totalXp, badgeCount, activeAlerts, participantCount] = await Promise.all([
-      this.prisma.xpGainLog.aggregate({
-        where: { eventId },
-        _sum: { amount: true },
-      }),
-      this.prisma.userBadge.count({
-        where: { eventId },
-      }),
-      this.prisma.gamificationAlert.count({
-        where: { eventId, resolved: false },
-      }),
-      this.prisma.registration.count({
-        where: { eventId },
-      }),
-    ]);
-  
+    const [totalXp, badgeCount, activeAlerts, participantCount] =
+      await Promise.all([
+        this.prisma.xpGainLog.aggregate({
+          where: { eventId },
+          _sum: { amount: true },
+        }),
+        this.prisma.userBadge.count({
+          where: { eventId },
+        }),
+        this.prisma.gamificationAlert.count({
+          where: { eventId, resolved: false },
+        }),
+        this.prisma.registration.count({
+          where: { eventId },
+        }),
+      ]);
+
     return {
       totalXpDistributed: totalXp._sum.amount || 0,
       totalBadgesAwarded: badgeCount,
@@ -165,21 +182,21 @@ export class GamificationService {
   async getEventRanking(eventId: string, limit = 100) {
     // Note: We sum XP from logs to get "XP earned in this event"
     const ranking = await this.prisma.xpGainLog.groupBy({
-      by: ['userId'],
+      by: ["userId"],
       where: { eventId },
       _sum: { amount: true },
-      orderBy: { _sum: { amount: 'desc' } },
+      orderBy: { _sum: { amount: "desc" } },
       take: limit,
     });
 
-    const userIds = ranking.map(r => r.userId);
+    const userIds = ranking.map((r) => r.userId);
     const users = await this.prisma.user.findMany({
       where: { id: { in: userIds } },
       select: { id: true, name: true, avatarUrl: true, level: true },
     });
 
-    return ranking.map(r => {
-      const user = users.find(u => u.id === r.userId);
+    return ranking.map((r) => {
+      const user = users.find((u) => u.id === r.userId);
       return {
         userId: r.userId,
         userName: user?.name || "Usuário Desconhecido",
@@ -194,7 +211,7 @@ export class GamificationService {
     return await this.prisma.gamificationAlert.findMany({
       where: { eventId },
       include: { user: { select: { name: true, email: true } } },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
   }
 

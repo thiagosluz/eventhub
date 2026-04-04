@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable, ForbiddenException } from "@nestjs/common";
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  ForbiddenException,
+} from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserRole } from "./roles.types";
 
@@ -40,7 +45,9 @@ export class MonitorGuard implements CanActivate {
     });
 
     if (!monitor) {
-      throw new ForbiddenException("Você não tem permissão de monitor para este evento.");
+      throw new ForbiddenException(
+        "Você não tem permissão de monitor para este evento.",
+      );
     }
 
     return true;

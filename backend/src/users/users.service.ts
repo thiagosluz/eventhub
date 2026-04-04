@@ -47,7 +47,14 @@ export class UsersService {
   async updateProfile(userId: string, dto: UpdateProfileDto) {
     const userBefore = await this.prisma.user.findUnique({
       where: { id: userId },
-      select: { name: true, email: true, bio: true, username: true, avatarUrl: true, interests: true },
+      select: {
+        name: true,
+        email: true,
+        bio: true,
+        username: true,
+        avatarUrl: true,
+        interests: true,
+      },
     });
 
     if (!userBefore) throw new NotFoundException("Usuário não encontrado.");
@@ -128,19 +135,19 @@ export class UsersService {
 
     if (isNowComplete && !wasAlreadyAwarded) {
       const xpResult = await this.gamificationService.awardXp(
-        userId, 
-        150, 
+        userId,
+        150,
         "PROFILE_COMPLETED",
-        "PROFILE_COMPLETED"
+        "PROFILE_COMPLETED",
       );
       xpGain = xpResult.xpGained;
       isLevelUp = xpResult.isLevelUp || false;
     }
 
-    return { 
-      ...updatedUser, 
-      xpGained: xpGain, 
-      isLevelUp 
+    return {
+      ...updatedUser,
+      xpGained: xpGain,
+      isLevelUp,
     };
   }
 

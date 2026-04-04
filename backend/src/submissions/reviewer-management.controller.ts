@@ -40,7 +40,11 @@ export class ReviewerManagementController {
   ) {
     const invitedById = req.user?.sub;
     if (!invitedById) throw new Error("Missing user id");
-    return this.reviewerManagement.inviteReviewer(eventId, body.email, invitedById);
+    return this.reviewerManagement.inviteReviewer(
+      eventId,
+      body.email,
+      invitedById,
+    );
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

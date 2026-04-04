@@ -197,9 +197,9 @@ describe("EventsService", () => {
 
     it("should throw NotFound if registration missing or wrong tenant", async () => {
       mockPrismaService.registration.findUnique.mockResolvedValue(null);
-      await expect(
-        service.findParticipantDetail("t1", "r1"),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.findParticipantDetail("t1", "r1")).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 

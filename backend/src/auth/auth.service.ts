@@ -97,9 +97,9 @@ export class AuthService {
   async login(input: LoginInput) {
     const user = await this.prisma.user.findUnique({
       where: { email: input.email },
-      include: { 
+      include: {
         tenant: true,
-        speaker: { select: { id: true } }
+        speaker: { select: { id: true } },
       },
     });
 
@@ -115,8 +115,8 @@ export class AuthService {
       where: { refreshToken },
       include: {
         tenant: true,
-        speaker: { select: { id: true } }
-      }
+        speaker: { select: { id: true } },
+      },
     });
 
     if (!user) {

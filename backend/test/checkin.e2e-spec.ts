@@ -42,7 +42,11 @@ describe("Checkin (e2e)", () => {
       delete: jest.fn(),
     },
     user: {
-      findUnique: jest.fn().mockResolvedValue({ id: "org_1", role: "ORGANIZER", tenantId: "tenant_1" }),
+      findUnique: jest.fn().mockResolvedValue({
+        id: "org_1",
+        role: "ORGANIZER",
+        tenantId: "tenant_1",
+      }),
     },
     eventMonitor: {
       findUnique: jest.fn(),
@@ -161,7 +165,11 @@ describe("Checkin (e2e)", () => {
         id: "att1",
         ticket: { eventId: "e1", event: { tenantId: "tenant_1" } },
       });
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "org_1", role: "ORGANIZER", tenantId: "tenant_1" });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "org_1",
+        role: "ORGANIZER",
+        tenantId: "tenant_1",
+      });
       mockPrismaService.attendance.delete.mockResolvedValue({ id: "att1" });
 
       return request(app.getHttpServer())
@@ -180,7 +188,11 @@ describe("Checkin (e2e)", () => {
         id: "att1",
         ticket: { eventId: "e1", event: { tenantId: "tenant_1" } },
       });
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "monitor_1", role: "PARTICIPANT", tenantId: "tenant_1" });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "monitor_1",
+        role: "PARTICIPANT",
+        tenantId: "tenant_1",
+      });
       mockPrismaService.eventMonitor.findUnique.mockResolvedValue({ id: "m1" });
       mockPrismaService.attendance.delete.mockResolvedValue({ id: "att1" });
 
@@ -200,7 +212,11 @@ describe("Checkin (e2e)", () => {
         id: "att1",
         ticket: { eventId: "e1", event: { tenantId: "tenant_1" } },
       });
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "user_2", role: "PARTICIPANT", tenantId: "tenant_1" });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "user_2",
+        role: "PARTICIPANT",
+        tenantId: "tenant_1",
+      });
       mockPrismaService.eventMonitor.findUnique.mockResolvedValue(null);
 
       return request(app.getHttpServer())

@@ -152,7 +152,11 @@ describe("BadgesService", () => {
         mockPrismaService.attendance.count.mockResolvedValue(3);
         mockPrismaService.userBadge.findUnique.mockResolvedValue(null);
 
-        const result = await service.checkAndAwardBadge("u1", "e1", "CHECKIN_STREAK");
+        const result = await service.checkAndAwardBadge(
+          "u1",
+          "e1",
+          "CHECKIN_STREAK",
+        );
         expect(result).toHaveLength(1);
       });
     });
@@ -162,14 +166,23 @@ describe("BadgesService", () => {
         const start = new Date();
         const end = new Date(start.getTime() + 2 * 60 * 60 * 1000); // 2 hours
         mockPrismaService.badge.findMany.mockResolvedValue([
-          { id: "b1", triggerRule: "ACTIVITY_HOURS", minRequirement: 1, tenantId: "t1" },
+          {
+            id: "b1",
+            triggerRule: "ACTIVITY_HOURS",
+            minRequirement: 1,
+            tenantId: "t1",
+          },
         ]);
         mockPrismaService.attendance.findMany.mockResolvedValue([
           { activity: { startAt: start, endAt: end } },
         ]);
         mockPrismaService.userBadge.findUnique.mockResolvedValue(null);
 
-        const result = await service.checkAndAwardBadge("u1", "e1", "ACTIVITY_HOURS");
+        const result = await service.checkAndAwardBadge(
+          "u1",
+          "e1",
+          "ACTIVITY_HOURS",
+        );
         expect(result).toHaveLength(1);
       });
     });
@@ -177,12 +190,21 @@ describe("BadgesService", () => {
     describe("EVENT_COUNT", () => {
       it("should award badge if event count meets requirement", async () => {
         mockPrismaService.badge.findMany.mockResolvedValue([
-          { id: "b1", triggerRule: "EVENT_COUNT", minRequirement: 2, tenantId: "t1" },
+          {
+            id: "b1",
+            triggerRule: "EVENT_COUNT",
+            minRequirement: 2,
+            tenantId: "t1",
+          },
         ]);
         mockPrismaService.registration.count.mockResolvedValue(2);
         mockPrismaService.userBadge.findUnique.mockResolvedValue(null);
 
-        const result = await service.checkAndAwardBadge("u1", "e1", "EVENT_COUNT");
+        const result = await service.checkAndAwardBadge(
+          "u1",
+          "e1",
+          "EVENT_COUNT",
+        );
         expect(result).toHaveLength(1);
       });
     });
@@ -197,7 +219,9 @@ describe("BadgesService", () => {
         claimCode: "C",
       });
       mockPrismaService.userBadge.findUnique.mockResolvedValue({ id: "ub1" });
-      await expect(service.claimBadge("u1", "b1", "C")).rejects.toThrow(BadRequestException);
+      await expect(service.claimBadge("u1", "b1", "C")).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it("should throw if unique code already used", async () => {
@@ -206,8 +230,13 @@ describe("BadgesService", () => {
         triggerRule: "MANUAL",
         manualDeliveryMode: "UNIQUE_CODES",
       });
-      mockPrismaService.badgeClaimCode.findFirst.mockResolvedValue({ id: "c1", isUsed: true });
-      await expect(service.claimBadge("u1", "b1", "UNIQ")).rejects.toThrow("Este código já foi utilizado");
+      mockPrismaService.badgeClaimCode.findFirst.mockResolvedValue({
+        id: "c1",
+        isUsed: true,
+      });
+      await expect(service.claimBadge("u1", "b1", "UNIQ")).rejects.toThrow(
+        "Este código já foi utilizado",
+      );
     });
   });
 
@@ -234,9 +263,15 @@ describe("BadgesService", () => {
     });
 
     it("should return available badges with earned status", async () => {
-      mockPrismaService.registration.findMany.mockResolvedValue([{ eventId: "e1" }]);
-      mockPrismaService.badge.findMany.mockResolvedValue([{ id: "b1", event: { name: "E" } }]);
-      mockPrismaService.userBadge.findMany.mockResolvedValue([{ badgeId: "b1" }]);
+      mockPrismaService.registration.findMany.mockResolvedValue([
+        { eventId: "e1" },
+      ]);
+      mockPrismaService.badge.findMany.mockResolvedValue([
+        { id: "b1", event: { name: "E" } },
+      ]);
+      mockPrismaService.userBadge.findMany.mockResolvedValue([
+        { badgeId: "b1" },
+      ]);
 
       const result = await service.getAvailableBadges("u1");
       expect(result[0].isEarned).toBe(true);
@@ -244,7 +279,14 @@ describe("BadgesService", () => {
   });
 
   it("should award EVENT_COUNT badge", async () => {
-    mockPrismaService.badge.findMany.mockResolvedValue([{ id: "b1", triggerRule: "EVENT_COUNT", minRequirement: 1, tenantId: "t1" }]);
+    mockPrismaService.badge.findMany.mockResolvedValue([
+      {
+        id: "b1",
+        triggerRule: "EVENT_COUNT",
+        minRequirement: 1,
+        tenantId: "t1",
+      },
+    ]);
     mockPrismaService.registration.count.mockResolvedValue(1);
     mockPrismaService.userBadge.findUnique.mockResolvedValue(null);
     await service.checkAndAwardBadge("u1", "e1", "EVENT_COUNT");
@@ -252,23 +294,42 @@ describe("BadgesService", () => {
   });
 
   it("should skip if EVENT_COUNT threshold not met", async () => {
-    mockPrismaService.badge.findMany.mockResolvedValue([{ id: "b1", triggerRule: "EVENT_COUNT", minRequirement: 5, tenantId: "t1" }]);
+    mockPrismaService.badge.findMany.mockResolvedValue([
+      {
+        id: "b1",
+        triggerRule: "EVENT_COUNT",
+        minRequirement: 5,
+        tenantId: "t1",
+      },
+    ]);
     mockPrismaService.registration.count.mockResolvedValue(3);
     await service.checkAndAwardBadge("u1", "e1", "EVENT_COUNT");
     expect(mockPrismaService.userBadge.create).not.toHaveBeenCalled();
   });
 
   it("should skip if EARLY_BIRD position too high", async () => {
-    mockPrismaService.badge.findMany.mockResolvedValue([{ id: "b1", triggerRule: "EARLY_BIRD", minRequirement: 10 }]);
-    mockPrismaService.registration.findFirst.mockResolvedValue({ id: "r1", createdAt: new Date() });
+    mockPrismaService.badge.findMany.mockResolvedValue([
+      { id: "b1", triggerRule: "EARLY_BIRD", minRequirement: 10 },
+    ]);
+    mockPrismaService.registration.findFirst.mockResolvedValue({
+      id: "r1",
+      createdAt: new Date(),
+    });
     mockPrismaService.registration.count.mockResolvedValue(15);
     await service.checkAndAwardBadge("u1", "e1", "EARLY_BIRD");
     expect(mockPrismaService.userBadge.create).not.toHaveBeenCalled();
   });
 
   it("should skip if PROFILE_COMPLETED criteria not met", async () => {
-    mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", tenantId: "t1", bio: "short", avatarUrl: null });
-    mockPrismaService.badge.findMany.mockResolvedValue([{ id: "b1", triggerRule: "PROFILE_COMPLETED", tenantId: "t1" }]);
+    mockPrismaService.user.findUnique.mockResolvedValue({
+      id: "u1",
+      tenantId: "t1",
+      bio: "short",
+      avatarUrl: null,
+    });
+    mockPrismaService.badge.findMany.mockResolvedValue([
+      { id: "b1", triggerRule: "PROFILE_COMPLETED", tenantId: "t1" },
+    ]);
     await service.checkAndAwardBadge("u1", "e1", "PROFILE_COMPLETED");
     expect(mockPrismaService.userBadge.create).not.toHaveBeenCalled();
   });
@@ -276,18 +337,25 @@ describe("BadgesService", () => {
   describe("awardBadgeByScan - errors", () => {
     it("should throw if badge belongs to other tenant", async () => {
       mockPrismaService.badge.findFirst.mockResolvedValue(null);
-      await expect(service.awardBadgeByScan("t1", "b1", "TKN")).rejects.toThrow("Badge not found");
+      await expect(service.awardBadgeByScan("t1", "b1", "TKN")).rejects.toThrow(
+        "Badge not found",
+      );
     });
 
     it("should throw if ticket invalid", async () => {
       mockPrismaService.badge.findFirst.mockResolvedValue({ id: "b1" });
       mockPrismaService.ticket.findFirst.mockResolvedValue(null);
-      await expect(service.awardBadgeByScan("t1", "b1", "INVALID")).rejects.toThrow("Ingresso inválido");
+      await expect(
+        service.awardBadgeByScan("t1", "b1", "INVALID"),
+      ).rejects.toThrow("Ingresso inválido");
     });
 
     it("should return existing if badge already awarded", async () => {
       mockPrismaService.badge.findFirst.mockResolvedValue({ id: "b1" });
-      mockPrismaService.ticket.findFirst.mockResolvedValue({ registration: { userId: "u1" }, eventId: "e1" });
+      mockPrismaService.ticket.findFirst.mockResolvedValue({
+        registration: { userId: "u1" },
+        eventId: "e1",
+      });
       mockPrismaService.userBadge.findUnique.mockResolvedValue({ id: "ub1" });
       const result = await service.awardBadgeByScan("t1", "b1", "TKN");
       expect(result.id).toBe("ub1");
@@ -301,12 +369,20 @@ describe("BadgesService", () => {
         triggerRule: "MANUAL",
         manualDeliveryMode: "SCAN",
       });
-      await expect(service.claimBadge("u1", "b1", "CODE")).rejects.toThrow("Esta conquista requer escaneamento");
+      await expect(service.claimBadge("u1", "b1", "CODE")).rejects.toThrow(
+        "Esta conquista requer escaneamento",
+      );
     });
 
     it("should award by scan if badge and ticket valid", async () => {
-      mockPrismaService.badge.findFirst.mockResolvedValue({ id: "b1", eventId: "e1" });
-      mockPrismaService.ticket.findFirst.mockResolvedValue({ registration: { userId: "u2" }, eventId: "e1" });
+      mockPrismaService.badge.findFirst.mockResolvedValue({
+        id: "b1",
+        eventId: "e1",
+      });
+      mockPrismaService.ticket.findFirst.mockResolvedValue({
+        registration: { userId: "u2" },
+        eventId: "e1",
+      });
       mockPrismaService.userBadge.findUnique.mockResolvedValue(null);
 
       await service.awardBadgeByScan("t1", "b1", "TKN");
@@ -325,7 +401,9 @@ describe("BadgesService", () => {
 
     it("should return badge claim codes", async () => {
       mockPrismaService.badge.findFirst.mockResolvedValue({ id: "b1" });
-      mockPrismaService.badgeClaimCode.findMany.mockResolvedValue([{ id: "code1" }]);
+      mockPrismaService.badgeClaimCode.findMany.mockResolvedValue([
+        { id: "code1" },
+      ]);
       const result = await service.getBadgeClaimCodes("t1", "b1");
       expect(result).toHaveLength(1);
     });
@@ -333,7 +411,9 @@ describe("BadgesService", () => {
 
   describe("claimBadge - error paths", () => {
     it("should throw if trigger rule is not MANUAL", async () => {
-      mockPrismaService.badge.findUnique.mockResolvedValue({ triggerRule: "AUTO" });
+      mockPrismaService.badge.findUnique.mockResolvedValue({
+        triggerRule: "AUTO",
+      });
       await expect(service.claimBadge("u1", "b1", "CODE")).rejects.toThrow(
         "Esta conquista não pode ser resgatada manualmente",
       );
@@ -352,8 +432,16 @@ describe("BadgesService", () => {
     });
 
     it("should claim unique code and mark as used", async () => {
-      mockPrismaService.badge.findUnique.mockResolvedValue({ id: "b1", triggerRule: "MANUAL", manualDeliveryMode: "UNIQUE_CODES", eventId: "e1" });
-      mockPrismaService.badgeClaimCode.findFirst.mockResolvedValue({ id: "c1", isUsed: false });
+      mockPrismaService.badge.findUnique.mockResolvedValue({
+        id: "b1",
+        triggerRule: "MANUAL",
+        manualDeliveryMode: "UNIQUE_CODES",
+        eventId: "e1",
+      });
+      mockPrismaService.badgeClaimCode.findFirst.mockResolvedValue({
+        id: "c1",
+        isUsed: false,
+      });
       mockPrismaService.userBadge.findUnique.mockResolvedValue(null);
       await service.claimBadge("u1", "b1", "UCODE");
       expect(mockPrismaService.badgeClaimCode.update).toHaveBeenCalled();
@@ -361,8 +449,16 @@ describe("BadgesService", () => {
     });
 
     it("should return existing badge if already earned (unique code)", async () => {
-      mockPrismaService.badge.findUnique.mockResolvedValue({ id: "b1", triggerRule: "MANUAL", manualDeliveryMode: "UNIQUE_CODES", eventId: "e1" });
-      mockPrismaService.badgeClaimCode.findFirst.mockResolvedValue({ id: "c1", isUsed: false });
+      mockPrismaService.badge.findUnique.mockResolvedValue({
+        id: "b1",
+        triggerRule: "MANUAL",
+        manualDeliveryMode: "UNIQUE_CODES",
+        eventId: "e1",
+      });
+      mockPrismaService.badgeClaimCode.findFirst.mockResolvedValue({
+        id: "c1",
+        isUsed: false,
+      });
       mockPrismaService.userBadge.findUnique.mockResolvedValue({ id: "ub1" });
       const result = await service.claimBadge("u1", "b1", "UCODE");
       expect(result.id).toBe("ub1");

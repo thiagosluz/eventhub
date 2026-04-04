@@ -82,12 +82,18 @@ describe("CheckinController", () => {
       const body = { eventId: "e1", count: 2 };
       await controller.drawRaffle(body as any, mockRequest);
       expect(service.drawRaffle).toHaveBeenCalledWith(
-        expect.objectContaining({ tenantId: "tenant_id", eventId: "e1", count: 2 }),
+        expect.objectContaining({
+          tenantId: "tenant_id",
+          eventId: "e1",
+          count: 2,
+        }),
       );
     });
 
     it("should get latest raffle", async () => {
-      mockCheckinService.getEventRaffleHistory.mockResolvedValue([{ id: "r1" }]);
+      mockCheckinService.getEventRaffleHistory.mockResolvedValue([
+        { id: "r1" },
+      ]);
       const result = await controller.getLatestRaffle("e1", mockRequest);
       expect(result).toEqual({ id: "r1" });
     });
@@ -99,23 +105,41 @@ describe("CheckinController", () => {
     });
 
     it("should set visibility", async () => {
-      await controller.setRaffleDisplayVisibility("r1", { hide: true }, mockRequest);
-      expect(service.setRaffleDisplayVisibility).toHaveBeenCalledWith("tenant_id", "r1", true);
+      await controller.setRaffleDisplayVisibility(
+        "r1",
+        { hide: true },
+        mockRequest,
+      );
+      expect(service.setRaffleDisplayVisibility).toHaveBeenCalledWith(
+        "tenant_id",
+        "r1",
+        true,
+      );
     });
 
     it("should get history", async () => {
       await controller.getRaffleHistory("e1", mockRequest);
-      expect(service.getEventRaffleHistory).toHaveBeenCalledWith("tenant_id", "e1");
+      expect(service.getEventRaffleHistory).toHaveBeenCalledWith(
+        "tenant_id",
+        "e1",
+      );
     });
 
     it("should delete history", async () => {
       await controller.deleteRaffleHistory("r1", mockRequest);
-      expect(service.deleteRaffleHistory).toHaveBeenCalledWith("tenant_id", "r1");
+      expect(service.deleteRaffleHistory).toHaveBeenCalledWith(
+        "tenant_id",
+        "r1",
+      );
     });
 
     it("should mark received", async () => {
       await controller.markPrizeReceived("r1", { received: true }, mockRequest);
-      expect(service.markPrizeReceived).toHaveBeenCalledWith("tenant_id", "r1", true);
+      expect(service.markPrizeReceived).toHaveBeenCalledWith(
+        "tenant_id",
+        "r1",
+        true,
+      );
     });
   });
 

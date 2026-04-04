@@ -183,28 +183,51 @@ describe("SponsorsService", () => {
 
   describe("Edge cases - tenant mismatch", () => {
     it("should throw on updateCategory mismatch", async () => {
-      mockPrismaService.sponsorCategory.findUnique.mockResolvedValue({ event: { tenantId: "other" } });
-      await expect(service.updateCategory("t1", "c1", {})).rejects.toThrow(NotFoundException);
+      mockPrismaService.sponsorCategory.findUnique.mockResolvedValue({
+        event: { tenantId: "other" },
+      });
+      await expect(service.updateCategory("t1", "c1", {})).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it("should throw on deleteCategory mismatch", async () => {
-      mockPrismaService.sponsorCategory.findUnique.mockResolvedValue({ event: { tenantId: "other" } });
-      await expect(service.deleteCategory("t1", "c1")).rejects.toThrow(NotFoundException);
+      mockPrismaService.sponsorCategory.findUnique.mockResolvedValue({
+        event: { tenantId: "other" },
+      });
+      await expect(service.deleteCategory("t1", "c1")).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it("should throw on createSponsor with category mismatch", async () => {
-      mockPrismaService.sponsorCategory.findUnique.mockResolvedValue({ event: { tenantId: "other" } });
-      await expect(service.createSponsor("t1", { categoryId: "c1", name: "S" })).rejects.toThrow(NotFoundException);
+      mockPrismaService.sponsorCategory.findUnique.mockResolvedValue({
+        event: { tenantId: "other" },
+      });
+      await expect(
+        service.createSponsor("t1", { categoryId: "c1", name: "S" }),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it("should throw on deleteSponsor mismatch", async () => {
-      mockPrismaService.sponsor.findUnique.mockResolvedValue({ category: { event: { tenantId: "other" } } });
-      await expect(service.deleteSponsor("t1", "s1")).rejects.toThrow(NotFoundException);
+      mockPrismaService.sponsor.findUnique.mockResolvedValue({
+        category: { event: { tenantId: "other" } },
+      });
+      await expect(service.deleteSponsor("t1", "s1")).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it("should throw on uploadLogo mismatch", async () => {
-      mockPrismaService.sponsor.findUnique.mockResolvedValue({ category: { event: { tenantId: "other" } } });
-      await expect(service.uploadLogo("t1", "s1", { buffer: Buffer.from(""), mimetype: "image/png" })).rejects.toThrow(NotFoundException);
+      mockPrismaService.sponsor.findUnique.mockResolvedValue({
+        category: { event: { tenantId: "other" } },
+      });
+      await expect(
+        service.uploadLogo("t1", "s1", {
+          buffer: Buffer.from(""),
+          mimetype: "image/png",
+        }),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });

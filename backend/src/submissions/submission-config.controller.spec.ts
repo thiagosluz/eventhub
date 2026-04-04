@@ -41,7 +41,9 @@ describe("SubmissionConfigController", () => {
       .useValue({ canActivate: () => true })
       .compile();
 
-    controller = module.get<SubmissionConfigController>(SubmissionConfigController);
+    controller = module.get<SubmissionConfigController>(
+      SubmissionConfigController,
+    );
     service = module.get<SubmissionConfigService>(SubmissionConfigService);
   });
 
@@ -64,26 +66,43 @@ describe("SubmissionConfigController", () => {
     const body = { name: "M1" };
     const file = { buffer: Buffer.from("f"), mimetype: "m" };
     await controller.createModality("e1", body as any, file, mockRequest);
-    expect(service.createModality).toHaveBeenCalledWith("tenant_id", "e1", body, {
-      buffer: file.buffer,
-      mimetype: file.mimetype,
-    });
+    expect(service.createModality).toHaveBeenCalledWith(
+      "tenant_id",
+      "e1",
+      body,
+      {
+        buffer: file.buffer,
+        mimetype: file.mimetype,
+      },
+    );
   });
 
   it("should delete modality", async () => {
     await controller.deleteModality("e1", "m1", mockRequest);
-    expect(service.deleteModality).toHaveBeenCalledWith("tenant_id", "e1", "m1");
+    expect(service.deleteModality).toHaveBeenCalledWith(
+      "tenant_id",
+      "e1",
+      "m1",
+    );
   });
 
   it("should create thematic area", async () => {
     const body = { name: "T1" };
     await controller.createThematicArea("e1", body as any, mockRequest);
-    expect(service.createThematicArea).toHaveBeenCalledWith("tenant_id", "e1", body);
+    expect(service.createThematicArea).toHaveBeenCalledWith(
+      "tenant_id",
+      "e1",
+      body,
+    );
   });
 
   it("should delete thematic area", async () => {
     await controller.deleteThematicArea("e1", "a1", mockRequest);
-    expect(service.deleteThematicArea).toHaveBeenCalledWith("tenant_id", "e1", "a1");
+    expect(service.deleteThematicArea).toHaveBeenCalledWith(
+      "tenant_id",
+      "e1",
+      "a1",
+    );
   });
 
   it("should create rule", async () => {
@@ -97,9 +116,9 @@ describe("SubmissionConfigController", () => {
   });
 
   it("should throw if no file in createRule", async () => {
-    await expect(controller.createRule("e1", {} as any, null, mockRequest)).rejects.toThrow(
-      "Arquivo PDF é obrigatório.",
-    );
+    await expect(
+      controller.createRule("e1", {} as any, null, mockRequest),
+    ).rejects.toThrow("Arquivo PDF é obrigatório.");
   });
 
   it("should delete rule", async () => {

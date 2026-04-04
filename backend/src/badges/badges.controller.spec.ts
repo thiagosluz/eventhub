@@ -61,7 +61,9 @@ describe("BadgesController", () => {
   describe("Management", () => {
     it("should create badge", async () => {
       await controller.create(mockRequest, "e1", { name: "B1" });
-      expect(service.createBadge).toHaveBeenCalledWith("tenant_id", "e1", { name: "B1" });
+      expect(service.createBadge).toHaveBeenCalledWith("tenant_id", "e1", {
+        name: "B1",
+      });
     });
 
     it("should list all badges by event", async () => {
@@ -71,7 +73,9 @@ describe("BadgesController", () => {
 
     it("should update badge", async () => {
       await controller.update(mockRequest, "b1", { name: "B2" });
-      expect(service.updateBadge).toHaveBeenCalledWith("tenant_id", "b1", { name: "B2" });
+      expect(service.updateBadge).toHaveBeenCalledWith("tenant_id", "b1", {
+        name: "B2",
+      });
     });
 
     it("should delete badge", async () => {
@@ -83,17 +87,28 @@ describe("BadgesController", () => {
   describe("Claiming", () => {
     it("should claim badge", async () => {
       await controller.claim(mockRequest, "b1", "code123");
-      expect(service.claimBadge).toHaveBeenCalledWith("user_id", "b1", "code123");
+      expect(service.claimBadge).toHaveBeenCalledWith(
+        "user_id",
+        "b1",
+        "code123",
+      );
     });
 
     it("should award by scan", async () => {
       await controller.awardByScan(mockRequest, "b1", "ticketToken");
-      expect(service.awardBadgeByScan).toHaveBeenCalledWith("tenant_id", "b1", "ticketToken");
+      expect(service.awardBadgeByScan).toHaveBeenCalledWith(
+        "tenant_id",
+        "b1",
+        "ticketToken",
+      );
     });
 
     it("should get claim codes", async () => {
       await controller.getClaimCodes(mockRequest, "b1");
-      expect(service.getBadgeClaimCodes).toHaveBeenCalledWith("tenant_id", "b1");
+      expect(service.getBadgeClaimCodes).toHaveBeenCalledWith(
+        "tenant_id",
+        "b1",
+      );
     });
   });
 });

@@ -3,7 +3,9 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
 async function main() {
-  const connectionString = process.env.DATABASE_URL || "postgresql://eventhub:eventhub@localhost:5432/eventhub";
+  const connectionString =
+    process.env.DATABASE_URL ||
+    "postgresql://eventhub:eventhub@localhost:5432/eventhub";
   const pool = new Pool({ connectionString });
   const adapter = new PrismaPg(pool);
   const prisma = new PrismaClient({ adapter });
@@ -39,13 +41,15 @@ async function main() {
       username: "participante_vanguard",
       publicProfile: true,
       profileTheme: "indigo",
-      interests: ["Tech", "Design", "Gaming"]
+      interests: ["Tech", "Design", "Gaming"],
     },
   });
 
   console.log(`✅ Sucesso! Usuário ${user.name} (${user.email})`);
   console.log(`Nível: ${user.level} | XP: ${user.xp}`);
-  console.log(`\nAgora você pode logar com este email ou ver o perfil público em: /u/${user.username}`);
+  console.log(
+    `\nAgora você pode logar com este email ou ver o perfil público em: /u/${user.username}`,
+  );
 
   await prisma.$disconnect();
   await pool.end();

@@ -34,7 +34,9 @@ describe("StaffManagementController", () => {
       ],
     }).compile();
 
-    controller = module.get<StaffManagementController>(StaffManagementController);
+    controller = module.get<StaffManagementController>(
+      StaffManagementController,
+    );
     service = module.get<StaffManagementService>(StaffManagementService);
   });
 

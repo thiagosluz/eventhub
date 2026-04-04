@@ -4,10 +4,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { MinioService } from "../storage/minio.service";
 import { MailService } from "../mail/mail.service";
 import { getQueueToken } from "@nestjs/bullmq";
-import {
-  ForbiddenException,
-  NotFoundException,
-} from "@nestjs/common";
+import { ForbiddenException, NotFoundException } from "@nestjs/common";
 
 describe("SubmissionsService", () => {
   let service: SubmissionsService;
@@ -71,12 +68,12 @@ describe("SubmissionsService", () => {
 
   describe("createSubmission", () => {
     it("should create submission and enqueue background job", async () => {
-      mockPrismaService.event.findUnique.mockResolvedValue({ 
-        id: "e1", 
+      mockPrismaService.event.findUnique.mockResolvedValue({
+        id: "e1",
         tenantId: "t1",
         submissionsEnabled: true,
         submissionStartDate: null,
-        submissionEndDate: null
+        submissionEndDate: null,
       });
       mockMinioService.uploadObject.mockResolvedValue("http://file.com");
       mockPrismaService.submission.create.mockResolvedValue({
@@ -103,12 +100,16 @@ describe("SubmissionsService", () => {
   describe("listSubmissionsForEvent", () => {
     it("should throw Forbidden if event not in tenant", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue(null);
-      await expect(service.listSubmissionsForEvent("t1", "e1")).rejects.toThrow(ForbiddenException);
+      await expect(service.listSubmissionsForEvent("t1", "e1")).rejects.toThrow(
+        ForbiddenException,
+      );
     });
 
     it("should return submissions", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
-      mockPrismaService.submission.findMany.mockResolvedValue([{ id: "s1", title: "T" }]);
+      mockPrismaService.submission.findMany.mockResolvedValue([
+        { id: "s1", title: "T" },
+      ]);
       const result = await service.listSubmissionsForEvent("t1", "e1");
       expect(result).toHaveLength(1);
     });
@@ -123,7 +124,11 @@ describe("SubmissionsService", () => {
 
     it("should list reviews assigned to reviewer", async () => {
       mockPrismaService.review.findMany.mockResolvedValue([
-        { id: "r1", submissionId: "s1", submission: { title: "T", event: { id: "e1", name: "E" } } },
+        {
+          id: "r1",
+          submissionId: "s1",
+          submission: { title: "T", event: { id: "e1", name: "E" } },
+        },
       ]);
       const result = await service.listAssignedToReviewer("rev1");
       expect(result).toHaveLength(1);
@@ -134,53 +139,70 @@ describe("SubmissionsService", () => {
 
   describe("submitReview", () => {
     it("should update review if assigned", async () => {
-      mockPrismaService.review.findFirst.mockResolvedValue({ 
+      mockPrismaService.review.findFirst.mockResolvedValue({
         id: "r1",
-        submission: { 
-          event: { 
-            reviewEndDate: null 
-          } 
-        } 
+        submission: {
+          event: {
+            reviewEndDate: null,
+          },
+        },
       });
       mockPrismaService.review.update.mockResolvedValue({ id: "r1" });
-      await service.submitReview({ reviewerId: "rev1", submissionId: "s1", score: 5 });
+      await service.submitReview({
+        reviewerId: "rev1",
+        submissionId: "s1",
+        score: 5,
+      });
       expect(mockPrismaService.review.update).toHaveBeenCalled();
     });
 
     it("should throw Forbidden if not assigned", async () => {
       mockPrismaService.review.findFirst.mockResolvedValue(null);
-      await expect(service.submitReview({ reviewerId: "rev1", submissionId: "s1" })).rejects.toThrow(ForbiddenException);
+      await expect(
+        service.submitReview({ reviewerId: "rev1", submissionId: "s1" }),
+      ).rejects.toThrow(ForbiddenException);
     });
     it("should throw NotFound if event does not exist", async () => {
       mockPrismaService.event.findUnique.mockResolvedValue(null);
-      await expect(service.createSubmission({ eventId: "e1" } as any)).rejects.toThrow(NotFoundException);
+      await expect(
+        service.createSubmission({ eventId: "e1" } as any),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it("should throw Forbidden if submissions disabled", async () => {
-      mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1", submissionsEnabled: false });
-      await expect(service.createSubmission({ eventId: "e1" } as any)).rejects.toThrow(ForbiddenException);
+      mockPrismaService.event.findUnique.mockResolvedValue({
+        id: "e1",
+        submissionsEnabled: false,
+      });
+      await expect(
+        service.createSubmission({ eventId: "e1" } as any),
+      ).rejects.toThrow(ForbiddenException);
     });
 
     it("should throw Forbidden if submission period not started", async () => {
       const future = new Date();
       future.setDate(future.getDate() + 1);
-      mockPrismaService.event.findUnique.mockResolvedValue({ 
-        id: "e1", 
-        submissionsEnabled: true, 
-        submissionStartDate: future 
+      mockPrismaService.event.findUnique.mockResolvedValue({
+        id: "e1",
+        submissionsEnabled: true,
+        submissionStartDate: future,
       });
-      await expect(service.createSubmission({ eventId: "e1" } as any)).rejects.toThrow(ForbiddenException);
+      await expect(
+        service.createSubmission({ eventId: "e1" } as any),
+      ).rejects.toThrow(ForbiddenException);
     });
 
     it("should throw Forbidden if submission period ended", async () => {
       const past = new Date();
       past.setDate(past.getDate() - 1);
-      mockPrismaService.event.findUnique.mockResolvedValue({ 
-        id: "e1", 
-        submissionsEnabled: true, 
-        submissionEndDate: past 
+      mockPrismaService.event.findUnique.mockResolvedValue({
+        id: "e1",
+        submissionsEnabled: true,
+        submissionEndDate: past,
       });
-      await expect(service.createSubmission({ eventId: "e1" } as any)).rejects.toThrow(ForbiddenException);
+      await expect(
+        service.createSubmission({ eventId: "e1" } as any),
+      ).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -188,11 +210,13 @@ describe("SubmissionsService", () => {
     it("should throw Forbidden if review deadline ended", async () => {
       const past = new Date();
       past.setDate(past.getDate() - 1);
-      mockPrismaService.review.findFirst.mockResolvedValue({ 
+      mockPrismaService.review.findFirst.mockResolvedValue({
         id: "r1",
-        submission: { event: { reviewEndDate: past } } 
+        submission: { event: { reviewEndDate: past } },
       });
-      await expect(service.submitReview({ reviewerId: "rev1", submissionId: "s1" })).rejects.toThrow(ForbiddenException);
+      await expect(
+        service.submitReview({ reviewerId: "rev1", submissionId: "s1" }),
+      ).rejects.toThrow(ForbiddenException);
     });
   });
 

@@ -126,7 +126,10 @@ describe("SubmissionsController", () => {
     it("should add reviewer", async () => {
       const dto: AddReviewerDto = { userId: "user2" };
       await controller.addReviewerToEvent("event1", dto);
-      expect(service.addReviewerToEvent).toHaveBeenCalledWith("event1", "user2");
+      expect(service.addReviewerToEvent).toHaveBeenCalledWith(
+        "event1",
+        "user2",
+      );
     });
 
     it("should remove reviewer", async () => {

@@ -121,7 +121,9 @@ describe("GamificationService", () => {
       const error = new Error("DB_FAIL");
       mockPrismaService.$transaction.mockRejectedValue(error);
 
-      await expect(service.awardXp(userId, amount, reason)).rejects.toThrow("DB_FAIL");
+      await expect(service.awardXp(userId, amount, reason)).rejects.toThrow(
+        "DB_FAIL",
+      );
     });
   });
 });

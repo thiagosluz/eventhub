@@ -150,7 +150,10 @@ export class SubmissionsController {
   @Roles(UserRole.ORGANIZER)
   @Post("reviews/manual")
   async manualAssignReview(@Body() body: AssignReviewDto) {
-    return this.submissions.manualAssignReview(body.submissionId, body.reviewerId);
+    return this.submissions.manualAssignReview(
+      body.submissionId,
+      body.reviewerId,
+    );
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

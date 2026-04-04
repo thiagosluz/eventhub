@@ -38,7 +38,9 @@ describe("ReviewerManagementController", () => {
       .useValue({ canActivate: () => true })
       .compile();
 
-    controller = module.get<ReviewerManagementController>(ReviewerManagementController);
+    controller = module.get<ReviewerManagementController>(
+      ReviewerManagementController,
+    );
     service = module.get<ReviewerManagementService>(ReviewerManagementService);
   });
 
@@ -49,7 +51,11 @@ describe("ReviewerManagementController", () => {
   it("should invite reviewer", async () => {
     const dto = { email: "r1@t.com" };
     await controller.inviteReviewer("e1", dto as any, mockRequest);
-    expect(service.inviteReviewer).toHaveBeenCalledWith("e1", "r1@t.com", "user_id");
+    expect(service.inviteReviewer).toHaveBeenCalledWith(
+      "e1",
+      "r1@t.com",
+      "user_id",
+    );
   });
 
   it("should manual register reviewer", async () => {

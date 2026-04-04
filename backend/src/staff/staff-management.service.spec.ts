@@ -52,13 +52,18 @@ describe("StaffManagementService", () => {
 
     it("should throw ConflictException if user already exists", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
-      await expect(service.createOrganizer("t1", dto)).rejects.toThrow(ConflictException);
+      await expect(service.createOrganizer("t1", dto)).rejects.toThrow(
+        ConflictException,
+      );
     });
 
     it("should create organizer with hashed password", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
       (argon2.hash as jest.Mock).mockResolvedValue("hashed");
-      mockPrismaService.user.create.mockResolvedValue({ id: "ulet", role: "ORGANIZER" });
+      mockPrismaService.user.create.mockResolvedValue({
+        id: "ulet",
+        role: "ORGANIZER",
+      });
 
       const result = await service.createOrganizer("t1", dto);
 
@@ -80,9 +85,11 @@ describe("StaffManagementService", () => {
     it("should return organizers for tenant", async () => {
       mockPrismaService.user.findMany.mockResolvedValue([{ id: "u1" }]);
       const result = await service.listOrganizers("t1");
-      expect(mockPrismaService.user.findMany).toHaveBeenCalledWith(expect.objectContaining({
-        where: { tenantId: "t1", role: "ORGANIZER" }
-      }));
+      expect(mockPrismaService.user.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { tenantId: "t1", role: "ORGANIZER" },
+        }),
+      );
       expect(result).toHaveLength(1);
     });
   });
@@ -90,13 +97,17 @@ describe("StaffManagementService", () => {
   describe("assignMonitor", () => {
     it("should throw NotFound if event not found", async () => {
       mockPrismaService.event.findUnique.mockResolvedValue(null);
-      await expect(service.assignMonitor("e1", "u1")).rejects.toThrow(NotFoundException);
+      await expect(service.assignMonitor("e1", "u1")).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it("should throw NotFound if user not found", async () => {
       mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1" });
       mockPrismaService.user.findUnique.mockResolvedValue(null);
-      await expect(service.assignMonitor("e1", "u1")).rejects.toThrow(NotFoundException);
+      await expect(service.assignMonitor("e1", "u1")).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it("should upsert event monitor", async () => {
@@ -128,10 +139,12 @@ describe("StaffManagementService", () => {
     it("should list monitors with user info", async () => {
       mockPrismaService.eventMonitor.findMany.mockResolvedValue([]);
       await service.listMonitors("e1");
-      expect(mockPrismaService.eventMonitor.findMany).toHaveBeenCalledWith(expect.objectContaining({
-        where: { eventId: "e1" },
-        include: { user: expect.any(Object) }
-      }));
+      expect(mockPrismaService.eventMonitor.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { eventId: "e1" },
+          include: { user: expect.any(Object) },
+        }),
+      );
     });
   });
 
@@ -139,10 +152,12 @@ describe("StaffManagementService", () => {
     it("should list registrations with user info", async () => {
       mockPrismaService.registration.findMany.mockResolvedValue([]);
       await service.listEventParticipants("e1");
-      expect(mockPrismaService.registration.findMany).toHaveBeenCalledWith(expect.objectContaining({
-        where: { eventId: "e1" },
-        include: { user: expect.any(Object) }
-      }));
+      expect(mockPrismaService.registration.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { eventId: "e1" },
+          include: { user: expect.any(Object) },
+        }),
+      );
     });
   });
 });

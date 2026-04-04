@@ -52,11 +52,19 @@ describe("AuthService", () => {
   describe("login", () => {
     it("should throw UnauthorizedException if user not found", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
-      await expect(service.login({ email: "t@e.com", password: "p" })).rejects.toThrow(UnauthorizedException);
+      await expect(
+        service.login({ email: "t@e.com", password: "p" }),
+      ).rejects.toThrow(UnauthorizedException);
     });
 
     it("should return session if valid", async () => {
-      const user = { id: "u1", email: "t@e.com", password: "h", role: "USER", tenantId: "t1" };
+      const user = {
+        id: "u1",
+        email: "t@e.com",
+        password: "h",
+        role: "USER",
+        tenantId: "t1",
+      };
       mockPrismaService.user.findUnique.mockResolvedValue(user);
       (argon2.verify as jest.Mock).mockResolvedValue(true);
       mockJwtService.signAsync.mockResolvedValue("tok");
@@ -70,22 +78,27 @@ describe("AuthService", () => {
   describe("registerOrganizer", () => {
     it("should throw UnauthorizedException if email exists", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
-      await expect(service.registerOrganizer({ email: "t@e.com" } as any)).rejects.toThrow(UnauthorizedException);
+      await expect(
+        service.registerOrganizer({ email: "t@e.com" } as any),
+      ).rejects.toThrow(UnauthorizedException);
     });
 
     it("should create user and tenant", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
       mockPrismaService.tenant.create.mockResolvedValue({ id: "t1" });
-      mockPrismaService.user.create.mockResolvedValue({ id: "u1", email: "t@e.com" });
+      mockPrismaService.user.create.mockResolvedValue({
+        id: "u1",
+        email: "t@e.com",
+      });
       mockJwtService.signAsync.mockResolvedValue("tok");
       (argon2.hash as jest.Mock).mockResolvedValue("hashed");
 
-      const result = await service.registerOrganizer({ 
-        email: "t@e.com", 
-        password: "p", 
+      const result = await service.registerOrganizer({
+        email: "t@e.com",
+        password: "p",
         name: "User",
         tenantName: "T1",
-        tenantSlug: "t1"
+        tenantSlug: "t1",
       });
       expect(result.user.id).toBe("u1");
       expect(mockPrismaService.tenant.create).toHaveBeenCalled();
@@ -96,14 +109,18 @@ describe("AuthService", () => {
     it("should create user and tenant with participant role", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
       mockPrismaService.tenant.create.mockResolvedValue({ id: "t1" });
-      mockPrismaService.user.create.mockResolvedValue({ id: "u1", email: "p@e.com", role: "PARTICIPANT" });
+      mockPrismaService.user.create.mockResolvedValue({
+        id: "u1",
+        email: "p@e.com",
+        role: "PARTICIPANT",
+      });
       mockJwtService.signAsync.mockResolvedValue("tok");
       (argon2.hash as jest.Mock).mockResolvedValue("hashed");
 
-      const result = await service.registerParticipant({ 
-        email: "p@e.com", 
-        password: "p", 
-        name: "Part"
+      const result = await service.registerParticipant({
+        email: "p@e.com",
+        password: "p",
+        name: "Part",
       });
       expect(result.user.id).toBe("u1");
     });
@@ -112,7 +129,9 @@ describe("AuthService", () => {
   describe("refresh", () => {
     it("should throw Unauthorized if refresh token invalid", async () => {
       mockPrismaService.user.findFirst.mockResolvedValue(null);
-      await expect(service.refresh("bad")).rejects.toThrow(UnauthorizedException);
+      await expect(service.refresh("bad")).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
 
     it("should return new session", async () => {
@@ -138,11 +157,16 @@ describe("AuthService", () => {
   describe("forgotPassword", () => {
     it("should throw NotFound if user not found", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
-      await expect(service.forgotPassword("non@e.com")).rejects.toThrow(NotFoundException);
+      await expect(service.forgotPassword("non@e.com")).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it("should send email if user found", async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", email: "found@e.com" });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "u1",
+        email: "found@e.com",
+      });
       await service.forgotPassword("found@e.com");
       expect(mockMailService.enqueue).toHaveBeenCalled();
       expect(mockPrismaService.user.update).toHaveBeenCalled();
@@ -152,17 +176,24 @@ describe("AuthService", () => {
   describe("resetPassword", () => {
     it("should throw Unauthorized if token invalid or expired", async () => {
       mockPrismaService.user.findFirst.mockResolvedValue(null);
-      await expect(service.resetPassword("bad", "newp")).rejects.toThrow(UnauthorizedException);
+      await expect(service.resetPassword("bad", "newp")).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
 
     it("should update password if token valid", async () => {
-      mockPrismaService.user.findFirst.mockResolvedValue({ id: "u1", email: "t@e.com" });
+      mockPrismaService.user.findFirst.mockResolvedValue({
+        id: "u1",
+        email: "t@e.com",
+      });
       (argon2.hash as jest.Mock).mockResolvedValue("new_hashed");
       await service.resetPassword("valid", "newp");
-      expect(mockPrismaService.user.update).toHaveBeenCalledWith(expect.objectContaining({
-        where: { id: "u1" },
-        data: expect.objectContaining({ password: "new_hashed" }),
-      }));
+      expect(mockPrismaService.user.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: "u1" },
+          data: expect.objectContaining({ password: "new_hashed" }),
+        }),
+      );
     });
   });
 

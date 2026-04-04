@@ -49,9 +49,9 @@ describe("DashboardController", () => {
     });
 
     it("should throw error if tenantId missing", async () => {
-      await expect(
-        controller.getStats({ user: {} } as any),
-      ).rejects.toThrow("Tenant missing from request.");
+      await expect(controller.getStats({ user: {} } as any)).rejects.toThrow(
+        "Tenant missing from request.",
+      );
     });
   });
 });

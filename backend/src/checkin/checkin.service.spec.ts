@@ -11,7 +11,9 @@ describe("CheckinService", () => {
 
   const mockPrismaService = {
     user: {
-      findUnique: jest.fn().mockResolvedValue({ id: "u1", role: "ORGANIZER", tenantId: "t1" }),
+      findUnique: jest
+        .fn()
+        .mockResolvedValue({ id: "u1", role: "ORGANIZER", tenantId: "t1" }),
     },
     eventMonitor: {
       findUnique: jest.fn(),
@@ -114,7 +116,7 @@ describe("CheckinService", () => {
         qrCodeToken: null,
         registration: { userId: "u1" },
       });
-      await expect(service.getQrCodePng( "t1", "u1")).rejects.toThrow(
+      await expect(service.getQrCodePng("t1", "u1")).rejects.toThrow(
         "Ingresso sem token de QR Code.",
       );
     });
@@ -123,9 +125,9 @@ describe("CheckinService", () => {
   describe("checkin", () => {
     it("should throw NotFoundException if ticket is invalid", async () => {
       mockPrismaService.ticket.findUnique.mockResolvedValue(null);
-      await expect(service.checkin({ qrCodeToken: "invalid", performedByUserId: "u1" })).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.checkin({ qrCodeToken: "invalid", performedByUserId: "u1" }),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it("should perform checkin successfully", async () => {
@@ -145,48 +147,89 @@ describe("CheckinService", () => {
         },
       });
 
-      const result = await service.checkin({ qrCodeToken: "token", performedByUserId: "u1" });
+      const result = await service.checkin({
+        qrCodeToken: "token",
+        performedByUserId: "u1",
+      });
       expect(result.alreadyCheckedIn).toBe(false);
       expect(mockMailService.enqueue).toHaveBeenCalled();
       expect(mockBadgesService.checkAndAwardBadge).toHaveBeenCalled();
     });
 
     it("should return alreadyCheckedIn true if attendance exists", async () => {
-      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1", eventId: "e1", event: { tenantId: "t1" } });
+      mockPrismaService.ticket.findUnique.mockResolvedValue({
+        id: "t1",
+        eventId: "e1",
+        event: { tenantId: "t1" },
+      });
       mockPrismaService.attendance.findFirst.mockResolvedValue({ id: "att1" });
 
-      const result = await service.checkin({ qrCodeToken: "token", performedByUserId: "u1" });
+      const result = await service.checkin({
+        qrCodeToken: "token",
+        performedByUserId: "u1",
+      });
       expect(result.alreadyCheckedIn).toBe(true);
       expect(mockPrismaService.attendance.create).not.toHaveBeenCalled();
     });
 
     it("should throw Forbidden if activity requires enrollment and user is not enrolled", async () => {
-      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1", eventId: "e1", event: { tenantId: "t1" } });
-      mockPrismaService.activity.findUnique.mockResolvedValue({ id: "a1", eventId: "e1", requiresEnrollment: true });
+      mockPrismaService.ticket.findUnique.mockResolvedValue({
+        id: "t1",
+        eventId: "e1",
+        event: { tenantId: "t1" },
+      });
+      mockPrismaService.activity.findUnique.mockResolvedValue({
+        id: "a1",
+        eventId: "e1",
+        requiresEnrollment: true,
+      });
       mockPrismaService.activityEnrollment.findFirst.mockResolvedValue(null);
 
-      await expect(service.checkin({ qrCodeToken: "token", activityId: "a1", performedByUserId: "u1" })).rejects.toThrow(
-        ForbiddenException,
-      );
+      await expect(
+        service.checkin({
+          qrCodeToken: "token",
+          activityId: "a1",
+          performedByUserId: "u1",
+        }),
+      ).rejects.toThrow(ForbiddenException);
     });
 
     it("should throw NotFound if activity belongs to another event", async () => {
-      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1", eventId: "e1", event: { tenantId: "t1" } });
-      mockPrismaService.activity.findUnique.mockResolvedValue({ id: "a1", eventId: "e2" });
+      mockPrismaService.ticket.findUnique.mockResolvedValue({
+        id: "t1",
+        eventId: "e1",
+        event: { tenantId: "t1" },
+      });
+      mockPrismaService.activity.findUnique.mockResolvedValue({
+        id: "a1",
+        eventId: "e2",
+      });
 
-      await expect(service.checkin({ qrCodeToken: "token", activityId: "a1", performedByUserId: "u1" })).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.checkin({
+          qrCodeToken: "token",
+          activityId: "a1",
+          performedByUserId: "u1",
+        }),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it("should throw Forbidden if staff has no permission", async () => {
-      mockPrismaService.ticket.findUnique.mockResolvedValue({ id: "t1", eventId: "e1", event: { tenantId: "t1" } });
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", role: "USER", tenantId: "t1" }); // Not an organizer
+      mockPrismaService.ticket.findUnique.mockResolvedValue({
+        id: "t1",
+        eventId: "e1",
+        event: { tenantId: "t1" },
+      });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "u1",
+        role: "USER",
+        tenantId: "t1",
+      }); // Not an organizer
       mockPrismaService.eventMonitor.findUnique.mockResolvedValue(null); // Not a monitor
 
-      await expect(service.checkin({ qrCodeToken: "token", performedByUserId: "u1" })).rejects.toThrow(
-        ForbiddenException,
-      );
+      await expect(
+        service.checkin({ qrCodeToken: "token", performedByUserId: "u1" }),
+      ).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -225,33 +268,82 @@ describe("CheckinService", () => {
     it("should filter staff if excludeStaff is true", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
       mockPrismaService.attendance.findMany.mockResolvedValue([
-        { ticket: { registration: { id: "r1", user: { name: "Org", role: "ORGANIZER" } } } },
-        { ticket: { registration: { id: "r2", user: { name: "Part", role: "PARTICIPANT" } } } },
+        {
+          ticket: {
+            registration: {
+              id: "r1",
+              user: { name: "Org", role: "ORGANIZER" },
+            },
+          },
+        },
+        {
+          ticket: {
+            registration: {
+              id: "r2",
+              user: { name: "Part", role: "PARTICIPANT" },
+            },
+          },
+        },
       ]);
-      const result = await service.drawRaffle({ tenantId: "t1", eventId: "e1", excludeStaff: true });
+      const result = await service.drawRaffle({
+        tenantId: "t1",
+        eventId: "e1",
+        excludeStaff: true,
+      });
       expect(result.winners).toHaveLength(1);
       expect(result.winners[0].userName).toBe("Part");
     });
 
     it("should draw from all registered if rule is ALL_REGISTERED", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
-      mockPrismaService.ticket.findMany.mockResolvedValue([{ registrationId: "r1", registration: { id: "r1", user: { name: "P1", role: "PARTICIPANT" } } }]);
-      const result = await service.drawRaffle({ tenantId: "t1", eventId: "e1", rule: "ALL_REGISTERED" });
+      mockPrismaService.ticket.findMany.mockResolvedValue([
+        {
+          registrationId: "r1",
+          registration: { id: "r1", user: { name: "P1", role: "PARTICIPANT" } },
+        },
+      ]);
+      const result = await service.drawRaffle({
+        tenantId: "t1",
+        eventId: "e1",
+        rule: "ALL_REGISTERED",
+      });
       expect(result.winners).toHaveLength(1);
     });
 
     it("should draw from enrollments if rule is ALL_REGISTERED and activityId is provided", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
-      mockPrismaService.activityEnrollment.findMany.mockResolvedValue([{ registrationId: "r1", registration: { id: "r1", user: { name: "P1", role: "PARTICIPANT" } } }]);
-      const result = await service.drawRaffle({ tenantId: "t1", eventId: "e1", activityId: "a1", rule: "ALL_REGISTERED" });
+      mockPrismaService.activityEnrollment.findMany.mockResolvedValue([
+        {
+          registrationId: "r1",
+          registration: { id: "r1", user: { name: "P1", role: "PARTICIPANT" } },
+        },
+      ]);
+      const result = await service.drawRaffle({
+        tenantId: "t1",
+        eventId: "e1",
+        activityId: "a1",
+        rule: "ALL_REGISTERED",
+      });
       expect(result.winners).toHaveLength(1);
     });
 
     it("should exclude past winners if uniqueWinners is true", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
-      mockPrismaService.attendance.findMany.mockResolvedValue([{ ticket: { registration: { id: "r1", user: { name: "W1", role: "P" } } } }]);
-      mockPrismaService.raffleHistory.findMany.mockResolvedValue([{ registrationId: "r1" }]);
-      const result = await service.drawRaffle({ tenantId: "t1", eventId: "e1", uniqueWinners: true });
+      mockPrismaService.attendance.findMany.mockResolvedValue([
+        {
+          ticket: {
+            registration: { id: "r1", user: { name: "W1", role: "P" } },
+          },
+        },
+      ]);
+      mockPrismaService.raffleHistory.findMany.mockResolvedValue([
+        { registrationId: "r1" },
+      ]);
+      const result = await service.drawRaffle({
+        tenantId: "t1",
+        eventId: "e1",
+        uniqueWinners: true,
+      });
       expect(result.winners).toHaveLength(0);
     });
   });
@@ -259,43 +351,69 @@ describe("CheckinService", () => {
   describe("History and Prizes", () => {
     it("should list history with visibility", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
-      mockPrismaService.raffleHistory.findMany.mockResolvedValue([{ id: "h1", registration: { user: { name: "W" } } }]);
+      mockPrismaService.raffleHistory.findMany.mockResolvedValue([
+        { id: "h1", registration: { user: { name: "W" } } },
+      ]);
       const result = await service.getEventRaffleHistory("t1", "e1");
       expect(result).toHaveLength(1);
     });
 
     it("should set visibility hide/show", async () => {
-      mockPrismaService.raffleHistory.findUnique.mockResolvedValue({ id: "h1", event: { tenantId: "t1" } });
+      mockPrismaService.raffleHistory.findUnique.mockResolvedValue({
+        id: "h1",
+        event: { tenantId: "t1" },
+      });
       await service.setRaffleDisplayVisibility("t1", "h1", true);
       await service.setRaffleDisplayVisibility("t1", "h1", false);
       expect(mockPrismaService.raffleHistory.findUnique).toHaveBeenCalled();
     });
 
     it("should delete history if owner", async () => {
-      mockPrismaService.raffleHistory.findUnique.mockResolvedValue({ id: "h1", event: { tenantId: "t1" } });
+      mockPrismaService.raffleHistory.findUnique.mockResolvedValue({
+        id: "h1",
+        event: { tenantId: "t1" },
+      });
       await service.deleteRaffleHistory("t1", "h1");
       expect(mockPrismaService.raffleHistory.delete).toHaveBeenCalled();
     });
 
     it("should mark prize as received and award badge", async () => {
-      mockPrismaService.raffleHistory.findUnique.mockResolvedValue({ id: "h1", eventId: "e1", event: { tenantId: "t1" }, registration: { userId: "u1" } });
+      mockPrismaService.raffleHistory.findUnique.mockResolvedValue({
+        id: "h1",
+        eventId: "e1",
+        event: { tenantId: "t1" },
+        registration: { userId: "u1" },
+      });
       mockPrismaService.raffleHistory.update.mockResolvedValue({ id: "h1" });
       await service.markPrizeReceived("t1", "h1", true);
-      expect(mockBadgesService.checkAndAwardBadge).toHaveBeenCalledWith("u1", "e1", "RAFFLE_WINNER");
+      expect(mockBadgesService.checkAndAwardBadge).toHaveBeenCalledWith(
+        "u1",
+        "e1",
+        "RAFFLE_WINNER",
+      );
     });
 
     it("should throw Forbidden if raffle history tenant mismatch", async () => {
-        mockPrismaService.raffleHistory.findUnique.mockResolvedValue({ id: "h1", event: { tenantId: "t2" } });
-        await expect(service.markPrizeReceived("t1", "h1", true)).rejects.toThrow(ForbiddenException);
+      mockPrismaService.raffleHistory.findUnique.mockResolvedValue({
+        id: "h1",
+        event: { tenantId: "t2" },
+      });
+      await expect(service.markPrizeReceived("t1", "h1", true)).rejects.toThrow(
+        ForbiddenException,
+      );
     });
   });
 
   describe("undoCheckin", () => {
     it("should delete attendance", async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1", role: "ORGANIZER", tenantId: "t1" });
-      mockPrismaService.attendance.findUnique.mockResolvedValue({ 
-        id: "att1", 
-        ticket: { eventId: "e1", event: { tenantId: "t1" } } 
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "u1",
+        role: "ORGANIZER",
+        tenantId: "t1",
+      });
+      mockPrismaService.attendance.findUnique.mockResolvedValue({
+        id: "att1",
+        ticket: { eventId: "e1", event: { tenantId: "t1" } },
       });
       await service.undoCheckin("att1", "u1");
       expect(mockPrismaService.attendance.delete).toHaveBeenCalled();
@@ -303,7 +421,9 @@ describe("CheckinService", () => {
 
     it("should throw if not found", async () => {
       mockPrismaService.attendance.findUnique.mockResolvedValue(null);
-      await expect(service.undoCheckin("att1", "u1")).rejects.toThrow(NotFoundException);
+      await expect(service.undoCheckin("att1", "u1")).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

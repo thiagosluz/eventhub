@@ -4,7 +4,11 @@ import { PrismaService } from "../prisma/prisma.service";
 import { MinioService } from "../storage/minio.service";
 import { BadgesService } from "../badges/badges.service";
 import { GamificationService } from "../gamification/gamification.service";
-import { ConflictException, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import {
+  ConflictException,
+  NotFoundException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import * as argon2 from "argon2";
 
 jest.mock("argon2");
@@ -101,7 +105,7 @@ describe("UsersService", () => {
       mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
       // If we only provide username, findFirst is called once for username
       mockPrismaService.user.findFirst.mockResolvedValue({ id: "u2" });
-      
+
       await expect(
         service.updateProfile("u1", { username: "taken" }),
       ).rejects.toThrow(ConflictException);
@@ -187,7 +191,10 @@ describe("UsersService", () => {
     it("should skip syncToSpeaker if speaker profile does not exist", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
       mockPrismaService.user.findFirst.mockResolvedValue(null);
-      mockPrismaService.user.update.mockResolvedValue({ id: "u1", interests: [] });
+      mockPrismaService.user.update.mockResolvedValue({
+        id: "u1",
+        interests: [],
+      });
       mockPrismaService.speaker.findUnique.mockResolvedValue(null);
 
       await service.updateProfile("u1", { name: "N" });
@@ -322,9 +329,9 @@ describe("UsersService", () => {
       expect(mockPrismaService.user.findFirst).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({
-            id: { not: "u1" }
-          })
-        })
+            id: { not: "u1" },
+          }),
+        }),
       );
     });
   });

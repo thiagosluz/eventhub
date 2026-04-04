@@ -4,6 +4,7 @@ import request from "supertest";
 import { AppModule } from "../src/app.module";
 import { PrismaService } from "../src/prisma/prisma.service";
 import { MailService } from "../src/mail/mail.service";
+import { JwtService } from "@nestjs/jwt";
 
 describe("Auth Advanced (e2e)", () => {
   let app: INestApplication;
@@ -121,9 +122,8 @@ describe("Auth Advanced (e2e)", () => {
     });
 
     it("should allow ORGANIZER with isSpeaker flag to access SPEAKER routes", async () => {
-      const { JwtService } = require("@nestjs/jwt");
       const jwtService = app.get(JwtService);
-      
+
       const payload = {
         sub: "u_hybrid",
         email: "hybrid@example.com",
@@ -131,7 +131,7 @@ describe("Auth Advanced (e2e)", () => {
         tenantId: "t1",
         isSpeaker: true,
       };
-      
+
       const accessToken = await jwtService.signAsync(payload);
 
       mockPrismaService.user.findUnique.mockResolvedValue({

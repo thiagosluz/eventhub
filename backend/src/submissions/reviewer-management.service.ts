@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { MailService } from "../mail/mail.service";
 import * as argon2 from "argon2";
@@ -28,7 +32,7 @@ export class ReviewerManagementService {
     });
 
     if (existingInvite && existingInvite.status === InvitationStatus.PENDING) {
-        // Re-send or just throw error? Let's re-send by updating token and expiresAt
+      // Re-send or just throw error? Let's re-send by updating token and expiresAt
     }
 
     const token = crypto.randomBytes(32).toString("hex");
@@ -73,7 +77,9 @@ export class ReviewerManagementService {
     if (!event) throw new NotFoundException("Evento não encontrado");
 
     // Check if user already exists
-    let user = await this.prisma.user.findUnique({ where: { email: data.email } });
+    let user = await this.prisma.user.findUnique({
+      where: { email: data.email },
+    });
 
     if (user) {
       // If user exists, just add to event committee
@@ -82,7 +88,9 @@ export class ReviewerManagementService {
         create: { eventId, userId: user.id },
         update: {},
       });
-      return { message: "Usuário já existia e foi adicionado ao comitê do evento" };
+      return {
+        message: "Usuário já existia e foi adicionado ao comitê do evento",
+      };
     }
 
     const hashedPassword = await argon2.hash(data.temporaryPassword);
@@ -104,7 +112,10 @@ export class ReviewerManagementService {
       data: { eventId, userId: user.id },
     });
 
-    return { message: "Revisor cadastrado manualmente com sucesso", userId: user.id };
+    return {
+      message: "Revisor cadastrado manualmente com sucesso",
+      userId: user.id,
+    };
   }
 
   async acceptInvitation(data: AcceptInvitationDto) {
@@ -114,8 +125,10 @@ export class ReviewerManagementService {
     });
 
     if (!invite) throw new NotFoundException("Convite não encontrado");
-    if (invite.status !== InvitationStatus.PENDING) throw new BadRequestException("Convite já processado");
-    if (invite.expiresAt < new Date()) throw new BadRequestException("Convite expirado");
+    if (invite.status !== InvitationStatus.PENDING)
+      throw new BadRequestException("Convite já processado");
+    if (invite.expiresAt < new Date())
+      throw new BadRequestException("Convite expirado");
 
     const hashedPassword = await argon2.hash(data.password);
 
@@ -135,9 +148,9 @@ export class ReviewerManagementService {
       // Mark invitation as accepted
       await tx.reviewerInvitation.update({
         where: { id: invite.id },
-        data: { 
+        data: {
           status: InvitationStatus.ACCEPTED,
-          acceptedById: user.id 
+          acceptedById: user.id,
         },
       });
 
@@ -149,7 +162,10 @@ export class ReviewerManagementService {
         },
       });
 
-      return { message: "Cadastro concluído e convite aceito", userId: user.id };
+      return {
+        message: "Cadastro concluído e convite aceito",
+        userId: user.id,
+      };
     });
   }
 
@@ -157,13 +173,13 @@ export class ReviewerManagementService {
     const invite = await this.prisma.reviewerInvitation.findUnique({
       where: { token },
       select: {
-          email: true,
-          status: true,
-          expiresAt: true,
-          event: {
-              select: { name: true }
-          }
-      }
+        email: true,
+        status: true,
+        expiresAt: true,
+        event: {
+          select: { name: true },
+        },
+      },
     });
 
     if (!invite) throw new NotFoundException("Convite não encontrado");

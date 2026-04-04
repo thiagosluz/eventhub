@@ -39,10 +39,7 @@ export class SubmissionConfigController {
   constructor(private readonly configService: SubmissionConfigService) {}
 
   @Get("config")
-  async getConfig(
-    @Param("eventId") eventId: string,
-    @Req() req: AuthRequest,
-  ) {
+  async getConfig(@Param("eventId") eventId: string, @Req() req: AuthRequest) {
     return this.configService.getConfig(req.user!.tenantId, eventId);
   }
 
@@ -144,10 +141,6 @@ export class SubmissionConfigController {
     @Param("ruleId") ruleId: string,
     @Req() req: AuthRequest,
   ) {
-    return this.configService.deleteRule(
-      req.user!.tenantId,
-      eventId,
-      ruleId,
-    );
+    return this.configService.deleteRule(req.user!.tenantId, eventId, ruleId);
   }
 }

@@ -75,9 +75,7 @@ describe("Coverage Booster", () => {
     ];
     expect(modules.length).toBeGreaterThan(0);
 
-    const services = [
-      PrismaService,
-    ];
+    const services = [PrismaService];
     expect(services.length).toBeGreaterThan(0);
   });
 
@@ -116,13 +114,13 @@ describe("Coverage Booster", () => {
       UpdateSpeakerDto,
       CreateSpeakerRoleDto,
     ];
-    
+
     // Instantiate each DTO to ensure 100% coverage on their constructors (if any)
-    dtos.forEach(DtoClass => {
+    dtos.forEach((DtoClass) => {
       try {
         const instance = new DtoClass();
         expect(instance).toBeDefined();
-      } catch (e) {
+      } catch (_e) {
         // Some might not be instantiable without args, but loading is usually enough
       }
     });

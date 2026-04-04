@@ -66,10 +66,13 @@ export class StaffManagementController {
   }
 
   @Roles(UserRole.ORGANIZER)
-  @ApiOperation({ summary: "List all participants of an event (potential monitors)" })
+  @ApiOperation({
+    summary: "List all participants of an event (potential monitors)",
+  })
   @Get("events/:eventId/potential-monitors")
   async listPotentialMonitors(@Param("eventId") eventId: string) {
-    const registrations = await this.staffService.listEventParticipants(eventId);
+    const registrations =
+      await this.staffService.listEventParticipants(eventId);
     return registrations.map((r) => r.user);
   }
 }

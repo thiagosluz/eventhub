@@ -49,7 +49,12 @@ export class CheckinService {
     qrCodeToken: string;
     activityId?: string;
     performedByUserId: string;
-  }): Promise<{ alreadyCheckedIn: boolean; attendanceId: string; xpGained?: number; isLevelUp?: boolean }> {
+  }): Promise<{
+    alreadyCheckedIn: boolean;
+    attendanceId: string;
+    xpGained?: number;
+    isLevelUp?: boolean;
+  }> {
     const { qrCodeToken, activityId, performedByUserId } = params;
 
     // --- Permission Check ---
@@ -62,7 +67,11 @@ export class CheckinService {
       throw new NotFoundException("Ingresso inválido ou não aprovado.");
     }
 
-    await this.checkStaffPermission(ticket.eventId, performedByUserId, ticket.event.tenantId);
+    await this.checkStaffPermission(
+      ticket.eventId,
+      performedByUserId,
+      ticket.event.tenantId,
+    );
     // ------------------------
 
     if (activityId) {
@@ -148,20 +157,22 @@ export class CheckinService {
 
     // Award XP
     const xpAmount = activityId ? 50 : 200;
-    const uniqueKey = activityId ? `ACTIVITY_CHECKIN_${activityId}` : `EVENT_CHECKIN_${event.id}`;
+    const uniqueKey = activityId
+      ? `ACTIVITY_CHECKIN_${activityId}`
+      : `EVENT_CHECKIN_${event.id}`;
     const xpResult = await this.gamificationService.awardXp(
       user.id,
       xpAmount,
       activityId ? "ACTIVITY_CHECKIN" : "EVENT_CHECKIN",
       uniqueKey,
-      event.id
+      event.id,
     );
 
-    return { 
-      alreadyCheckedIn: false, 
+    return {
+      alreadyCheckedIn: false,
       attendanceId: attendance.id,
       xpGained: xpResult.xpGained,
-      isLevelUp: xpResult.isLevelUp 
+      isLevelUp: xpResult.isLevelUp,
     };
   }
 
@@ -373,7 +384,10 @@ export class CheckinService {
     return updated;
   }
 
-  async undoCheckin(attendanceId: string, performedByUserId: string): Promise<void> {
+  async undoCheckin(
+    attendanceId: string,
+    performedByUserId: string,
+  ): Promise<void> {
     const attendance = await this.prisma.attendance.findUnique({
       where: { id: attendanceId },
       include: { ticket: { include: { event: true } } },
@@ -383,28 +397,39 @@ export class CheckinService {
       throw new NotFoundException("Registro de presença não encontrado.");
     }
 
-    await this.checkStaffPermission(attendance.ticket.eventId, performedByUserId, attendance.ticket.event.tenantId);
+    await this.checkStaffPermission(
+      attendance.ticket.eventId,
+      performedByUserId,
+      attendance.ticket.event.tenantId,
+    );
 
     await this.prisma.attendance.delete({
       where: { id: attendanceId },
     });
   }
 
-  private async checkStaffPermission(eventId: string, userId: string, tenantId: string): Promise<void> {
+  private async checkStaffPermission(
+    eventId: string,
+    userId: string,
+    tenantId: string,
+  ): Promise<void> {
     const staffUser = await this.prisma.user.findUnique({
       where: { id: userId },
     });
 
     if (!staffUser) throw new ForbiddenException("Usuário não encontrado.");
 
-    const isOrganizer = staffUser.role === "ORGANIZER" && staffUser.tenantId === tenantId;
-    
+    const isOrganizer =
+      staffUser.role === "ORGANIZER" && staffUser.tenantId === tenantId;
+
     const monitor = await this.prisma.eventMonitor.findUnique({
       where: { eventId_userId: { eventId, userId } },
     });
 
     if (!isOrganizer && !monitor) {
-      throw new ForbiddenException("Sem permissão para realizar esta operação neste evento.");
+      throw new ForbiddenException(
+        "Sem permissão para realizar esta operação neste evento.",
+      );
     }
   }
 }
