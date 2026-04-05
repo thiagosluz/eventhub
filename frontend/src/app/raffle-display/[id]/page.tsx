@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { operationsService } from "@/services/operations.service";
 import confetti from "canvas-confetti";
 import { TrophyIcon, SparklesIcon } from "@heroicons/react/24/solid";
 
-export default function RaffleDisplayPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function RaffleDisplayPage() {
+  const params = useParams();
+  const id = params.id as string;
   const [latestRaffleId, setLatestRaffleId] = useState<string | null>(null);
   const [displayWinner, setDisplayWinner] = useState<{ name: string, prize: string | null } | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -63,7 +65,8 @@ export default function RaffleDisplayPage({ params }: { params: Promise<{ id: st
       }
     };
 
-    const intervalId = setInterval(checkLatest, 3000);
+    const pollInterval = process.env.NODE_ENV === 'test' ? 100 : 3000;
+    const intervalId = setInterval(checkLatest, pollInterval);
     checkLatest(); // check instantâneo ao montar
 
     return () => clearInterval(intervalId);
@@ -84,11 +87,12 @@ export default function RaffleDisplayPage({ params }: { params: Promise<{ id: st
     setDisplayWinner(null);
 
     // Efeito de rolagem dramático (Slot Machine falso)
+    const delay = process.env.NODE_ENV === 'test' ? 10 : 4500;
     setTimeout(() => {
       setIsSpinning(false);
       setDisplayWinner(winner);
       fireConfetti();
-    }, 4500); // 4.5 segundos de suspense puro
+    }, delay); // 4.5 segundos de suspense puro (10ms em testes)
   };
 
   const fireConfetti = () => {

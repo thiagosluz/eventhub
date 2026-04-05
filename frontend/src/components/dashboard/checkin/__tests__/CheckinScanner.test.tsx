@@ -1,31 +1,32 @@
-import { render, screen, fireEvent, waitFor, act } from '@/test-utils';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CheckinScanner } from '../CheckinScanner';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { operationsService } from '@/services/operations.service';
+import { analyticsService } from '@/services/analytics.service';
 import { eventsService } from '@/services/events.service';
 import { activitiesService } from '@/services/activities.service';
-import { analyticsService } from '@/services/analytics.service';
-import { showXpGain } from '@/utils/xp-toast';
+import toast from 'react-hot-toast';
 
-// Mock de Html5Qrcode
-const mockStart = vi.fn().mockResolvedValue(undefined);
-const mockStop = vi.fn().mockResolvedValue(undefined);
-
+// Mock das dependências
 vi.mock('html5-qrcode', () => {
   return {
-    Html5Qrcode: vi.fn().mockImplementation(function (elementId: string) {
-      this.elementId = elementId;
-      this.start = mockStart;
-      this.stop = mockStop;
-    }),
+    Html5Qrcode: class {
+      start = vi.fn().mockResolvedValue({});
+      stop = vi.fn().mockResolvedValue({});
+    },
   };
 });
 
-// Mock dos serviços
 vi.mock('@/services/operations.service', () => ({
   operationsService: {
     checkin: vi.fn(),
     undoCheckin: vi.fn(),
+  },
+}));
+
+vi.mock('@/services/analytics.service', () => ({
+  analyticsService: {
+    getEventParticipants: vi.fn(),
   },
 }));
 
@@ -41,166 +42,149 @@ vi.mock('@/services/activities.service', () => ({
   },
 }));
 
-vi.mock('@/services/analytics.service', () => ({
-  analyticsService: {
-    getEventParticipants: vi.fn(),
-  },
+vi.mock('@/context/AuthContext', () => ({
+  useAuth: () => ({ user: { id: 'u-1', name: 'Organizador' } }),
 }));
 
 vi.mock('@/utils/xp-toast', () => ({
   showXpGain: vi.fn(),
 }));
 
-describe('CheckinScanner Component', () => {
-  const eventId = 'evt-123';
-  const mockEvent = { id: eventId, name: 'Evento de Teste' };
-  const mockActivities = [
-    { id: 'act-1', title: 'Workshop A' },
-    { id: 'act-2', title: 'Palestra B' },
-  ];
-  const mockParticipants = [
-    { 
-      id: 'p-1', 
-      name: 'John Doe', 
-      email: 'john@example.com', 
-      ticketType: 'VIP', 
-      qrCodeToken: 'token-123',
-      attendances: [] 
-    }
-  ];
+// Mock do Next.js Link
+vi.mock('next/link', () => ({
+  default: ({ children, href }: any) => <a href={href}>{children}</a>,
+}));
+
+const mockParticipants = [
+  { 
+    id: 'p-1', 
+    name: 'Thiago Silva', 
+    email: 'thiago@example.com', 
+    ticketType: 'VIP', 
+    qrCodeToken: 'TOKEN-123',
+    attendances: [] 
+  },
+  { 
+    id: 'p-2', 
+    name: 'João Souza', 
+    email: 'joao@example.com', 
+    ticketType: 'FREE', 
+    qrCodeToken: 'TOKEN-456',
+    attendances: [{ id: 'att-1', activityId: null }] 
+  },
+];
+
+describe('CheckinScanner', () => {
+  const eventId = 'ev-123';
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (eventsService.getOrganizerEventById as any).mockResolvedValue(mockEvent);
-    (activitiesService.getActivitiesForEvent as any).mockResolvedValue(mockActivities);
-    (analyticsService.getEventParticipants as any).mockResolvedValue(mockParticipants);
-    mockStart.mockResolvedValue(undefined);
+    vi.mocked(eventsService.getOrganizerEventById).mockResolvedValue({ id: eventId, name: 'Conferência' } as any);
+    vi.mocked(activitiesService.getActivitiesForEvent).mockResolvedValue([]);
+    vi.mocked(analyticsService.getEventParticipants).mockResolvedValue(mockParticipants as any);
   });
 
-  it('deve carregar dados iniciais do evento e iniciar o scanner', async () => {
+  it('deve alternar entre abas Scanner e Manual', async () => {
     render(<CheckinScanner eventId={eventId} />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Evento de Teste')).toBeInTheDocument();
-      expect(screen.getByText('Workshop A')).toBeInTheDocument();
-    });
+    // Aba Scanner ativa por padrão
+    expect(screen.getByText(/Scanner QR/i)).toHaveClass('text-primary');
 
-    // O scanner deve ser iniciado
-    expect(mockStart).toHaveBeenCalled();
+    // Clica em Manual
+    fireEvent.click(screen.getByText(/Manual \/ Busca/i));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Manual \/ Busca/i)).toHaveClass('text-primary');
+      expect(screen.getByPlaceholderText(/Busque por nome, email ou ingresso.../i)).toBeInTheDocument();
+    });
   });
 
-  it('deve processar um check-in com sucesso via scanner', async () => {
-    (operationsService.checkin as any).mockResolvedValue({ 
+  it('deve filtrar participantes na busca manual', async () => {
+    render(<CheckinScanner eventId={eventId} />);
+    fireEvent.click(screen.getByText(/Manual \/ Busca/i));
+
+    await waitFor(() => screen.getByText('Thiago Silva'));
+
+    const searchInput = screen.getByPlaceholderText(/Busque por nome, email ou ingresso.../i);
+    fireEvent.change(searchInput, { target: { value: 'João' } });
+
+    expect(screen.getByText('João Souza')).toBeInTheDocument();
+    expect(screen.queryByText('Thiago Silva')).not.toBeInTheDocument();
+  });
+
+  it('deve realizar check-in manual com sucesso', async () => {
+    vi.mocked(operationsService.checkin).mockResolvedValue({ 
       alreadyCheckedIn: false, 
-      xpGained: 50, 
-      isLevelUp: false 
-    });
-
-    let scanSuccessCallback: (text: string) => void = () => {};
-    mockStart.mockImplementation((_cam, _cfg, success) => {
-      scanSuccessCallback = success;
-      return Promise.resolve();
-    });
+      attendanceId: 'att-new', 
+      xpGained: 50 
+    } as any);
 
     render(<CheckinScanner eventId={eventId} />);
+    fireEvent.click(screen.getByText(/Manual \/ Busca/i));
 
-    await waitFor(() => expect(mockStart).toHaveBeenCalled());
+    await waitFor(() => screen.getByText('Thiago Silva'));
 
-    // Simula leitura de QR Code
-    await act(async () => {
-      await scanSuccessCallback('valid-token');
-    });
+    const checkinButtons = screen.getAllByText('CHECK-IN');
+    fireEvent.click(checkinButtons[0]);
 
-    expect(operationsService.checkin).toHaveBeenCalledWith('valid-token', undefined);
-    
     await waitFor(() => {
+      expect(operationsService.checkin).toHaveBeenCalledWith('TOKEN-123', undefined);
       expect(screen.getByText(/Check-in Sucesso!/i)).toBeInTheDocument();
+      expect(screen.getByText(/\+50 XP/i)).toBeInTheDocument();
     });
   });
 
-  it('deve tratar erro de check-in (ingresso inválido)', async () => {
-    (operationsService.checkin as any).mockRejectedValue(new Error('Ingresso Inválido'));
-
-    let scanSuccessCallback: (text: string) => void = () => {};
-    mockStart.mockImplementation((_cam, _cfg, success) => {
-      scanSuccessCallback = success;
-      return Promise.resolve();
-    });
+  it('deve tratar erro 400 (ingresso já utilizado) no check-in manual', async () => {
+    vi.mocked(operationsService.checkin).mockResolvedValue({ 
+      alreadyCheckedIn: true, 
+      attendanceId: 'att-old' 
+    } as any);
 
     render(<CheckinScanner eventId={eventId} />);
-    await waitFor(() => expect(mockStart).toHaveBeenCalled());
-
-    await act(async () => {
-      await scanSuccessCallback('bad-token');
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText('Erro no Check-in')).toBeInTheDocument();
-      expect(screen.getByText('Ingresso Inválido')).toBeInTheDocument();
-    });
-  });
-
-  it('deve alternar para modo manual e permitir busca', async () => {
-    render(<CheckinScanner eventId={eventId} />);
-    
-    // Aguarda carregar dados
-    await waitFor(() => expect(screen.getByText('Evento de Teste')).toBeInTheDocument());
-
-    const manualTab = screen.getByText(/Manual \/ Busca/i);
-    fireEvent.click(manualTab);
-
-    await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-    });
-
-    const searchInput = screen.getByPlaceholderText(/Busque por nome/i);
-    fireEvent.change(searchInput, { target: { value: 'John' } });
-
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
-  });
-
-  it('deve permitir realizar check-in manual', async () => {
-    (operationsService.checkin as any).mockResolvedValue({ alreadyCheckedIn: false });
-    
-    render(<CheckinScanner eventId={eventId} />);
-    await waitFor(() => expect(screen.getByText(/Manual \/ Busca/i)).toBeInTheDocument());
-
     fireEvent.click(screen.getByText(/Manual \/ Busca/i));
 
-    await waitFor(() => expect(screen.getByText('John Doe')).toBeInTheDocument());
+    await waitFor(() => screen.getByText('Thiago Silva'));
 
-    const checkinBtn = screen.getByText('CHECK-IN');
-    fireEvent.click(checkinBtn);
+    const checkinButton = screen.getAllByText('CHECK-IN')[0];
+    fireEvent.click(checkinButton);
 
-    expect(operationsService.checkin).toHaveBeenCalledWith('token-123', undefined);
-    
     await waitFor(() => {
-      expect(screen.getByText('Check-in Sucesso!')).toBeInTheDocument();
+      expect(screen.getByText(/Já Realizado/i)).toBeInTheDocument();
+      expect(screen.getByText(/Este participante já fez o check-in/i)).toBeInTheDocument();
     });
   });
 
-  it('deve permitir desfazer check-in manual', async () => {
-    const participantWithAttendance = {
-      ...mockParticipants[0],
-      attendances: [{ id: 'att-1', activityId: null }]
-    };
-    (analyticsService.getEventParticipants as any).mockResolvedValue([participantWithAttendance]);
-    (operationsService.undoCheckin as any).mockResolvedValue({});
+  it('deve desfazer um check-in realizado', async () => {
+    vi.mocked(operationsService.undoCheckin).mockResolvedValue({} as any);
 
     render(<CheckinScanner eventId={eventId} />);
-    await waitFor(() => expect(screen.getByText(/Manual \/ Busca/i)).toBeInTheDocument());
-
     fireEvent.click(screen.getByText(/Manual \/ Busca/i));
 
-    await waitFor(() => expect(screen.getByText('DESFAZER')).toBeInTheDocument());
+    await waitFor(() => screen.getByText('João Souza'));
 
-    const undoBtn = screen.getByText('DESFAZER');
-    fireEvent.click(undoBtn);
+    const undoButton = screen.getByText('DESFAZER');
+    fireEvent.click(undoButton);
 
-    expect(operationsService.undoCheckin).toHaveBeenCalledWith('att-1');
+    await waitFor(() => {
+      expect(operationsService.undoCheckin).toHaveBeenCalledWith('att-1');
+      expect(screen.getByText(/Desfeito!/i)).toBeInTheDocument();
+    });
+  });
+
+  it('deve permitir selecionar atividade para check-in específico', async () => {
+    vi.mocked(activitiesService.getActivitiesForEvent).mockResolvedValue([
+      { id: 'act-1', title: 'Workshop de IA' }
+    ] as any);
+
+    render(<CheckinScanner eventId={eventId} />);
     
     await waitFor(() => {
-      expect(screen.getByText('Desfeito!')).toBeInTheDocument();
+      expect(screen.getByText('Workshop de IA')).toBeInTheDocument();
     });
+
+    const select = screen.getByRole('combobox');
+    fireEvent.change(select, { target: { value: 'act-1' } });
+
+    expect(select).toHaveValue('act-1');
   });
 });

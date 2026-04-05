@@ -79,6 +79,52 @@ describe('SpeakerForm Component', () => {
     });
   });
 
+  it('deve atualizar links sociais corretamente', async () => {
+    const onSubmitMock = vi.fn().mockResolvedValue(undefined);
+    render(<SpeakerForm {...defaultProps} onSubmit={onSubmitMock} />);
+
+    fireEvent.change(screen.getByLabelText(/Nome do Palestrante/i), { target: { value: 'John Social' } });
+    fireEvent.change(screen.getByPlaceholderText(/linkedin\.com/i), { target: { value: 'https://linkedin.com/in/perfil' } });
+    fireEvent.change(screen.getByPlaceholderText(/janedoe\.com/i), { target: { value: 'https://janedoe.com' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /Criar Palestrante/i }));
+
+    await waitFor(() => {
+      expect(onSubmitMock).toHaveBeenCalledWith(expect.objectContaining({
+        name: 'John Social',
+        linkedinUrl: 'https://linkedin.com/in/perfil',
+        websiteUrl: 'https://janedoe.com'
+      }));
+    });
+  });
+
+  it('deve tratar erro no upload de imagem', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (speakersService.uploadAvatar as any).mockRejectedValue(new Error('Upload failed'));
+    
+    render(<SpeakerForm {...defaultProps} />);
+    
+    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+    const input = screen.getByLabelText('', { selector: 'input[type="file"]' });
+    
+    fireEvent.change(input, { target: { files: [file] } });
+
+    await waitFor(() => {
+      expect(consoleSpy).toHaveBeenCalledWith("Error uploading avatar:", expect.any(Error));
+    });
+    consoleSpy.mockRestore();
+  });
+
+  it('deve chamar window.history.back ao clicar em cancelar', () => {
+    const backSpy = vi.spyOn(window.history, 'back').mockImplementation(() => {});
+    render(<SpeakerForm {...defaultProps} />);
+    
+    fireEvent.click(screen.getByRole('button', { name: /Cancelar/i }));
+    
+    expect(backSpy).toHaveBeenCalled();
+    backSpy.mockRestore();
+  });
+
   it('deve desabilitar botões durante o carregamento', () => {
     render(<SpeakerForm {...defaultProps} isLoading={true} />);
     

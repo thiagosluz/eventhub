@@ -61,13 +61,10 @@ export function BadgesShowcase() {
     try {
       await badgesService.claimBadge(claimingBadge.id, claimCode);
       toast.success("Conquista desbloqueada!");
+      const badgeToCelebrate = { ...claimingBadge, isEarned: true };
       setClaimingBadge(null);
       setClaimCode("");
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+      handleCelebrate(badgeToCelebrate);
       fetchData();
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Código inválido ou erro ao resgatar.");
@@ -217,6 +214,7 @@ export function BadgesShowcase() {
           <div className="relative w-full max-w-lg text-center shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden">
              <button 
                onClick={() => setSelectedBadge(null)}
+               aria-label="Fechar celebração"
                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 text-white/40 hover:text-white transition-colors z-20"
              >
                <XMarkIcon className="w-6 h-6" />

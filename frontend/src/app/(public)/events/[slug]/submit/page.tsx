@@ -246,8 +246,9 @@ export default function SubmitWorkPage() {
         <div className="premium-card p-8 md:p-12 bg-card border-border space-y-8">
           {/* Title Field */}
           <div className="space-y-3">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Título do Trabalho</label>
+            <label htmlFor="submission-title" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Título do Trabalho</label>
             <input 
+              id="submission-title"
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -259,8 +260,8 @@ export default function SubmitWorkPage() {
           {/* Modality Select */}
           {modalities.length > 0 && (
             <div className="space-y-3">
-              <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Modalidade</label>
-              <select value={modalityId} onChange={e => setModalityId(e.target.value)} className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground focus:ring-2 focus:ring-primary/50 transition-all font-bold">
+              <label htmlFor="modality" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Modalidade</label>
+              <select id="modality" value={modalityId} onChange={e => setModalityId(e.target.value)} className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground focus:ring-2 focus:ring-primary/50 transition-all font-bold">
                 <option value="">Selecione uma modalidade</option>
                 {modalities.map(m => (
                   <option key={m.id} value={m.id}>{m.name}{m.description ? ` — ${m.description}` : ""}</option>
@@ -272,8 +273,8 @@ export default function SubmitWorkPage() {
           {/* Thematic Area Select */}
           {areas.length > 0 && (
             <div className="space-y-3">
-              <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Área Temática</label>
-              <select value={thematicAreaId} onChange={e => setThematicAreaId(e.target.value)} className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground focus:ring-2 focus:ring-primary/50 transition-all font-bold">
+              <label htmlFor="thematic-area" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Área Temática</label>
+              <select id="thematic-area" value={thematicAreaId} onChange={e => setThematicAreaId(e.target.value)} className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground focus:ring-2 focus:ring-primary/50 transition-all font-bold">
                 <option value="">Selecione uma área temática</option>
                 {areas.map(a => (
                   <option key={a.id} value={a.id}>{a.name}</option>
@@ -284,8 +285,9 @@ export default function SubmitWorkPage() {
 
           {/* Abstract Field */}
           <div className="space-y-3">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Resumo / Abstract</label>
+            <label htmlFor="abstract" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Resumo / Abstract</label>
             <textarea 
+              id="abstract"
               rows={6}
               value={abstract}
               onChange={(e) => setAbstract(e.target.value)}

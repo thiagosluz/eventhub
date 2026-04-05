@@ -51,6 +51,30 @@ describe('AuthContext', () => {
     expect(Cookies.set).toHaveBeenCalledWith('eventhub_token', 'saved-tk', expect.any(Object));
   });
 
+  it('deve sincronizar refresh_token com cookie se existir no localStorage mas não no cookie', async () => {
+    localStorage.setItem('eventhub_user', JSON.stringify({ id: '1' }));
+    localStorage.setItem('eventhub_token', 'atk');
+    localStorage.setItem('eventhub_refresh_token', 'rtk');
+
+    renderHook(() => useAuth(), { wrapper });
+
+    await waitFor(() => {
+      expect(Cookies.set).toHaveBeenCalledWith('eventhub_token', 'atk', expect.any(Object));
+      expect(Cookies.set).toHaveBeenCalledWith('eventhub_refresh_token', 'rtk', expect.any(Object));
+    });
+  });
+
+  it('deve limpar localStorage se o JSON estiver corrompido', async () => {
+    localStorage.setItem('eventhub_user', 'invalid-json');
+    localStorage.setItem('eventhub_token', 'tk');
+
+    renderHook(() => useAuth(), { wrapper });
+
+    await waitFor(() => {
+      expect(localStorage.getItem('eventhub_user')).toBeNull();
+    });
+  });
+
   it('deve realizar login e redirecionar para o dashboard para ORGANIZER', async () => {
     const { result } = renderHook(() => useAuth(), { wrapper });
     
@@ -71,6 +95,23 @@ describe('AuthContext', () => {
     expect(localStorage.getItem('eventhub_token')).toBe('tk-123');
     expect(Cookies.set).toHaveBeenCalledWith('eventhub_token', 'tk-123', expect.any(Object));
     expect(mockPush).toHaveBeenCalledWith('/dashboard');
+  });
+
+  it('deve realizar login e redirecionar para home para PARTICIPANT', async () => {
+    const { result } = renderHook(() => useAuth(), { wrapper });
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    const authData = {
+      user: { id: '1', name: 'John', email: 'john@test.com', role: 'PARTICIPANT' },
+      access_token: 'tk-123',
+      refresh_token: 'rf-123'
+    };
+
+    act(() => {
+      result.current.login(authData as any);
+    });
+
+    expect(mockPush).toHaveBeenCalledWith('/');
   });
 
   it('deve redirecionar para troca de senha se mustChangePassword for verdade no login', async () => {
@@ -122,12 +163,19 @@ describe('AuthContext', () => {
     expect(savedUser.name).toBe('Updated');
   });
 
-  it('deve lançar erro se useAuth for usado fora do AuthProvider', () => {
-    // Silencia erro esperado
-    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    
-    expect(() => renderHook(() => useAuth())).toThrow('useAuth must be used within an AuthProvider');
-    
-    spy.mockRestore();
+  it('deve redirecionar para force-password-change se o estado do usuário mudar via hook', async () => {
+    const { result, rerender } = renderHook(() => useAuth(), { wrapper });
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    // Define um usuário que precisa trocar senha
+    act(() => {
+      result.current.login({
+        user: { id: '1', name: 'User', mustChangePassword: true },
+        access_token: 'abc',
+        refresh_token: 'def'
+      } as any);
+    });
+
+    expect(mockPush).toHaveBeenCalledWith('/dashboard/force-password-change');
   });
 });

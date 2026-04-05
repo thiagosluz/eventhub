@@ -127,8 +127,9 @@ export default function ProfilePage() {
             <form onSubmit={handleUpdateProfile} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Nome Completo</label>
+                  <label htmlFor="full-name" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Nome Completo</label>
                   <input 
+                    id="full-name"
                     value={profileData.name} 
                     onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
                     type="text" 
@@ -136,8 +137,9 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Endereço de E-mail</label>
+                  <label htmlFor="email" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Endereço de E-mail</label>
                   <input 
+                    id="email"
                     value={profileData.email} 
                     onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
                     type="email" 
@@ -147,8 +149,9 @@ export default function ProfilePage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Bio (Opcional)</label>
+                <label htmlFor="bio" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Bio (Opcional)</label>
                 <textarea 
+                  id="bio"
                   value={profileData.bio} 
                   onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
                   rows={4} 
@@ -179,8 +182,9 @@ export default function ProfilePage() {
             <form onSubmit={handleUpdatePassword} className="space-y-6">
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Senha Atual</label>
+                  <label htmlFor="current-password" dir="ltr" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Senha Atual</label>
                   <input 
+                    id="current-password"
                     value={passwordData.currentPassword}
                     onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
                     type="password" 
@@ -189,8 +193,9 @@ export default function ProfilePage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Nova Senha</label>
+                    <label htmlFor="new-password" object-type="field-label" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Nova Senha</label>
                     <input 
+                      id="new-password"
                       value={passwordData.newPassword}
                       onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                       type="password" 
@@ -198,8 +203,9 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Confirmar Nova Senha</label>
+                    <label htmlFor="confirm-password" object-type="field-label" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Confirmar Nova Senha</label>
                     <input 
+                      id="confirm-password"
                       value={passwordData.confirmPassword}
                       onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
                       type="password" 

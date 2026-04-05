@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { operationsService, RaffleWinner } from "@/services/operations.service";
 import {
   ChevronLeftIcon,
@@ -21,8 +22,9 @@ import { Event } from "@/types/event";
 import confetti from "canvas-confetti";
 import { DeleteConfirmationModal } from "@/components/dashboard/DeleteConfirmationModal";
 
-export default function RaffleToolPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function RaffleToolPage() {
+  const params = useParams();
+  const id = params.id as string;
   const [event, setEvent] = useState<Event | null>(null);
   const [winners, setWinners] = useState<RaffleWinner[]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -100,8 +102,9 @@ export default function RaffleToolPage({ params }: { params: Promise<{ id: strin
     setIsDrawing(true);
     setError("");
 
-    // Simulate a bit of "suspense"
-    await new Promise(r => setTimeout(r, 2000));
+    // Simulate a bit of "suspense" (accelerated in tests)
+    const delay = process.env.NODE_ENV === 'test' ? 0 : 2000;
+    await new Promise(r => setTimeout(r, delay));
 
     try {
       const response = await operationsService.drawRaffle(id, activityId || undefined, drawCount, rule, prizeName, uniqueWinners, excludeStaff);

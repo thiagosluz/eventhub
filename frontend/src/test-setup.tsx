@@ -12,6 +12,7 @@ vi.mock('next/navigation', () => ({
     back: vi.fn(),
   })),
   useSearchParams: vi.fn(() => new URLSearchParams()),
+  useParams: vi.fn(() => ({ id: 'ev-123' })),
 }));
 
 // Mock do next/link
@@ -77,11 +78,16 @@ vi.mock('@heroicons/react/24/outline', () => ({
   CameraIcon: MockIcon('CameraIcon'),
   InformationCircleIcon: MockIcon('InformationCircleIcon'),
   ArrowPathIcon: MockIcon('ArrowPathIcon'),
-  IdentificationIcon: MockIcon('IdentificationIcon')
+  IdentificationIcon: MockIcon('IdentificationIcon'),
+  SparklesIcon: MockIcon('SparklesIcon'),
+  EyeSlashIcon: MockIcon('EyeSlashIcon'),
+  TrophyIcon: MockIcon('TrophyIcon')
 }));
 
 vi.mock('@heroicons/react/24/solid', () => ({
   CheckIcon: MockIcon('CheckIcon'),
+  TrophyIcon: MockIcon('TrophyIcon'),
+  SparklesIcon: MockIcon('SparklesIcon'),
 }));
 
 // Mock da AuthContext
@@ -102,3 +108,20 @@ vi.mock('@/context/AuthContext', () => ({
   })),
   AuthProvider: ({ children }: any) => <>{children}</>,
 }));
+// Mock do hook use (Next.js 15 / React 19)
+if (!(React as any).use) {
+  (React as any).use = (promise: any) => {
+    if (promise && (promise as any)._value !== undefined) {
+      return (promise as any)._value;
+    }
+    return promise;
+  };
+}
+
+vi.mock('react', async (importActual) => {
+  const actual: any = await importActual();
+  return {
+    ...actual,
+    use: (promise: any) => promise?._value !== undefined ? promise._value : actual.use?.(promise),
+  };
+});

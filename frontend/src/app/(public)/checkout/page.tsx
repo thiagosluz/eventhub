@@ -32,6 +32,7 @@ function CheckoutContent() {
   const [formAnswers, setFormAnswers] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -72,10 +73,42 @@ function CheckoutContent() {
 
   const handleInputChange = (fieldId: string, value: string) => {
     setFormAnswers(prev => ({ ...prev, [fieldId]: value }));
+    if (fieldErrors[fieldId]) {
+      setFieldErrors(prev => {
+        const next = { ...prev };
+        delete next[fieldId];
+        return next;
+      });
+    }
   };
 
-  const nextStep = () => setStep(prev => prev + 1);
-  const prevStep = () => setStep(prev => prev - 1);
+  const validateStep2 = () => {
+    const newErrors: Record<string, string> = {};
+    fields.forEach(field => {
+      const value = formAnswers[field.id];
+      if (field.required && (!value || (typeof value === 'string' && !value.trim()))) {
+        newErrors[field.id] = "Este campo é obrigatório";
+      }
+    });
+    setFieldErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const nextStep = () => {
+    if (step === 2) {
+      if (!validateStep2()) {
+        setError("Por favor, preencha todos os campos obrigatórios.");
+        return;
+      }
+    }
+    setError("");
+    setStep(prev => prev + 1);
+  };
+
+  const prevStep = () => {
+    setError("");
+    setStep(prev => prev - 1);
+  };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -286,6 +319,11 @@ function CheckoutContent() {
                         {field.label} {field.required && <span className="text-primary">*</span>}
                       </label>
                       {renderField(field)}
+                      {fieldErrors[field.id] && (
+                        <p className="text-[10px] font-bold text-destructive px-1 mt-1 animate-in fade-in slide-in-from-top-1">
+                          {fieldErrors[field.id]}
+                        </p>
+                      )}
                     </div>
                   )) : (
                     <div className="text-center py-12 text-muted-foreground font-medium italic">
