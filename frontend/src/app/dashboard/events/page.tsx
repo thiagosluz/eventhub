@@ -11,6 +11,7 @@ import {
   CalendarIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function EventsManagementPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -87,7 +88,12 @@ export default function EventsManagementPage() {
             <div key={event.id} className="premium-card bg-card border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/5 transition-all group flex flex-col">
               <div className="aspect-video relative overflow-hidden bg-muted">
                 {event.bannerUrl ? (
-                  <img src={event.bannerUrl} alt={event.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <Image 
+                    src={event.bannerUrl} 
+                    alt={event.name} 
+                    fill
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-emerald-500/10 text-primary">
                     <CalendarIcon className="w-12 h-12 opacity-20" />

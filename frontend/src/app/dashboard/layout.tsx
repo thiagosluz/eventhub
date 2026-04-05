@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BellIcon, UserCircleIcon, ArrowRightOnRectangleIcon, UserIcon } from "@heroicons/react/24/outline";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import Image from "next/image";
 import { tenantsService } from "@/services/tenants.service";
 import { Tenant } from "@/types/event";
 
@@ -84,7 +85,13 @@ export default function DashboardLayout({
                 </div>
                 <div className="w-9 h-9 rounded-xl bg-muted overflow-hidden flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-all border border-border">
                   {(user as any).avatarUrl ? (
-                    <img src={(user as any).avatarUrl} alt={user.name} className="w-full h-full object-cover" />
+                    <Image 
+                      src={(user as any).avatarUrl} 
+                      alt={user.name} 
+                      width={36}
+                      height={36}
+                      className="w-full h-full object-cover" 
+                    />
                   ) : (
                     <UserCircleIcon className="w-6 h-6" />
                   )}

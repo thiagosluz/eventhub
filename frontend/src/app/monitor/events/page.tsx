@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usersService } from "@/services/users.service";
+import { usersService, EventMonitored } from "@/services/users.service";
 import Link from "next/link";
+import Image from "next/image";
 import { TicketIcon, QrCodeIcon } from "@heroicons/react/24/outline";
 
 export default function MonitorEventsPage() {
-  const [monitoredEvents, setMonitoredEvents] = useState<{ eventId: string; event: any }[]>([]);
+  const [monitoredEvents, setMonitoredEvents] = useState<EventMonitored[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -39,7 +40,12 @@ export default function MonitorEventsPage() {
             <div key={event.id} className="premium-card bg-card border-border overflow-hidden flex flex-col group hover:shadow-xl hover:shadow-primary/5 transition-all">
               <div className="h-32 bg-slate-200 relative overflow-hidden">
                 {event.bannerUrl ? (
-                  <img src={event.bannerUrl} alt={event.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <Image 
+                    src={event.bannerUrl} 
+                    alt={event.name} 
+                    fill
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
                 ) : (
                   <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary">
                     <TicketIcon className="w-8 h-8 opacity-20" />

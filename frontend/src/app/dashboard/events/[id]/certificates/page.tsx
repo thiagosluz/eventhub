@@ -14,6 +14,7 @@ import {
   CheckCircleIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function EventCertificatesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: eventId } = use(params);
@@ -93,7 +94,12 @@ export default function EventCertificatesPage({ params }: { params: Promise<{ id
           {templates.map((template) => (
             <div key={template.id} className="premium-card bg-card border-border overflow-hidden flex flex-col group">
               <div className="aspect-[4/3] relative overflow-hidden bg-muted border-b border-border">
-                <img src={template.backgroundUrl} alt={template.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <Image 
+                  src={template.backgroundUrl} 
+                  alt={template.name} 
+                  fill
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                    <button className="w-10 h-10 rounded-xl bg-white text-foreground flex items-center justify-center hover:scale-110 transition-transform shadow-xl">
                       <PencilIcon className="w-5 h-5" />

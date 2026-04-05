@@ -43,7 +43,9 @@ vi.mock('framer-motion', () => ({
 
 // Mock manual dos ícones do Heroicons usados com frequência
 const MockIcon = (name: string) => {
-  return (props: any) => <span data-testid={`icon-${name}`} {...props} />;
+  const Icon = (props: any) => <span data-testid={`icon-${name}`} {...props} />;
+  Icon.displayName = name;
+  return Icon;
 };
 
 vi.mock('@heroicons/react/24/outline', () => ({

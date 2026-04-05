@@ -14,6 +14,18 @@ export interface RaffleResponse {
   winners: RaffleWinner[];
 }
 
+export interface RaffleHistoryItem {
+  id: string;
+  eventId: string;
+  activityId?: string;
+  prizeName: string;
+  winners: RaffleWinner[];
+  rule: string;
+  hideOnDisplay: boolean;
+  receivedAt?: string;
+  createdAt: string;
+}
+
 export const operationsService = {
   checkin: async (qrCodeToken: string, activityId?: string): Promise<CheckinResponse> => {
     return api.post<CheckinResponse>('/checkin', { qrCodeToken, activityId });
@@ -31,12 +43,12 @@ export const operationsService = {
     return api.post<RaffleResponse>('/raffles', { eventId, activityId, count, rule, prizeName, uniqueWinners, excludeStaff });
   },
 
-  getLatestRaffle: async (eventId: string): Promise<any> => {
-    return api.get<any>(`/raffles/latest/${eventId}`);
+  getLatestRaffle: async (eventId: string): Promise<RaffleWinner | null> => {
+    return api.get<RaffleWinner | null>(`/raffles/latest/${eventId}`);
   },
 
-  getRaffleHistory: async (eventId: string): Promise<any[]> => {
-    return api.get<any[]>(`/raffles/history/${eventId}`);
+  getRaffleHistory: async (eventId: string): Promise<RaffleHistoryItem[]> => {
+    return api.get<RaffleHistoryItem[]>(`/raffles/history/${eventId}`);
   },
 
   deleteRaffleHistory: async (historyId: string): Promise<void> => {

@@ -20,6 +20,33 @@ export interface UserProfile extends Omit<User, "tenantId"> {
   isLevelUp?: boolean;
 }
 
+export interface EventMonitored {
+  eventId: string;
+  event: {
+    id: string;
+    name: string;
+    slug: string;
+    startDate: string;
+    endDate: string;
+    bannerUrl?: string;
+    status: string;
+  };
+}
+
+export interface SpeakerProfile {
+  id: string;
+  userId: string;
+  name: string;
+  bio: string;
+  avatarUrl?: string;
+  expertise?: string[];
+  socialLinks?: {
+    linkedin?: string;
+    twitter?: string;
+    website?: string;
+  };
+}
+
 export const usersService = {
   getMe: async (): Promise<UserProfile> => {
     return api.get<UserProfile>("/users/me");
@@ -29,7 +56,7 @@ export const usersService = {
     return api.patch<UserProfile>("/users/me", data);
   },
 
-  updatePassword: async (data: any): Promise<{ message: string }> => {
+  updatePassword: async (data: Record<string, string>): Promise<{ message: string }> => {
     return api.patch("/users/me/password", data);
   },
 
@@ -39,27 +66,27 @@ export const usersService = {
     return api.post("/users/me/avatar", formData);
   },
 
-  getPublicProfile: async (username: string): Promise<any> => {
-    return api.get(`/users/p/${username}`);
+  getPublicProfile: async (username: string): Promise<UserProfile> => {
+    return api.get<UserProfile>(`/users/p/${username}`);
   },
 
   getUsers: async (): Promise<User[]> => {
     return api.get<User[]>("/users");
   },
 
-  getMonitoredEvents: async (): Promise<{ eventId: string; event: any }[]> => {
-    return api.get<{ eventId: string; event: any }[]>("/users/me/monitored-events");
+  getMonitoredEvents: async (): Promise<EventMonitored[]> => {
+    return api.get<EventMonitored[]>("/users/me/monitored-events");
   },
 
   checkUsernameAvailability: async (username: string): Promise<{ available: boolean }> => {
     return api.get<{ available: boolean }>(`/users/check-username/${username}`);
   },
 
-  getSpeakerProfile: async (id: string): Promise<any> => {
-    return api.get(`/speakers/${id}`);
+  getSpeakerProfile: async (id: string): Promise<SpeakerProfile> => {
+    return api.get<SpeakerProfile>(`/speakers/${id}`);
   },
 
-  getMySpeakerProfile: async (): Promise<any> => {
-    return api.get("/speakers/me");
+  getMySpeakerProfile: async (): Promise<SpeakerProfile> => {
+    return api.get<SpeakerProfile>("/speakers/me");
   }
 };

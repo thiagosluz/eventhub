@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import { CheckBadgeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 interface Badge3DProps {
   name: string;
@@ -164,7 +165,13 @@ export function Badge3D({ name, description, color, iconUrl, isEarned = true, ev
             {isEarned ? (
               iconUrl ? (
                 iconUrl.startsWith('http') || iconUrl.startsWith('/') || iconUrl.startsWith('data:') ? (
-                  <img src={iconUrl} alt={name} className="w-16 h-16 object-contain drop-shadow-2xl" />
+                  <Image 
+                    src={iconUrl} 
+                    alt={name} 
+                    width={64}
+                    height={64}
+                    className="w-16 h-16 object-contain drop-shadow-2xl" 
+                  />
                 ) : (
                   <span className="text-6xl drop-shadow-2xl select-none">{iconUrl}</span>
                 )

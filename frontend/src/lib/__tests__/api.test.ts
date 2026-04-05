@@ -206,8 +206,7 @@ describe('ApiClient', () => {
     it('deve tentar ler tokens do cookie se no servidor', async () => {
       // Simula ambiente servidor removendo window
       const originalWindow = global.window;
-      // @ts-ignore
-      delete global.window;
+      delete (global as any).window;
 
       // Mock dinâmico de next/headers
       vi.mock('next/headers', () => ({

@@ -1,7 +1,7 @@
 import { Page, BrowserContext } from '@playwright/test';
 
 export async function setupDefaultMocks(page: Page | BrowserContext) {
-  let hasClaimedB2 = false;
+  const hasClaimedB2 = false;
   let latestRaffle: any = null;
   const alerts = [
     { id: 'a-1', userId: 'u-fraud', type: 'XP_SPIKE', message: 'Ganho súbito de 1000 XP em 1s', resolved: false, createdAt: new Date().toISOString(), user: { name: 'João Suspeito', email: 'joao@hacker.com' } }

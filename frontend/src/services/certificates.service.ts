@@ -98,7 +98,7 @@ export const certificatesService = {
     if (!res.ok) throw new Error("Falha ao carregar seus certificados.");
     return res.json();
   },
-  async previewTemplate(data: { backgroundUrl: string; layoutConfig: any }): Promise<Blob> {
+  async previewTemplate(data: { backgroundUrl: string; layoutConfig: Record<string, unknown> }): Promise<Blob> {
     const res = await fetch(`${API_BASE_URL}/certificates/templates/preview`, {
       method: "POST",
       headers: {

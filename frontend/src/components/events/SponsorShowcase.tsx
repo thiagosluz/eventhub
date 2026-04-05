@@ -1,6 +1,7 @@
 "use client";
 
 import { SponsorCategory } from "@/services/sponsors.service";
+import Image from "next/image";
 
 interface SponsorShowcaseProps {
   categories: SponsorCategory[];
@@ -54,9 +55,11 @@ export function SponsorShowcase({ categories }: SponsorShowcaseProps) {
                   rel="noopener noreferrer"
                   className={`relative group w-full flex items-center justify-center p-4 rounded-2xl bg-white/50 border border-border/40 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 ${sponsor.websiteUrl ? 'cursor-pointer' : 'cursor-default'}`}
                 >
-                  <img
+                  <Image
                     src={sponsor.logoUrl}
                     alt={sponsor.name}
+                    width={200}
+                    height={100}
                     className={`${sizeClasses[category.size] || sizeClasses.MEDIUM} w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-700 opacity-70 group-hover:opacity-100 p-2`}
                   />
                 </a>

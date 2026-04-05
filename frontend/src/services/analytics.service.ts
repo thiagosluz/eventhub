@@ -70,7 +70,7 @@ export interface GamificationAlert {
   userId: string;
   type: string;
   message: string;
-  metadata: any;
+  metadata: Record<string, unknown>;
   resolved: boolean;
   createdAt: string;
   user: { name: string; email: string };

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { UserCircleIcon, ArrowRightOnRectangleIcon, UserIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 export default function MonitorLayout({
   children,
@@ -57,7 +58,13 @@ export default function MonitorLayout({
               </div>
               <div className="w-9 h-9 rounded-xl bg-muted overflow-hidden flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-all border border-border">
                 {(user as any).avatarUrl ? (
-                  <img src={(user as any).avatarUrl} alt={user.name} className="w-full h-full object-cover" />
+                  <Image 
+                    src={(user as any).avatarUrl} 
+                    alt={user.name} 
+                    width={36}
+                    height={36}
+                    className="w-full h-full object-cover" 
+                  />
                 ) : (
                   <UserCircleIcon className="w-6 h-6" />
                 )}

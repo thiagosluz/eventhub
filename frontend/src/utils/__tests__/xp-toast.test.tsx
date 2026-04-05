@@ -44,7 +44,7 @@ describe('showXpGain', () => {
     showXpGain(xpAmount, false);
     
     // Captura a função de renderização passada para o toast.custom
-    const renderFn = vi.mocked(toast.custom).mock.calls[0][0] as Function;
+    const renderFn = vi.mocked(toast.custom).mock.calls[0][0] as (t: { visible: boolean }) => React.ReactNode;
     
     // Renderiza o componente para cobrir a lógica de animação e o texto
     const { rerender } = render(renderFn({ visible: true }));

@@ -85,7 +85,7 @@ export const speakersService = {
   addActivityMaterial: async (
     activityId: string,
     data: { title: string; fileUrl: string; fileType?: string },
-  ): Promise<any> => {
-    return api.post(`/speakers/me/activities/${activityId}/materials`, data);
+  ): Promise<{ id: string }> => {
+    return api.post<{ id: string }>(`/speakers/me/activities/${activityId}/materials`, data);
   },
 };
