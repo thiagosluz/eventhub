@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { setupDefaultMocks } from './support/mocks';
+
+test.beforeEach(async ({ page }) => {
+  await setupDefaultMocks(page);
+});
 
 test('landing page has title and CTA', async ({ page }) => {
   await page.goto('/');

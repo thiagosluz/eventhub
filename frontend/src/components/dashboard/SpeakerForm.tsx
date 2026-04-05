@@ -74,10 +74,11 @@ export function SpeakerForm({ initialData, onSubmit, isLoading }: SpeakerFormPro
 
           <div className="flex-1 space-y-4 w-full text-center md:text-left">
             <div>
-              <label className="block text-xs font-black text-muted-foreground uppercase tracking-widest mb-2">
+              <label htmlFor="name" className="block text-xs font-black text-muted-foreground uppercase tracking-widest mb-2">
                 Nome do Palestrante
               </label>
               <input
+                id="name"
                 type="text"
                 required
                 placeholder="Ex: Dr. Jane Doe"
@@ -87,10 +88,11 @@ export function SpeakerForm({ initialData, onSubmit, isLoading }: SpeakerFormPro
               />
             </div>
             <div>
-              <label className="block text-xs font-black text-muted-foreground uppercase tracking-widest mb-2">
+              <label htmlFor="email" className="block text-xs font-black text-muted-foreground uppercase tracking-widest mb-2">
                 E-mail (Opcional)
               </label>
               <input
+                id="email"
                 type="email"
                 placeholder="jane.doe@exemplo.com"
                 value={formData.email}
@@ -104,10 +106,11 @@ export function SpeakerForm({ initialData, onSubmit, isLoading }: SpeakerFormPro
         {/* Informações Profissionais */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="md:col-span-2">
-            <label className="block text-xs font-black text-muted-foreground uppercase tracking-widest mb-2">
+            <label htmlFor="bio" className="block text-xs font-black text-muted-foreground uppercase tracking-widest mb-2">
               Biografia / Mini Currículo
             </label>
             <textarea
+              id="bio"
               rows={4}
               placeholder="Breve descrição sobre a experiência e conquistas do palestrante..."
               value={formData.bio}

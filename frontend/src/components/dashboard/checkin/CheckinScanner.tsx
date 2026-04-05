@@ -178,7 +178,7 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
     return () => {
       stopScanner();
     };
-  }, [eventId, activeTab, startScanner, stopScanner]);
+  }, [eventId, activeTab]); // Remove startScanner/stopScanner dependencies to avoid loops
 
   const filteredParticipants = useMemo(() => {
     if (!searchQuery) return participants.slice(0, 10);

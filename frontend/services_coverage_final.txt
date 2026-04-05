@@ -1,0 +1,61 @@
+ [32m✓[39m src/services/__tests__/management.service.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/forms.service.spec.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/sponsors.service.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/participants.service.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/events.service.spec.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/users.service.spec.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/checkout.service.spec.ts [2m([22m[2m1 test[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/certificates.service.spec.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/activities.service.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/submissions.service.spec.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 52[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/tenants.service.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/operations.service.spec.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/speakers.service.spec.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/auth.service.spec.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/components/common/__tests__/ConfirmationModal.spec.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 92[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/badges.service.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/dashboard.service.spec.ts [2m([22m[2m1 test[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/staff.service.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/services/__tests__/analytics.service.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m19 passed[39m[22m[90m (19)[39m
+[2m      Tests [22m [1m[32m146 passed[39m[22m[90m (146)[39m
+[2m   Start at [22m 22:00:04
+[2m   Duration [22m 4.76s[2m (transform 1.68s, setup 2.55s, import 2.70s, tests 419ms, environment 23.57s)[22m
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |    6.44 |     1.57 |   13.28 |     6.4 |                   
+ app               |       0 |        0 |       0 |       0 |                   
+  favicon.ico      |       0 |        0 |       0 |       0 |                   
+  globals.css      |       0 |        0 |       0 |       0 |                   
+ app/(public)      |       0 |      100 |       0 |       0 |                   
+  layout.tsx       |       0 |      100 |       0 |       0 | 1-20              
+  page.tsx         |       0 |      100 |       0 |       0 | 1-6               
+ ...ic)/auth/login |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 1-91              
+ .../auth/register |       0 |        0 |       0 |       0 |                   
+--
+ services          |   99.52 |    90.62 |     100 |     100 |                   
+  ...es.service.ts |     100 |      100 |     100 |     100 |                   
+  ...cs.service.ts |     100 |      100 |     100 |     100 |                   
+  auth.service.ts  |     100 |      100 |     100 |     100 |                   
+  ...es.service.ts |     100 |      100 |     100 |     100 |                   
+  ...es.service.ts |   97.61 |       95 |     100 |     100 | 17                
+  ...ut.service.ts |     100 |      100 |     100 |     100 |                   
+  ...rd.service.ts |     100 |      100 |     100 |     100 |                   
+  ...ts.service.ts |     100 |      100 |     100 |     100 |                   
+  forms.service.ts |     100 |      100 |     100 |     100 |                   
+  ...nt.service.ts |     100 |      100 |     100 |     100 |                   
+  ...ns.service.ts |     100 |      100 |     100 |     100 |                   
+  ...ts.service.ts |     100 |      100 |     100 |     100 |                   
+  ...rs.service.ts |     100 |      100 |     100 |     100 |                   
+  ...rs.service.ts |     100 |      100 |     100 |     100 |                   
+  staff.service.ts |     100 |      100 |     100 |     100 |                   
+  ...ns.service.ts |     100 |       80 |     100 |     100 | 69-70             
+  ...ts.service.ts |     100 |      100 |     100 |     100 |                   
+  users.service.ts |     100 |      100 |     100 |     100 |                   
+ utils             |       0 |        0 |       0 |       0 |                   
+  xp-toast.tsx     |       0 |        0 |       0 |       0 | 1-33              

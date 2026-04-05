@@ -1,0 +1,141 @@
+
+> frontend@0.1.0 test
+> vitest run src/context/__tests__/AuthContext.test.tsx
+
+
+[1m[46m RUN [49m[22m [36mv4.1.2 [39m[90m/home/thiago/Projetos/eventhub/frontend[39m
+
+ [31m❯[39m src/context/__tests__/AuthContext.test.tsx [2m([22m[2m6 tests[22m[2m | [22m[31m6 failed[39m[2m)[22m[33m 1086[2mms[22m[39m
+[31m     [31m×[31m deve carregar informações do localStorage na inicialização[39m[33m 1042[2mms[22m[39m
+[31m     [31m×[31m deve realizar login e redirecionar para o dashboard para ORGANIZER[39m[32m 13[2mms[22m[39m
+[31m     [31m×[31m deve redirecionar para troca de senha se mustChangePassword for verdade no login[39m[32m 6[2mms[22m[39m
+[31m     [31m×[31m deve realizar logout e limpar armazenamento[39m[32m 8[2mms[22m[39m
+[31m     [31m×[31m deve atualizar o usuário corretamente[39m[32m 6[2mms[22m[39m
+[31m     [31m×[31m deve lançar erro se useAuth for usado fora do AuthProvider[39m[32m 6[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 6 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/context/__tests__/AuthContext.test.tsx[2m > [22mAuthContext[2m > [22mdeve carregar informações do localStorage na inicialização
+[31m[1mAssertionError[22m: expected 'Thiago Organizador' to be 'Saved User' // Object.is equality
+
+Ignored nodes: comments, script, style
+[36m<html>[31m
+  [36m<head />[31m
+  [36m<body>[31m
+    [36m<div />[31m
+  [36m</body>[31m
+[36m</html>[31m[39m
+
+Expected: [32m"[7mSaved Use[27mr"[39m
+Received: [31m"[7mThiago Organizado[27mr"[39m
+
+[36m [2m❯[22m src/context/__tests__/AuthContext.test.tsx:[2m43:41[22m[39m
+    [90m 41|[39m
+    [90m 42|[39m     [35mawait[39m [34mwaitFor[39m(() [33m=>[39m {
+    [90m 43|[39m       [34mexpect[39m(result[33m.[39mcurrent[33m.[39muser[33m?.[39mname)[33m.[39m[34mtoBe[39m([32m'Saved User'[39m)[33m;[39m
+    [90m   |[39m                                         [31m^[39m
+    [90m 44|[39m       [34mexpect[39m(result[33m.[39mcurrent[33m.[39misAuthenticated)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m 45|[39m       [34mexpect[39m(result[33m.[39mcurrent[33m.[39misLoading)[33m.[39m[34mtoBe[39m([35mfalse[39m)[33m;[39m
+[90m [2m❯[22m runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:[2m47:12[22m[39m
+[90m [2m❯[22m checkCallback node_modules/@testing-library/dom/dist/wait-for.js:[2m124:77[22m[39m
+[90m [2m❯[22m Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:[2m118:16[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/context/__tests__/AuthContext.test.tsx[2m > [22mAuthContext[2m > [22mdeve realizar login e redirecionar para o dashboard para ORGANIZER
+[31m[1mAssertionError[22m: expected 'Thiago Organizador' to be 'John' // Object.is equality[39m
+
+Expected: [32m"John"[39m
+Received: [31m"Thiago Organizador"[39m
+
+[36m [2m❯[22m src/context/__tests__/AuthContext.test.tsx:[2m67:39[22m[39m
+    [90m 65|[39m     })[33m;[39m
+    [90m 66|[39m
+    [90m 67|[39m     [34mexpect[39m(result[33m.[39mcurrent[33m.[39muser[33m?.[39mname)[33m.[39m[34mtoBe[39m([32m'John'[39m)[33m;[39m
+    [90m   |[39m                                       [31m^[39m
+    [90m 68|[39m     [34mexpect[39m(localStorage[33m.[39m[34mgetItem[39m([32m'eventhub_token'[39m))[33m.[39m[34mtoBe[39m([32m'tk-123'[39m)[33m;[39m
+    [90m 69|[39m     expect(Cookies.set).toHaveBeenCalledWith('eventhub_token', 'tk-123…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/context/__tests__/AuthContext.test.tsx[2m > [22mAuthContext[2m > [22mdeve redirecionar para troca de senha se mustChangePassword for verdade no login
+[31m[1mAssertionError[22m: expected "vi.fn()" to be called with arguments: [ '/dashboard/force-password-change' ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[36m [2m❯[22m src/context/__tests__/AuthContext.test.tsx:[2m87:22[22m[39m
+    [90m 85|[39m     })[33m;[39m
+    [90m 86|[39m
+    [90m 87|[39m     expect(mockPush).toHaveBeenCalledWith('/dashboard/force-password-c…
+    [90m   |[39m                      [31m^[39m
+    [90m 88|[39m   })[33m;[39m
+    [90m 89|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/context/__tests__/AuthContext.test.tsx[2m > [22mAuthContext[2m > [22mdeve realizar logout e limpar armazenamento
+[31m[1mAssertionError[22m: expected { id: 'clv_user_thiago', …(4) } to be null[39m
+
+[32m- Expected:[39m
+null
+
+[31m+ Received:[39m
+{
+  "email": "organizador@eventhub.com.br",
+  "id": "clv_user_thiago",
+  "name": "Thiago Organizador",
+  "role": "ORGANIZER",
+  "tenantId": "clv_tenant_hq",
+}
+
+[36m [2m❯[22m src/context/__tests__/AuthContext.test.tsx:[2m99:33[22m[39m
+    [90m 97|[39m     })[33m;[39m
+    [90m 98|[39m
+    [90m 99|[39m     [34mexpect[39m(result[33m.[39mcurrent[33m.[39muser)[33m.[39m[34mtoBeNull[39m()[33m;[39m
+    [90m   |[39m                                 [31m^[39m
+    [90m100|[39m     [34mexpect[39m(result[33m.[39mcurrent[33m.[39misAuthenticated)[33m.[39m[34mtoBe[39m([35mfalse[39m)[33m;[39m
+    [90m101|[39m     [34mexpect[39m(localStorage[33m.[39m[34mgetItem[39m([32m'eventhub_user'[39m))[33m.[39m[34mtoBeNull[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/context/__tests__/AuthContext.test.tsx[2m > [22mAuthContext[2m > [22mdeve atualizar o usuário corretamente
+[31m[1mAssertionError[22m: expected 'Thiago Organizador' to be 'Updated' // Object.is equality[39m
+
+Expected: [32m"Updated"[39m
+Received: [31m"Thiago Organizador"[39m
+
+[36m [2m❯[22m src/context/__tests__/AuthContext.test.tsx:[2m116:39[22m[39m
+    [90m114|[39m     })[33m;[39m
+    [90m115|[39m
+    [90m116|[39m     [34mexpect[39m(result[33m.[39mcurrent[33m.[39muser[33m?.[39mname)[33m.[39m[34mtoBe[39m([32m'Updated'[39m)[33m;[39m
+    [90m   |[39m                                       [31m^[39m
+    [90m117|[39m     const savedUser = JSON.parse(localStorage.getItem('eventhub_user')…
+    [90m118|[39m     [34mexpect[39m(savedUser[33m.[39mname)[33m.[39m[34mtoBe[39m([32m'Updated'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/context/__tests__/AuthContext.test.tsx[2m > [22mAuthContext[2m > [22mdeve lançar erro se useAuth for usado fora do AuthProvider
+[31m[1mAssertionError[22m: expected [Function] to throw an error[39m
+
+[32m- Expected:[39m
+null
+
+[31m+ Received:[39m
+undefined
+
+[36m [2m❯[22m src/context/__tests__/AuthContext.test.tsx:[2m125:47[22m[39m
+    [90m123|[39m     const spy = vi.spyOn(console, 'error').mockImplementation(() => {}…
+    [90m124|[39m
+    [90m125|[39m     expect(() => renderHook(() => useAuth())).toThrow('useAuth must be…
+    [90m   |[39m                                               [31m^[39m
+    [90m126|[39m
+    [90m127|[39m     spy[33m.[39m[34mmockRestore[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m6 failed[39m[22m[90m (6)[39m
+[2m   Start at [22m 10:53:02
+[2m   Duration [22m 2.16s[2m (transform 73ms, setup 112ms, import 111ms, tests 1.09s, environment 676ms)[22m
+

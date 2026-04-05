@@ -7,10 +7,22 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: ['./src/test-setup.ts'],
+    setupFiles: ['./src/test-setup.tsx'],
     exclude: ['**/node_modules/**', '**/e2e/**'],
     alias: {
       '@': path.resolve(__dirname, './src'),
+    },
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: ['src/**'],
+      exclude: [
+        'src/types/**',
+        'src/**/*.d.ts',
+        'src/test-setup.ts',
+        'src/app/layout.tsx',
+        'src/app/providers.tsx',
+      ],
     },
   },
 });

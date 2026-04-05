@@ -120,13 +120,14 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form aria-label="Formulário de Atividade" onSubmit={handleSubmit} className="space-y-8">
       <div className="space-y-6">
         {/* Basic Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2 md:col-span-2">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Título da Atividade</label>
+            <label htmlFor="title" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Título da Atividade</label>
             <input
+              id="title"
               required
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -136,8 +137,9 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Tipo de Atividade</label>
+            <label htmlFor="typeId" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Tipo de Atividade</label>
             <select
+              id="typeId"
               value={formData.typeId}
               onChange={(e) => setFormData({ ...formData, typeId: e.target.value })}
               className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm appearance-none"
@@ -220,8 +222,9 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Descrição</label>
+          <label htmlFor="description" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Descrição</label>
           <textarea
+            id="description"
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             className="w-full p-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
@@ -232,10 +235,11 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
         {/* Schedule */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Data/Hora Início</label>
+            <label htmlFor="startAt" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Data/Hora Início</label>
             <div className="relative">
               <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
+                id="startAt"
                 required
                 type="datetime-local"
                 value={formData.startAt}
@@ -245,10 +249,11 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
             </div>
           </div>
           <div className="space-y-2">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Data/Hora Término</label>
+            <label htmlFor="endAt" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Data/Hora Término</label>
             <div className="relative">
               <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
+                id="endAt"
                 required
                 type="datetime-local"
                 value={formData.endAt}
@@ -262,10 +267,11 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
         {/* Location and Capacity */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Localização (Opcional)</label>
+            <label htmlFor="location" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Localização (Opcional)</label>
             <div className="relative">
               <MapPinIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
+                id="location"
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
@@ -274,10 +280,11 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
             </div>
           </div>
           <div className="space-y-2">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Capacidade (Vagas)</label>
+            <label htmlFor="capacity" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Capacidade (Vagas)</label>
             <div className="relative">
               <UsersIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
+                id="capacity"
                 type="number"
                 value={formData.capacity}
                 onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
