@@ -196,10 +196,11 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
 
               {formData.requiresConfirmation && (
                 <div className="space-y-2 animate-in fade-in slide-in-from-left-2 duration-300">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground px-1">
+                  <label htmlFor={`confirmationDays`} className="text-[10px] font-black uppercase tracking-widest text-muted-foreground px-1">
                     Prazo para Confirmação (Dias)
                   </label>
                   <select
+                    id={`confirmationDays`}
                     value={formData.confirmationDays}
                     onChange={(e) =>
                       setFormData({
@@ -312,9 +313,10 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
             {formData.speakers.map((s, index) => (
               <div key={index} className="flex gap-4 items-end bg-muted/20 p-4 rounded-2xl border border-border/50">
                 <div className="flex-1 space-y-2">
-                  <label className="text-[10px] font-black uppercase text-muted-foreground">Palestrante</label>
+                  <label htmlFor={`speaker-${index}`} className="text-[10px] font-black uppercase text-muted-foreground">Palestrante</label>
                   <div className="relative">
                     <select
+                      id={`speaker-${index}`}
                       value={s.speakerId}
                       onChange={(e) => updateSpeaker(index, 'speakerId', e.target.value)}
                       className="w-full h-11 pl-11 pr-3 rounded-lg border border-border bg-card outline-none text-xs font-bold appearance-none transition-all focus:border-primary"
@@ -339,8 +341,9 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
                   </div>
                 </div>
                 <div className="flex-1 space-y-2">
-                  <label className="text-[10px] font-black uppercase text-muted-foreground">Papel</label>
+                  <label htmlFor={`role-${index}`} className="text-[10px] font-black uppercase text-muted-foreground">Papel</label>
                   <select
+                    id={`role-${index}`}
                     value={s.roleId}
                     onChange={(e) => updateSpeaker(index, 'roleId', e.target.value)}
                     className="w-full h-10 px-3 rounded-lg border border-border bg-card outline-none text-xs font-bold"

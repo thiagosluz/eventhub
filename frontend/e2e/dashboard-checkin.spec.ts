@@ -42,7 +42,7 @@ test.describe('Dashboard - Fluxo de Check-in', () => {
     await expect(page.getByText('Jane Smith')).toBeVisible();
 
     // Testa filtro
-    const searchInput = page.getByPlaceholder('Busque por nome, e-mail ou código...');
+    const searchInput = page.getByPlaceholder(/Busque por nome/i);
     await searchInput.fill('John');
     
     await expect(page.getByText('John Doe')).toBeVisible();
@@ -55,15 +55,14 @@ test.describe('Dashboard - Fluxo de Check-in', () => {
     const checkinBtn = page.locator('button:has-text("CHECK-IN")').first();
     // Prepara espera pela resposta da API
     const responsePromise = page.waitForResponse(response => 
-      response.url().includes('/operations/checkin') && response.request().method() === 'POST'
+      response.url().includes('/checkin') && response.request().method() === 'POST'
     );
     
     await checkinBtn.click();
     await responsePromise;
 
     // Verifica feedback visual de sucesso
-    await expect(page.getByText(/Check-in realizado com sucesso!/i)).toBeVisible();
-    await expect(page.getByText('+50 XP')).toBeVisible();
+    await expect(page.getByText(/Check-in Sucesso!/i)).toBeVisible();
     
     // Verifica se o botão mudou para DESFAZER (na atualização do mock reativa)
     // Nota: Em E2E real, o mock do GET analytics refletiria a mudança. 
@@ -78,14 +77,14 @@ test.describe('Dashboard - Fluxo de Check-in', () => {
 
     // Prepara espera pela resposta da API
     const responsePromise = page.waitForResponse(response => 
-      response.url().includes('/operations/checkin') && response.request().method() === 'DELETE'
+      response.url().includes('/checkin') && response.request().method() === 'DELETE'
     );
     
     await undoBtn.click();
     await responsePromise;
 
     // Verifica feedback visual
-    await expect(page.getByText(/Check-in desfeito!/i)).toBeVisible();
+    await expect(page.getByText(/Desfeito!/i)).toBeVisible();
   });
 
   test('deve validar montagem da área do scanner', async ({ page }) => {

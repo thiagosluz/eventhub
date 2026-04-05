@@ -1,47 +1,45 @@
-# 🎼 Backend Stabilization Plan
-
-This plan outlines the steps to fix failing unit and E2E tests in the backend, ensuring full system stability.
+# 🎼 Frontend E2E Stabilization Plan
 
 ## 1. ANALYSIS
 
-The following test suites are currently failing:
+The frontend E2E tests were executed (`npm run test:e2e` in `/frontend`) and we observed 5 failures out of 26 tests (21 passed). All failures appear to be related to either locator mismatches or timeouts waiting for specific API responses.
 
-### Unit Tests
-- `src/users/users.service.spec.ts`: Missing dependencies (`TestingInstanceLoader` error).
-- `src/events/events.controller.spec.ts`: Missing dependencies (`TestingInstanceLoader` error).
-- `src/checkin/checkin.service.spec.ts`: Missing `performedByUserId` in `undoCheckin` calls.
+### Failing Tests:
 
-### E2E Tests
-- `test/users.e2e-spec.ts`: `PATCH /users/profile` returns 500.
-- `test/checkin.e2e-spec.ts`: `POST /checkin` failure (likely due to recent schema/logic changes).
-- `test/analytics.e2e-spec.ts`: `GET /analytics/events/:id` returns 500 instead of 403.
+**1. Dashboard - Fluxo de Check-in**
+- `deve alternar para aba manual e filtrar participantes`: Timeout waiting for locator `getByPlaceholder('Busque por nome, e-mail ou código...')`.
+- `deve realizar check-in manual com sucesso`: Timeout waiting for API `POST /operations/checkin`.
+- `deve permitir desfazer check-in manual`: Timeout waiting for API `DELETE /operations/checkin`.
+
+**2. Dashboard - Gestão de Participantes**
+- `deve abrir o drawer de detalhes ao clicar no botão de visualizar`: Timeout waiting for `getByText('Detalhes do Participante')` to be visible.
+
+**3. Dashboard - Submissões Científicas**
+- `participante deve conseguir enviar um trabalho`: Timeout waiting for `getByPlaceholder(/Ex: Análise de Performance/i)`.
 
 ## 2. PLANNING
 
-### Phase 1: Unit Test Stabilization
-- [ ] Fix `checkin.service.spec.ts` by updating method signatures.
-- [ ] Debug and fix `users.service.spec.ts` and `events.controller.spec.ts` by adding missing mocked providers.
+### Phase 1: Locator Verification & Fixes
+- [ ] Inspect `frontend/src/app/(dashboard)/events/[id]/checkin/page.tsx` (or related components) to verify correct placeholder text for the search input.
+- [ ] Inspect the Drawer component for Participant details to ensure the title `Detalhes do Participante` exists.
+- [ ] Inspect the Scientific Submissions form to fix the placeholder for the work title.
 
-### Phase 2: E2E Fixes & Backend Logic
-- [ ] Investigate 500 errors in E2E tests for Users, Check-in, and Analytics.
-- [ ] Implement fixes in service/controller logic if recent changes introduced regressions.
+### Phase 2: API Mock Alignment
+- [ ] Investigate Playwright mock network configurations (in `frontend/e2e/support/mocks.ts` or individual spec files) for `POST /operations/checkin` and `DELETE /operations/checkin`.
+- [ ] Ensure that the frontend application relies on the expected routes and that Playwright successfully intercepts them.
 
 ### Phase 3: Verification
-- [ ] Run full test suite: `npm run test` and `npm run test:e2e`.
-- [ ] Run security scan: `python .agent/skills/vulnerability-scanner/scripts/security_scan.py .`.
-- [ ] Run lint: `npm run lint`.
+- [ ] Run the failing Playwright tests individually to ensure the fixes resolve the issue.
+- [ ] Execute `security_scan.py` and `lint_runner.py` to adhere to the Orchestration exit gate.
+- [ ] Provide the synthesized orchestrator report.
 
 ## 3. SOLUTIONING
 
-### Checkin Module
-Update `undoCheckin` usage in tests. It seems the function was updated to require the user ID of the person performing the action for auditing/gamification purposes.
-
-### Missing Dependencies
-Likely due to the introduction of `GamificationModule` or similar globally used services that were not added to the mock providers in the existing tests.
+We will implement the required fixes primarily in the Playwright spec files (`dashboard-checkin.spec.ts`, `dashboard-participants.spec.ts`, `scientific-submissions.spec.ts`) and optionally in the source files if the locators were correctly defined but changed in the UI without updating the tests. Mock interceptors will also be updated.
 
 ## 4. IMPLEMENTATION (Pending Approval)
 
-The following agents will be used in parallel after approval:
-- `backend-specialist`: For core logic fixes.
-- `test-engineer`: For test suite stabilization.
-- `debugger`: For root cause analysis of 500 errors.
+The following agents will be invoked in parallel after your approval:
+- `test-engineer`: To adjust the Playwright spec locators and mock routes.
+- `frontend-specialist`: To verify component IDs and texts.
+- `debugger`: To trace exact root causes of the API timeouts.
