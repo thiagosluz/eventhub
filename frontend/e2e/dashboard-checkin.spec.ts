@@ -30,7 +30,7 @@ test.describe('Dashboard - Fluxo de Check-in', () => {
     // Abre seletor de atividades
     const activitySelect = page.getByRole('combobox');
     await expect(activitySelect).toBeVisible();
-    await expect(activitySelect).toContainText('Check-in Geral');
+    await expect(activitySelect).toContainText('Check-in Geral do Evento');
   });
 
   test('deve alternar para aba manual e filtrar participantes', async ({ page }) => {
@@ -38,15 +38,15 @@ test.describe('Dashboard - Fluxo de Check-in', () => {
     await page.getByText('Manual / Busca').click();
     
     // Verifica se os participantes mockados aparecem
-    await expect(page.getByText('John Doe')).toBeVisible();
-    await expect(page.getByText('Jane Smith')).toBeVisible();
+    await expect(page.getByText('Alice Participant')).toBeVisible();
+    await expect(page.getByText('Bob Johnson')).toBeVisible();
 
     // Testa filtro
     const searchInput = page.getByPlaceholder(/Busque por nome/i);
-    await searchInput.fill('John');
+    await searchInput.fill('Alice');
     
-    await expect(page.getByText('John Doe')).toBeVisible();
-    await expect(page.getByText('Jane Smith')).not.toBeVisible();
+    await expect(page.getByText('Alice Participant')).toBeVisible();
+    await expect(page.getByText('Bob Johnson')).not.toBeVisible();
   });
 
   test('deve realizar check-in manual com sucesso', async ({ page }) => {
@@ -72,6 +72,7 @@ test.describe('Dashboard - Fluxo de Check-in', () => {
   test('deve permitir desfazer check-in manual', async ({ page }) => {
     await page.getByText('Manual / Busca').click();
     
+    // Bob Johnson já tem um attendance no mock, então deve ter botão DESFAZER
     const undoBtn = page.locator('button:has-text("DESFAZER")');
     await expect(undoBtn).toBeVisible();
 

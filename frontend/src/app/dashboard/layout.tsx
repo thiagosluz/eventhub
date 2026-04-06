@@ -84,9 +84,9 @@ export default function DashboardLayout({
                   </p>
                 </div>
                 <div className="w-9 h-9 rounded-xl bg-muted overflow-hidden flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-all border border-border">
-                  {(user as any).avatarUrl ? (
+                  {user.avatarUrl ? (
                     <Image 
-                      src={(user as any).avatarUrl} 
+                      src={user.avatarUrl} 
                       alt={user.name} 
                       width={36}
                       height={36}

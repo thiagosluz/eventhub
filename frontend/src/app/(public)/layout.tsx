@@ -5,13 +5,14 @@ import { Footer } from "@/components/common/Footer";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { tenantsService } from "@/services/tenants.service";
 import { useEffect, useState } from "react";
+import { Tenant } from "@/types/event";
 
 export default function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [tenant, setTenant] = useState<any>(null);
+  const [tenant, setTenant] = useState<Tenant | undefined>(undefined);
 
   useEffect(() => {
     tenantsService.getPublicTenant().then(setTenant).catch(console.error);

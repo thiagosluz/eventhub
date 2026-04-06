@@ -17,7 +17,7 @@ vi.mock('next/navigation', () => ({
 
 // Mock do next/link
 vi.mock('next/link', () => ({
-  default: ({ children, href, className, onClick }: any) => (
+  default: ({ children, href, className, onClick }: { children: React.ReactNode, href: string, className?: string, onClick?: () => void }) => (
     <a href={href} className={className} onClick={onClick}>
       {children}
     </a>
@@ -26,24 +26,27 @@ vi.mock('next/link', () => ({
 
 // Mock do next/image
 vi.mock('next/image', () => ({
-  default: (props: any) => <img {...props} />,
+  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img {...props} />;
+  },
 }));
 
 // Mock do framer-motion
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
-    h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
-    p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
-    section: ({ children, ...props }: any) => <section {...props}>{children}</section>,
+    div: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => <div {...props}>{children}</div>,
+    h1: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => <h1 {...props}>{children}</h1>,
+    h2: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => <h2 {...props}>{children}</h2>,
+    p: ({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => <p {...props}>{children}</p>,
+    section: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => <section {...props}>{children}</section>,
   },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 // Mock manual dos ícones do Heroicons usados com frequência
 const MockIcon = (name: string) => {
-  const Icon = (props: any) => <span data-testid={`icon-${name}`} {...props} />;
+  const Icon = (props: React.SVGProps<SVGSVGElement>) => <span data-testid={`icon-${name}`} {...(props as any)} />;
   Icon.displayName = name;
   return Icon;
 };
@@ -108,13 +111,13 @@ vi.mock('@/context/AuthContext', () => ({
     logout: vi.fn(),
     updateUser: vi.fn(),
   })),
-  AuthProvider: ({ children }: any) => <>{children}</>,
+  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 // Mock do hook use (Next.js 15 / React 19)
 if (!(React as any).use) {
-  (React as any).use = (promise: any) => {
-    if (promise && (promise as any)._value !== undefined) {
-      return (promise as any)._value;
+  (React as any).use = <T,>(promise: Promise<T> & { _value?: T }) => {
+    if (promise && promise._value !== undefined) {
+      return promise._value;
     }
     return promise;
   };

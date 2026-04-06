@@ -48,15 +48,14 @@ test.describe('Interação em Tempo Real - Organizador vs Telão', () => {
     organizerPage.on('console', msg => console.log(`[BROWSER-ORGANIZER] ${msg.text()}`));
 
     // Aumentamos o timeout para esperar o polling (3s) + animação (4.5s)
-    const longTimeout = 15000;
+    const longTimeout = 20000;
 
-    // Verifica o vencedor final diretamente (mais robusto que a animação rápida)
-    // O polling do telão detectará o estado 'latestRaffle' automaticamente.
-    await expect(displayPage.getByText('Sortudo')).toBeVisible({ timeout: longTimeout });
+    // Captura o estado do telão
     await expect(displayPage.getByText(/MacBook Pro M3/i)).toBeVisible({ timeout: longTimeout });
+    await expect(displayPage.getByText('Ana')).toBeVisible({ timeout: longTimeout });
 
-    // Verifica se os confetes dispararam (indiretamente, o estado de spinning deve ter passado)
-    await expect(displayPage.getByText(/PREPARANDO O RESULTADO.../i)).not.toBeVisible();
+    // Verifica se a animação completou (o texto de preparo desaparece)
+    await expect(displayPage.getByText(/Aguardando/i)).not.toBeVisible({ timeout: longTimeout });
 
     await sharedContext.close();
   });

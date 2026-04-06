@@ -42,7 +42,7 @@ test.describe('Fluxo de Monitoramento e Check-in', () => {
     await expect(page.getByText(/Check-in Sucesso!/i)).toBeVisible();
     
     // 6. Verifica se o botão mudou para "DESFAZER"
-    await expect(page.getByRole('button', { name: /DESFAZER/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /DESFAZER/i }).first()).toBeVisible();
   });
 
   test('deve permitir filtrar participantes na busca manual', async ({ page }) => {

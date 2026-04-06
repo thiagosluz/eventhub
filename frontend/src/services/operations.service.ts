@@ -21,7 +21,13 @@ export interface RaffleHistoryItem {
   prizeName: string;
   winners: RaffleWinner[];
   rule: string;
-  hideOnDisplay: boolean;
+  isHiddenOnDisplay: boolean;
+  registration?: {
+    user: {
+      name: string;
+      email: string;
+    };
+  };
   receivedAt?: string;
   createdAt: string;
 }
@@ -43,8 +49,8 @@ export const operationsService = {
     return api.post<RaffleResponse>('/raffles', { eventId, activityId, count, rule, prizeName, uniqueWinners, excludeStaff });
   },
 
-  getLatestRaffle: async (eventId: string): Promise<RaffleWinner | null> => {
-    return api.get<RaffleWinner | null>(`/raffles/latest/${eventId}`);
+  getLatestRaffle: async (eventId: string): Promise<RaffleHistoryItem | null> => {
+    return api.get<RaffleHistoryItem | null>(`/raffles/latest/${eventId}`);
   },
 
   getRaffleHistory: async (eventId: string): Promise<RaffleHistoryItem[]> => {

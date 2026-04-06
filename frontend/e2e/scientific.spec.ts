@@ -24,7 +24,8 @@ test.describe('Fluxo Científico (Submissões e Revisões)', () => {
 
   test('deve permitir gerenciar o comitê científico (Adicionar/Remover Revisor)', async ({ page }) => {
     // Navega para a aba de Comitê
-    await page.getByRole('button', { name: /Comitê/i }).click();
+    await page.getByRole('button', { name: /Comitê Científico/i }).click();
+    await page.waitForLoadState('networkidle');
 
     // Verifica se os revisores do tenant aparecem para adicionar (João Disponível deve estar no mock)
     await expect(page.getByText('João Disponível')).toBeVisible();
@@ -39,11 +40,12 @@ test.describe('Fluxo Científico (Submissões e Revisões)', () => {
 
   test('deve permitir atribuir um revisor a uma submissão', async ({ page }) => {
     // Navega para a aba de Trabalhos
-    await page.getByRole('button', { name: /Trabalhos/i }).click();
+    await page.getByRole('button', { name: /Gestão de Trabalhos/i }).click();
+    await page.waitForLoadState('networkidle');
 
     // Verifica se a submissão mockada aparece
     const submissionCard = page.locator('.premium-card', { hasText: 'IA no Campo' });
-    await expect(submissionCard).toBeVisible();
+    await expect(submissionCard).toBeVisible({ timeout: 10000 });
 
     // Abre o select de adicionar revisor dentro do card específico
     const select = submissionCard.locator('select');
@@ -119,6 +121,6 @@ test.describe('Submissão de Trabalho (Autor)', () => {
     await page.getByRole('button', { name: /Finalizar Submissão/i }).click();
 
     // Valida redirecionamento ou mensagem de sucesso
-    await expect(page.getByText('Submissão Enviada!')).toBeVisible();
+    await expect(page.getByText(/Submissão enviada/i)).toBeVisible();
   });
 });

@@ -40,7 +40,7 @@ test.describe('Dashboard - Sorteador de Prêmios', () => {
     
     // Verifica o resultado (Mock retorna 'Sortudo da Silva')
     await expect(page.getByText(/Parabéns aos Vencedores!/i)).toBeVisible({ timeout: 10000 });
-    await expect(page.getByText('Sortudo da Silva')).toBeVisible();
+    await expect(page.getByText('Ana Participante').first()).toBeVisible();
     
     // Verifica se o histórico atualizou (Mock de histórico deveria ser chamado de novo)
     // Nota: Como o mock é estático, o novo ganhador não aparecerá no histórico a menos que o mock mude

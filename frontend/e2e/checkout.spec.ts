@@ -53,7 +53,6 @@ test.describe('Página de Checkout - Inscrição em Evento', () => {
     
     // 3. Step 2: Preencher formulário
     await page.getByPlaceholder(/Digite seu empresa/i).fill('EventHub Labs');
-    await page.getByPlaceholder(/Digite seu cargo/i).fill('CEO');
     
     // Seleciona opção no Select
     await page.getByRole('combobox').selectOption('LinkedIn');

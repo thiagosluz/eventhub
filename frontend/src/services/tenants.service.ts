@@ -20,7 +20,7 @@ export const tenantsService = {
     return api.patch<Tenant>('/tenants/me', data);
   },
 
-  getPublicTenant: async (): Promise<Partial<Tenant>> => {
-    return api.get<Partial<Tenant>>('/tenants/public/tenant');
+  getPublicTenant: async (): Promise<Tenant> => {
+    return api.get<Tenant>('/tenants/public/tenant');
   },
 };

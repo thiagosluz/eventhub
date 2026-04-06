@@ -56,8 +56,9 @@ export default function ProfilePage() {
       const updated = await usersService.updateProfile(profileData);
       updateUser(updated);
       toast.success("Perfil atualizado com sucesso!");
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "Erro ao atualizar perfil.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Erro ao atualizar perfil.";
+      toast.error(errorMessage);
     } finally {
       setIsSaving(false);
     }
@@ -77,8 +78,9 @@ export default function ProfilePage() {
       });
       toast.success("Senha alterada com sucesso!");
       setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "Erro ao alterar senha.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Erro ao alterar senha.";
+      toast.error(errorMessage);
     } finally {
       setIsSaving(false);
     }
@@ -238,8 +240,8 @@ export default function ProfilePage() {
 
             <div className="relative group">
               <div className="w-40 h-40 rounded-3xl bg-muted overflow-hidden border-4 border-white shadow-xl">
-                {(user as any).avatarUrl ? (
-                  <img src={(user as any).avatarUrl} alt={user?.name} className="w-full h-full object-cover" />
+                {user?.avatarUrl ? (
+                  <img src={user.avatarUrl} alt={user?.name} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                     <UserCircleIcon className="w-20 h-20 opacity-20" />

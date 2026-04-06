@@ -28,6 +28,7 @@ type Tab = "config" | "committee" | "submissions";
 
 export default function SubmissionConfigPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: eventId } = use(params);
+  console.log('[DEBUG-E2E] EVENT ID:', eventId);
   const [config, setConfig] = useState<SubmissionConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab ] = useState<Tab>("config");

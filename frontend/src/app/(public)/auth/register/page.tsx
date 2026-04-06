@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/auth.service";
 import { useAuth } from "@/context/AuthContext";
+import { AuthResponse } from "@/types/auth";
 
 type Role = "ORGANIZER" | "PARTICIPANT";
 
@@ -27,28 +28,26 @@ export default function RegisterPage() {
     setError(null);
 
     try {
-      let response;
-      if (role === "ORGANIZER") {
-        response = await authService.registerOrganizer({
-          name,
-          email,
-          password,
-          tenantName,
-          tenantSlug,
-        });
-      } else {
-        response = await authService.registerParticipant({
-          name,
-          email,
-          password,
-        });
-      }
+      const response: AuthResponse = role === "ORGANIZER"
+        ? await authService.registerOrganizer({
+            name,
+            email,
+            password,
+            tenantName,
+            tenantSlug,
+          })
+        : await authService.registerParticipant({
+            name,
+            email,
+            password,
+          });
       
       login(response);
       router.push("/");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err.message || "Falha ao criar conta. Tente novamente.");
+      const errorMessage = err instanceof Error ? err.message : "Falha ao criar conta. Tente novamente.";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

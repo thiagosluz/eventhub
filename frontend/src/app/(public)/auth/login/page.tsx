@@ -22,9 +22,10 @@ export default function LoginPage() {
     try {
       const response = await authService.login({ email, password });
       login(response);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err.message || "Falha ao entrar. Verifique suas credenciais.");
+      const errorMessage = err instanceof Error ? err.message : "Falha ao entrar. Verifique suas credenciais.";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

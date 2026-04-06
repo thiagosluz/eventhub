@@ -1,5 +1,5 @@
 import { api } from '../lib/api';
-import { Activity } from '../types/event';
+import { Activity, ActivityEnrollment } from '../types/event';
 
 export interface SpeakerAssociationDto {
   speakerId: string;
@@ -51,11 +51,11 @@ export const activitiesService = {
     return api.get<(Activity & { isEnrolled: boolean, enrollmentStatus?: string })[]>(`/activities/my-enrollments/${eventId}`);
   },
 
-  listEnrollments: async (activityId: string): Promise<any[]> => {
-    return api.get<any[]>(`/activities/${activityId}/enrollments`);
+  listEnrollments: async (activityId: string): Promise<ActivityEnrollment[]> => {
+    return api.get<ActivityEnrollment[]>(`/activities/${activityId}/enrollments`);
   },
 
-  confirmEnrollment: async (activityId: string, enrollmentId: string): Promise<any> => {
-    return api.post<any>(`/activities/${activityId}/enrollments/${enrollmentId}/confirm`, {});
+  confirmEnrollment: async (activityId: string, enrollmentId: string): Promise<ActivityEnrollment> => {
+    return api.post<ActivityEnrollment>(`/activities/${activityId}/enrollments/${enrollmentId}/confirm`, {});
   }
 };
