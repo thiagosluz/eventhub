@@ -504,6 +504,19 @@ exports.Prisma.GamificationAlertScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.AuditLogScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  userId: 'userId',
+  action: 'action',
+  resource: 'resource',
+  resourceId: 'resourceId',
+  payload: 'payload',
+  ip: 'ip',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -672,7 +685,8 @@ exports.Prisma.ModelName = {
   ActivityFeedback: 'ActivityFeedback',
   EventMonitor: 'EventMonitor',
   XpGainLog: 'XpGainLog',
-  GamificationAlert: 'GamificationAlert'
+  GamificationAlert: 'GamificationAlert',
+  AuditLog: 'AuditLog'
 };
 
 /**

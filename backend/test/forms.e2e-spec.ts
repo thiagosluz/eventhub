@@ -28,6 +28,9 @@ describe("Forms (e2e)", () => {
       create: jest.fn(),
       update: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   const mockQueue = { add: jest.fn() };

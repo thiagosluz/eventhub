@@ -30,6 +30,9 @@ describe("Submissions (e2e)", () => {
     user: {
       findUnique: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   const mockMinioService = {

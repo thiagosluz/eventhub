@@ -15,6 +15,9 @@ describe("Tenants (e2e)", () => {
       findUnique: jest.fn(),
       update: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   beforeAll(async () => {

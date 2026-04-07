@@ -8,7 +8,9 @@ describe("AppController (e2e)", () => {
   let app: INestApplication;
 
   const mockPrismaService = {
-    // Add mocks for prisma methods if needed
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   beforeAll(async () => {

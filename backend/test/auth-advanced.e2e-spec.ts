@@ -24,6 +24,9 @@ describe("Auth Advanced (e2e)", () => {
     speaker: {
       findUnique: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   const mockMailService = {

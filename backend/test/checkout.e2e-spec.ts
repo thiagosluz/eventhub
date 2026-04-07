@@ -38,6 +38,9 @@ describe("CheckoutController (e2e)", () => {
     customFormAnswer: {
       create: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   const mockBadgesService = {

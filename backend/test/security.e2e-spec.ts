@@ -26,6 +26,9 @@ describe("Security (e2e) - Multi-Tenancy Isolation", () => {
     registration: {
       findFirst: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   const mockQueue = { add: jest.fn() };

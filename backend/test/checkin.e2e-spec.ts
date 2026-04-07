@@ -55,6 +55,9 @@ describe("Checkin (e2e)", () => {
       findFirst: jest.fn(),
       create: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   const mockBadgesService = {

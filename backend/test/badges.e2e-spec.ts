@@ -28,6 +28,9 @@ describe("Badges (e2e)", () => {
     registration: {
       findMany: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   const mockQueue = { add: jest.fn() };

@@ -193,6 +193,11 @@ export type XpGainLog = $Result.DefaultSelection<Prisma.$XpGainLogPayload>
  * 
  */
 export type GamificationAlert = $Result.DefaultSelection<Prisma.$GamificationAlertPayload>
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
 
 /**
  * Enums
@@ -887,6 +892,16 @@ export class PrismaClient<
     * ```
     */
   get gamificationAlert(): Prisma.GamificationAlertDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.auditLog`: Exposes CRUD operations for the **AuditLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AuditLogs
+    * const auditLogs = await prisma.auditLog.findMany()
+    * ```
+    */
+  get auditLog(): Prisma.AuditLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1356,7 +1371,8 @@ export namespace Prisma {
     ActivityFeedback: 'ActivityFeedback',
     EventMonitor: 'EventMonitor',
     XpGainLog: 'XpGainLog',
-    GamificationAlert: 'GamificationAlert'
+    GamificationAlert: 'GamificationAlert',
+    AuditLog: 'AuditLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1372,7 +1388,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "eventReviewer" | "reviewerInvitation" | "submissionModality" | "thematicArea" | "submissionRule" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge" | "activityMaterial" | "activityFeedback" | "eventMonitor" | "xpGainLog" | "gamificationAlert"
+      modelProps: "tenant" | "user" | "event" | "activityType" | "speakerRole" | "activity" | "speaker" | "activitySpeaker" | "registration" | "activityEnrollment" | "ticket" | "customForm" | "customFormField" | "customFormResponse" | "customFormAnswer" | "submission" | "review" | "eventReviewer" | "reviewerInvitation" | "submissionModality" | "thematicArea" | "submissionRule" | "attendance" | "certificateTemplate" | "issuedCertificate" | "sponsorCategory" | "sponsor" | "raffleHistory" | "badge" | "badgeClaimCode" | "userBadge" | "activityMaterial" | "activityFeedback" | "eventMonitor" | "xpGainLog" | "gamificationAlert" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4040,6 +4056,80 @@ export namespace Prisma {
           }
         }
       }
+      AuditLog: {
+        payload: Prisma.$AuditLogPayload<ExtArgs>
+        fields: Prisma.AuditLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuditLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuditLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          findFirst: {
+            args: Prisma.AuditLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuditLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          findMany: {
+            args: Prisma.AuditLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          create: {
+            args: Prisma.AuditLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          createMany: {
+            args: Prisma.AuditLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuditLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          delete: {
+            args: Prisma.AuditLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          update: {
+            args: Prisma.AuditLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuditLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuditLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AuditLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.AuditLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          aggregate: {
+            args: Prisma.AuditLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuditLog>
+          }
+          groupBy: {
+            args: Prisma.AuditLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuditLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuditLogCountArgs<ExtArgs>
+            result: $Utils.Optional<AuditLogCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4184,6 +4274,7 @@ export namespace Prisma {
     eventMonitor?: EventMonitorOmit
     xpGainLog?: XpGainLogOmit
     gamificationAlert?: GamificationAlertOmit
+    auditLog?: AuditLogOmit
   }
 
   /* Types for Logging */
@@ -4350,6 +4441,7 @@ export namespace Prisma {
     acceptedInvitations: number
     eventMonitors: number
     xpLogs: number
+    auditLogs: number
     gamificationAlerts: number
   }
 
@@ -4364,6 +4456,7 @@ export namespace Prisma {
     acceptedInvitations?: boolean | UserCountOutputTypeCountAcceptedInvitationsArgs
     eventMonitors?: boolean | UserCountOutputTypeCountEventMonitorsArgs
     xpLogs?: boolean | UserCountOutputTypeCountXpLogsArgs
+    auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
     gamificationAlerts?: boolean | UserCountOutputTypeCountGamificationAlertsArgs
   }
 
@@ -4451,6 +4544,13 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountGamificationAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GamificationAlertWhereInput
   }
@@ -4479,6 +4579,7 @@ export namespace Prisma {
     monitors: number
     xpLogs: number
     gamificationAlerts: number
+    auditLogs: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4500,6 +4601,7 @@ export namespace Prisma {
     monitors?: boolean | EventCountOutputTypeCountMonitorsArgs
     xpLogs?: boolean | EventCountOutputTypeCountXpLogsArgs
     gamificationAlerts?: boolean | EventCountOutputTypeCountGamificationAlertsArgs
+    auditLogs?: boolean | EventCountOutputTypeCountAuditLogsArgs
   }
 
   // Custom InputTypes
@@ -4637,6 +4739,13 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountGamificationAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GamificationAlertWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
   }
 
 
@@ -6805,6 +6914,7 @@ export namespace Prisma {
     speaker?: boolean | User$speakerArgs<ExtArgs>
     eventMonitors?: boolean | User$eventMonitorsArgs<ExtArgs>
     xpLogs?: boolean | User$xpLogsArgs<ExtArgs>
+    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     gamificationAlerts?: boolean | User$gamificationAlertsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -6897,6 +7007,7 @@ export namespace Prisma {
     speaker?: boolean | User$speakerArgs<ExtArgs>
     eventMonitors?: boolean | User$eventMonitorsArgs<ExtArgs>
     xpLogs?: boolean | User$xpLogsArgs<ExtArgs>
+    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     gamificationAlerts?: boolean | User$gamificationAlertsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -6922,6 +7033,7 @@ export namespace Prisma {
       speaker: Prisma.$SpeakerPayload<ExtArgs> | null
       eventMonitors: Prisma.$EventMonitorPayload<ExtArgs>[]
       xpLogs: Prisma.$XpGainLogPayload<ExtArgs>[]
+      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
       gamificationAlerts: Prisma.$GamificationAlertPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -7352,6 +7464,7 @@ export namespace Prisma {
     speaker<T extends User$speakerArgs<ExtArgs> = {}>(args?: Subset<T, User$speakerArgs<ExtArgs>>): Prisma__SpeakerClient<$Result.GetResult<Prisma.$SpeakerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     eventMonitors<T extends User$eventMonitorsArgs<ExtArgs> = {}>(args?: Subset<T, User$eventMonitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     xpLogs<T extends User$xpLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$xpLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gamificationAlerts<T extends User$gamificationAlertsArgs<ExtArgs> = {}>(args?: Subset<T, User$gamificationAlertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -8063,6 +8176,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.auditLogs
+   */
+  export type User$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    cursor?: AuditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
    * User.gamificationAlerts
    */
   export type User$gamificationAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8428,6 +8565,7 @@ export namespace Prisma {
     monitors?: boolean | Event$monitorsArgs<ExtArgs>
     xpLogs?: boolean | Event$xpLogsArgs<ExtArgs>
     gamificationAlerts?: boolean | Event$gamificationAlertsArgs<ExtArgs>
+    auditLogs?: boolean | Event$auditLogsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -8532,6 +8670,7 @@ export namespace Prisma {
     monitors?: boolean | Event$monitorsArgs<ExtArgs>
     xpLogs?: boolean | Event$xpLogsArgs<ExtArgs>
     gamificationAlerts?: boolean | Event$gamificationAlertsArgs<ExtArgs>
+    auditLogs?: boolean | Event$auditLogsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8563,6 +8702,7 @@ export namespace Prisma {
       monitors: Prisma.$EventMonitorPayload<ExtArgs>[]
       xpLogs: Prisma.$XpGainLogPayload<ExtArgs>[]
       gamificationAlerts: Prisma.$GamificationAlertPayload<ExtArgs>[]
+      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9001,6 +9141,7 @@ export namespace Prisma {
     monitors<T extends Event$monitorsArgs<ExtArgs> = {}>(args?: Subset<T, Event$monitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventMonitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     xpLogs<T extends Event$xpLogsArgs<ExtArgs> = {}>(args?: Subset<T, Event$xpLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$XpGainLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gamificationAlerts<T extends Event$gamificationAlertsArgs<ExtArgs> = {}>(args?: Subset<T, Event$gamificationAlertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamificationAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    auditLogs<T extends Event$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, Event$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9883,6 +10024,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GamificationAlertScalarFieldEnum | GamificationAlertScalarFieldEnum[]
+  }
+
+  /**
+   * Event.auditLogs
+   */
+  export type Event$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    cursor?: AuditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
   }
 
   /**
@@ -47393,6 +47558,1157 @@ export namespace Prisma {
 
 
   /**
+   * Model AuditLog
+   */
+
+  export type AggregateAuditLog = {
+    _count: AuditLogCountAggregateOutputType | null
+    _min: AuditLogMinAggregateOutputType | null
+    _max: AuditLogMaxAggregateOutputType | null
+  }
+
+  export type AuditLogMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    userId: string | null
+    action: string | null
+    resource: string | null
+    resourceId: string | null
+    ip: string | null
+    userAgent: string | null
+    createdAt: Date | null
+  }
+
+  export type AuditLogMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    userId: string | null
+    action: string | null
+    resource: string | null
+    resourceId: string | null
+    ip: string | null
+    userAgent: string | null
+    createdAt: Date | null
+  }
+
+  export type AuditLogCountAggregateOutputType = {
+    id: number
+    eventId: number
+    userId: number
+    action: number
+    resource: number
+    resourceId: number
+    payload: number
+    ip: number
+    userAgent: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AuditLogMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    action?: true
+    resource?: true
+    resourceId?: true
+    ip?: true
+    userAgent?: true
+    createdAt?: true
+  }
+
+  export type AuditLogMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    action?: true
+    resource?: true
+    resourceId?: true
+    ip?: true
+    userAgent?: true
+    createdAt?: true
+  }
+
+  export type AuditLogCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    userId?: true
+    action?: true
+    resource?: true
+    resourceId?: true
+    payload?: true
+    ip?: true
+    userAgent?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AuditLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditLog to aggregate.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AuditLogs
+    **/
+    _count?: true | AuditLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AuditLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AuditLogMaxAggregateInputType
+  }
+
+  export type GetAuditLogAggregateType<T extends AuditLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateAuditLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuditLog[P]>
+      : GetScalarType<T[P], AggregateAuditLog[P]>
+  }
+
+
+
+
+  export type AuditLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithAggregationInput | AuditLogOrderByWithAggregationInput[]
+    by: AuditLogScalarFieldEnum[] | AuditLogScalarFieldEnum
+    having?: AuditLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AuditLogCountAggregateInputType | true
+    _min?: AuditLogMinAggregateInputType
+    _max?: AuditLogMaxAggregateInputType
+  }
+
+  export type AuditLogGroupByOutputType = {
+    id: string
+    eventId: string | null
+    userId: string
+    action: string
+    resource: string
+    resourceId: string | null
+    payload: JsonValue | null
+    ip: string | null
+    userAgent: string | null
+    createdAt: Date
+    _count: AuditLogCountAggregateOutputType | null
+    _min: AuditLogMinAggregateOutputType | null
+    _max: AuditLogMaxAggregateOutputType | null
+  }
+
+  type GetAuditLogGroupByPayload<T extends AuditLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AuditLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AuditLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AuditLogGroupByOutputType[P]>
+            : GetScalarType<T[P], AuditLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AuditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    action?: boolean
+    resource?: boolean
+    resourceId?: boolean
+    payload?: boolean
+    ip?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+    event?: boolean | AuditLog$eventArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    action?: boolean
+    resource?: boolean
+    resourceId?: boolean
+    payload?: boolean
+    ip?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+    event?: boolean | AuditLog$eventArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    action?: boolean
+    resource?: boolean
+    resourceId?: boolean
+    payload?: boolean
+    ip?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+    event?: boolean | AuditLog$eventArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    userId?: boolean
+    action?: boolean
+    resource?: boolean
+    resourceId?: boolean
+    payload?: boolean
+    ip?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+  }
+
+  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "userId" | "action" | "resource" | "resourceId" | "payload" | "ip" | "userAgent" | "createdAt", ExtArgs["result"]["auditLog"]>
+  export type AuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | AuditLog$eventArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AuditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | AuditLog$eventArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AuditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | AuditLog$eventArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AuditLog"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string | null
+      userId: string
+      action: string
+      resource: string
+      resourceId: string | null
+      payload: Prisma.JsonValue | null
+      ip: string | null
+      userAgent: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["auditLog"]>
+    composites: {}
+  }
+
+  type AuditLogGetPayload<S extends boolean | null | undefined | AuditLogDefaultArgs> = $Result.GetResult<Prisma.$AuditLogPayload, S>
+
+  type AuditLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AuditLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AuditLogCountAggregateInputType | true
+    }
+
+  export interface AuditLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AuditLog'], meta: { name: 'AuditLog' } }
+    /**
+     * Find zero or one AuditLog that matches the filter.
+     * @param {AuditLogFindUniqueArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AuditLogFindUniqueArgs>(args: SelectSubset<T, AuditLogFindUniqueArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AuditLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AuditLogFindUniqueOrThrowArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AuditLogFindUniqueOrThrowArgs>(args: SelectSubset<T, AuditLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindFirstArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AuditLogFindFirstArgs>(args?: SelectSubset<T, AuditLogFindFirstArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindFirstOrThrowArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AuditLogFindFirstOrThrowArgs>(args?: SelectSubset<T, AuditLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AuditLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AuditLogs
+     * const auditLogs = await prisma.auditLog.findMany()
+     * 
+     * // Get first 10 AuditLogs
+     * const auditLogs = await prisma.auditLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AuditLogFindManyArgs>(args?: SelectSubset<T, AuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AuditLog.
+     * @param {AuditLogCreateArgs} args - Arguments to create a AuditLog.
+     * @example
+     * // Create one AuditLog
+     * const AuditLog = await prisma.auditLog.create({
+     *   data: {
+     *     // ... data to create a AuditLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends AuditLogCreateArgs>(args: SelectSubset<T, AuditLogCreateArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AuditLogs.
+     * @param {AuditLogCreateManyArgs} args - Arguments to create many AuditLogs.
+     * @example
+     * // Create many AuditLogs
+     * const auditLog = await prisma.auditLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AuditLogCreateManyArgs>(args?: SelectSubset<T, AuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AuditLogs and returns the data saved in the database.
+     * @param {AuditLogCreateManyAndReturnArgs} args - Arguments to create many AuditLogs.
+     * @example
+     * // Create many AuditLogs
+     * const auditLog = await prisma.auditLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AuditLogs and only return the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AuditLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AuditLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AuditLog.
+     * @param {AuditLogDeleteArgs} args - Arguments to delete one AuditLog.
+     * @example
+     * // Delete one AuditLog
+     * const AuditLog = await prisma.auditLog.delete({
+     *   where: {
+     *     // ... filter to delete one AuditLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AuditLogDeleteArgs>(args: SelectSubset<T, AuditLogDeleteArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AuditLog.
+     * @param {AuditLogUpdateArgs} args - Arguments to update one AuditLog.
+     * @example
+     * // Update one AuditLog
+     * const auditLog = await prisma.auditLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AuditLogUpdateArgs>(args: SelectSubset<T, AuditLogUpdateArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AuditLogs.
+     * @param {AuditLogDeleteManyArgs} args - Arguments to filter AuditLogs to delete.
+     * @example
+     * // Delete a few AuditLogs
+     * const { count } = await prisma.auditLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AuditLogDeleteManyArgs>(args?: SelectSubset<T, AuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AuditLogs
+     * const auditLog = await prisma.auditLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AuditLogUpdateManyArgs>(args: SelectSubset<T, AuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditLogs and returns the data updated in the database.
+     * @param {AuditLogUpdateManyAndReturnArgs} args - Arguments to update many AuditLogs.
+     * @example
+     * // Update many AuditLogs
+     * const auditLog = await prisma.auditLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AuditLogs and only return the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AuditLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AuditLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AuditLog.
+     * @param {AuditLogUpsertArgs} args - Arguments to update or create a AuditLog.
+     * @example
+     * // Update or create a AuditLog
+     * const auditLog = await prisma.auditLog.upsert({
+     *   create: {
+     *     // ... data to create a AuditLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AuditLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AuditLogUpsertArgs>(args: SelectSubset<T, AuditLogUpsertArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogCountArgs} args - Arguments to filter AuditLogs to count.
+     * @example
+     * // Count the number of AuditLogs
+     * const count = await prisma.auditLog.count({
+     *   where: {
+     *     // ... the filter for the AuditLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AuditLogCountArgs>(
+      args?: Subset<T, AuditLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuditLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AuditLogAggregateArgs>(args: Subset<T, AuditLogAggregateArgs>): Prisma.PrismaPromise<GetAuditLogAggregateType<T>>
+
+    /**
+     * Group by AuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AuditLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AuditLogGroupByArgs['orderBy'] }
+        : { orderBy?: AuditLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AuditLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuditLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AuditLog model
+   */
+  readonly fields: AuditLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AuditLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends AuditLog$eventArgs<ExtArgs> = {}>(args?: Subset<T, AuditLog$eventArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AuditLog model
+   */
+  interface AuditLogFieldRefs {
+    readonly id: FieldRef<"AuditLog", 'String'>
+    readonly eventId: FieldRef<"AuditLog", 'String'>
+    readonly userId: FieldRef<"AuditLog", 'String'>
+    readonly action: FieldRef<"AuditLog", 'String'>
+    readonly resource: FieldRef<"AuditLog", 'String'>
+    readonly resourceId: FieldRef<"AuditLog", 'String'>
+    readonly payload: FieldRef<"AuditLog", 'Json'>
+    readonly ip: FieldRef<"AuditLog", 'String'>
+    readonly userAgent: FieldRef<"AuditLog", 'String'>
+    readonly createdAt: FieldRef<"AuditLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AuditLog findUnique
+   */
+  export type AuditLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog findUniqueOrThrow
+   */
+  export type AuditLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog findFirst
+   */
+  export type AuditLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog findFirstOrThrow
+   */
+  export type AuditLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog findMany
+   */
+  export type AuditLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLogs to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog create
+   */
+  export type AuditLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AuditLog.
+     */
+    data: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
+  }
+
+  /**
+   * AuditLog createMany
+   */
+  export type AuditLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AuditLogs.
+     */
+    data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuditLog createManyAndReturn
+   */
+  export type AuditLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many AuditLogs.
+     */
+    data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditLog update
+   */
+  export type AuditLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AuditLog.
+     */
+    data: XOR<AuditLogUpdateInput, AuditLogUncheckedUpdateInput>
+    /**
+     * Choose, which AuditLog to update.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog updateMany
+   */
+  export type AuditLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AuditLogs.
+     */
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditLogs to update
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditLog updateManyAndReturn
+   */
+  export type AuditLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to update AuditLogs.
+     */
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditLogs to update
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditLog upsert
+   */
+  export type AuditLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AuditLog to update in case it exists.
+     */
+    where: AuditLogWhereUniqueInput
+    /**
+     * In case the AuditLog found by the `where` argument doesn't exist, create a new AuditLog with this data.
+     */
+    create: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
+    /**
+     * In case the AuditLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AuditLogUpdateInput, AuditLogUncheckedUpdateInput>
+  }
+
+  /**
+   * AuditLog delete
+   */
+  export type AuditLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter which AuditLog to delete.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog deleteMany
+   */
+  export type AuditLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditLogs to delete
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditLog.event
+   */
+  export type AuditLog$eventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Event
+     */
+    select?: EventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Event
+     */
+    omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    where?: EventWhereInput
+  }
+
+  /**
+   * AuditLog without action
+   */
+  export type AuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -47898,6 +49214,22 @@ export namespace Prisma {
   export type GamificationAlertScalarFieldEnum = (typeof GamificationAlertScalarFieldEnum)[keyof typeof GamificationAlertScalarFieldEnum]
 
 
+  export const AuditLogScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    userId: 'userId',
+    action: 'action',
+    resource: 'resource',
+    resourceId: 'resourceId',
+    payload: 'payload',
+    ip: 'ip',
+    userAgent: 'userAgent',
+    createdAt: 'createdAt'
+  };
+
+  export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -48372,6 +49704,7 @@ export namespace Prisma {
     speaker?: XOR<SpeakerNullableScalarRelationFilter, SpeakerWhereInput> | null
     eventMonitors?: EventMonitorListRelationFilter
     xpLogs?: XpGainLogListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
     gamificationAlerts?: GamificationAlertListRelationFilter
   }
 
@@ -48409,6 +49742,7 @@ export namespace Prisma {
     speaker?: SpeakerOrderByWithRelationInput
     eventMonitors?: EventMonitorOrderByRelationAggregateInput
     xpLogs?: XpGainLogOrderByRelationAggregateInput
+    auditLogs?: AuditLogOrderByRelationAggregateInput
     gamificationAlerts?: GamificationAlertOrderByRelationAggregateInput
   }
 
@@ -48449,6 +49783,7 @@ export namespace Prisma {
     speaker?: XOR<SpeakerNullableScalarRelationFilter, SpeakerWhereInput> | null
     eventMonitors?: EventMonitorListRelationFilter
     xpLogs?: XpGainLogListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
     gamificationAlerts?: GamificationAlertListRelationFilter
   }, "id" | "email" | "username">
 
@@ -48554,6 +49889,7 @@ export namespace Prisma {
     monitors?: EventMonitorListRelationFilter
     xpLogs?: XpGainLogListRelationFilter
     gamificationAlerts?: GamificationAlertListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -48599,6 +49935,7 @@ export namespace Prisma {
     monitors?: EventMonitorOrderByRelationAggregateInput
     xpLogs?: XpGainLogOrderByRelationAggregateInput
     gamificationAlerts?: GamificationAlertOrderByRelationAggregateInput
+    auditLogs?: AuditLogOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -48648,6 +49985,7 @@ export namespace Prisma {
     monitors?: EventMonitorListRelationFilter
     xpLogs?: XpGainLogListRelationFilter
     gamificationAlerts?: GamificationAlertListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
   }, "id" | "tenantId_slug">
 
   export type EventOrderByWithAggregationInput = {
@@ -51022,6 +52360,89 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"GamificationAlert"> | Date | string
   }
 
+  export type AuditLogWhereInput = {
+    AND?: AuditLogWhereInput | AuditLogWhereInput[]
+    OR?: AuditLogWhereInput[]
+    NOT?: AuditLogWhereInput | AuditLogWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    eventId?: StringNullableFilter<"AuditLog"> | string | null
+    userId?: StringFilter<"AuditLog"> | string
+    action?: StringFilter<"AuditLog"> | string
+    resource?: StringFilter<"AuditLog"> | string
+    resourceId?: StringNullableFilter<"AuditLog"> | string | null
+    payload?: JsonNullableFilter<"AuditLog">
+    ip?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AuditLogOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    resource?: SortOrder
+    resourceId?: SortOrderInput | SortOrder
+    payload?: SortOrderInput | SortOrder
+    ip?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    event?: EventOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AuditLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AuditLogWhereInput | AuditLogWhereInput[]
+    OR?: AuditLogWhereInput[]
+    NOT?: AuditLogWhereInput | AuditLogWhereInput[]
+    eventId?: StringNullableFilter<"AuditLog"> | string | null
+    userId?: StringFilter<"AuditLog"> | string
+    action?: StringFilter<"AuditLog"> | string
+    resource?: StringFilter<"AuditLog"> | string
+    resourceId?: StringNullableFilter<"AuditLog"> | string | null
+    payload?: JsonNullableFilter<"AuditLog">
+    ip?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type AuditLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    resource?: SortOrder
+    resourceId?: SortOrderInput | SortOrder
+    payload?: SortOrderInput | SortOrder
+    ip?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: AuditLogCountOrderByAggregateInput
+    _max?: AuditLogMaxOrderByAggregateInput
+    _min?: AuditLogMinOrderByAggregateInput
+  }
+
+  export type AuditLogScalarWhereWithAggregatesInput = {
+    AND?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
+    OR?: AuditLogScalarWhereWithAggregatesInput[]
+    NOT?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AuditLog"> | string
+    eventId?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    userId?: StringWithAggregatesFilter<"AuditLog"> | string
+    action?: StringWithAggregatesFilter<"AuditLog"> | string
+    resource?: StringWithAggregatesFilter<"AuditLog"> | string
+    resourceId?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    payload?: JsonNullableWithAggregatesFilter<"AuditLog">
+    ip?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AuditLog"> | Date | string
+  }
+
   export type TenantCreateInput = {
     id?: string
     name: string
@@ -51149,6 +52570,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -51185,6 +52607,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -51221,6 +52644,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -51257,6 +52681,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -51373,6 +52798,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -51417,6 +52843,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -51461,6 +52888,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -51505,6 +52933,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -53903,6 +55332,95 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AuditLogCreateInput = {
+    id?: string
+    action: string
+    resource: string
+    resourceId?: string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+    event?: EventCreateNestedOneWithoutAuditLogsInput
+    user: UserCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type AuditLogUncheckedCreateInput = {
+    id?: string
+    eventId?: string | null
+    userId: string
+    action: string
+    resource: string
+    resourceId?: string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneWithoutAuditLogsNestedInput
+    user?: UserUpdateOneRequiredWithoutAuditLogsNestedInput
+  }
+
+  export type AuditLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogCreateManyInput = {
+    id?: string
+    eventId?: string | null
+    userId: string
+    action: string
+    resource: string
+    resourceId?: string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -54242,6 +55760,12 @@ export namespace Prisma {
     none?: XpGainLogWhereInput
   }
 
+  export type AuditLogListRelationFilter = {
+    every?: AuditLogWhereInput
+    some?: AuditLogWhereInput
+    none?: AuditLogWhereInput
+  }
+
   export type GamificationAlertListRelationFilter = {
     every?: GamificationAlertWhereInput
     some?: GamificationAlertWhereInput
@@ -54281,6 +55805,10 @@ export namespace Prisma {
   }
 
   export type XpGainLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AuditLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -56231,6 +57759,43 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type AuditLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    resource?: SortOrder
+    resourceId?: SortOrder
+    payload?: SortOrder
+    ip?: SortOrder
+    userAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuditLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    resource?: SortOrder
+    resourceId?: SortOrder
+    ip?: SortOrder
+    userAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuditLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    resource?: SortOrder
+    resourceId?: SortOrder
+    ip?: SortOrder
+    userAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserCreateNestedManyWithoutTenantInput = {
     create?: XOR<UserCreateWithoutTenantInput, UserUncheckedCreateWithoutTenantInput> | UserCreateWithoutTenantInput[] | UserUncheckedCreateWithoutTenantInput[]
     connectOrCreate?: UserCreateOrConnectWithoutTenantInput | UserCreateOrConnectWithoutTenantInput[]
@@ -56581,6 +58146,13 @@ export namespace Prisma {
     connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
   }
 
+  export type AuditLogCreateNestedManyWithoutUserInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
   export type GamificationAlertCreateNestedManyWithoutUserInput = {
     create?: XOR<GamificationAlertCreateWithoutUserInput, GamificationAlertUncheckedCreateWithoutUserInput> | GamificationAlertCreateWithoutUserInput[] | GamificationAlertUncheckedCreateWithoutUserInput[]
     connectOrCreate?: GamificationAlertCreateOrConnectWithoutUserInput | GamificationAlertCreateOrConnectWithoutUserInput[]
@@ -56662,6 +58234,13 @@ export namespace Prisma {
     connectOrCreate?: XpGainLogCreateOrConnectWithoutUserInput | XpGainLogCreateOrConnectWithoutUserInput[]
     createMany?: XpGainLogCreateManyUserInputEnvelope
     connect?: XpGainLogWhereUniqueInput | XpGainLogWhereUniqueInput[]
+  }
+
+  export type AuditLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
   }
 
   export type GamificationAlertUncheckedCreateNestedManyWithoutUserInput = {
@@ -56854,6 +58433,20 @@ export namespace Prisma {
     deleteMany?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
   }
 
+  export type AuditLogUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
   export type GamificationAlertUpdateManyWithoutUserNestedInput = {
     create?: XOR<GamificationAlertCreateWithoutUserInput, GamificationAlertUncheckedCreateWithoutUserInput> | GamificationAlertCreateWithoutUserInput[] | GamificationAlertUncheckedCreateWithoutUserInput[]
     connectOrCreate?: GamificationAlertCreateOrConnectWithoutUserInput | GamificationAlertCreateOrConnectWithoutUserInput[]
@@ -57018,6 +58611,20 @@ export namespace Prisma {
     deleteMany?: XpGainLogScalarWhereInput | XpGainLogScalarWhereInput[]
   }
 
+  export type AuditLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
   export type GamificationAlertUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<GamificationAlertCreateWithoutUserInput, GamificationAlertUncheckedCreateWithoutUserInput> | GamificationAlertCreateWithoutUserInput[] | GamificationAlertUncheckedCreateWithoutUserInput[]
     connectOrCreate?: GamificationAlertCreateOrConnectWithoutUserInput | GamificationAlertCreateOrConnectWithoutUserInput[]
@@ -57164,6 +58771,13 @@ export namespace Prisma {
     connect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
   }
 
+  export type AuditLogCreateNestedManyWithoutEventInput = {
+    create?: XOR<AuditLogCreateWithoutEventInput, AuditLogUncheckedCreateWithoutEventInput> | AuditLogCreateWithoutEventInput[] | AuditLogUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutEventInput | AuditLogCreateOrConnectWithoutEventInput[]
+    createMany?: AuditLogCreateManyEventInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
   export type ActivityUncheckedCreateNestedManyWithoutEventInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -57288,6 +58902,13 @@ export namespace Prisma {
     connectOrCreate?: GamificationAlertCreateOrConnectWithoutEventInput | GamificationAlertCreateOrConnectWithoutEventInput[]
     createMany?: GamificationAlertCreateManyEventInputEnvelope
     connect?: GamificationAlertWhereUniqueInput | GamificationAlertWhereUniqueInput[]
+  }
+
+  export type AuditLogUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<AuditLogCreateWithoutEventInput, AuditLogUncheckedCreateWithoutEventInput> | AuditLogCreateWithoutEventInput[] | AuditLogUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutEventInput | AuditLogCreateOrConnectWithoutEventInput[]
+    createMany?: AuditLogCreateManyEventInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
   }
 
   export type EnumEventStatusFieldUpdateOperationsInput = {
@@ -57554,6 +59175,20 @@ export namespace Prisma {
     deleteMany?: GamificationAlertScalarWhereInput | GamificationAlertScalarWhereInput[]
   }
 
+  export type AuditLogUpdateManyWithoutEventNestedInput = {
+    create?: XOR<AuditLogCreateWithoutEventInput, AuditLogUncheckedCreateWithoutEventInput> | AuditLogCreateWithoutEventInput[] | AuditLogUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutEventInput | AuditLogCreateOrConnectWithoutEventInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutEventInput | AuditLogUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: AuditLogCreateManyEventInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutEventInput | AuditLogUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutEventInput | AuditLogUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
   export type ActivityUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<ActivityCreateWithoutEventInput, ActivityUncheckedCreateWithoutEventInput> | ActivityCreateWithoutEventInput[] | ActivityUncheckedCreateWithoutEventInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutEventInput | ActivityCreateOrConnectWithoutEventInput[]
@@ -57804,6 +59439,20 @@ export namespace Prisma {
     update?: GamificationAlertUpdateWithWhereUniqueWithoutEventInput | GamificationAlertUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: GamificationAlertUpdateManyWithWhereWithoutEventInput | GamificationAlertUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: GamificationAlertScalarWhereInput | GamificationAlertScalarWhereInput[]
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<AuditLogCreateWithoutEventInput, AuditLogUncheckedCreateWithoutEventInput> | AuditLogCreateWithoutEventInput[] | AuditLogUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutEventInput | AuditLogCreateOrConnectWithoutEventInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutEventInput | AuditLogUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: AuditLogCreateManyEventInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutEventInput | AuditLogUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutEventInput | AuditLogUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
   }
 
   export type TenantCreateNestedOneWithoutActivityTypesInput = {
@@ -59948,6 +61597,36 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGamificationAlertsInput, UserUpdateWithoutGamificationAlertsInput>, UserUncheckedUpdateWithoutGamificationAlertsInput>
   }
 
+  export type EventCreateNestedOneWithoutAuditLogsInput = {
+    create?: XOR<EventCreateWithoutAuditLogsInput, EventUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutAuditLogsInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAuditLogsInput = {
+    create?: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAuditLogsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EventUpdateOneWithoutAuditLogsNestedInput = {
+    create?: XOR<EventCreateWithoutAuditLogsInput, EventUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: EventCreateOrConnectWithoutAuditLogsInput
+    upsert?: EventUpsertWithoutAuditLogsInput
+    disconnect?: EventWhereInput | boolean
+    delete?: EventWhereInput | boolean
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutAuditLogsInput, EventUpdateWithoutAuditLogsInput>, EventUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAuditLogsNestedInput = {
+    create?: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAuditLogsInput
+    upsert?: UserUpsertWithoutAuditLogsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuditLogsInput, UserUpdateWithoutAuditLogsInput>, UserUncheckedUpdateWithoutAuditLogsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -60509,6 +62188,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -60544,6 +62224,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -60598,6 +62279,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTenantInput = {
@@ -60641,6 +62323,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTenantInput = {
@@ -61347,6 +63030,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AuditLogCreateWithoutUserInput = {
+    id?: string
+    action: string
+    resource: string
+    resourceId?: string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+    event?: EventCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type AuditLogUncheckedCreateWithoutUserInput = {
+    id?: string
+    eventId?: string | null
+    action: string
+    resource: string
+    resourceId?: string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogCreateOrConnectWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AuditLogCreateManyUserInputEnvelope = {
+    data: AuditLogCreateManyUserInput | AuditLogCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type GamificationAlertCreateWithoutUserInput = {
     id?: string
     type: string
@@ -61728,6 +63445,38 @@ export namespace Prisma {
     reason?: StringFilter<"XpGainLog"> | string
     uniqueKey?: StringNullableFilter<"XpGainLog"> | string | null
     createdAt?: DateTimeFilter<"XpGainLog"> | Date | string
+  }
+
+  export type AuditLogUpsertWithWhereUniqueWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    update: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AuditLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    data: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AuditLogUpdateManyWithWhereWithoutUserInput = {
+    where: AuditLogScalarWhereInput
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AuditLogScalarWhereInput = {
+    AND?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    OR?: AuditLogScalarWhereInput[]
+    NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    eventId?: StringNullableFilter<"AuditLog"> | string | null
+    userId?: StringFilter<"AuditLog"> | string
+    action?: StringFilter<"AuditLog"> | string
+    resource?: StringFilter<"AuditLog"> | string
+    resourceId?: StringNullableFilter<"AuditLog"> | string | null
+    payload?: JsonNullableFilter<"AuditLog">
+    ip?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
   }
 
   export type GamificationAlertUpsertWithWhereUniqueWithoutUserInput = {
@@ -62365,6 +64114,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AuditLogCreateWithoutEventInput = {
+    id?: string
+    action: string
+    resource: string
+    resourceId?: string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type AuditLogUncheckedCreateWithoutEventInput = {
+    id?: string
+    userId: string
+    action: string
+    resource: string
+    resourceId?: string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogCreateOrConnectWithoutEventInput = {
+    where: AuditLogWhereUniqueInput
+    create: XOR<AuditLogCreateWithoutEventInput, AuditLogUncheckedCreateWithoutEventInput>
+  }
+
+  export type AuditLogCreateManyEventInputEnvelope = {
+    data: AuditLogCreateManyEventInput | AuditLogCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TenantUpsertWithoutEventsInput = {
     update: XOR<TenantUpdateWithoutEventsInput, TenantUncheckedUpdateWithoutEventsInput>
     create: XOR<TenantCreateWithoutEventsInput, TenantUncheckedCreateWithoutEventsInput>
@@ -62818,6 +64601,22 @@ export namespace Prisma {
     data: XOR<GamificationAlertUpdateManyMutationInput, GamificationAlertUncheckedUpdateManyWithoutEventInput>
   }
 
+  export type AuditLogUpsertWithWhereUniqueWithoutEventInput = {
+    where: AuditLogWhereUniqueInput
+    update: XOR<AuditLogUpdateWithoutEventInput, AuditLogUncheckedUpdateWithoutEventInput>
+    create: XOR<AuditLogCreateWithoutEventInput, AuditLogUncheckedCreateWithoutEventInput>
+  }
+
+  export type AuditLogUpdateWithWhereUniqueWithoutEventInput = {
+    where: AuditLogWhereUniqueInput
+    data: XOR<AuditLogUpdateWithoutEventInput, AuditLogUncheckedUpdateWithoutEventInput>
+  }
+
+  export type AuditLogUpdateManyWithWhereWithoutEventInput = {
+    where: AuditLogScalarWhereInput
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutEventInput>
+  }
+
   export type TenantCreateWithoutActivityTypesInput = {
     id?: string
     name: string
@@ -63128,6 +64927,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutActivitiesInput = {
@@ -63171,6 +64971,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutActivitiesInput = {
@@ -63399,6 +65200,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutActivitiesInput = {
@@ -63442,6 +65244,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityTypeUpsertWithoutActivitiesInput = {
@@ -63677,6 +65480,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -63712,6 +65516,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -63824,6 +65629,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -63859,6 +65665,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -64139,6 +65946,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -64182,6 +65990,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -64221,6 +66030,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -64256,6 +66066,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -64484,6 +66295,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -64527,6 +66339,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutRegistrationsInput = {
@@ -64572,6 +66385,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -64607,6 +66421,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -64942,6 +66757,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutTicketsInput = {
@@ -64985,6 +66801,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutTicketsInput = {
@@ -65095,6 +66912,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTicketsInput = {
@@ -65138,6 +66956,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationUpsertWithoutTicketsInput = {
@@ -65232,6 +67051,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutFormsInput = {
@@ -65275,6 +67095,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutFormsInput = {
@@ -65394,6 +67215,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutFormsInput = {
@@ -65437,6 +67259,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type CustomFormResponseUpsertWithWhereUniqueWithoutFormInput = {
@@ -65977,6 +67800,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionsInput = {
@@ -66020,6 +67844,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionsInput = {
@@ -66059,6 +67884,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -66094,6 +67920,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -66252,6 +68079,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionsInput = {
@@ -66295,6 +68123,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutSubmissionsInput = {
@@ -66340,6 +68169,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -66375,6 +68205,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -66533,6 +68364,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -66568,6 +68400,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -66660,6 +68493,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -66695,6 +68529,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -66739,6 +68574,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutReviewersInput = {
@@ -66782,6 +68618,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutReviewersInput = {
@@ -66821,6 +68658,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -66856,6 +68694,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -66916,6 +68755,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutReviewersInput = {
@@ -66959,6 +68799,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutEventReviewersInput = {
@@ -67004,6 +68845,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -67039,6 +68881,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -67083,6 +68926,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutReviewerInvitationsInput = {
@@ -67126,6 +68970,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutReviewerInvitationsInput = {
@@ -67165,6 +69010,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -67200,6 +69046,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -67240,6 +69087,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -67275,6 +69123,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -67335,6 +69184,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutReviewerInvitationsInput = {
@@ -67378,6 +69228,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutReviewerInvitationsInput = {
@@ -67423,6 +69274,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -67458,6 +69310,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -67504,6 +69357,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -67539,6 +69393,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -67583,6 +69438,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionModalitiesInput = {
@@ -67626,6 +69482,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionModalitiesInput = {
@@ -67725,6 +69582,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionModalitiesInput = {
@@ -67768,6 +69626,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SubmissionUpsertWithWhereUniqueWithoutModalityInput = {
@@ -67827,6 +69686,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutThematicAreasInput = {
@@ -67870,6 +69730,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutThematicAreasInput = {
@@ -67969,6 +69830,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutThematicAreasInput = {
@@ -68012,6 +69874,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SubmissionUpsertWithWhereUniqueWithoutThematicAreaInput = {
@@ -68071,6 +69934,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSubmissionRulesInput = {
@@ -68114,6 +69978,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSubmissionRulesInput = {
@@ -68173,6 +70038,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSubmissionRulesInput = {
@@ -68216,6 +70082,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type TicketCreateWithoutAttendancesInput = {
@@ -68431,6 +70298,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutCertificateTemplatesInput = {
@@ -68474,6 +70342,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutCertificateTemplatesInput = {
@@ -68559,6 +70428,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutCertificateTemplatesInput = {
@@ -68602,6 +70472,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type IssuedCertificateUpsertWithWhereUniqueWithoutTemplateInput = {
@@ -68781,6 +70652,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutSponsorCategoriesInput = {
@@ -68824,6 +70696,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutSponsorCategoriesInput = {
@@ -68913,6 +70786,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutSponsorCategoriesInput = {
@@ -68956,6 +70830,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type SponsorUpsertWithWhereUniqueWithoutCategoryInput = {
@@ -69089,6 +70964,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRaffleHistoriesInput = {
@@ -69132,6 +71008,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRaffleHistoriesInput = {
@@ -69271,6 +71148,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRaffleHistoriesInput = {
@@ -69314,6 +71192,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityUpsertWithoutRaffleHistoriesInput = {
@@ -69484,6 +71363,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutBadgesInput = {
@@ -69527,6 +71407,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutBadgesInput = {
@@ -69679,6 +71560,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutBadgesInput = {
@@ -69722,6 +71604,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserBadgeUpsertWithWhereUniqueWithoutBadgeInput = {
@@ -69827,6 +71710,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -69862,6 +71746,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -69958,6 +71843,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -69993,6 +71879,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -70028,6 +71915,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -70063,6 +71951,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -70151,6 +72040,7 @@ export namespace Prisma {
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutUserBadgesInput = {
@@ -70194,6 +72084,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutUserBadgesInput = {
@@ -70244,6 +72135,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -70279,6 +72171,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -70379,6 +72272,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutUserBadgesInput = {
@@ -70422,6 +72316,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type ActivityCreateWithoutMaterialsInput = {
@@ -70745,6 +72640,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutMonitorsInput = {
@@ -70788,6 +72684,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutMonitorsInput = {
@@ -70827,6 +72724,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -70862,6 +72760,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -70922,6 +72821,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutMonitorsInput = {
@@ -70965,6 +72865,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutEventMonitorsInput = {
@@ -71010,6 +72911,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -71045,6 +72947,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -71080,6 +72983,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
   }
 
@@ -71115,6 +73019,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -71164,6 +73069,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutXpLogsInput = {
@@ -71207,6 +73113,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutXpLogsInput = {
@@ -71257,6 +73164,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -71292,6 +73200,7 @@ export namespace Prisma {
     acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -71347,6 +73256,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutXpLogsInput = {
@@ -71390,6 +73300,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateWithoutGamificationAlertsInput = {
@@ -71433,6 +73344,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
     monitors?: EventMonitorCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutGamificationAlertsInput = {
@@ -71476,6 +73388,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
     monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutGamificationAlertsInput = {
@@ -71516,6 +73429,7 @@ export namespace Prisma {
     speaker?: SpeakerCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGamificationAlertsInput = {
@@ -71551,6 +73465,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
     eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
     xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGamificationAlertsInput = {
@@ -71610,6 +73525,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutGamificationAlertsInput = {
@@ -71653,6 +73569,7 @@ export namespace Prisma {
     reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutGamificationAlertsInput = {
@@ -71699,6 +73616,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGamificationAlertsInput = {
@@ -71734,6 +73652,359 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type EventCreateWithoutAuditLogsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenant: TenantCreateNestedOneWithoutEventsInput
+    activities?: ActivityCreateNestedManyWithoutEventInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+    tickets?: TicketCreateNestedManyWithoutEventInput
+    forms?: CustomFormCreateNestedManyWithoutEventInput
+    submissions?: SubmissionCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryCreateNestedManyWithoutEventInput
+    badges?: BadgeCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleCreateNestedManyWithoutEventInput
+    reviewers?: EventReviewerCreateNestedManyWithoutEventInput
+    reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutAuditLogsInput = {
+    id?: string
+    tenantId: string
+    name: string
+    slug: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.EventStatus
+    bannerUrl?: string | null
+    logoUrl?: string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: string | null
+    seoDescription?: string | null
+    submissionsEnabled?: boolean
+    submissionStartDate?: Date | string | null
+    submissionEndDate?: Date | string | null
+    reviewStartDate?: Date | string | null
+    reviewEndDate?: Date | string | null
+    scientificCommitteeHead?: string | null
+    scientificCommitteeEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: ActivityUncheckedCreateNestedManyWithoutEventInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutEventInput
+    forms?: CustomFormUncheckedCreateNestedManyWithoutEventInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutEventInput
+    certificateTemplates?: CertificateTemplateUncheckedCreateNestedManyWithoutEventInput
+    sponsorCategories?: SponsorCategoryUncheckedCreateNestedManyWithoutEventInput
+    raffleHistories?: RaffleHistoryUncheckedCreateNestedManyWithoutEventInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutEventInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutEventInput
+    submissionModalities?: SubmissionModalityUncheckedCreateNestedManyWithoutEventInput
+    thematicAreas?: ThematicAreaUncheckedCreateNestedManyWithoutEventInput
+    submissionRules?: SubmissionRuleUncheckedCreateNestedManyWithoutEventInput
+    reviewers?: EventReviewerUncheckedCreateNestedManyWithoutEventInput
+    reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutEventInput
+    monitors?: EventMonitorUncheckedCreateNestedManyWithoutEventInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutEventInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutAuditLogsInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutAuditLogsInput, EventUncheckedCreateWithoutAuditLogsInput>
+  }
+
+  export type UserCreateWithoutAuditLogsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
+    refreshToken?: string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
+    tenant: TenantCreateNestedOneWithoutUsersInput
+    registrations?: RegistrationCreateNestedManyWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutReviewerInput
+    submissions?: SubmissionCreateNestedManyWithoutAuthorInput
+    userBadges?: UserBadgeCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeCreateNestedManyWithoutUserInput
+    eventReviewers?: EventReviewerCreateNestedManyWithoutUserInput
+    reviewerInvitations?: ReviewerInvitationCreateNestedManyWithoutInvitedByInput
+    acceptedInvitations?: ReviewerInvitationCreateNestedManyWithoutAcceptedByInput
+    speaker?: SpeakerCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAuditLogsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    role: $Enums.UserRole
+    avatarUrl?: string | null
+    bio?: string | null
+    refreshToken?: string | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tenantId: string
+    mustChangePassword?: boolean
+    username?: string | null
+    interests?: UserCreateinterestsInput | string[]
+    profileTheme?: string | null
+    publicProfile?: boolean
+    xp?: number
+    coins?: number
+    level?: number
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutReviewerInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutAuthorInput
+    userBadges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    claimCodes?: BadgeClaimCodeUncheckedCreateNestedManyWithoutUserInput
+    eventReviewers?: EventReviewerUncheckedCreateNestedManyWithoutUserInput
+    reviewerInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+    acceptedInvitations?: ReviewerInvitationUncheckedCreateNestedManyWithoutAcceptedByInput
+    speaker?: SpeakerUncheckedCreateNestedOneWithoutUserInput
+    eventMonitors?: EventMonitorUncheckedCreateNestedManyWithoutUserInput
+    xpLogs?: XpGainLogUncheckedCreateNestedManyWithoutUserInput
+    gamificationAlerts?: GamificationAlertUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAuditLogsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+  }
+
+  export type EventUpsertWithoutAuditLogsInput = {
+    update: XOR<EventUpdateWithoutAuditLogsInput, EventUncheckedUpdateWithoutAuditLogsInput>
+    create: XOR<EventCreateWithoutAuditLogsInput, EventUncheckedCreateWithoutAuditLogsInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutAuditLogsInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutAuditLogsInput, EventUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type EventUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenant?: TenantUpdateOneRequiredWithoutEventsNestedInput
+    activities?: ActivityUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+    tickets?: TicketUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUpdateManyWithoutEventNestedInput
+    badges?: BadgeUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUpdateManyWithoutEventNestedInput
+    reviewers?: EventReviewerUpdateManyWithoutEventNestedInput
+    reviewerInvitations?: ReviewerInvitationUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    themeConfig?: NullableJsonNullValueInput | InputJsonValue
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    submissionsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    submissionStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    submissionEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scientificCommitteeHead?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificCommitteeEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUncheckedUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutEventNestedInput
+    forms?: CustomFormUncheckedUpdateManyWithoutEventNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutEventNestedInput
+    certificateTemplates?: CertificateTemplateUncheckedUpdateManyWithoutEventNestedInput
+    sponsorCategories?: SponsorCategoryUncheckedUpdateManyWithoutEventNestedInput
+    raffleHistories?: RaffleHistoryUncheckedUpdateManyWithoutEventNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutEventNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutEventNestedInput
+    submissionModalities?: SubmissionModalityUncheckedUpdateManyWithoutEventNestedInput
+    thematicAreas?: ThematicAreaUncheckedUpdateManyWithoutEventNestedInput
+    submissionRules?: SubmissionRuleUncheckedUpdateManyWithoutEventNestedInput
+    reviewers?: EventReviewerUncheckedUpdateManyWithoutEventNestedInput
+    reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutEventNestedInput
+    monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type UserUpsertWithoutAuditLogsInput = {
+    update: XOR<UserUpdateWithoutAuditLogsInput, UserUncheckedUpdateWithoutAuditLogsInput>
+    create: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAuditLogsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAuditLogsInput, UserUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type UserUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    tenant?: TenantUpdateOneRequiredWithoutUsersNestedInput
+    registrations?: RegistrationUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutReviewerNestedInput
+    submissions?: SubmissionUpdateManyWithoutAuthorNestedInput
+    userBadges?: UserBadgeUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUpdateManyWithoutUserNestedInput
+    eventReviewers?: EventReviewerUpdateManyWithoutUserNestedInput
+    reviewerInvitations?: ReviewerInvitationUpdateManyWithoutInvitedByNestedInput
+    acceptedInvitations?: ReviewerInvitationUpdateManyWithoutAcceptedByNestedInput
+    speaker?: SpeakerUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    interests?: UserUpdateinterestsInput | string[]
+    profileTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    publicProfile?: BoolFieldUpdateOperationsInput | boolean
+    xp?: IntFieldUpdateOperationsInput | number
+    coins?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    registrations?: RegistrationUncheckedUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+    userBadges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    claimCodes?: BadgeClaimCodeUncheckedUpdateManyWithoutUserNestedInput
+    eventReviewers?: EventReviewerUncheckedUpdateManyWithoutUserNestedInput
+    reviewerInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+    acceptedInvitations?: ReviewerInvitationUncheckedUpdateManyWithoutAcceptedByNestedInput
+    speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
+    eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
+    xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyTenantInput = {
@@ -71854,6 +74125,7 @@ export namespace Prisma {
     speaker?: SpeakerUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutUserNestedInput
   }
 
@@ -71889,6 +74161,7 @@ export namespace Prisma {
     speaker?: SpeakerUncheckedUpdateOneWithoutUserNestedInput
     eventMonitors?: EventMonitorUncheckedUpdateManyWithoutUserNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -71956,6 +74229,7 @@ export namespace Prisma {
     monitors?: EventMonitorUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutTenantInput = {
@@ -71999,6 +74273,7 @@ export namespace Prisma {
     monitors?: EventMonitorUncheckedUpdateManyWithoutEventNestedInput
     xpLogs?: XpGainLogUncheckedUpdateManyWithoutEventNestedInput
     gamificationAlerts?: GamificationAlertUncheckedUpdateManyWithoutEventNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutTenantInput = {
@@ -72236,6 +74511,18 @@ export namespace Prisma {
     amount: number
     reason: string
     uniqueKey?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogCreateManyUserInput = {
+    id?: string
+    eventId?: string | null
+    action: string
+    resource: string
+    resourceId?: string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -72532,6 +74819,42 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AuditLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneWithoutAuditLogsNestedInput
+  }
+
+  export type AuditLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GamificationAlertUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
@@ -72731,6 +75054,18 @@ export namespace Prisma {
     message: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
     resolved?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AuditLogCreateManyEventInput = {
+    id?: string
+    userId: string
+    action: string
+    resource: string
+    resourceId?: string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -73293,6 +75628,42 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
     resolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAuditLogsNestedInput
+  }
+
+  export type AuditLogUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -55,6 +55,9 @@ describe("Activities (e2e)", () => {
       findFirst: jest.fn(),
       delete: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   const mockQueue = {

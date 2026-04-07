@@ -25,6 +25,9 @@ describe("EventsController (e2e)", () => {
     ticket: {
       findMany: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   const mockMinioService = {

@@ -134,6 +134,7 @@ model User {
   speaker             Speaker?
   eventMonitors       EventMonitor[]
   xpLogs              XpGainLog[]
+  auditLogs           AuditLog[]
 
   // Gamification & Identity
   username           String?             @unique
@@ -195,6 +196,7 @@ model Event {
   monitors             EventMonitor[]
   xpLogs               XpGainLog[]
   gamificationAlerts   GamificationAlert[]
+  auditLogs            AuditLog[]
 
   @@unique([tenantId, slug])
 }
@@ -747,4 +749,24 @@ model GamificationAlert {
   createdAt DateTime @default(now())
 
   @@index([eventId, createdAt])
+}
+
+model AuditLog {
+  id      String  @id @default(cuid())
+  eventId String?
+  event   Event?  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User    @relation(fields: [userId], references: [id])
+
+  action     String
+  resource   String
+  resourceId String?
+
+  payload   Json?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([eventId, createdAt])
+  @@index([userId, createdAt])
 }

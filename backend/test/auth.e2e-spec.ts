@@ -16,6 +16,9 @@ describe("AuthController (e2e)", () => {
     tenant: {
       create: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn().mockResolvedValue({ id: "log_1" }),
+    },
   };
 
   beforeAll(async () => {
