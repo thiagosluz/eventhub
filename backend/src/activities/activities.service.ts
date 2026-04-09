@@ -8,12 +8,14 @@ import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
 import { PrismaService } from "../prisma/prisma.service";
 import { EnrollmentStatus } from "@prisma/client";
+import { KanbanAutomationService } from "../kanban/kanban-automation.service";
 
 @Injectable()
 export class ActivitiesService implements OnModuleInit {
   constructor(
     private readonly prisma: PrismaService,
     @InjectQueue("activities") private readonly activitiesQueue: Queue,
+    private readonly kanbanAutomation: KanbanAutomationService,
   ) {}
 
   async onModuleInit() {
@@ -81,6 +83,8 @@ export class ActivitiesService implements OnModuleInit {
         skipDuplicates: true,
       });
     }
+
+    await this.kanbanAutomation.handleActivityUpsert(activity.id);
 
     // Auto-enroll existing participants if enrollment is not required
     if (!activity.requiresEnrollment) {
@@ -304,6 +308,8 @@ export class ActivitiesService implements OnModuleInit {
         });
       }
     }
+
+    await this.kanbanAutomation.handleActivityUpsert(activityId);
 
     // Auto-enroll existing participants if enrollment requirement is removed or confirmed false
     const updatedActivity = await this.getActivityForTenant(

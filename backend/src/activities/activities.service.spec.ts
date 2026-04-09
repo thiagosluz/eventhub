@@ -3,6 +3,7 @@ import { ActivitiesService } from "./activities.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { getQueueToken } from "@nestjs/bullmq";
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
+import { KanbanAutomationService } from "../kanban/kanban-automation.service";
 
 describe("ActivitiesService", () => {
   let service: ActivitiesService;
@@ -52,12 +53,20 @@ describe("ActivitiesService", () => {
     add: jest.fn(),
   };
 
+  const mockKanbanAutomationService = {
+    handleActivityUpsert: jest.fn().mockResolvedValue(undefined),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ActivitiesService,
         { provide: PrismaService, useValue: mockPrismaService },
         { provide: getQueueToken("activities"), useValue: mockQueue },
+        {
+          provide: KanbanAutomationService,
+          useValue: mockKanbanAutomationService,
+        },
       ],
     }).compile();
 

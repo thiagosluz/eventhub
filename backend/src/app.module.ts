@@ -41,6 +41,7 @@ import { AuditInterceptor } from "./common/interceptors/audit.interceptor";
 import { AdminModule } from "./admin/admin.module";
 import { HealthModule } from "./health/health.module";
 import { ResponseTimeInterceptor } from "./common/interceptors/response-time.interceptor";
+import { KanbanModule } from "./kanban/kanban.module";
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { ResponseTimeInterceptor } from "./common/interceptors/response-time.int
     AuditModule,
     AdminModule,
     HealthModule,
+    KanbanModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST ?? "localhost",

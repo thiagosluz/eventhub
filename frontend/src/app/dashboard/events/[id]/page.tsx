@@ -19,7 +19,9 @@ import {
   ChartBarIcon,
   TrophyIcon,
   UsersIcon,
-  ShieldCheckIcon
+  ShieldCheckIcon,
+  QueueListIcon,
+  TableCellsIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -486,6 +488,18 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
             </Link>
           </div>
 
+          <div className="premium-card p-6 bg-violet-500/5 border-violet-500/10 space-y-4">
+            <h3 className="text-sm font-black uppercase tracking-tight text-violet-600">Quadro Kanban (Tarefas)</h3>
+            <p className="text-xs text-muted-foreground font-medium">Gerencie as tarefas da sua equipe e acompanhe o progresso em tempo real.</p>
+            <Link 
+              href={`/dashboard/events/${id}/kanban`} 
+              className="premium-button !bg-violet-600 hover:!bg-violet-700 !shadow-violet-200 !py-2.5 !text-[10px] !font-black flex items-center justify-center gap-2"
+            >
+              <TableCellsIcon className="w-4 h-4" />
+              ABRIR QUADRO KANBAN
+            </Link>
+          </div>
+
           <div className="premium-card p-6 bg-cyan-500/5 border-cyan-500/10 space-y-4">
             <h3 className="text-sm font-black uppercase tracking-tight text-cyan-600">Submissões Científicas</h3>
             <p className="text-xs text-muted-foreground font-medium">Configure modalidades, áreas temáticas, prazos e regras de submissão.</p>
@@ -577,6 +591,19 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
                 <div>
                   <p className="text-xs font-black text-foreground">Gerenciamento de Monitores</p>
                   <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest leading-none">Equipe de Suporte</p>
+                </div>
+              </Link>
+
+              <Link 
+                href={`/dashboard/events/${id}/kanban`}
+                className="flex items-center gap-3 p-3 rounded-xl bg-white border border-border hover:border-violet-500 hover:shadow-lg hover:shadow-violet-50/50 transition-all group"
+              >
+                <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-colors">
+                  <TableCellsIcon className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-black text-foreground">Tarefas & Equipe</p>
+                  <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest leading-none">Acessar Quadro Kanban</p>
                 </div>
               </Link>
 

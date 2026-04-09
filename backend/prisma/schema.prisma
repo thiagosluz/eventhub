@@ -44,6 +44,13 @@ enum EventStatus {
   ARCHIVED
 }
 
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
 enum EnrollmentStatus {
   PENDING
   CONFIRMED
@@ -138,6 +145,8 @@ model User {
   eventMonitors       EventMonitor[]
   xpLogs              XpGainLog[]
   auditLogs           AuditLog[]
+  kanbanAssignments   TaskAssignment[]
+  kanbanComments      TaskComment[]
 
   // Gamification & Identity
   username       String?  @unique
@@ -200,8 +209,85 @@ model Event {
   xpLogs               XpGainLog[]
   gamificationAlerts   GamificationAlert[]
   auditLogs           AuditLog[]
+  kanbanBoards         KanbanBoard[]
 
   @@unique([tenantId, slug])
+}
+
+model KanbanBoard {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name    String @default("Quadro Principal")
+
+  columns KanbanColumn[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([eventId])
+}
+
+model KanbanColumn {
+  id      String      @id @default(cuid())
+  boardId String
+  board   KanbanBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  name    String
+  order   Int         @default(0)
+  tasks   KanbanTask[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([boardId])
+}
+
+model KanbanTask {
+  id       String       @id @default(cuid())
+  columnId String
+  column   KanbanColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String?
+  priority    TaskPriority @default(MEDIUM)
+  deadline    DateTime?
+  order       Int          @default(0)
+
+  assignments TaskAssignment[]
+  comments    TaskComment[]
+  
+  // Link opcional para automação (ex: link para uma atividade)
+  externalReference String?  // e.g., 'activity:123'
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([columnId])
+}
+
+model TaskAssignment {
+  taskId String
+  task   KanbanTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId String
+  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  assignedAt DateTime @default(now())
+
+  @@id([taskId, userId])
+}
+
+model TaskComment {
+  id     String     @id @default(cuid())
+  taskId String
+  task   KanbanTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  
+  userId String
+  user   User       @relation(fields: [userId], references: [id])
+  
+  content String
+  createdAt DateTime @default(now())
+
+  @@index([taskId])
 }
 
 model ActivityType {

@@ -8,6 +8,7 @@ import { getQueueToken } from "@nestjs/bullmq";
 import { ActivitiesProcessor } from "./../src/activities/activities.processor";
 import { AssignReviewsProcessor } from "./../src/submissions/submissions.processor";
 import { MailProcessor } from "./../src/mail/mail.processor";
+import { KanbanAutomationService } from "./../src/kanban/kanban-automation.service";
 
 describe("Activities (e2e)", () => {
   let app: INestApplication;
@@ -82,6 +83,10 @@ describe("Activities (e2e)", () => {
       .useValue({ process: jest.fn() })
       .overrideProvider(MailProcessor)
       .useValue({ process: jest.fn() })
+      .overrideProvider(KanbanAutomationService)
+      .useValue({
+        handleActivityUpsert: jest.fn().mockResolvedValue(undefined),
+      })
       .compile();
 
     const fetchTenant = () => {

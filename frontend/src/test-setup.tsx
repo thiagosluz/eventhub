@@ -28,7 +28,7 @@ vi.mock('next/link', () => ({
 vi.mock('next/image', () => ({
   default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img {...props} />;
+    return <img alt="" {...props} />;
   },
 }));
 
@@ -86,7 +86,19 @@ vi.mock('@heroicons/react/24/outline', () => ({
   IdentificationIcon: MockIcon('IdentificationIcon'),
   SparklesIcon: MockIcon('SparklesIcon'),
   EyeSlashIcon: MockIcon('EyeSlashIcon'),
-  TrophyIcon: MockIcon('TrophyIcon')
+  TrophyIcon: MockIcon('TrophyIcon'),
+  PencilIcon: MockIcon('PencilIcon'),
+  CheckIcon: MockIcon('CheckIcon'),
+  ViewColumnsIcon: MockIcon('ViewColumnsIcon'),
+  Bars3Icon: MockIcon('Bars3Icon'),
+  CalendarDaysIcon: MockIcon('CalendarDaysIcon'),
+  AdjustmentsHorizontalIcon: MockIcon('AdjustmentsHorizontalIcon'),
+  Squares2X2Icon: MockIcon('Squares2X2Icon'),
+  EllipsisHorizontalIcon: MockIcon('EllipsisHorizontalIcon'),
+  FlagIcon: MockIcon('FlagIcon'),
+  UserPlusIcon: MockIcon('UserPlusIcon'),
+  ChatBubbleBottomCenterTextIcon: MockIcon('ChatBubbleBottomCenterTextIcon'),
+  PaperAirplaneIcon: MockIcon('PaperAirplaneIcon'),
 }));
 
 vi.mock('@heroicons/react/24/solid', () => ({

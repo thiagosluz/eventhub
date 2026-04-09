@@ -39,8 +39,6 @@ export class AuditInterceptor implements NestInterceptor {
         // We log after success
         if (!user) return; // Anonymous actions are not audited here for now
 
-        const eventId = params?.eventId || params?.id || body?.eventId;
-
         // Auto-generate action/resource if not explicitly defined
         const action =
           auditMetadata?.action ||
@@ -49,6 +47,14 @@ export class AuditInterceptor implements NestInterceptor {
           auditMetadata?.resource ||
           context.getClass().name.replace("Controller", "");
         const resourceId = params?.id || body?.id;
+
+        // More robust eventId extraction
+        let eventId = params?.eventId || body?.eventId;
+
+        // If not found and the resource IS Event, then 'id' is our eventId
+        if (!eventId && resource === "Event") {
+          eventId = params?.id;
+        }
 
         // Clone and sanitize payload (remove sensitive fields)
         const sanitizedPayload = this.sanitize(body);
