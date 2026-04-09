@@ -8,7 +8,8 @@ import {
   ShieldAlert, 
   LayoutDashboard, 
   LogOut,
-  UserCheck
+  UserCheck,
+  Activity
 } from "lucide-react";
 import { useEffect } from "react";
 
@@ -33,6 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { name: "Inquilinos", href: "/admin/tenants", icon: Building2 },
     { name: "Auditoria Global", href: "/admin/audit", icon: ShieldAlert },
+    { name: "Saúde do Sistema", href: "/admin/health", icon: Activity },
   ];
 
   return (

@@ -39,6 +39,8 @@ import { AuditModule } from "./audit/audit.module";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import { AuditInterceptor } from "./common/interceptors/audit.interceptor";
 import { AdminModule } from "./admin/admin.module";
+import { HealthModule } from "./health/health.module";
+import { ResponseTimeInterceptor } from "./common/interceptors/response-time.interceptor";
 
 @Module({
   imports: [
@@ -58,6 +60,7 @@ import { AdminModule } from "./admin/admin.module";
     GamificationModule,
     AuditModule,
     AdminModule,
+    HealthModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST ?? "localhost",
@@ -96,6 +99,10 @@ import { AdminModule } from "./admin/admin.module";
     {
       provide: APP_INTERCEPTOR,
       useClass: AuditInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseTimeInterceptor,
     },
   ],
 })

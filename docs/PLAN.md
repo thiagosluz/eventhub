@@ -1,45 +1,42 @@
-# 🎼 Frontend E2E Stabilization Plan
+# Plano de Implementação: Painel de Saúde do Sistema (Opção B)
 
-## 1. ANALYSIS
+Este plano descreve a implementação de um dashboard de monitoramento de integridade para o Superadmin, utilizando NestJS Terminus no backend e uma interface dedicada no frontend.
 
-The frontend E2E tests were executed (`npm run test:e2e` in `/frontend`) and we observed 5 failures out of 26 tests (21 passed). All failures appear to be related to either locator mismatches or timeouts waiting for specific API responses.
+## 📋 Escopo
+- **Backend:** Monitoramento de Banco de Dados (Prisma) e E-mail (SMTP).
+- **Latência:** Rastreamento do tempo de resposta da API via Interceptor.
+- **Frontend:** Visualização de status em tempo real no dashboard do Superadmin.
+- **Segurança:** Acesso restrito via `SuperAdminGuard`.
 
-### Failing Tests:
+## 🛠️ Arquitetura Proposta
 
-**1. Dashboard - Fluxo de Check-in**
-- `deve alternar para aba manual e filtrar participantes`: Timeout waiting for locator `getByPlaceholder('Busque por nome, e-mail ou código...')`.
-- `deve realizar check-in manual com sucesso`: Timeout waiting for API `POST /operations/checkin`.
-- `deve permitir desfazer check-in manual`: Timeout waiting for API `DELETE /operations/checkin`.
+### Phase 1: Planning & Setup
+1. Instalação das dependências necessárias no backend (@nestjs/terminus).
+2. Definição da estrutura do `HealthModule`.
 
-**2. Dashboard - Gestão de Participantes**
-- `deve abrir o drawer de detalhes ao clicar no botão de visualizar`: Timeout waiting for `getByText('Detalhes do Participante')` to be visible.
+#### [NEW] [health.controller.ts](file:///home/thiago/Projetos/eventhub/backend/src/health/health.controller.ts)
+- Endpoints `@Get('admin/health')` protegidos por `SuperAdminGuard`.
+- Retorno detalhado de cada componente (DB, Email, Storage).
 
-**3. Dashboard - Submissões Científicas**
-- `participante deve conseguir enviar um trabalho`: Timeout waiting for `getByPlaceholder(/Ex: Análise de Performance/i)`.
+### Phase 2: Backend Implementation (Foundation)
+1. **HealthModule & Controller:** Criar `src/health` com endpoints para check de saúde.
+2. **Prisma Indicator:** Configurar health check para o Prisma.
+3. **Email Indicator:** Implementar um custom health indicator para testar a conexão SMTP do `nodemailer`.
+4. **S3 Indicator:** Implementar um custom health indicator para verificar a conectividade com o bucket S3.
+5. **ResponseTime Interceptor:** Criar um interceptor em `src/common/interceptors` para medir a latência e injetar no header `X-Response-Time`.
 
-## 2. PLANNING
+### Phase 3: Frontend Implementation (Core)
+1. **Health Page:** Criar `src/app/(admin)/admin/health/page.tsx`.
+2. **Status Components:** Cards de status com indicadores visuais (Sinalizador Verde/Vermelho) e atualização automática a cada 60s.
+3. **Latency Gauge:** Exibição da latência média da API em tempo real.
 
-### Phase 1: Locator Verification & Fixes
-- [ ] Inspect `frontend/src/app/(dashboard)/events/[id]/checkin/page.tsx` (or related components) to verify correct placeholder text for the search input.
-- [ ] Inspect the Drawer component for Participant details to ensure the title `Detalhes do Participante` exists.
-- [ ] Inspect the Scientific Submissions form to fix the placeholder for the work title.
+### Phase 4: Verification (Polish)
+1. Testes de falha simulada (ex: desligar DB local) para validar os status.
+2. Auditoria de segurança para garantir que apenas superadmins acessem.
 
-### Phase 2: API Mock Alignment
-- [ ] Investigate Playwright mock network configurations (in `frontend/e2e/support/mocks.ts` or individual spec files) for `POST /operations/checkin` and `DELETE /operations/checkin`.
-- [ ] Ensure that the frontend application relies on the expected routes and that Playwright successfully intercepts them.
+---
 
-### Phase 3: Verification
-- [ ] Run the failing Playwright tests individually to ensure the fixes resolve the issue.
-- [ ] Execute `security_scan.py` and `lint_runner.py` to adhere to the Orchestration exit gate.
-- [ ] Provide the synthesized orchestrator report.
-
-## 3. SOLUTIONING
-
-We will implement the required fixes primarily in the Playwright spec files (`dashboard-checkin.spec.ts`, `dashboard-participants.spec.ts`, `scientific-submissions.spec.ts`) and optionally in the source files if the locators were correctly defined but changed in the UI without updating the tests. Mock interceptors will also be updated.
-
-## 4. IMPLEMENTATION (Pending Approval)
-
-The following agents will be invoked in parallel after your approval:
-- `test-engineer`: To adjust the Playwright spec locators and mock routes.
-- `frontend-specialist`: To verify component IDs and texts.
-- `debugger`: To trace exact root causes of the API timeouts.
+## 🎼 Orchestration Roles
+- `backend-specialist`: Implementação do HealthModule e Interceptor.
+- `frontend-specialist`: Desenvolvimento da interface no dashboard.
+- `test-engineer`: Validação e scripts de verificação.
