@@ -61,6 +61,7 @@ Toda a documentação detalhada foi centralizada na pasta `docs/`. Acesse os gui
 - [🔌 Referência da API (Swagger)](./docs/api-referencia.md)
 - [✨ Módulos e Funcionalidades](./docs/modulos-funcionalidades.md)
 - [🧪 Estratégia de Testes](./docs/testes.md)
+- [📧 Configuração de E-mail (MailHog)](./docs/EMAIL_SETUP.md)
 
 ---
 

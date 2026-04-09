@@ -1,42 +1,27 @@
-# Plano de Implementação: Painel de Saúde do Sistema (Opção B)
+# Plano de Orquestração: Configuração do MailHog
 
-Este plano descreve a implementação de um dashboard de monitoramento de integridade para o Superadmin, utilizando NestJS Terminus no backend e uma interface dedicada no frontend.
+Este documento coordena a implementação do serviço de e-mail local (MailHog) no EventHub.
 
-## 📋 Escopo
-- **Backend:** Monitoramento de Banco de Dados (Prisma) e E-mail (SMTP).
-- **Latência:** Rastreamento do tempo de resposta da API via Interceptor.
-- **Frontend:** Visualização de status em tempo real no dashboard do Superadmin.
-- **Segurança:** Acesso restrito via `SuperAdminGuard`.
+## 🎯 Objetivo
+Configurar o MailHog via Docker Compose, integrar com o backend NestJS para garantir que o envio de e-mails funcione localmente, adicionar cobertura de testes (unitários/E2E) e documentar o processo.
 
-## 🛠️ Arquitetura Proposta
+## 👥 Agentes Envolvidos
+- `devops-engineer`: Configuração do `docker-compose.yml`.
+- `backend-specialist`: Ajustes de integração e variáveis de ambiente.
+- `test-engineer`: Criação de testes unitários e E2E.
+- `documentation-writer`: Criação de manuais e atualização do README.
 
-### Phase 1: Planning & Setup
-1. Instalação das dependências necessárias no backend (@nestjs/terminus).
-2. Definição da estrutura do `HealthModule`.
+## 📅 Chronograma
+1. **[PHASE 1] Planejamento e Design**: Criação deste documento e validação inicial.
+2. **[PHASE 2] Execução (Paralela)**:
+   - Setup do Docker (MailHog).
+   - Verificação da integração no backend.
+   - Implementação da suíte de testes.
+   - Escrita da documentação técnica.
+3. **[PHASE 3] Validação Final**: execução de todos os testes e verificação do dashboard de saúde.
 
-#### [NEW] [health.controller.ts](file:///home/thiago/Projetos/eventhub/backend/src/health/health.controller.ts)
-- Endpoints `@Get('admin/health')` protegidos por `SuperAdminGuard`.
-- Retorno detalhado de cada componente (DB, Email, Storage).
-
-### Phase 2: Backend Implementation (Foundation)
-1. **HealthModule & Controller:** Criar `src/health` com endpoints para check de saúde.
-2. **Prisma Indicator:** Configurar health check para o Prisma.
-3. **Email Indicator:** Implementar um custom health indicator para testar a conexão SMTP do `nodemailer`.
-4. **S3 Indicator:** Implementar um custom health indicator para verificar a conectividade com o bucket S3.
-5. **ResponseTime Interceptor:** Criar um interceptor em `src/common/interceptors` para medir a latência e injetar no header `X-Response-Time`.
-
-### Phase 3: Frontend Implementation (Core)
-1. **Health Page:** Criar `src/app/(admin)/admin/health/page.tsx`.
-2. **Status Components:** Cards de status com indicadores visuais (Sinalizador Verde/Vermelho) e atualização automática a cada 60s.
-3. **Latency Gauge:** Exibição da latência média da API em tempo real.
-
-### Phase 4: Verification (Polish)
-1. Testes de falha simulada (ex: desligar DB local) para validar os status.
-2. Auditoria de segurança para garantir que apenas superadmins acessem.
-
----
-
-## 🎼 Orchestration Roles
-- `backend-specialist`: Implementação do HealthModule e Interceptor.
-- `frontend-specialist`: Desenvolvimento da interface no dashboard.
-- `test-engineer`: Validação e scripts de verificação.
+## 🏁 Critérios de Aceitação
+- O serviço `mailhog` deve estar rodando no Docker.
+- O Dashboard de Saúde deve mostrar o serviço de e-mail como "Online".
+- 100% de sucesso nos novos testes unitários e E2E.
+- Documentação `docs/EMAIL_SETUP.md` disponível.
