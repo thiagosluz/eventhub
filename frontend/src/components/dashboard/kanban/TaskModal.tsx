@@ -168,7 +168,7 @@ export function TaskModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
+    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-gray-950/95 w-full max-w-4xl max-h-[90vh] rounded-3xl border border-gray-800 shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden backdrop-blur-xl flex flex-col md:flex-row">
         
         {/* Main Content Area */}

@@ -106,7 +106,7 @@ export function KanbanBoard({ board, onUpdate, isHighPriority }: KanbanBoardProp
   function handleDragStart(event: DragStartEvent) {
     const { active } = event;
     const task = columns.flatMap((c) => c.tasks).find((t) => t.id === active.id);
-    setActiveTask(task);
+    setActiveTask(task || null);
   }
 
   return (

@@ -17,6 +17,7 @@ import { AnalyticsService } from "./analytics.service";
 import { GamificationService } from "../gamification/gamification.service";
 import { BadgesService } from "../badges/badges.service";
 import { Request } from "express";
+import { MonitorGuard } from "../auth/monitor.guard";
 
 interface AuthRequest extends Request {
   user?: {
@@ -27,7 +28,7 @@ interface AuthRequest extends Request {
   };
 }
 
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard)
 @Controller("analytics")
 export class AnalyticsController {
   constructor(
@@ -36,6 +37,7 @@ export class AnalyticsController {
     private readonly badgesService: BadgesService,
   ) {}
 
+  @UseGuards(RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Get("events/:id")
   async getEventAnalytics(@Param("id") id: string, @Req() req: AuthRequest) {
@@ -46,7 +48,7 @@ export class AnalyticsController {
     return this.analyticsService.getEventAnalytics(tenantId, id);
   }
 
-  @Roles(UserRole.ORGANIZER)
+  @UseGuards(MonitorGuard)
   @Get("events/:id/participants")
   async getEventParticipants(@Param("id") id: string, @Req() req: AuthRequest) {
     const tenantId = req.user?.tenantId;
@@ -56,7 +58,7 @@ export class AnalyticsController {
     return this.analyticsService.getEventParticipants(tenantId, id);
   }
 
-  @Roles(UserRole.ORGANIZER)
+  @UseGuards(MonitorGuard)
   @Get("events/:id/checkins")
   async getEventCheckins(
     @Param("id") id: string,
@@ -72,30 +74,35 @@ export class AnalyticsController {
 
   // --- Gamification Endpoints ---
 
+  @UseGuards(RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Get("events/:id/gamification/stats")
   async getStats(@Param("id") eventId: string) {
     return this.gamificationService.getEventStats(eventId);
   }
 
+  @UseGuards(RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Get("events/:id/gamification/ranking")
   async getRanking(@Param("id") eventId: string) {
     return this.gamificationService.getEventRanking(eventId);
   }
 
+  @UseGuards(RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Get("events/:id/gamification/alerts")
   async getAlerts(@Param("id") eventId: string) {
     return this.gamificationService.getEventAlerts(eventId);
   }
 
+  @UseGuards(RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Patch("gamification/alerts/:id/resolve")
   async resolveAlert(@Param("id") alertId: string) {
     return this.gamificationService.resolveAlert(alertId);
   }
 
+  @UseGuards(RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Get("events/:id/gamification/badges-history")
   async getBadgesHistory(
@@ -107,6 +114,7 @@ export class AnalyticsController {
     return this.badgesService.getAwardedHistory(tenantId, eventId);
   }
 
+  @UseGuards(RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Delete("gamification/badges/:userBadgeId/revoke")
   async revokeBadge(

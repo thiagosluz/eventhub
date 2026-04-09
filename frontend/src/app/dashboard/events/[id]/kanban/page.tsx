@@ -17,10 +17,13 @@ import Link from "next/link";
 import { KanbanBoard } from "@/components/dashboard/kanban/KanbanBoard";
 import { GanttView } from "@/components/dashboard/kanban/GanttView";
 import { WorkloadSidebar } from "@/components/dashboard/kanban/WorkloadSidebar";
-
 import { BoardSelector } from "@/components/dashboard/kanban/BoardSelector";
 import { ColumnManagerModal } from "@/components/dashboard/kanban/ColumnManagerModal";
+import { KanbanToolbar } from "@/components/dashboard/kanban/KanbanToolbar";
+import { KanbanFilters, KanbanBoard as IKanbanBoard, WorkloadMember } from "@/types/kanban";
 import toast from "react-hot-toast";
+import { useCallback } from "react";
+import { mergeBoardsToGlobal, filterTasks } from "@/utils/kanban-logic";
 
 type ViewMode = "KANBAN" | "GANTT";
 
@@ -34,19 +37,17 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
   const [isHighPriority, setIsHighPriority] = useState(false);
   const [showWorkload, setShowWorkload] = useState(false);
   const [showColumnManager, setShowColumnManager] = useState(false);
-  const [showAllBoards, setShowAllBoards] = useState(false);
+  const [isGlobalView, setIsGlobalView] = useState(false);
+  const [teamMembers, setTeamMembers] = useState<WorkloadMember[]>([]);
+  const [filters, setFilters] = useState<KanbanFilters>({
+    search: "",
+    memberId: null,
+    priorities: [],
+    onlyOverdue: false
+  });
+  const [isFiltersHydrated, setIsFiltersHydrated] = useState(false);
 
-  useEffect(() => {
-    fetchBoards();
-  }, [eventId]);
-
-  useEffect(() => {
-    if (activeBoardId) {
-      fetchBoardDetails(activeBoardId);
-    }
-  }, [activeBoardId]);
-
-  const fetchBoards = async () => {
+  const fetchBoards = useCallback(async () => {
     try {
       setLoading(true);
       const data: any = await kanbanService.getBoards(eventId);
@@ -54,28 +55,106 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
       if (data.length > 0 && (!activeBoardId || !data.find((b: any) => b.id === activeBoardId))) {
         setActiveBoardId(data[0].id);
       }
-    } catch (err) {
+    } catch {
       toast.error("Erro ao carregar quadros.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [eventId, activeBoardId]);
 
-  const fetchBoardDetails = async (boardId: string) => {
+  const fetchBoardDetails = useCallback(async (boardId: string) => {
     try {
       const data = await kanbanService.getBoardDetails(boardId);
       setBoard(data);
-    } catch (err) {
+    } catch {
       toast.error("Erro ao carregar o quadro.");
     }
-  };
+  }, []);
+
+  const fetchGlobalBoard = useCallback(async () => {
+    if (boards.length === 0) return;
+    try {
+      setLoading(true);
+      const allBoardsData = await Promise.all(
+        boards.map(b => kanbanService.getBoardDetails(b.id))
+      );
+      
+      const mergedColumns = mergeBoardsToGlobal(allBoardsData);
+      
+      const mergedBoard: IKanbanBoard = {
+        id: "global",
+        name: "Visão Global",
+        eventId,
+        columns: mergedColumns
+      };
+
+      setBoard(mergedBoard);
+    } catch {
+      toast.error("Erro ao carregar visão global.");
+    } finally {
+      setLoading(false);
+    }
+  }, [boards, eventId]);
+
+  useEffect(() => {
+    fetchBoards();
+  }, [fetchBoards]);
+
+  // Load filters from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem(`kanban_filters_${eventId}`);
+    if (saved) {
+      try {
+        setFilters(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to parse saved filters", e);
+      }
+    }
+    setIsFiltersHydrated(true);
+  }, [eventId]);
+
+  // Save filters to localStorage
+  useEffect(() => {
+    if (isFiltersHydrated) {
+      localStorage.setItem(`kanban_filters_${eventId}`, JSON.stringify(filters));
+    }
+  }, [filters, eventId, isFiltersHydrated]);
+
+  useEffect(() => {
+    if (activeBoardId && !isGlobalView) {
+      fetchBoardDetails(activeBoardId);
+    }
+  }, [activeBoardId, isGlobalView, fetchBoardDetails]);
+
+  useEffect(() => {
+    if (isGlobalView) {
+      fetchGlobalBoard();
+    }
+  }, [isGlobalView, fetchGlobalBoard]);
+
+  useEffect(() => {
+    if (eventId) {
+      kanbanService.getWorkload(eventId).then(data => setTeamMembers(data as WorkloadMember[]));
+    }
+  }, [eventId]);
 
   const handleRefresh = () => {
-    if (activeBoardId) {
+    if (isGlobalView) {
+      fetchGlobalBoard();
+    } else if (activeBoardId) {
       fetchBoardDetails(activeBoardId);
     }
     fetchBoards();
   };
+
+  // 4. Filtering Logic
+  const filteredBoard = board ? {
+    ...board,
+    columns: board.columns.map((col: any) => ({
+      ...col,
+      tasks: filterTasks(col.tasks, filters)
+    }))
+  } : null;
 
   if (loading && boards.length === 0) {
     return (
@@ -165,8 +244,8 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
 
           {viewMode === "GANTT" && boards.length > 1 && (
             <button 
-              onClick={() => setShowAllBoards(!showAllBoards)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border transition-all ${showAllBoards ? 'bg-primary/10 border-primary text-primary' : 'bg-card border-border text-muted-foreground hover:bg-muted'}`}
+              onClick={() => setIsGlobalView(!isGlobalView)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border transition-all ${isGlobalView ? 'bg-primary/10 border-primary text-primary' : 'bg-card border-border text-muted-foreground hover:bg-muted'}`}
               title="Ver todos os quadros na timeline"
             >
               <Squares2X2Icon className="w-4 h-4" /> Todos
@@ -182,14 +261,24 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
         </div>
       </div>
 
-      {/* Board Selector */}
-      <div className="shrink-0 px-1">
-        <BoardSelector
-          boards={boards}
-          activeBoardId={activeBoardId}
-          eventId={eventId}
-          onBoardSelect={(id) => setActiveBoardId(id)}
-          onBoardsChange={fetchBoards}
+      {/* Board Selector & Toolbar */}
+      <div className="shrink-0 px-1 space-y-4">
+        {!isGlobalView && (
+          <BoardSelector
+            boards={boards}
+            activeBoardId={activeBoardId}
+            eventId={eventId}
+            onBoardSelect={(id) => setActiveBoardId(id)}
+            onBoardsChange={fetchBoards}
+          />
+        )}
+        
+        <KanbanToolbar 
+          filters={filters}
+          onFiltersChange={setFilters}
+          members={teamMembers}
+          isGlobalView={isGlobalView}
+          onGlobalViewChange={setIsGlobalView}
         />
       </div>
 
@@ -197,9 +286,9 @@ export default function KanbanPage({ params }: { params: Promise<{ id: string }>
       <div className="flex gap-6 flex-1 min-h-0">
         <div className="flex-1 min-w-0 flex flex-col">
           {viewMode === "KANBAN" ? (
-            board ? (
+            filteredBoard ? (
               <KanbanBoard 
-                board={board} 
+                board={filteredBoard} 
                 onUpdate={handleRefresh} 
                 isHighPriority={isHighPriority} 
               />

@@ -4,10 +4,17 @@ export async function setupDefaultMocks(page: Page | BrowserContext) {
   let hasClaimedB2 = false;
   let latestRaffle: any = null;
 
-  await page.route(url => url.href.includes(':3000'), async (route) => {
+  // Main API Interceptor
+  // This captures requests to the backend API (:3000) 
+  // and EXCLUDES the frontend development server (:3001)
+  await page.route('**/*', async (route) => {
     const request = route.request();
     const url = request.url();
     const method = request.method();
+    
+    console.log(`[E2E-REQUEST] ${method} ${url}`);
+    
+    console.log(`[E2E-MOCK-INTERCEPT] ${method} ${url}`);
     
     // Ignore static assets & Next.js internal
     if (url.includes('_next') || /\.(js|css|png|jpg|jpeg|svg|woff2?|ico|map)$/.test(url)) {
@@ -655,36 +662,74 @@ export async function setupDefaultMocks(page: Page | BrowserContext) {
     // =====================================================
     // 21. DASHBOARD STATS (catch more specific patterns)
     // =====================================================
-    if (url.includes('/dashboard')) {
-      return fulfill({
-        totalRegistrations: 450,
-        totalRevenue: 12500,
-        activeEvents: 3,
-        ticketsSold: 420,
-        recentActivities: [],
-        eventSales: [],
-        timeSeriesData: []
-      });
-    }
-
-    // =====================================================
-    // 22. ACTIVITY OPERATIONS (enroll, unroll, enrollments)
-    // =====================================================
-    if (url.includes('/activities/') && url.includes('/enroll') && method === 'POST') {
-      return fulfill({ message: 'Inscrito' }, 201);
-    }
-    if (url.includes('/activities/') && url.includes('/unroll') && method === 'DELETE') {
-      return fulfill({ message: 'Desinscrito' });
-    }
-    if (url.includes('/activities/my-enrollments/') && method === 'GET') {
-      return fulfill([]);
-    }
     if (url.includes('/activities/') && url.includes('/enrollments') && method === 'GET') {
       return fulfill([]);
     }
 
     // =====================================================
-    // 23. CATCH-ALL POST/PATCH/DELETE (prevent hard failures)
+    // 23. KANBAN
+    // =====================================================
+    
+    // GET /kanban/event/:eventId/boards
+    if (url.match(/\/kanban\/event\/[^/]+\/boards/) && method === 'GET') {
+      return fulfill([
+        { id: 'b-1', name: 'Quadro Principal', eventId: 'ev-1', createdAt: new Date().toISOString(), _count: { columns: 3 } },
+        { id: 'b-2', name: 'Marketing', eventId: 'ev-1', createdAt: new Date().toISOString(), _count: { columns: 2 } }
+      ]);
+    }
+
+    // GET /kanban/board/:boardId
+    if (url.match(/\/kanban\/board\/[^/]+/) && method === 'GET') {
+      const boardId = url.split('/').pop();
+      return fulfill({
+        id: boardId,
+        name: boardId === 'b-1' ? 'Quadro Principal' : 'Marketing',
+        eventId: 'ev-1',
+        columns: [
+          {
+            id: 'c-1', name: 'A Fazer', order: 0, boardId,
+            tasks: [
+              { id: 't-1', title: 'Tarefa de Teste 1', priority: 'MEDIUM', status: 'TODO', columnId: 'c-1', assignments: [] }
+            ]
+          },
+          { id: 'c-2', name: 'Em Andamento', order: 1, boardId, tasks: [] },
+          { id: 'c-3', name: 'Concluído', order: 2, boardId, tasks: [] }
+        ]
+      });
+    }
+
+    // GET /kanban/event/:eventId/workload
+    if (url.match(/\/kanban\/event\/[^/]+\/workload/) && method === 'GET') {
+      return fulfill([
+        { userId: 'u-1', name: 'Thiago Organizador', avatarUrl: null, taskCount: 1, tasks: [{ id: 't-1', title: 'Tarefa de Teste 1' }] }
+      ]);
+    }
+
+    // POST /kanban/task
+    if (url.includes('/kanban/task') && method === 'POST') {
+      return fulfill({ id: 't-new', title: 'Nova Tarefa', priority: 'LOW', status: 'TODO', columnId: 'c-1' }, 201);
+    }
+
+    // GET /kanban/task/:id
+    if (url.match(/\/kanban\/task\/[^/]+$/) && method === 'GET') {
+      return fulfill({
+        id: 't-1',
+        title: 'Tarefa de Teste 1',
+        description: 'Detalhes mockados da tarefa',
+        priority: 'HIGH',
+        status: 'TODO',
+        columnId: 'c-1',
+        assignments: []
+      });
+    }
+
+    // PATCH /kanban/task/:id/move
+    if (url.includes('/kanban/task/') && url.includes('/move') && method === 'PATCH') {
+      return fulfill({ message: 'Moved' });
+    }
+
+    // =====================================================
+    // 24. CATCH-ALL POST/PATCH/DELETE (prevent hard failures)
     // =====================================================
     if (method === 'POST' || method === 'PATCH' || method === 'PUT') {
       console.warn(`[E2E-UNHANDLED-MUTATION] ${method} ${url} — returning 200 OK`);

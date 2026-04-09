@@ -43,3 +43,10 @@ export interface WorkloadMember {
   avatarUrl?: string | null;
   taskCount: number;
 }
+
+export interface KanbanFilters {
+  search: string;
+  memberId: string | null;
+  priorities: string[];
+  onlyOverdue: boolean;
+}

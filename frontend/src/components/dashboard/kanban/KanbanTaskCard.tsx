@@ -100,8 +100,9 @@ export function KanbanTaskCard({ task, isOverlay, isHighPriority, onClick }: Kan
         {/* Assigned Users Avatars */}
         <div className="flex -space-x-2">
           {task.assignments && task.assignments.length > 0 ? (
-            task.assignments.map((a) => (
-              <div key={a.id} className="w-6 h-6 rounded-full border-2 border-card bg-muted overflow-hidden ring-1 ring-border">
+            // De-duplicate assignments for rendering to avoid key errors
+            Array.from(new Map(task.assignments.map(a => [a.user.id, a])).values()).map((a) => (
+              <div key={`${task.id}-assign-${a.user.id}`} className="w-6 h-6 rounded-full border-2 border-card bg-muted overflow-hidden ring-1 ring-border">
                 {a.user.avatarUrl ? (
                   <img src={a.user.avatarUrl} alt={a.user.name} className="w-full h-full object-cover" />
                 ) : (

@@ -5,6 +5,7 @@ import { GamificationService } from "../gamification/gamification.service";
 import { BadgesService } from "../badges/badges.service";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { RolesGuard } from "../auth/roles.guard";
+import { MonitorGuard } from "../auth/monitor.guard";
 
 describe("AnalyticsController", () => {
   let controller: AnalyticsController;
@@ -54,6 +55,8 @@ describe("AnalyticsController", () => {
       .overrideGuard(JwtAuthGuard)
       .useValue({ canActivate: () => true })
       .overrideGuard(RolesGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(MonitorGuard)
       .useValue({ canActivate: () => true })
       .compile();
 
