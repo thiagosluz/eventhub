@@ -139,7 +139,7 @@ export class BadgesService {
         select: { tenantId: true },
       });
 
-      if (!user) return [];
+      if (!user || !user.tenantId) return [];
 
       matchingBadges = await this.prisma.badge.findMany({
         where: {

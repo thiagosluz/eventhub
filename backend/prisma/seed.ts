@@ -1,4 +1,4 @@
-import { PrismaClient } from '../src/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import * as argon2 from 'argon2';
 
@@ -13,6 +13,9 @@ async function main() {
   console.log('Limpando banco de dados...');
   
   // Ordem reversa de dependências
+  await prisma.auditLog.deleteMany();
+  await prisma.gamificationAlert.deleteMany();
+  await prisma.xpGainLog.deleteMany();
   await prisma.attendance.deleteMany();
   await prisma.issuedCertificate.deleteMany();
   await prisma.certificateTemplate.deleteMany();
@@ -52,6 +55,13 @@ async function main() {
   // 2. Usuários
   await prisma.user.createMany({
     data: [
+      {
+        email: 'superadmin@eventhub.com.br',
+        name: 'Super Admin',
+        password: passwordHash,
+        role: 'SUPER_ADMIN',
+        tenantId: null
+      },
       {
         email: 'admin@eventhub.com.br',
         name: 'Administrador EventHub',
@@ -198,6 +208,7 @@ async function main() {
 
   console.log('Seed finalizado com sucesso! 🌱');
   console.log('Usuários criados (Senha: 123456):');
+  console.log('- superadmin@eventhub.com.br (SUPER_ADMIN)');
   console.log('- admin@eventhub.com.br');
   console.log('- organizador@eventhub.com.br');
   console.log('- participante@eventhub.com.br');

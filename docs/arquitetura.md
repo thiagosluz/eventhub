@@ -106,7 +106,8 @@ Tenant (Organização)
 
 | Role | Permissões |
 |------|------------|
-| **ORGANIZER** | Gestão completa: eventos, atividades, participantes, certificados, sorteios, configurações |
+| **SUPER_ADMIN** | Acesso global (cross-tenant), gestão de inquilinos, auditoria global, impersonate |
+| **ORGANIZER** | Gestão completa do tenant: eventos, atividades, participantes, certificados, sorteios, configurações |
 | **REVIEWER** | Revisão de trabalhos científicos (submissions), acesso ao painel de revisão |
 | **SPEAKER** | Portal do palestrante, perfil, materiais de atividades |
 | **PARTICIPANT** | Inscrição em eventos, visualização de ingressos/certificados, perfil público |

@@ -240,7 +240,11 @@ Este documento lista todos os endpoints da API REST do EventHub, agrupados por m
 |--------|----------|-----------|:----:|------|
 | `GET` | `/tenants/public-data` | Dados públicos do tenant | ✅ | ORGANIZER |
 | `GET` | `/tenants/profile` | Perfil do tenant | ✅ | ORGANIZER |
-| `PATCH` | `/tenants/branding` | Atualizar marca (logo + tema) | ✅ | ORGANIZER |
+| `PATCH` | `/tenants/branding` | Atualizar marca (logo + tema) | ✅ | ORGANIZER | 
+| `GET` | `/admin/tenants` | Listar todos os tenants | ✅ | SUPER_ADMIN |
+| `PATCH` | `/admin/tenants/:id/status` | Ativar/Desativar tenant | ✅ | SUPER_ADMIN |
+| `GET` | `/admin/audit-logs` | Logs de auditoria global | ✅ | SUPER_ADMIN |
+| `PATCH` | `/admin/impersonate/:userId` | Login fantasma (gera novo JWT) | ✅ | SUPER_ADMIN |
 
 ---
 

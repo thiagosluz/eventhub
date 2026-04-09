@@ -66,6 +66,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (authData.user.mustChangePassword) {
       router.push("/dashboard/force-password-change");
+    } else if (authData.user.role === 'SUPER_ADMIN') {
+      router.push("/admin/dashboard");
     } else if (authData.user.role === 'ORGANIZER' || authData.user.role === 'REVIEWER') {
       router.push("/dashboard");
     } else {

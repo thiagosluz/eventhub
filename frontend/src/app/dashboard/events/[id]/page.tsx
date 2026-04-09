@@ -338,14 +338,14 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
               </div>
 
               <div className="pt-6 border-t border-border flex items-center justify-between">
-                {event?.status === "DRAFT" ? (
+                {event?.status === "DRAFT" || event?.status === "ARCHIVED" ? (
                   <button 
                     type="button" 
                     onClick={() => setIsDeleteModalOpen(true)}
                     className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-destructive hover:bg-destructive/10 px-6 py-3 rounded-xl transition-all"
                   >
                     <TrashIcon className="w-4 h-4" />
-                    Excluir Rascunho
+                    Excluir Evento
                   </button>
                 ) : <div />}
 

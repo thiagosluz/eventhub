@@ -1,4 +1,4 @@
-import { TicketStatus, TicketType } from "../generated/prisma";
+import { TicketStatus, TicketType } from "@prisma/client";
 
 export interface PaymentContext {
   userId: string;

@@ -1,5 +1,5 @@
 import { IsEnum, IsInt, IsOptional, IsString } from "class-validator";
-import { SponsorSize } from "../../generated/prisma";
+import { SponsorSize } from "@prisma/client";
 
 export class CreateSponsorCategoryDto {
   @IsString()

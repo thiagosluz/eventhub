@@ -7,7 +7,7 @@ import {
 import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bullmq";
 import { PrismaService } from "../prisma/prisma.service";
-import { EnrollmentStatus } from "../generated/prisma";
+import { EnrollmentStatus } from "@prisma/client";
 
 @Injectable()
 export class ActivitiesService implements OnModuleInit {

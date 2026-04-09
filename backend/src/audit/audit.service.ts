@@ -14,6 +14,7 @@ export class AuditService {
     payload?: any;
     ip?: string;
     userAgent?: string;
+    tenantId?: string;
   }) {
     // We run this asynchronously to not block the main request execution
     return this.prisma.auditLog.create({
@@ -26,6 +27,7 @@ export class AuditService {
         payload: data.payload,
         ip: data.ip,
         userAgent: data.userAgent,
+        tenantId: data.tenantId,
       },
     });
   }

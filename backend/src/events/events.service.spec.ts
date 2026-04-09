@@ -156,13 +156,23 @@ describe("EventsService", () => {
       expect(mockPrismaService.event.delete).toHaveBeenCalled();
     });
 
-    it("should throw if not in DRAFT", async () => {
+    it("should delete event if in ARCHIVED", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue({
+        id: "e1",
+        status: "ARCHIVED",
+      });
+      mockPrismaService.event.delete.mockResolvedValue({ id: "e1" });
+      await service.deleteEvent("t1", "e1");
+      expect(mockPrismaService.event.delete).toHaveBeenCalled();
+    });
+
+    it("should throw if in PUBLISHED", async () => {
       mockPrismaService.event.findFirst.mockResolvedValue({
         id: "e1",
         status: "PUBLISHED",
       });
       await expect(service.deleteEvent("t1", "e1")).rejects.toThrow(
-        "Apenas eventos em rascunho podem ser excluídos.",
+        "Apenas eventos em rascunho ou arquivados podem ser excluídos.",
       );
     });
 

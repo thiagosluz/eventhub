@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { PrismaClientExceptionFilter } from "./prisma-client-exception.filter";
 import { ArgumentsHost, HttpStatus } from "@nestjs/common";
-import { Prisma } from "../../generated/prisma";
+import { Prisma } from "@prisma/client";
 
 describe("PrismaClientExceptionFilter", () => {
   let filter: PrismaClientExceptionFilter;

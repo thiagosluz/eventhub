@@ -7,7 +7,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { MailService } from "../mail/mail.service";
 import * as argon2 from "argon2";
 import * as crypto from "crypto";
-import { InvitationStatus } from "../generated/prisma";
+import { InvitationStatus } from "@prisma/client";
 import { ManualRegisterReviewerDto } from "./dto/manual-register-reviewer.dto";
 import { AcceptInvitationDto } from "./dto/accept-invitation.dto";
 

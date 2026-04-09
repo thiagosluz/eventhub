@@ -346,8 +346,10 @@ export class EventsService {
       throw new NotFoundException("Evento não encontrado.");
     }
 
-    if (event.status !== "DRAFT") {
-      throw new Error("Apenas eventos em rascunho podem ser excluídos.");
+    if (event.status !== "DRAFT" && event.status !== "ARCHIVED") {
+      throw new Error(
+        "Apenas eventos em rascunho ou arquivados podem ser excluídos.",
+      );
     }
 
     return this.prisma.event.delete({

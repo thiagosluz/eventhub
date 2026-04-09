@@ -63,6 +63,7 @@ export class AuditInterceptor implements NestInterceptor {
             payload: sanitizedPayload,
             ip: ip || headers["x-forwarded-for"],
             userAgent: headers["user-agent"],
+            tenantId: user.tenantId,
           })
           .catch((err) => {
             console.error("[AuditInterceptor] Failed to save audit log:", err);

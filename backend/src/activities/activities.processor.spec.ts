@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { ActivitiesProcessor } from "./activities.processor";
 import { PrismaService } from "../prisma/prisma.service";
-import { EnrollmentStatus } from "../generated/prisma";
+import { EnrollmentStatus } from "@prisma/client";
 
 describe("ActivitiesProcessor", () => {
   let processor: ActivitiesProcessor;

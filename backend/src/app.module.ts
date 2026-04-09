@@ -38,6 +38,7 @@ import { GamificationModule } from "./gamification/gamification.module";
 import { AuditModule } from "./audit/audit.module";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import { AuditInterceptor } from "./common/interceptors/audit.interceptor";
+import { AdminModule } from "./admin/admin.module";
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { AuditInterceptor } from "./common/interceptors/audit.interceptor";
     StaffManagementModule,
     GamificationModule,
     AuditModule,
+    AdminModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST ?? "localhost",

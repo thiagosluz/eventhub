@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { Job } from "bullmq";
 import { PrismaService } from "../prisma/prisma.service";
-import { EnrollmentStatus } from "../generated/prisma";
+import { EnrollmentStatus } from "@prisma/client";
 
 @Processor("activities")
 @Injectable()

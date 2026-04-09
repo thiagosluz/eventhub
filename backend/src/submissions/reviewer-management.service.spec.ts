@@ -3,7 +3,7 @@ import { ReviewerManagementService } from "./reviewer-management.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { MailService } from "../mail/mail.service";
 import { NotFoundException, BadRequestException } from "@nestjs/common";
-import { InvitationStatus } from "../generated/prisma";
+import { InvitationStatus } from "@prisma/client";
 import * as argon2 from "argon2";
 
 jest.mock("argon2");

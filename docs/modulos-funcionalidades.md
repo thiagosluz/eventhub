@@ -23,6 +23,7 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 15. [Gestão de Equipe (Staff)](#15-gestão-de-equipe-staff)
 16. [Gestão de Usuários](#16-gestão-de-usuários)
 17. [Tenants (Multi-Tenancy)](#17-tenants-multi-tenancy)
+22. [Super Administração e Auditoria](#22-super-administração-e-auditoria)
 18. [Storage (MinIO)](#18-storage-minio)
 19. [E-mail](#19-e-mail)
 20. [Área do Monitor](#20-área-do-monitor)
@@ -294,6 +295,22 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 ### Funcionalidades
 - Perfil público do tenant.
 - Atualização de marca (logo + tema visual JSON).
+
+---
+
+---
+
+## 22. Super Administração e Auditoria
+
+### Funcionalidades
+- **Gestão Global de Tenants**: Visualizar, ativar e desativar qualquer inquilino na plataforma.
+- **Auditoria Global**: Fluxo centralizado de logs de segurança e mutações em todos os tenants.
+- **Impersonate (Login Fantasma)**: Super Admin pode entrar na conta de qualquer usuário para suporte técnico, gerando um token JWT com a marca d'água `impersonatedBy`.
+- **Acesso Cross-Tenant**: Por possuir um `tenantId` nulo, o Super Admin tem privilégios globais que ignoram os filtros de isolamento padrão.
+
+### Auditoria Global
+- Captura de: Usuário, IP, Recurso, Ação (CREATE/UPDATE/DELETE), Payload e Data/Hora.
+- Interface dedicada em `/admin/audit` com filtros e visualização em tempo real.
 
 ---
 
