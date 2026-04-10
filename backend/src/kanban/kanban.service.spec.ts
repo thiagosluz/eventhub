@@ -95,6 +95,13 @@ describe("KanbanService", () => {
           data: expect.objectContaining({
             name: "Quadro Principal",
             eventId: "e1",
+            columns: expect.objectContaining({
+              create: expect.arrayContaining([
+                expect.objectContaining({ name: "A Fazer", color: "blue" }),
+                expect.objectContaining({ name: "Em Andamento", color: "amber" }),
+                expect.objectContaining({ name: "Concluído", color: "emerald" }),
+              ]),
+            }),
           }),
         }),
       );
@@ -138,9 +145,9 @@ describe("KanbanService", () => {
             name: "Financeiro",
             columns: expect.objectContaining({
               create: expect.arrayContaining([
-                expect.objectContaining({ name: "A Fazer" }),
-                expect.objectContaining({ name: "Em Andamento" }),
-                expect.objectContaining({ name: "Concluído" }),
+                expect.objectContaining({ name: "A Fazer", color: "blue" }),
+                expect.objectContaining({ name: "Em Andamento", color: "amber" }),
+                expect.objectContaining({ name: "Concluído", color: "emerald" }),
               ]),
             }),
           }),
@@ -185,9 +192,9 @@ describe("KanbanService", () => {
       mockPrisma.kanbanColumn.findFirst.mockResolvedValue(null);
       mockPrisma.kanbanColumn.create.mockResolvedValue({ id: "c1", order: 0 });
 
-      await service.createColumn("b1", "Nova Coluna");
+      await service.createColumn("b1", "Nova Coluna", "blue");
       expect(mockPrisma.kanbanColumn.create).toHaveBeenCalledWith({
-        data: { boardId: "b1", name: "Nova Coluna", order: 0 },
+        data: { boardId: "b1", name: "Nova Coluna", order: 0, color: "blue" },
       });
     });
 
@@ -195,9 +202,9 @@ describe("KanbanService", () => {
       mockPrisma.kanbanColumn.findFirst.mockResolvedValue({ order: 3 });
       mockPrisma.kanbanColumn.create.mockResolvedValue({ id: "c2", order: 4 });
 
-      await service.createColumn("b1", "Coluna Extra");
+      await service.createColumn("b1", "Coluna Extra", "rose");
       expect(mockPrisma.kanbanColumn.create).toHaveBeenCalledWith({
-        data: { boardId: "b1", name: "Coluna Extra", order: 4 },
+        data: { boardId: "b1", name: "Coluna Extra", order: 4, color: "rose" },
       });
     });
   });
@@ -210,10 +217,10 @@ describe("KanbanService", () => {
         id: "c1",
         name: "Renomeada",
       });
-      await service.updateColumn("c1", "Renomeada");
+      await service.updateColumn("c1", "Renomeada", undefined, "indigo");
       expect(mockPrisma.kanbanColumn.update).toHaveBeenCalledWith({
         where: { id: "c1" },
-        data: { name: "Renomeada", order: undefined },
+        data: { name: "Renomeada", order: undefined, color: "indigo" },
       });
     });
   });

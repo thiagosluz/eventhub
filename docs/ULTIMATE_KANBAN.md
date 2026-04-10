@@ -12,10 +12,11 @@ O sistema foi construído para ser proativo e integrado ao cronograma do evento.
 - **KanbanAlertsProcessor**: Consumidor BullMQ que dispara e-mails de alerta para prazos próximos.
 
 ### Componentes de Frontend
-- **KanbanBoard**: Interface de arrastar e soltar (DnD) para fluxo de trabalho.
+- **KanbanBoard**: Interface de arrastar e soltar (DnD) para fluxo de trabalho com **colunas coloridas personalizáveis**.
 - **GanttView**: Visualização de linha do tempo para controle de prazos.
 - **WorkloadSidebar**: Dashboard lateral para equilíbrio de carga de trabalho entre monitores.
 - **Modo Alta Prioridade**: Interface otimizada para o dia do evento, com foco em resolução rápida.
+- **Personalização Visual**: Suporte a 10 cores pré-definidas para categorização visual de colunas.
 
 ## 🤖 Automações Nativa
 O sistema gera tarefas automaticamente nos seguintes cenários:

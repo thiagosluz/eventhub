@@ -44,10 +44,10 @@ export class KanbanService {
           name: "Quadro Principal",
           columns: {
             create: [
-              { name: "Backlog", order: 0 },
-              { name: "A Fazer", order: 1 },
-              { name: "Em Andamento", order: 2 },
-              { name: "Concluído", order: 3 },
+              { name: "Backlog", order: 0, color: "slate" },
+              { name: "A Fazer", order: 1, color: "blue" },
+              { name: "Em Andamento", order: 2, color: "amber" },
+              { name: "Concluído", order: 3, color: "emerald" },
             ],
           },
         },
@@ -79,9 +79,9 @@ export class KanbanService {
         name,
         columns: {
           create: [
-            { name: "A Fazer", order: 0 },
-            { name: "Em Andamento", order: 1 },
-            { name: "Concluído", order: 2 },
+            { name: "A Fazer", order: 0, color: "blue" },
+            { name: "Em Andamento", order: 1, color: "amber" },
+            { name: "Concluído", order: 2, color: "emerald" },
           ],
         },
       },
@@ -106,7 +106,7 @@ export class KanbanService {
     return this.prisma.kanbanBoard.delete({ where: { id } });
   }
 
-  async createColumn(boardId: string, name: string) {
+  async createColumn(boardId: string, name: string, color: string = "zinc") {
     const lastColumn = await this.prisma.kanbanColumn.findFirst({
       where: { boardId },
       orderBy: { order: "desc" },
@@ -116,15 +116,16 @@ export class KanbanService {
       data: {
         boardId,
         name,
+        color,
         order: lastColumn ? lastColumn.order + 1 : 0,
       },
     });
   }
 
-  async updateColumn(id: string, name?: string, order?: number) {
+  async updateColumn(id: string, name?: string, order?: number, color?: string) {
     return this.prisma.kanbanColumn.update({
       where: { id },
-      data: { name, order },
+      data: { name, order, color },
     });
   }
 

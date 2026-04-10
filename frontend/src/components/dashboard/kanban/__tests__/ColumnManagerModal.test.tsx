@@ -17,9 +17,9 @@ vi.mock('react-hot-toast', () => ({
 
 describe('ColumnManagerModal Component', () => {
   const columns = [
-    { id: 'c1', name: 'Backlog', order: 0, tasks: [{ id: 't1' }, { id: 't2' }] },
-    { id: 'c2', name: 'Em Andamento', order: 1, tasks: [] },
-    { id: 'c3', name: 'Concluído', order: 2, tasks: [{ id: 't3' }] },
+    { id: 'c1', name: 'Backlog', order: 0, color: 'slate', tasks: [{ id: 't1' }, { id: 't2' }] },
+    { id: 'c2', name: 'Em Andamento', order: 1, color: 'blue', tasks: [] },
+    { id: 'c3', name: 'Concluído', order: 2, color: 'emerald', tasks: [{ id: 't3' }] },
   ];
 
   const defaultProps = {

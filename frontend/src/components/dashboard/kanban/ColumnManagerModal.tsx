@@ -14,6 +14,19 @@ import { kanbanService } from "@/services/kanban.service";
 import { ConfirmModal } from "./ConfirmModal";
 import toast from "react-hot-toast";
 import { KanbanColumn } from "@/types/kanban";
+ 
+const KANBAN_COLORS = [
+  { id: 'zinc', class: 'bg-zinc-500' },
+  { id: 'slate', class: 'bg-slate-500' },
+  { id: 'blue', class: 'bg-blue-500' },
+  { id: 'indigo', class: 'bg-indigo-500' },
+  { id: 'violet', class: 'bg-violet-500' },
+  { id: 'rose', class: 'bg-rose-500' },
+  { id: 'orange', class: 'bg-orange-500' },
+  { id: 'amber', class: 'bg-amber-500' },
+  { id: 'emerald', class: 'bg-emerald-500' },
+  { id: 'cyan', class: 'bg-cyan-500' },
+];
 
 interface ColumnManagerModalProps {
   isOpen: boolean;
@@ -26,8 +39,10 @@ interface ColumnManagerModalProps {
 export function ColumnManagerModal({ isOpen, onClose, boardId, columns: initialColumns, onUpdate }: ColumnManagerModalProps) {
   const [columns, setColumns] = useState<KanbanColumn[]>([]);
   const [newColumnName, setNewColumnName] = useState("");
+  const [newColumnColor, setNewColumnColor] = useState("zinc");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
+  const [editColor, setEditColor] = useState("");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string; taskCount: number } | null>(null);
@@ -41,9 +56,10 @@ export function ColumnManagerModal({ isOpen, onClose, boardId, columns: initialC
   const handleAddColumn = async () => {
     if (!newColumnName.trim()) return;
     try {
-      await kanbanService.createColumn(boardId, newColumnName.trim());
+      await kanbanService.createColumn(boardId, newColumnName.trim(), newColumnColor);
       toast.success("Coluna criada");
       setNewColumnName("");
+      setNewColumnColor("zinc");
       onUpdate();
     } catch {
       toast.error("Erro ao criar coluna");
@@ -53,12 +69,12 @@ export function ColumnManagerModal({ isOpen, onClose, boardId, columns: initialC
   const handleRename = async (id: string) => {
     if (!editName.trim()) return;
     try {
-      await kanbanService.updateColumn(id, editName.trim());
-      toast.success("Coluna renomeada");
+      await kanbanService.updateColumn(id, editName.trim(), undefined, editColor);
+      toast.success("Coluna atualizada");
       setEditingId(null);
       onUpdate();
     } catch {
-      toast.error("Erro ao renomear");
+      toast.error("Erro ao atualizar");
     }
   };
 
@@ -139,6 +155,7 @@ export function ColumnManagerModal({ isOpen, onClose, boardId, columns: initialC
                 dragIndex === index ? "border-primary bg-primary/5 scale-[1.02] shadow-lg" : "border-border bg-muted/20 hover:bg-muted/40"
               }`}
             >
+              <div className={`w-1.5 h-8 rounded-full shrink-0 ${KANBAN_COLORS.find(c => c.id === col.color)?.class || 'bg-zinc-500'}`} />
               <Bars3Icon className="w-4 h-4 text-muted-foreground shrink-0" />
               
               {editingId === col.id ? (
@@ -150,6 +167,15 @@ export function ColumnManagerModal({ isOpen, onClose, boardId, columns: initialC
                     onKeyDown={(e) => e.key === "Enter" && handleRename(col.id)}
                     className="flex-1 bg-transparent text-sm font-bold focus:outline-none text-foreground"
                   />
+                  <div className="flex items-center gap-1 bg-background/50 p-1 rounded-lg border border-border">
+                    {KANBAN_COLORS.map(c => (
+                      <button
+                        key={c.id}
+                        onClick={() => setEditColor(c.id)}
+                        className={`w-4 h-4 rounded-full transition-all ${c.class} ${editColor === c.id ? 'ring-2 ring-primary ring-offset-1 ring-offset-background scale-110' : 'opacity-40 hover:opacity-100'}`}
+                      />
+                    ))}
+                  </div>
                   <button onClick={() => handleRename(col.id)} className="p-1 text-primary hover:bg-primary/10 rounded-lg">
                     <CheckIcon className="w-4 h-4" />
                   </button>
@@ -164,7 +190,7 @@ export function ColumnManagerModal({ isOpen, onClose, boardId, columns: initialC
                     {col.tasks?.length || 0}
                   </span>
                   <button
-                    onClick={() => { setEditingId(col.id); setEditName(col.name); }}
+                    onClick={() => { setEditingId(col.id); setEditName(col.name); setEditColor(col.color); }}
                     className="p-1.5 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
                   >
                     <PencilIcon className="w-3.5 h-3.5" />
@@ -198,6 +224,19 @@ export function ColumnManagerModal({ isOpen, onClose, boardId, columns: initialC
             >
               <PlusIcon className="w-4 h-4" /> Criar
             </button>
+          </div>
+
+          <div className="flex items-center justify-between px-1">
+            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Cor da Coluna:</p>
+            <div className="flex items-center gap-1.5">
+              {KANBAN_COLORS.map(c => (
+                <button
+                  key={c.id}
+                  onClick={() => setNewColumnColor(c.id)}
+                  className={`w-5 h-5 rounded-full transition-all ${c.class} ${newColumnColor === c.id ? 'ring-2 ring-primary ring-offset-2 ring-offset-background scale-110' : 'opacity-40 hover:opacity-100 hover:scale-110'}`}
+                />
+              ))}
+            </div>
           </div>
 
           {orderChanged && (

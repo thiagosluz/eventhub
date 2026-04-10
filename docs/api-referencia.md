@@ -286,6 +286,27 @@ Este documento lista todos os endpoints da API REST do EventHub, agrupados por m
 
 ---
 
+## 📋 Kanban — Gestão de Tarefas
+
+| Método | Endpoint | Descrição | Auth | Role |
+|--------|----------|-----------|:----:|------|
+| `GET` | `/kanban/event/:eventId/boards` | Listar quadros do evento | ✅ | ORGANIZER |
+| `GET` | `/kanban/board/:boardId` | Detalhes do quadro (colunas + tarefas) | ✅ | ORGANIZER |
+| `POST` | `/kanban/board` | Criar quadro | ✅ | ORGANIZER |
+| `POST` | `/kanban/column` | Criar coluna (suporta `color`) | ✅ | ORGANIZER |
+| `PATCH` | `/kanban/column/:id` | Atualizar coluna (nome, ordem, `color`) | ✅ | ORGANIZER |
+| `DELETE` | `/kanban/column/:id` | Excluir coluna | ✅ | ORGANIZER |
+| `PATCH` | `/kanban/columns/reorder` | Reordenar colunas em lote | ✅ | ORGANIZER|
+| `POST` | `/kanban/task` | Criar tarefa | ✅ | ORGANIZER |
+| `PATCH` | `/kanban/task/:id` | Editar tarefa | ✅ | ORGANIZER |
+| `PATCH` | `/kanban/task/:id/move` | Mover tarefa entre colunas | ✅ | ORGANIZER |
+| `DELETE` | `/kanban/task/:id` | Excluir tarefa | ✅ | ORGANIZER |
+| `POST` | `/kanban/task/:id/assign` | Atribuir tarefa a usuário | ✅ | ORGANIZER |
+| `POST` | `/kanban/task/:id/comment` | Adicionar comentário | ✅ | Qualquer |
+| `GET` | `/kanban/event/:eventId/workload` | Carga de trabalho da equipe | ✅ | ORGANIZER |
+
+---
+
 ## 👷 Staff — Equipe
 
 | Método | Endpoint | Descrição | Auth | Role |

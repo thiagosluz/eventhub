@@ -234,6 +234,7 @@ model KanbanColumn {
 
   name    String
   order   Int         @default(0)
+  color   String      @default("zinc")
   tasks   KanbanTask[]
 
   createdAt DateTime @default(now())

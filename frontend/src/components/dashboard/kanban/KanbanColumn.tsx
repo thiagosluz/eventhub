@@ -19,6 +19,19 @@ import { kanbanService } from "@/services/kanban.service";
 import { ConfirmModal } from "./ConfirmModal";
 import toast from "react-hot-toast";
 import { KanbanColumn as IKanbanColumn, KanbanTask } from "@/types/kanban";
+ 
+const colorMap: Record<string, { bg: string; border: string; text: string; dot: string }> = {
+  zinc: { bg: "bg-zinc-50/50", border: "border-zinc-100", text: "text-zinc-700", dot: "bg-zinc-500" },
+  slate: { bg: "bg-slate-50/50", border: "border-slate-100", text: "text-slate-700", dot: "bg-slate-500" },
+  blue: { bg: "bg-blue-50/50", border: "border-blue-100", text: "text-blue-700", dot: "bg-blue-500" },
+  indigo: { bg: "bg-indigo-50/50", border: "border-indigo-100", text: "text-indigo-700", dot: "bg-indigo-500" },
+  violet: { bg: "bg-violet-50/50", border: "border-violet-100", text: "text-violet-700", dot: "bg-violet-500" },
+  rose: { bg: "bg-rose-50/50", border: "border-rose-100", text: "text-rose-700", dot: "bg-rose-500" },
+  orange: { bg: "bg-orange-50/50", border: "border-orange-100", text: "text-orange-700", dot: "bg-orange-500" },
+  amber: { bg: "bg-amber-50/50", border: "border-amber-100", text: "text-amber-700", dot: "bg-amber-500" },
+  emerald: { bg: "bg-emerald-50/50", border: "border-emerald-100", text: "text-emerald-700", dot: "bg-emerald-500" },
+  cyan: { bg: "bg-cyan-50/50", border: "border-cyan-100", text: "text-cyan-700", dot: "bg-cyan-500" },
+};
 
 interface KanbanColumnProps {
   column: IKanbanColumn;
@@ -45,6 +58,8 @@ export function KanbanColumn({ column, isHighPriority, onUpdate, onAddTask, onTa
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const styles = colorMap[column.color as keyof typeof colorMap] || colorMap.zinc;
 
   const handleRename = async () => {
     if (!editName.trim() || editName === column.name) {
@@ -99,14 +114,15 @@ export function KanbanColumn({ column, isHighPriority, onUpdate, onAddTask, onTa
             </div>
           ) : (
             <>
+              <div className={`w-2 h-2 rounded-full shrink-0 ${styles.dot}`} />
               <h3 
-                className="text-xs font-black uppercase tracking-widest text-foreground cursor-pointer hover:text-primary transition-colors truncate"
+                className={`text-xs font-black uppercase tracking-widest cursor-pointer hover:opacity-70 transition-colors truncate ${styles.text}`}
                 onDoubleClick={() => setIsEditing(true)}
                 title="Duplo-clique para editar"
               >
                 {column.name}
               </h3>
-              <span className="bg-muted text-[10px] font-black px-2 py-0.5 rounded-full text-muted-foreground shrink-0">
+              <span className={`${styles.bg} ${styles.text} text-[10px] font-black px-2 py-0.5 rounded-full border ${styles.border} shrink-0`}>
                 {column.tasks.length}
               </span>
             </>
@@ -152,7 +168,7 @@ export function KanbanColumn({ column, isHighPriority, onUpdate, onAddTask, onTa
       {/* Column Body (Droppable) */}
       <div 
         ref={setNodeRef}
-        className={`flex-1 min-h-0 overflow-y-auto space-y-3 p-2 rounded-2xl bg-muted/30 border border-transparent transition-all scrollbar-premium ${isHighPriority ? 'bg-muted/50 p-4 space-y-6' : ''}`}
+        className={`flex-1 min-h-0 overflow-y-auto space-y-3 p-2 rounded-2xl border transition-all scrollbar-premium ${styles.bg} ${styles.border} ${isHighPriority ? 'p-4 space-y-6' : ''}`}
       >
         <SortableContext items={column.tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
           {column.tasks.map((task) => (

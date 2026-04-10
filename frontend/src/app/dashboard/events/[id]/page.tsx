@@ -387,14 +387,17 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
             <div className="space-y-6">
               {/* Banner Upload */}
               <div className="space-y-3">
-                <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Banner Principal</p>
+                <div className="flex flex-col">
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Banner Principal</p>
+                  <p className="text-[10px] text-muted-foreground leading-none mt-1 font-semibold">Tamanho ideal: 1920x1080px (16:9)</p>
+                </div>
                 <div className="relative aspect-video rounded-xl bg-muted border-2 border-dashed border-border overflow-hidden group">
                   {event?.bannerUrl ? (
                     <img src={event.bannerUrl} alt="Banner" className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground">
                       <PhotoIcon className="w-8 h-8 opacity-20" />
-                      <span className="text-[10px] font-bold uppercase mt-2">Clique para enviar</span>
+                      <span className="text-[10px] font-bold opacity-60 uppercase mt-2 text-center">Clique p/ enviar banner<br/>(Fundo 16:9)</span>
                     </div>
                   )}
                   
@@ -426,13 +429,17 @@ export default function EventManagementPage({ params }: { params: Promise<{ id: 
 
               {/* Logo Upload */}
               <div className="space-y-3">
-                <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Logo do Evento</p>
+                <div className="flex flex-col">
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Logo do Evento</p>
+                  <p className="text-[10px] text-muted-foreground leading-none mt-1 font-semibold">Sugestão: 512x512px (1:1)</p>
+                </div>
                 <div className="relative w-32 h-32 rounded-xl bg-muted border-2 border-dashed border-border overflow-hidden group">
                   {event?.logoUrl ? (
                     <img src={event.logoUrl} alt="Logo" className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground">
                       <GlobeAltIcon className="w-6 h-6 opacity-20" />
+                      <span className="text-[10px] font-bold opacity-40 uppercase mt-2">Logo 1:1</span>
                     </div>
                   )}
 

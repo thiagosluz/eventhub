@@ -16,11 +16,11 @@ export const kanbanService = {
   deleteBoard: (id: string) => api.delete(`/kanban/board/${id}`),
 
   // Columns
-  createColumn: (boardId: string, name: string): Promise<KanbanColumn> => 
-    api.post("/kanban/column", { boardId, name }),
+  createColumn: (boardId: string, name: string, color?: string): Promise<KanbanColumn> => 
+    api.post("/kanban/column", { boardId, name, color }),
     
-  updateColumn: (id: string, name?: string, order?: number) =>
-    api.patch(`/kanban/column/${id}`, { name, order }),
+  updateColumn: (id: string, name?: string, order?: number, color?: string) =>
+    api.patch(`/kanban/column/${id}`, { name, order, color }),
     
   deleteColumn: (id: string) => api.delete(`/kanban/column/${id}`),
   

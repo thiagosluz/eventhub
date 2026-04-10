@@ -24,6 +24,7 @@ export interface KanbanColumn {
   id: string;
   name: string;
   order: number;
+  color: string;
   tasks: KanbanTask[];
 }
 

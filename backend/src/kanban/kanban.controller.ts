@@ -48,16 +48,16 @@ export class KanbanController {
   // ─── Column Endpoints ───
 
   @Post("column")
-  createColumn(@Body() body: { boardId: string; name: string }) {
-    return this.kanbanService.createColumn(body.boardId, body.name);
+  createColumn(@Body() body: { boardId: string; name: string; color?: string }) {
+    return this.kanbanService.createColumn(body.boardId, body.name, body.color);
   }
 
   @Patch("column/:id")
   updateColumn(
     @Param("id") id: string,
-    @Body() body: { name?: string; order?: number },
+    @Body() body: { name?: string; order?: number; color?: string },
   ) {
-    return this.kanbanService.updateColumn(id, body.name, body.order);
+    return this.kanbanService.updateColumn(id, body.name, body.order, body.color);
   }
 
   @Delete("column/:id")
