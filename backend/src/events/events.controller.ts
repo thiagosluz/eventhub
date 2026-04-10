@@ -135,6 +135,18 @@ export class EventsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
+  @Post("events/:id/duplicate")
+  async duplicateEvent(@Param("id") id: string, @Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) {
+      throw new Error("Missing tenantId on token payload.");
+    }
+
+    return this.eventsService.duplicateEvent(tenantId, id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
   @Get("participants/export")
   async exportParticipants(
     @Req() req: AuthRequest,

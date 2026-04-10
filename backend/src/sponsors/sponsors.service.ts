@@ -167,9 +167,18 @@ export class SponsorsService {
 
   // --- Public ---
 
-  async listPublicSponsorsByEventSlug(slug: string) {
+  async listPublicSponsorsByEventSlug(
+    slug: string,
+    organizerTenantId?: string,
+  ) {
     const event = await this.prisma.event.findFirst({
-      where: { slug, status: "PUBLISHED" },
+      where: {
+        slug,
+        OR: [
+          { status: "PUBLISHED" },
+          ...(organizerTenantId ? [{ tenantId: organizerTenantId }] : []),
+        ],
+      },
     });
 
     if (!event) throw new NotFoundException("Evento não encontrado.");

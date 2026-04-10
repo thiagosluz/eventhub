@@ -168,8 +168,8 @@ export function TaskModal({
   if (!isOpen) return null;
 
   return (
-    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-gray-950/95 w-full max-w-4xl max-h-[90vh] rounded-3xl border border-gray-800 shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden backdrop-blur-xl flex flex-col md:flex-row">
+    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-[2px] animate-in fade-in duration-200">
+      <div className="bg-background w-full max-w-4xl max-h-[90vh] rounded-3xl border border-border shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden backdrop-blur-xl flex flex-col md:flex-row">
         
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col p-6 min-h-0 overflow-y-auto">
@@ -179,9 +179,9 @@ export function TaskModal({
             </div>
             <button 
               onClick={onClose}
-              className="p-2 hover:bg-gray-900 rounded-xl transition-colors group"
+              className="p-2 hover:bg-muted rounded-xl transition-colors group"
             >
-              <XMarkIcon className="w-5 h-5 text-gray-500 group-hover:text-gray-300" />
+              <XMarkIcon className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
             </button>
           </div>
 
@@ -193,7 +193,7 @@ export function TaskModal({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Ex: Definir palestrantes do dia 1"
-                className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold text-lg"
+                className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold text-lg"
               />
             </div>
 
@@ -204,7 +204,7 @@ export function TaskModal({
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Adicione detalhes sobre o que precisa ser feito..."
                 rows={4}
-                className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm leading-relaxed resize-none"
+                className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm leading-relaxed resize-none"
               />
             </div>
 
@@ -216,7 +216,7 @@ export function TaskModal({
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value as KanbanTask['priority'])}
-                  className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold appearance-none"
+                  className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold appearance-none"
                 >
                   <option value="LOW">Baixa</option>
                   <option value="MEDIUM">Média</option>
@@ -233,7 +233,7 @@ export function TaskModal({
                   type="datetime-local"
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
-                  className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold flex items-center"
+                  className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold flex items-center"
                 />
               </div>
             </div>
@@ -281,13 +281,13 @@ export function TaskModal({
         </div>
 
         {/* Sidebar: Members & Comments */}
-        <div className="w-full md:w-80 bg-gray-900/30 border-l border-gray-800/50 flex flex-col min-h-0">
+        <div className="w-full md:w-80 bg-muted/30 border-l border-border flex flex-col min-h-0">
           
           {/* Members Selection Section */}
-          <div className="hidden md:flex flex-col p-6 border-b border-gray-800/50">
+          <div className="hidden md:flex flex-col p-6 border-b border-border">
             <div className="flex items-center gap-2 mb-4">
               <UserPlusIcon className="w-4 h-4 text-primary" />
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-white">Responsáveis</h4>
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-foreground">Responsáveis</h4>
             </div>
             <div className="space-y-2 max-h-48 overflow-y-auto pr-2 scrollbar-premium">
               {teamMembers.map(member => (
@@ -301,7 +301,7 @@ export function TaskModal({
                       {member.avatarUrl ? <img src={member.avatarUrl} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center font-black text-primary text-xs">{member.name.charAt(0)}</div>}
                     </div>
                     {selectedMembers.includes(member.userId) && (
-                      <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full border-2 border-gray-950 flex items-center justify-center">
+                      <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full border-2 border-background flex items-center justify-center">
                         <div className="w-1.5 h-1.5 bg-white rounded-full" />
                       </div>
                     )}
@@ -315,10 +315,10 @@ export function TaskModal({
           </div>
 
           {/* Comments Section */}
-          <div className="flex-1 flex flex-col p-6 min-h-0 bg-gray-950/20">
+          <div className="flex-1 flex flex-col p-6 min-h-0 bg-muted/10">
             <div className="flex items-center gap-2 mb-4">
               <ChatBubbleBottomCenterTextIcon className="w-4 h-4 text-primary" />
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-white">Comentários</h4>
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-foreground">Comentários</h4>
             </div>
 
             <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2 scrollbar-premium">
@@ -336,7 +336,7 @@ export function TaskModal({
                          {format(new Date(c.createdAt), "dd/MM HH:mm")}
                        </span>
                     </div>
-                    <p className="text-[11px] text-gray-300 leading-relaxed font-bold">{c.content}</p>
+                    <p className="text-[11px] text-foreground leading-relaxed font-bold">{c.content}</p>
                   </div>
                 ))
               ) : (
@@ -354,7 +354,7 @@ export function TaskModal({
                   onChange={(e) => setComment(e.target.value)}
                   placeholder="Escreva algo..."
                   rows={2}
-                  className="w-full bg-muted/50 border border-border rounded-2xl p-3 pr-12 text-sm text-white focus:outline-none focus:border-primary transition-all resize-none shadow-inner"
+                  className="w-full bg-muted/50 border border-border rounded-2xl p-3 pr-12 text-sm text-foreground focus:outline-none focus:border-primary transition-all resize-none shadow-inner"
                 />
                 <button
                   onClick={handleAddComment}

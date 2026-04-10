@@ -45,4 +45,8 @@ export const eventsService = {
   deleteEvent: async (id: string): Promise<void> => {
     return api.delete(`/events/${id}`);
   },
+  
+  duplicateEvent: async (id: string): Promise<Event> => {
+    return api.post<Event>(`/events/${id}/duplicate`);
+  },
 };

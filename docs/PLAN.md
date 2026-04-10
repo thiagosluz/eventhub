@@ -1,27 +1,45 @@
-# Plano de Orquestração: Configuração do MailHog
+# Plano de Implementação: Normalização de Tema do Kanban
 
-Este documento coordena a implementação do serviço de e-mail local (MailHog) no EventHub.
+O objetivo deste plano é ajustar os modais do sistema Kanban (Gerenciamento de Colunas, Modal de Tarefas e Modal de Confirmação) para que sigam o tema claro do restante da aplicação, removendo classes de estilo dark hardcoded.
 
-## 🎯 Objetivo
-Configurar o MailHog via Docker Compose, integrar com o backend NestJS para garantir que o envio de e-mails funcione localmente, adicionar cobertura de testes (unitários/E2E) e documentar o processo.
+## Problema Identificado
+Os modais `ColumnManagerModal`, `ConfirmModal` e `TaskModal` possuem classes como `bg-gray-950`, `border-gray-800` e `text-white` fixas, o que faz com que eles permaneçam em modo escuro mesmo quando o sistema está em modo claro.
 
-## 👥 Agentes Envolvidos
-- `devops-engineer`: Configuração do `docker-compose.yml`.
-- `backend-specialist`: Ajustes de integração e variáveis de ambiente.
-- `test-engineer`: Criação de testes unitários e E2E.
-- `documentation-writer`: Criação de manuais e atualização do README.
+## Mudanças Propostas
 
-## 📅 Chronograma
-1. **[PHASE 1] Planejamento e Design**: Criação deste documento e validação inicial.
-2. **[PHASE 2] Execução (Paralela)**:
-   - Setup do Docker (MailHog).
-   - Verificação da integração no backend.
-   - Implementação da suíte de testes.
-   - Escrita da documentação técnica.
-3. **[PHASE 3] Validação Final**: execução de todos os testes e verificação do dashboard de saúde.
+### Frontend
 
-## 🏁 Critérios de Aceitação
-- O serviço `mailhog` deve estar rodando no Docker.
-- O Dashboard de Saúde deve mostrar o serviço de e-mail como "Online".
-- 100% de sucesso nos novos testes unitários e E2E.
-- Documentação `docs/EMAIL_SETUP.md` disponível.
+#### [MODIFY] [ColumnManagerModal.tsx](file:///home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/ColumnManagerModal.tsx)
+- Substituir `bg-gray-950/95` por `bg-background`.
+- Substituir `border-gray-800` e `border-gray-800/50` por `border-border`.
+- Substituir `hover:bg-gray-900` por `hover:bg-muted`.
+- Substituir `text-white` por `text-foreground`.
+- Ajustar cores de ícones e textos secundários para usar classes semânticas (`text-muted-foreground`).
+
+#### [MODIFY] [ConfirmModal.tsx](file:///home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/ConfirmModal.tsx)
+- Substituir `bg-gray-950/95` por `bg-background`.
+- Substituir `border-gray-800` por `border-border`.
+- Substituir `bg-gray-900/30` por `bg-muted/30`.
+- Substituir `hover:bg-gray-900` por `hover:bg-muted`.
+- Ajustar cores de textos para consistência.
+
+#### [MODIFY] [TaskModal.tsx](file:///home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/TaskModal.tsx)
+- Substituir `bg-gray-950/95` por `bg-background`.
+- Substituir `border-gray-800` e `border-gray-800/50` por `border-border`.
+- Substituir `bg-gray-900/30` por `bg-muted/30`.
+- Substituir `bg-gray-950/20` por `bg-muted/10`.
+- Substituir todos os `text-white` por `text-foreground` ou remover se o padrão for suficiente.
+- Ajustar placeholders e inputs para serem legíveis em modo claro.
+
+## Plano de Verificação
+
+### Verificação Manual
+1. Abrir a rota do Kanban: `http://localhost:3001/dashboard/events/[id]/kanban`.
+2. Abrir o modal "Gerenciar Colunas" e verificar se o fundo está claro e o texto legível.
+3. Abrir o modal de criação/edição de tarefas e verificar a consistência.
+4. Tentar excluir uma coluna/tarefa para ver o `ConfirmModal`.
+5. Verificar interações (hover, drag and drop) nos novos estilos.
+
+### Testes Automatizados
+- Executar `npm test` no frontend para garantir que nenhuma lógica foi quebrada.
+- Executar o script de lint: `python .agent/skills/lint-and-validate/scripts/lint_runner.py .`.

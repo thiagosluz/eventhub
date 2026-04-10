@@ -356,4 +356,45 @@ export class EventsService {
       where: { id: eventId },
     });
   }
+
+  async duplicateEvent(tenantId: string, eventId: string) {
+    const original = await this.prisma.event.findFirst({
+      where: { id: eventId, tenantId },
+    });
+
+    if (!original) {
+      throw new NotFoundException("Evento original não encontrado.");
+    }
+
+    const baseSlug = `${original.slug}-copy`;
+    let uniqueSlug = baseSlug;
+    let counter = 1;
+
+    // Ensure unique slug within tenant
+    while (
+      await this.prisma.event.findFirst({
+        where: { tenantId, slug: uniqueSlug },
+      })
+    ) {
+      uniqueSlug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+
+    const {
+      id: _id,
+      createdAt: _createdAt,
+      updatedAt: _updatedAt,
+      ...eventData
+    } = original;
+
+    return this.prisma.event.create({
+      data: {
+        ...eventData,
+        themeConfig: eventData.themeConfig as any,
+        name: `${original.name} (Cópia)`,
+        slug: uniqueSlug,
+        status: "DRAFT",
+      },
+    });
+  }
 }

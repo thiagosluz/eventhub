@@ -110,19 +110,19 @@ export function ColumnManagerModal({ isOpen, onClose, boardId, columns: initialC
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-gray-950/95 w-full max-w-lg rounded-3xl border border-gray-800 shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden backdrop-blur-xl flex flex-col max-h-[80vh]">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-[2px] animate-in fade-in duration-200">
+      <div className="bg-background w-full max-w-lg rounded-3xl border border-border shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden backdrop-blur-xl flex flex-col max-h-[80vh]">
         
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-800/50">
+        <div className="flex items-center justify-between p-6 border-b border-border">
           <div>
             <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest inline-block mb-2">
               Gerenciar Colunas
             </div>
             <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Arraste para reordenar</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-900 rounded-xl transition-colors group">
-            <XMarkIcon className="w-5 h-5 text-gray-500 group-hover:text-gray-300" />
+          <button onClick={onClose} className="p-2 hover:bg-muted rounded-xl transition-colors group">
+            <XMarkIcon className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
           </button>
         </div>
 
@@ -148,7 +148,7 @@ export function ColumnManagerModal({ isOpen, onClose, boardId, columns: initialC
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleRename(col.id)}
-                    className="flex-1 bg-transparent text-sm font-bold focus:outline-none text-white"
+                    className="flex-1 bg-transparent text-sm font-bold focus:outline-none text-foreground"
                   />
                   <button onClick={() => handleRename(col.id)} className="p-1 text-primary hover:bg-primary/10 rounded-lg">
                     <CheckIcon className="w-4 h-4" />
@@ -182,14 +182,14 @@ export function ColumnManagerModal({ isOpen, onClose, boardId, columns: initialC
         </div>
 
         {/* Add Column */}
-        <div className="p-4 border-t border-gray-800/50 space-y-3">
+        <div className="p-4 border-t border-border space-y-3">
           <div className="flex gap-2">
             <input
               value={newColumnName}
               onChange={(e) => setNewColumnName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleAddColumn()}
               placeholder="Nova coluna..."
-              className="flex-1 bg-muted/50 border border-border rounded-xl px-4 py-2.5 text-sm font-bold text-white focus:outline-none focus:border-primary transition-all"
+              className="flex-1 bg-muted/50 border border-border rounded-xl px-4 py-2.5 text-sm font-bold text-foreground focus:outline-none focus:border-primary transition-all"
             />
             <button
               onClick={handleAddColumn}

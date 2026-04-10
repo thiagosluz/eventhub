@@ -12,26 +12,48 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image";
+import { EventActionsDropdown } from "@/components/events/EventActionsDropdown";
+import { DeleteConfirmationModal } from "@/components/dashboard/DeleteConfirmationModal";
+import { toast } from "react-hot-toast";
 
 export default function EventsManagementPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [eventToDelete, setEventToDelete] = useState<Event | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const fetchEvents = async () => {
+    setIsLoading(true);
+    try {
+      const data = await eventsService.getOrganizerEvents();
+      setEvents(data);
+    } catch (error) {
+      console.error("Failed to fetch organizer events:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const data = await eventsService.getOrganizerEvents();
-        setEvents(data);
-      } catch (error) {
-        console.error("Failed to fetch organizer events:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchEvents();
   }, []);
+
+  const handleDelete = async () => {
+    if (!eventToDelete) return;
+
+    setIsDeleting(true);
+    try {
+      await eventsService.deleteEvent(eventToDelete.id);
+      toast.success("Evento excluído com sucesso!");
+      setEvents(prev => prev.filter(e => e.id !== eventToDelete.id));
+      setEventToDelete(null);
+    } catch (error: any) {
+      toast.error(error.message || "Erro ao excluir evento.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const filteredEvents = events.filter(event => 
     event.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -85,7 +107,7 @@ export default function EventsManagementPage() {
       ) : filteredEvents.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredEvents.map((event) => (
-            <div key={event.id} className="premium-card bg-card border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/5 transition-all group flex flex-col">
+            <div key={event.id} className="premium-card bg-card border-border hover:shadow-2xl hover:shadow-primary/5 transition-all group flex flex-col">
               <div className="aspect-video relative overflow-hidden bg-muted">
                 {event.bannerUrl ? (
                   <Image 
@@ -111,9 +133,11 @@ export default function EventsManagementPage() {
               <div className="p-6 flex-1 flex flex-col">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">{event.name}</h3>
-                  <button className="p-1 text-muted-foreground hover:text-foreground transition-colors">
-                    <EllipsisVerticalIcon className="w-5 h-5" />
-                  </button>
+                  <EventActionsDropdown 
+                    event={event} 
+                    onEventUpdated={fetchEvents}
+                    onEventDeleted={() => setEventToDelete(event)}
+                  />
                 </div>
 
                 <div className="space-y-3 mb-6">
@@ -158,6 +182,15 @@ export default function EventsManagementPage() {
           </Link>
         </div>
       )}
+
+      <DeleteConfirmationModal 
+        isOpen={!!eventToDelete}
+        onClose={() => setEventToDelete(null)}
+        onConfirm={handleDelete}
+        title="Excluir Evento"
+        description={`Tem certeza que deseja excluir o evento "${eventToDelete?.name}"? Esta ação não pode ser desfeita.`}
+        isLoading={isDeleting}
+      />
     </div>
   );
 }

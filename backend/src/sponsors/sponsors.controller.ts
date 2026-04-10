@@ -23,6 +23,7 @@ import {
   UpdateSponsorCategoryDto,
 } from "./dto/sponsor-category.dto";
 import { CreateSponsorDto, UpdateSponsorDto } from "./dto/sponsor.dto";
+import { JwtService } from "@nestjs/jwt";
 
 interface AuthRequest extends Request {
   user?: { sub: string; email: string; tenantId: string; role: string };
@@ -30,7 +31,10 @@ interface AuthRequest extends Request {
 
 @Controller("sponsors")
 export class SponsorsController {
-  constructor(private readonly sponsorsService: SponsorsService) {}
+  constructor(
+    private readonly sponsorsService: SponsorsService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   // --- Categories ---
 
@@ -122,7 +126,29 @@ export class SponsorsController {
   // --- Public ---
 
   @Get("public/event/:slug")
-  async listPublicSponsors(@Param("slug") slug: string) {
-    return this.sponsorsService.listPublicSponsorsByEventSlug(slug);
+  async listPublicSponsors(@Param("slug") slug: string, @Req() req: Request) {
+    let organizerTenantId: string | undefined;
+    const authHeader = req.headers["authorization"];
+
+    if (
+      authHeader &&
+      typeof authHeader === "string" &&
+      authHeader.startsWith("Bearer ")
+    ) {
+      try {
+        const token = authHeader.split(" ")[1];
+        const payload = this.jwtService.decode(token) as any;
+        if (payload && payload.tenantId) {
+          organizerTenantId = payload.tenantId;
+        }
+      } catch (_e) {
+        // Silently fail auth extraction
+      }
+    }
+
+    return this.sponsorsService.listPublicSponsorsByEventSlug(
+      slug,
+      organizerTenantId,
+    );
   }
 }

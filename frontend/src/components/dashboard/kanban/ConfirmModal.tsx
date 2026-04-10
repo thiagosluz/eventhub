@@ -30,8 +30,8 @@ export function ConfirmModal({
     : { icon: "bg-amber-500/10 text-amber-500", btn: "bg-amber-500 hover:bg-amber-600 shadow-amber-500/20" };
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-gray-950/95 w-full max-w-sm rounded-2xl border border-gray-800 shadow-2xl animate-in zoom-in-95 duration-200 backdrop-blur-xl overflow-hidden">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/40 backdrop-blur-[2px] animate-in fade-in duration-200">
+      <div className="bg-background w-full max-w-sm rounded-2xl border border-border shadow-2xl animate-in zoom-in-95 duration-200 backdrop-blur-xl overflow-hidden">
         <div className="p-6 space-y-4">
           <div className="flex items-start gap-4">
             <div className={`w-10 h-10 rounded-xl ${colors.icon} flex items-center justify-center shrink-0`}>
@@ -41,13 +41,13 @@ export function ConfirmModal({
               <h3 className="text-sm font-black uppercase tracking-widest text-foreground mb-1">{title}</h3>
               <p className="text-xs text-muted-foreground font-medium leading-relaxed">{message}</p>
             </div>
-            <button onClick={onCancel} className="p-1.5 hover:bg-gray-900 rounded-lg transition-colors shrink-0">
-              <XMarkIcon className="w-4 h-4 text-gray-500" />
+            <button onClick={onCancel} className="p-1.5 hover:bg-muted rounded-lg transition-colors shrink-0">
+              <XMarkIcon className="w-4 h-4 text-muted-foreground" />
             </button>
           </div>
         </div>
 
-        <div className="flex gap-3 p-4 border-t border-gray-800/50 bg-gray-900/30">
+        <div className="flex gap-3 p-4 border-t border-border bg-muted/30">
           <button
             onClick={onCancel}
             className="flex-1 py-2.5 rounded-xl border border-border text-xs font-black uppercase tracking-widest text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
