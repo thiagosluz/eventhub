@@ -52,4 +52,11 @@ export const kanbanService = {
   getTaskDetails: (id: string): Promise<any> => api.get(`/kanban/task/${id}`),
   
   getWorkload: (eventId: string): Promise<WorkloadMember[]> => api.get(`/kanban/event/${eventId}/workload`),
+
+  // Monitor Restricted
+  getBoardDetailsForMonitor: (boardId: string): Promise<KanbanBoard> => 
+    api.get(`/kanban/monitor/board/${boardId}`),
+    
+  moveTaskByMonitor: (id: string, targetColumnId: string) =>
+    api.patch(`/kanban/monitor/task/${id}/move`, { targetColumnId }),
 };

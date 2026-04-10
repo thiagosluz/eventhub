@@ -39,9 +39,10 @@ interface KanbanColumnProps {
   onUpdate: () => void;
   onAddTask: () => void;
   onTaskClick: (task: KanbanTask) => void;
+  isMonitor?: boolean;
 }
 
-export function KanbanColumn({ column, isHighPriority, onUpdate, onAddTask, onTaskClick }: KanbanColumnProps) {
+export function KanbanColumn({ column, isHighPriority, onUpdate, onAddTask, onTaskClick, isMonitor }: KanbanColumnProps) {
   const { setNodeRef } = useDroppable({ id: column.id });
   const [showMenu, setShowMenu] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -116,8 +117,8 @@ export function KanbanColumn({ column, isHighPriority, onUpdate, onAddTask, onTa
             <>
               <div className={`w-2 h-2 rounded-full shrink-0 ${styles.dot}`} />
               <h3 
-                className={`text-xs font-black uppercase tracking-widest cursor-pointer hover:opacity-70 transition-colors truncate ${styles.text}`}
-                onDoubleClick={() => setIsEditing(true)}
+                className={`text-xs font-black uppercase tracking-widest ${!isMonitor ? 'cursor-pointer hover:opacity-70' : ''} transition-colors truncate ${styles.text}`}
+                onDoubleClick={() => !isMonitor && setIsEditing(true)}
                 title="Duplo-clique para editar"
               >
                 {column.name}
@@ -128,7 +129,7 @@ export function KanbanColumn({ column, isHighPriority, onUpdate, onAddTask, onTa
             </>
           )}
         </div>
-        {!isEditing && (
+        {!isEditing && !isMonitor && (
           <div className="flex items-center gap-1">
             <button 
               onClick={onAddTask}

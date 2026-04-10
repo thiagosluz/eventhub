@@ -30,9 +30,10 @@ interface KanbanBoardProps {
   board: IKanbanBoard;
   onUpdate: () => void;
   isHighPriority?: boolean;
+  isMonitor?: boolean;
 }
 
-export function KanbanBoard({ board, onUpdate, isHighPriority }: KanbanBoardProps) {
+export function KanbanBoard({ board, onUpdate, isHighPriority, isMonitor }: KanbanBoardProps) {
   const [activeTask, setActiveTask] = useState<KanbanTask | null>(null);
   const [columns, setColumns] = useState(board?.columns || []);
   const [selectedTask, setSelectedTask] = useState<KanbanTask | null>(null);
@@ -91,8 +92,11 @@ export function KanbanBoard({ board, onUpdate, isHighPriority }: KanbanBoardProp
 
     if (sourceCol.id !== destCol.id || activeId !== overId) {
       try {
-        // Optimistic update would be better here, but for now:
-        await kanbanService.moveTask(activeId, destCol.id, 0); // Simplified order
+        if (isMonitor) {
+          await kanbanService.moveTaskByMonitor(activeId, destCol.id);
+        } else {
+          await kanbanService.moveTask(activeId, destCol.id, 0); // Simplified order
+        }
         toast.success("Tarefa movida");
         onUpdate();
       } catch {
@@ -123,6 +127,7 @@ export function KanbanBoard({ board, onUpdate, isHighPriority }: KanbanBoardProp
               key={column.id} 
               column={column} 
               isHighPriority={isHighPriority}
+              isMonitor={isMonitor}
               onUpdate={onUpdate}
               onAddTask={() => handleAddTask(column.id)}
               onTaskClick={handleOpenTask}
@@ -139,6 +144,7 @@ export function KanbanBoard({ board, onUpdate, isHighPriority }: KanbanBoardProp
         eventId={board.eventId}
         teamMembers={teamMembers}
         onUpdate={onUpdate}
+        isMonitor={isMonitor}
       />
 
       <DragOverlay dropAnimation={{

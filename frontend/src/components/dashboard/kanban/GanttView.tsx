@@ -6,7 +6,7 @@ import { CalendarIcon, ClockIcon } from "@heroicons/react/24/outline";
 
 export function GanttView({ board }: any) {
   const days = eachDayOfInterval({
-    start: startOfToday(),
+    start: addDays(startOfToday(), -7),
     end: addDays(startOfToday(), 14)
   });
 

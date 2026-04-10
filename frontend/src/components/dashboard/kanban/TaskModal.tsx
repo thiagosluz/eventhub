@@ -26,6 +26,7 @@ interface TaskModalProps {
   eventId: string;
   teamMembers: WorkloadMember[];
   onUpdate: () => void;
+  isMonitor?: boolean;
 }
 
 export function TaskModal({ 
@@ -35,7 +36,8 @@ export function TaskModal({
   columnId, 
   eventId, 
   teamMembers, 
-  onUpdate 
+  onUpdate,
+  isMonitor
 }: TaskModalProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -190,21 +192,23 @@ export function TaskModal({
               <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Título</label>
               <input
                 autoFocus
+                disabled={isMonitor}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Ex: Definir palestrantes do dia 1"
-                className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold text-lg"
+                className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold text-lg disabled:opacity-75"
               />
             </div>
 
             <div className="space-y-1">
               <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Descrição</label>
               <textarea
+                disabled={isMonitor}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Adicione detalhes sobre o que precisa ser feito..."
                 rows={4}
-                className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm leading-relaxed resize-none"
+                className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm leading-relaxed resize-none disabled:opacity-75"
               />
             </div>
 
@@ -214,9 +218,10 @@ export function TaskModal({
                   <FlagIcon className="w-3 h-3" /> Prioridade
                 </label>
                 <select
+                  disabled={isMonitor}
                   value={priority}
                   onChange={(e) => setPriority(e.target.value as KanbanTask['priority'])}
-                  className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold appearance-none"
+                  className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold appearance-none disabled:opacity-75"
                 >
                   <option value="LOW">Baixa</option>
                   <option value="MEDIUM">Média</option>
@@ -231,9 +236,10 @@ export function TaskModal({
                 </label>
                 <input
                   type="datetime-local"
+                  disabled={isMonitor}
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
-                  className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold flex items-center"
+                  className="w-full bg-muted/50 border border-border rounded-2xl p-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-bold flex items-center disabled:opacity-75"
                 />
               </div>
             </div>
@@ -246,8 +252,9 @@ export function TaskModal({
                     <button
                       key={member.userId}
                       type="button"
+                      disabled={isMonitor}
                       onClick={() => toggleMember(member.userId)}
-                      className={`flex items-center gap-2 p-2 rounded-xl border transition-all ${selectedMembers.includes(member.userId) ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-muted/30 text-gray-400'}`}
+                      className={`flex items-center gap-2 p-2 rounded-xl border transition-all ${selectedMembers.includes(member.userId) ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-muted/30 text-gray-400'} disabled:opacity-75 cursor-default`}
                     >
                       <div className="w-6 h-6 rounded-full overflow-hidden bg-muted">
                         {member.avatarUrl ? <img src={member.avatarUrl} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[10px]">{member.name.charAt(0)}</div>}
@@ -258,7 +265,7 @@ export function TaskModal({
                </div>
             </div>
 
-            <div className="flex gap-4 pt-6 mt-auto">
+            <div className={`flex gap-4 pt-6 mt-auto ${isMonitor ? 'hidden' : ''}`}>
               {task && (
                 <button
                   type="button"
@@ -293,8 +300,8 @@ export function TaskModal({
               {teamMembers.map(member => (
                 <div 
                   key={member.userId}
-                  onClick={() => toggleMember(member.userId)}
-                  className={`flex items-center gap-3 p-2.5 rounded-xl border cursor-pointer transition-all ${selectedMembers.includes(member.userId) ? 'border-primary bg-primary/10' : 'border-transparent hover:bg-muted/30'}`}
+                  onClick={() => !isMonitor && toggleMember(member.userId)}
+                  className={`flex items-center gap-3 p-2.5 rounded-xl border ${!isMonitor ? 'cursor-pointer' : 'cursor-default'} transition-all ${selectedMembers.includes(member.userId) ? 'border-primary bg-primary/10' : 'border-transparent hover:bg-muted/30'} ${isMonitor ? 'opacity-80' : ''}`}
                 >
                   <div className="relative">
                     <div className="w-8 h-8 rounded-full bg-muted border border-border overflow-hidden">

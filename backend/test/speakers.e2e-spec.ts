@@ -34,7 +34,11 @@ describe("Speakers (e2e)", () => {
     },
   };
 
-  const mockQueue = { add: jest.fn() };
+  const mockQueue = {
+    add: jest.fn().mockResolvedValue({ id: "job_1" }),
+    on: jest.fn(),
+    close: jest.fn().mockResolvedValue(undefined),
+  };
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -68,6 +72,8 @@ describe("Speakers (e2e)", () => {
   afterAll(async () => {
     if (app) {
       await app.close();
+      // Pequeño delay para permitir que ioredis cierre conexiones pendientes
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
   });
 

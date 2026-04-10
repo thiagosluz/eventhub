@@ -11,6 +11,7 @@ import {
 } from "@nestjs/common";
 import { KanbanService } from "./kanban.service";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { MonitorGuard } from "../auth/monitor.guard";
 import { TaskPriority } from "@prisma/client";
 
 @Controller("kanban")
@@ -48,7 +49,9 @@ export class KanbanController {
   // ─── Column Endpoints ───
 
   @Post("column")
-  createColumn(@Body() body: { boardId: string; name: string; color?: string }) {
+  createColumn(
+    @Body() body: { boardId: string; name: string; color?: string },
+  ) {
     return this.kanbanService.createColumn(body.boardId, body.name, body.color);
   }
 
@@ -57,7 +60,12 @@ export class KanbanController {
     @Param("id") id: string,
     @Body() body: { name?: string; order?: number; color?: string },
   ) {
-    return this.kanbanService.updateColumn(id, body.name, body.order, body.color);
+    return this.kanbanService.updateColumn(
+      id,
+      body.name,
+      body.order,
+      body.color,
+    );
   }
 
   @Delete("column/:id")
@@ -135,5 +143,27 @@ export class KanbanController {
   @Get("event/:eventId/workload")
   getWorkload(@Param("eventId") eventId: string) {
     return this.kanbanService.getWorkload(eventId);
+  }
+
+  // ─── Monitor Restricted Endpoints ───
+
+  @Get("monitor/board/:boardId")
+  @UseGuards(MonitorGuard)
+  async getBoardForMonitor(@Param("boardId") boardId: string, @Req() req: any) {
+    return this.kanbanService.getBoardDetailsForMonitor(boardId, req.user.sub);
+  }
+
+  @Patch("monitor/task/:taskId/move")
+  @UseGuards(MonitorGuard)
+  async moveTaskByMonitor(
+    @Param("taskId") taskId: string,
+    @Body() body: { targetColumnId: string },
+    @Req() req: any,
+  ) {
+    return this.kanbanService.moveTaskByMonitor(
+      taskId,
+      body.targetColumnId,
+      req.user.sub,
+    );
   }
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usersService, EventMonitored } from "@/services/users.service";
 import Link from "next/link";
 import Image from "next/image";
-import { TicketIcon, QrCodeIcon } from "@heroicons/react/24/outline";
+import { TicketIcon, QrCodeIcon, ViewColumnsIcon } from "@heroicons/react/24/outline";
 
 export default function MonitorEventsPage() {
   const [monitoredEvents, setMonitoredEvents] = useState<EventMonitored[]>([]);
@@ -66,13 +66,23 @@ export default function MonitorEventsPage() {
                   </div>
                 </div>
 
-                <Link
-                  href={`/monitor/events/${event.id}/checkin`}
-                  className="premium-button w-full text-center text-xs justify-center gap-2"
-                >
-                  <QrCodeIcon className="w-4 h-4" />
-                  Acessar Check-in
-                </Link>
+                  <div className="flex flex-col gap-2">
+                    <Link
+                      href={`/monitor/events/${event.id}/tasks`}
+                      className="premium-button w-full text-center text-xs justify-center gap-2 bg-indigo-500/10 border-indigo-500/20 text-indigo-500 hover:bg-indigo-500 hover:text-white"
+                    >
+                      <ViewColumnsIcon className="w-4 h-4" />
+                      Minhas Tarefas
+                    </Link>
+
+                    <Link
+                      href={`/monitor/events/${event.id}/checkin`}
+                      className="premium-button w-full text-center text-xs justify-center gap-2"
+                    >
+                      <QrCodeIcon className="w-4 h-4" />
+                      Acessar Check-in
+                    </Link>
+                  </div>
               </div>
             </div>
           ))}

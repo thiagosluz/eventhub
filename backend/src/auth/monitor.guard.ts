@@ -26,7 +26,32 @@ export class MonitorGuard implements CanActivate {
     }
 
     // Try to find eventId in params
-    const eventId = params.eventId || params.id;
+    let eventId = params.eventId || params.id;
+
+    // Support resolution from boardId or taskId
+    if (!eventId && params.boardId) {
+      const board = await this.prisma.kanbanBoard.findUnique({
+        where: { id: params.boardId },
+        select: { eventId: true },
+      });
+      eventId = board?.eventId;
+    }
+
+    if (!eventId && params.taskId) {
+      const task = await this.prisma.kanbanTask.findUnique({
+        where: { id: params.taskId },
+        select: {
+          column: {
+            select: {
+              board: {
+                select: { eventId: true },
+              },
+            },
+          },
+        },
+      });
+      eventId = task?.column?.board?.eventId;
+    }
 
     if (!eventId) {
       // If we are protectively applying this to an endpoint without event context,
@@ -42,11 +67,24 @@ export class MonitorGuard implements CanActivate {
           userId: user.sub,
         },
       },
+      include: {
+        event: {
+          select: { tenantId: true },
+        },
+      },
     });
 
     if (!monitor) {
       throw new ForbiddenException(
         "Você não tem permissão de monitor para este evento.",
+      );
+    }
+
+    // Tenant Isolation Check
+    // If the user has a tenantId (staff member), it MUST match the event's tenantId.
+    if (user.tenantId && monitor.event.tenantId !== user.tenantId) {
+      throw new ForbiddenException(
+        "Acesso negado: Este evento pertence a outro inquilino.",
       );
     }
 

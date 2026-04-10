@@ -27,6 +27,7 @@ describe("KanbanService", () => {
       delete: jest.fn(),
     },
     taskAssignment: {
+      findUnique: jest.fn(),
       upsert: jest.fn(),
       delete: jest.fn(),
     },
@@ -98,8 +99,14 @@ describe("KanbanService", () => {
             columns: expect.objectContaining({
               create: expect.arrayContaining([
                 expect.objectContaining({ name: "A Fazer", color: "blue" }),
-                expect.objectContaining({ name: "Em Andamento", color: "amber" }),
-                expect.objectContaining({ name: "Concluído", color: "emerald" }),
+                expect.objectContaining({
+                  name: "Em Andamento",
+                  color: "amber",
+                }),
+                expect.objectContaining({
+                  name: "Concluído",
+                  color: "emerald",
+                }),
               ]),
             }),
           }),
@@ -146,8 +153,14 @@ describe("KanbanService", () => {
             columns: expect.objectContaining({
               create: expect.arrayContaining([
                 expect.objectContaining({ name: "A Fazer", color: "blue" }),
-                expect.objectContaining({ name: "Em Andamento", color: "amber" }),
-                expect.objectContaining({ name: "Concluído", color: "emerald" }),
+                expect.objectContaining({
+                  name: "Em Andamento",
+                  color: "amber",
+                }),
+                expect.objectContaining({
+                  name: "Concluído",
+                  color: "emerald",
+                }),
               ]),
             }),
           }),
@@ -397,6 +410,56 @@ describe("KanbanService", () => {
       await service.deleteTask("t1");
       expect(mockPrisma.kanbanTask.delete).toHaveBeenCalledWith({
         where: { id: "t1" },
+      });
+    });
+  });
+
+  // ─── monitorSpecific ───
+
+  describe("monitorSpecific", () => {
+    describe("getBoardDetailsForMonitor", () => {
+      it("should return board with tasks filtered by monitor assignments", async () => {
+        const board = { id: "b1", columns: [{ id: "c1", tasks: [] }] };
+        mockPrisma.kanbanBoard.findUnique.mockResolvedValue(board);
+
+        const result = await service.getBoardDetailsForMonitor("b1", "u1");
+        expect(result).toEqual(board);
+        expect(mockPrisma.kanbanBoard.findUnique).toHaveBeenCalledWith(
+          expect.objectContaining({
+            include: expect.objectContaining({
+              columns: expect.objectContaining({
+                include: expect.objectContaining({
+                  tasks: expect.objectContaining({
+                    where: { assignments: { some: { userId: "u1" } } },
+                  }),
+                }),
+              }),
+            }),
+          }),
+        );
+      });
+    });
+
+    describe("moveTaskByMonitor", () => {
+      it("should move task if assigned to monitor", async () => {
+        mockPrisma.taskAssignment.findUnique.mockResolvedValue({
+          taskId: "t1",
+          userId: "u1",
+        });
+        mockPrisma.kanbanTask.update.mockResolvedValue({ id: "t1" });
+
+        await service.moveTaskByMonitor("t1", "c2", "u1");
+        expect(mockPrisma.kanbanTask.update).toHaveBeenCalledWith(
+          expect.objectContaining({ where: { id: "t1" } }),
+        );
+      });
+
+      it("should throw ForbiddenException if task is not assigned to monitor", async () => {
+        mockPrisma.taskAssignment.findUnique.mockResolvedValue(null);
+
+        await expect(
+          service.moveTaskByMonitor("t1", "c2", "u1"),
+        ).rejects.toThrow("Acesso negado");
       });
     });
   });

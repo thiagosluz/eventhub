@@ -1,6 +1,8 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { KanbanController } from "./kanban.controller";
 import { KanbanService } from "./kanban.service";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { MonitorGuard } from "../auth/monitor.guard";
 
 describe("KanbanController", () => {
   let controller: KanbanController;
@@ -31,7 +33,12 @@ describe("KanbanController", () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [KanbanController],
       providers: [{ provide: KanbanService, useValue: mockService }],
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(MonitorGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     controller = module.get<KanbanController>(KanbanController);
   });
@@ -88,7 +95,11 @@ describe("KanbanController", () => {
     it("should pass boardId and name to service", async () => {
       mockService.createColumn.mockResolvedValue({ id: "c1" });
       await controller.createColumn({ boardId: "b1", name: "Backlog" });
-      expect(mockService.createColumn).toHaveBeenCalledWith("b1", "Backlog");
+      expect(mockService.createColumn).toHaveBeenCalledWith(
+        "b1",
+        "Backlog",
+        undefined,
+      );
     });
   });
 

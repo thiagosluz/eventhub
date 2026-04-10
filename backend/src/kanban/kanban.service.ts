@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, ForbiddenException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { TaskPriority } from "@prisma/client";
 
@@ -122,7 +122,12 @@ export class KanbanService {
     });
   }
 
-  async updateColumn(id: string, name?: string, order?: number, color?: string) {
+  async updateColumn(
+    id: string,
+    name?: string,
+    order?: number,
+    color?: string,
+  ) {
     return this.prisma.kanbanColumn.update({
       where: { id },
       data: { name, order, color },
@@ -249,5 +254,54 @@ export class KanbanService {
 
   async deleteTask(id: string) {
     return this.prisma.kanbanTask.delete({ where: { id } });
+  }
+
+  async getBoardDetailsForMonitor(boardId: string, userId: string) {
+    return this.prisma.kanbanBoard.findUnique({
+      where: { id: boardId },
+      include: {
+        columns: {
+          orderBy: { order: "asc" as const },
+          include: {
+            tasks: {
+              where: {
+                assignments: {
+                  some: { userId },
+                },
+              },
+              orderBy: { order: "asc" as const },
+              include: {
+                assignments: {
+                  include: {
+                    user: { select: { id: true, name: true, avatarUrl: true } },
+                  },
+                },
+                _count: { select: { comments: true } },
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async moveTaskByMonitor(
+    taskId: string,
+    targetColumnId: string,
+    userId: string,
+  ) {
+    // Check if task exists and is assigned to the monitor
+    const assignment = await this.prisma.taskAssignment.findUnique({
+      where: { taskId_userId: { taskId, userId } },
+    });
+
+    if (!assignment) {
+      throw new ForbiddenException(
+        "Acesso negado: Você só pode mover tarefas atribuídas a você.",
+      );
+    }
+
+    // Reuse moveTask
+    return this.moveTask(taskId, targetColumnId, 0); // Default to top of column for simplicity or 0
   }
 }

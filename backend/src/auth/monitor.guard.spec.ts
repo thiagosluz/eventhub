@@ -58,6 +58,7 @@ describe("MonitorGuard", () => {
 
     (prisma.eventMonitor.findUnique as jest.Mock).mockResolvedValue({
       id: "em1",
+      event: { tenantId: "tenant1" },
     });
 
     expect(await guard.canActivate(context)).toBe(true);
@@ -66,6 +67,11 @@ describe("MonitorGuard", () => {
         eventId_userId: {
           eventId: "event1",
           userId: "user1",
+        },
+      },
+      include: {
+        event: {
+          select: { tenantId: true },
         },
       },
     });
