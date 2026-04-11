@@ -4,6 +4,11 @@ import request from "supertest";
 import { AppModule } from "./../src/app.module";
 import { PrismaService } from "./../src/prisma/prisma.service";
 import { JwtService } from "@nestjs/jwt";
+import { ActivitiesProcessor } from "./../src/activities/activities.processor";
+import { AssignReviewsProcessor } from "./../src/submissions/submissions.processor";
+import { MailProcessor } from "./../src/mail/mail.processor";
+import { KanbanAlertsProcessor } from "./../src/kanban/kanban.processor";
+import { getQueueToken } from "@nestjs/bullmq";
 
 describe("AuditController (e2e)", () => {
   let app: INestApplication;
@@ -23,12 +28,30 @@ describe("AuditController (e2e)", () => {
     },
   };
 
+  const mockQueue = { add: jest.fn() };
+
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
       .overrideProvider(PrismaService)
       .useValue(mockPrismaService)
+      .overrideProvider(getQueueToken("activities"))
+      .useValue(mockQueue)
+      .overrideProvider(getQueueToken("assign-reviews"))
+      .useValue(mockQueue)
+      .overrideProvider(getQueueToken("emails"))
+      .useValue(mockQueue)
+      .overrideProvider(getQueueToken("kanban-alerts"))
+      .useValue(mockQueue)
+      .overrideProvider(ActivitiesProcessor)
+      .useValue({ process: jest.fn() })
+      .overrideProvider(AssignReviewsProcessor)
+      .useValue({ process: jest.fn() })
+      .overrideProvider(MailProcessor)
+      .useValue({ process: jest.fn() })
+      .overrideProvider(KanbanAlertsProcessor)
+      .useValue({ process: jest.fn() })
       .compile();
 
     app = moduleFixture.createNestApplication();

@@ -8,6 +8,7 @@ import { getQueueToken } from "@nestjs/bullmq";
 import { ActivitiesProcessor } from "./../src/activities/activities.processor";
 import { AssignReviewsProcessor } from "./../src/submissions/submissions.processor";
 import { MailProcessor } from "./../src/mail/mail.processor";
+import { KanbanAlertsProcessor } from "./../src/kanban/kanban.processor";
 import { KanbanAutomationService } from "./../src/kanban/kanban-automation.service";
 
 describe("Activities (e2e)", () => {
@@ -82,6 +83,10 @@ describe("Activities (e2e)", () => {
       .overrideProvider(AssignReviewsProcessor)
       .useValue({ process: jest.fn() })
       .overrideProvider(MailProcessor)
+      .useValue({ process: jest.fn() })
+      .overrideProvider(getQueueToken("kanban-alerts"))
+      .useValue(mockQueue)
+      .overrideProvider(KanbanAlertsProcessor)
       .useValue({ process: jest.fn() })
       .overrideProvider(KanbanAutomationService)
       .useValue({

@@ -34,7 +34,10 @@ describe("KanbanService", () => {
     taskComment: {
       create: jest.fn(),
     },
-    eventMonitor: {
+    event: {
+      findUnique: jest.fn(),
+    },
+    user: {
       findMany: jest.fn(),
     },
     $transaction: jest.fn(),
@@ -371,34 +374,42 @@ describe("KanbanService", () => {
   // ─── getWorkload ───
 
   describe("getWorkload", () => {
-    it("should return mapped workload per monitor", async () => {
-      mockPrisma.eventMonitor.findMany.mockResolvedValue([
+    it("should return mapped workload for both organizers and monitors", async () => {
+      mockPrisma.event.findUnique.mockResolvedValue({ tenantId: "tenant1" });
+      mockPrisma.user.findMany.mockResolvedValue([
         {
-          user: {
-            id: "u1",
-            name: "Ana",
-            avatarUrl: null,
-            kanbanAssignments: [
-              { task: { id: "t1", title: "Task 1" } },
-              { task: { id: "t2", title: "Task 2" } },
-            ],
-          },
+          id: "u1",
+          name: "Organizer One",
+          avatarUrl: null,
+          kanbanAssignments: [{ task: { id: "t1", title: "Task 1" } }],
+        },
+        {
+          id: "u2",
+          name: "Monitor One",
+          avatarUrl: "avatar.png",
+          kanbanAssignments: [],
         },
       ]);
 
       const result = await service.getWorkload("e1");
-      expect(result).toEqual([
-        {
-          userId: "u1",
-          name: "Ana",
-          avatarUrl: null,
-          taskCount: 2,
-          tasks: [
-            { id: "t1", title: "Task 1" },
-            { id: "t2", title: "Task 2" },
-          ],
-        },
-      ]);
+
+      expect(result).toHaveLength(2);
+      expect(result).toContainEqual(
+        expect.objectContaining({ userId: "u1", name: "Organizer One" }),
+      );
+      expect(result).toContainEqual(
+        expect.objectContaining({ userId: "u2", name: "Monitor One" }),
+      );
+      expect(mockPrisma.user.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            OR: [
+              { tenantId: "tenant1", role: "ORGANIZER" },
+              { eventMonitors: { some: { eventId: "e1" } } },
+            ],
+          },
+        }),
+      );
     });
   });
 

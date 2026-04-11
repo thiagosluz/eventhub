@@ -7,6 +7,11 @@ import { JwtService } from "@nestjs/jwt";
 import { BadgesService } from "./../src/badges/badges.service";
 import { MailService } from "./../src/mail/mail.service";
 import { GamificationService } from "./../src/gamification/gamification.service";
+import { ActivitiesProcessor } from "./../src/activities/activities.processor";
+import { AssignReviewsProcessor } from "./../src/submissions/submissions.processor";
+import { MailProcessor } from "./../src/mail/mail.processor";
+import { KanbanAlertsProcessor } from "./../src/kanban/kanban.processor";
+import { getQueueToken } from "@nestjs/bullmq";
 
 describe("Checkin (e2e)", () => {
   let app: INestApplication;
@@ -59,6 +64,7 @@ describe("Checkin (e2e)", () => {
       create: jest.fn().mockResolvedValue({ id: "log_1" }),
     },
   };
+  const mockQueue = { add: jest.fn() };
 
   const mockBadgesService = {
     checkAndAwardBadge: jest.fn(),
@@ -78,6 +84,22 @@ describe("Checkin (e2e)", () => {
     })
       .overrideProvider(PrismaService)
       .useValue(mockPrismaService)
+      .overrideProvider(getQueueToken("activities"))
+      .useValue(mockQueue)
+      .overrideProvider(getQueueToken("assign-reviews"))
+      .useValue(mockQueue)
+      .overrideProvider(getQueueToken("emails"))
+      .useValue(mockQueue)
+      .overrideProvider(getQueueToken("kanban-alerts"))
+      .useValue(mockQueue)
+      .overrideProvider(ActivitiesProcessor)
+      .useValue({ process: jest.fn() })
+      .overrideProvider(AssignReviewsProcessor)
+      .useValue({ process: jest.fn() })
+      .overrideProvider(MailProcessor)
+      .useValue({ process: jest.fn() })
+      .overrideProvider(KanbanAlertsProcessor)
+      .useValue({ process: jest.fn() })
       .overrideProvider(BadgesService)
       .useValue(mockBadgesService)
       .overrideProvider(MailService)

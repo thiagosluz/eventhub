@@ -1,6 +1,10 @@
-import { Injectable, ForbiddenException } from "@nestjs/common";
+import {
+  Injectable,
+  ForbiddenException,
+  NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { TaskPriority } from "@prisma/client";
+import { TaskPriority, UserRole } from "@prisma/client";
 
 @Injectable()
 export class KanbanService {
@@ -226,29 +230,39 @@ export class KanbanService {
   }
 
   async getWorkload(eventId: string) {
-    const monitors = await this.prisma.eventMonitor.findMany({
-      where: { eventId },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            avatarUrl: true,
-            kanbanAssignments: {
-              where: { task: { column: { board: { eventId } } } },
-              include: { task: true },
-            },
-          },
+    const event = await this.prisma.event.findUnique({
+      where: { id: eventId },
+      select: { tenantId: true },
+    });
+
+    if (!event) {
+      throw new NotFoundException("Evento não encontrado");
+    }
+
+    const users = await this.prisma.user.findMany({
+      where: {
+        OR: [
+          { tenantId: event.tenantId, role: UserRole.ORGANIZER },
+          { eventMonitors: { some: { eventId } } },
+        ],
+      },
+      select: {
+        id: true,
+        name: true,
+        avatarUrl: true,
+        kanbanAssignments: {
+          where: { task: { column: { board: { eventId } } } },
+          include: { task: true },
         },
       },
     });
 
-    return monitors.map((m: any) => ({
-      userId: m.user.id,
-      name: m.user.name,
-      avatarUrl: m.user.avatarUrl,
-      taskCount: m.user.kanbanAssignments.length,
-      tasks: m.user.kanbanAssignments.map((a: any) => a.task),
+    return users.map((u: any) => ({
+      userId: u.id,
+      name: u.name,
+      avatarUrl: u.avatarUrl,
+      taskCount: u.kanbanAssignments.length,
+      tasks: u.kanbanAssignments.map((a: any) => a.task),
     }));
   }
 

@@ -10,6 +10,11 @@ import { AppModule } from "../src/app.module";
 import { PrismaService } from "../src/prisma/prisma.service";
 import { GamificationService } from "../src/gamification/gamification.service";
 import { randomUUID } from "crypto";
+import { ActivitiesProcessor } from "./../src/activities/activities.processor";
+import { AssignReviewsProcessor } from "./../src/submissions/submissions.processor";
+import { MailProcessor } from "./../src/mail/mail.processor";
+import { KanbanAlertsProcessor } from "./../src/kanban/kanban.processor";
+import { getQueueToken } from "@nestjs/bullmq";
 
 describe("Gamification Shielding (e2e)", () => {
   let app: INestApplication;
@@ -17,11 +22,30 @@ describe("Gamification Shielding (e2e)", () => {
   let gamificationService: GamificationService;
   let testUser: any;
 
+  const mockQueue = { add: jest.fn() };
+
   beforeAll(async () => {
     try {
       const moduleFixture: TestingModule = await Test.createTestingModule({
         imports: [AppModule],
-      }).compile();
+      })
+        .overrideProvider(getQueueToken("activities"))
+        .useValue(mockQueue)
+        .overrideProvider(getQueueToken("assign-reviews"))
+        .useValue(mockQueue)
+        .overrideProvider(getQueueToken("emails"))
+        .useValue(mockQueue)
+        .overrideProvider(getQueueToken("kanban-alerts"))
+        .useValue(mockQueue)
+        .overrideProvider(ActivitiesProcessor)
+        .useValue({ process: jest.fn() })
+        .overrideProvider(AssignReviewsProcessor)
+        .useValue({ process: jest.fn() })
+        .overrideProvider(MailProcessor)
+        .useValue({ process: jest.fn() })
+        .overrideProvider(KanbanAlertsProcessor)
+        .useValue({ process: jest.fn() })
+        .compile();
 
       app = moduleFixture.createNestApplication();
       await app.init();

@@ -6,6 +6,8 @@ import { PrismaService } from "./../src/prisma/prisma.service";
 import { JwtService } from "@nestjs/jwt";
 import { MinioService } from "./../src/storage/minio.service";
 import { MailService } from "./../src/mail/mail.service";
+import { MailProcessor } from "./../src/mail/mail.processor";
+import { KanbanAlertsProcessor } from "./../src/kanban/kanban.processor";
 import { getQueueToken } from "@nestjs/bullmq";
 import { AssignReviewsProcessor } from "./../src/submissions/submissions.processor";
 
@@ -61,6 +63,12 @@ describe("Submissions (e2e)", () => {
       .useValue(mockQueue)
       .overrideProvider(AssignReviewsProcessor)
       .useValue({})
+      .overrideProvider(MailProcessor)
+      .useValue({ process: jest.fn() })
+      .overrideProvider(getQueueToken("kanban-alerts"))
+      .useValue(mockQueue)
+      .overrideProvider(KanbanAlertsProcessor)
+      .useValue({ process: jest.fn() })
       .compile();
 
     app = moduleFixture.createNestApplication();

@@ -7,6 +7,7 @@ import { JwtService } from "@nestjs/jwt";
 import { ActivitiesProcessor } from "./../src/activities/activities.processor";
 import { AssignReviewsProcessor } from "./../src/submissions/submissions.processor";
 import { MailProcessor } from "./../src/mail/mail.processor";
+import { KanbanAlertsProcessor } from "./../src/kanban/kanban.processor";
 import { getQueueToken } from "@nestjs/bullmq";
 
 describe("Sponsors (e2e)", () => {
@@ -49,6 +50,10 @@ describe("Sponsors (e2e)", () => {
       .overrideProvider(AssignReviewsProcessor)
       .useValue({ process: jest.fn() })
       .overrideProvider(MailProcessor)
+      .useValue({ process: jest.fn() })
+      .overrideProvider(getQueueToken("kanban-alerts"))
+      .useValue(mockQueue)
+      .overrideProvider(KanbanAlertsProcessor)
       .useValue({ process: jest.fn() })
       .compile();
 

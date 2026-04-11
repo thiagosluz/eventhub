@@ -200,26 +200,28 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           )}
 
           {/* New Sections: Submission and Social */}
-          <section className="space-y-12">
-            <div className="flex flex-col items-center text-center space-y-4">
-              <h2 className="text-4xl font-black tracking-tight text-foreground">Chamada de Trabalhos</h2>
-              <div className="w-20 h-1.5 bg-primary rounded-full" />
-            </div>
-            <Link 
-              href={`/events/${event.slug}/submit`}
-              className="max-w-2xl mx-auto flex items-center justify-between p-8 rounded-[2.5rem] bg-secondary/10 border border-secondary/20 hover:bg-secondary/20 transition-all group"
-            >
-              <div className="flex flex-col items-start gap-1">
-                <span className="text-xs font-black uppercase tracking-widest text-secondary italic">Envie sua proposta</span>
-                <span className="text-2xl font-black text-foreground group-hover:text-primary transition-colors">Submeter Trabalho</span>
+          {event.submissionsEnabled && (
+            <section className="space-y-12">
+              <div className="flex flex-col items-center text-center space-y-4">
+                <h2 className="text-4xl font-black tracking-tight text-foreground">Chamada de Trabalhos</h2>
+                <div className="w-20 h-1.5 bg-primary rounded-full" />
               </div>
-              <div className="p-4 bg-secondary/20 rounded-2xl group-hover:bg-primary group-hover:text-white transition-all">
-                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-                 </svg>
-              </div>
-            </Link>
-          </section>
+              <Link 
+                href={`/events/${event.slug}/submit`}
+                className="max-w-2xl mx-auto flex items-center justify-between p-8 rounded-[2.5rem] bg-secondary/10 border border-secondary/20 hover:bg-secondary/20 transition-all group"
+              >
+                <div className="flex flex-col items-start gap-1">
+                  <span className="text-xs font-black uppercase tracking-widest text-secondary italic">Envie sua proposta</span>
+                  <span className="text-2xl font-black text-foreground group-hover:text-primary transition-colors">Submeter Trabalho</span>
+                </div>
+                <div className="p-4 bg-secondary/20 rounded-2xl group-hover:bg-primary group-hover:text-white transition-all">
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                  </svg>
+                </div>
+              </Link>
+            </section>
+          )}
 
           <section className="space-y-12">
             <div className="flex flex-col items-center text-center space-y-4">

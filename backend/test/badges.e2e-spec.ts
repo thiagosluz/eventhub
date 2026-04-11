@@ -7,6 +7,7 @@ import { JwtService } from "@nestjs/jwt";
 import { ActivitiesProcessor } from "./../src/activities/activities.processor";
 import { AssignReviewsProcessor } from "./../src/submissions/submissions.processor";
 import { MailProcessor } from "./../src/mail/mail.processor";
+import { KanbanAlertsProcessor } from "./../src/kanban/kanban.processor";
 import { getQueueToken } from "@nestjs/bullmq";
 
 describe("Badges (e2e)", () => {
@@ -47,11 +48,15 @@ describe("Badges (e2e)", () => {
       .useValue(mockQueue)
       .overrideProvider(getQueueToken("emails"))
       .useValue(mockQueue)
+      .overrideProvider(getQueueToken("kanban-alerts"))
+      .useValue(mockQueue)
       .overrideProvider(ActivitiesProcessor)
       .useValue({ process: jest.fn() })
       .overrideProvider(AssignReviewsProcessor)
       .useValue({ process: jest.fn() })
       .overrideProvider(MailProcessor)
+      .useValue({ process: jest.fn() })
+      .overrideProvider(KanbanAlertsProcessor)
       .useValue({ process: jest.fn() })
       .compile();
 
