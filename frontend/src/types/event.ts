@@ -54,6 +54,12 @@ export interface Tenant {
   slug: string;
   logoUrl?: string;
   themeConfig?: Record<string, unknown>;
+  bio?: string;
+  websiteUrl?: string;
+  instagramUrl?: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  coverUrl?: string;
 }
 
 export interface Activity {

@@ -22,7 +22,8 @@ export default function ProfilePage() {
   const [profileData, setProfileData] = useState({
     name: "",
     email: "",
-    bio: ""
+    bio: "",
+    publicProfile: false
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -38,7 +39,8 @@ export default function ProfilePage() {
         setProfileData({
           name: data.name,
           email: data.email,
-          bio: data.bio || ""
+          bio: data.bio || "",
+          publicProfile: data.publicProfile || false
         });
       } catch (err) {
         toast.error("Erro ao carregar dados do perfil.");
@@ -160,6 +162,20 @@ export default function ProfilePage() {
                   className="w-full p-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm" 
                   placeholder="Conte um pouco sobre você..."
                 />
+              </div>
+
+              <div className="flex items-center justify-between p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                <div className="space-y-0.5">
+                  <span className="text-xs font-black uppercase tracking-widest text-primary block">Visibilidade Pública</span>
+                  <span className="text-[10px] text-muted-foreground font-medium">Permitir que meu perfil seja listado na página pública da organização.</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setProfileData({ ...profileData, publicProfile: !profileData.publicProfile })}
+                  className={`w-12 h-6 rounded-full transition-colors relative ${profileData.publicProfile ? 'bg-primary' : 'bg-muted'}`}
+                >
+                  <div className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${profileData.publicProfile ? 'translate-x-6' : 'translate-x-0'}`} />
+                </button>
               </div>
 
               <div className="flex justify-end">

@@ -53,11 +53,11 @@ export default function TeamManagementPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground">Equipe da Organização</h1>
-          <p className="text-muted-foreground font-medium">Gerencie os administradores da sua conta.</p>
+          <h2 className="text-2xl font-black tracking-tight text-foreground uppercase">Equipe da Organização</h2>
+          <p className="text-muted-foreground font-medium mt-1">Gerencie os administradores e permissões da sua conta.</p>
         </div>
 
         <button 

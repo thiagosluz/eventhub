@@ -2,6 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { TenantsService } from "./tenants.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { NotFoundException } from "@nestjs/common";
+import { MinioService } from "../storage/minio.service";
 
 describe("TenantsService", () => {
   let service: TenantsService;
@@ -13,11 +14,17 @@ describe("TenantsService", () => {
     },
   };
 
+  const mockMinioService = {
+    uploadObject: jest.fn(),
+    deleteObject: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TenantsService,
         { provide: PrismaService, useValue: mockPrismaService },
+        { provide: MinioService, useValue: mockMinioService },
       ],
     }).compile();
 

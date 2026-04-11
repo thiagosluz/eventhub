@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  BadRequestException,
 } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { ActivitiesService } from "../activities/activities.service";
@@ -45,6 +46,13 @@ export class CheckoutService {
 
     if (!event) {
       throw new NotFoundException("Evento não encontrado.");
+    }
+
+    // Validation of dynamic form responses before creating anything
+    if (input.formResponses?.length) {
+      for (const fr of input.formResponses) {
+        await this.validateFormResponses(fr);
+      }
     }
 
     const existingRegistration = await this.prisma.registration.findFirst({
@@ -152,5 +160,59 @@ export class CheckoutService {
       registrationId: registration.id,
       payment,
     };
+  }
+
+  private async validateFormResponses(input: FormResponseInput) {
+    const form = await this.prisma.customForm.findUnique({
+      where: { id: input.formId },
+      include: { fields: true },
+    });
+
+    if (!form) {
+      throw new NotFoundException("Formulário não encontrado.");
+    }
+
+    for (const field of form.fields) {
+      const answer = input.answers.find((a) => a.fieldId === field.id);
+      const value = answer?.value?.trim();
+
+      // Check required
+      if (field.required && !value) {
+        throw new BadRequestException(
+          `O campo "${field.label}" é obrigatório.`,
+        );
+      }
+
+      if (!value) continue;
+
+      // Type-specific validation
+      switch (field.type) {
+        case "EMAIL": {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(value)) {
+            throw new BadRequestException(
+              `O campo "${field.label}" deve ser um e-mail válido.`,
+            );
+          }
+          break;
+        }
+        case "NUMBER": {
+          if (isNaN(Number(value))) {
+            throw new BadRequestException(
+              `O campo "${field.label}" deve ser um número válido.`,
+            );
+          }
+          break;
+        }
+        case "DATE": {
+          if (isNaN(Date.parse(value))) {
+            throw new BadRequestException(
+              `O campo "${field.label}" deve ser uma data válida.`,
+            );
+          }
+          break;
+        }
+      }
+    }
   }
 }

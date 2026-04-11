@@ -62,4 +62,8 @@ export class MinioService {
 
     return `${host}/${bucket}/${objectName}`;
   }
+
+  async deleteObject(bucket: string, objectName: string): Promise<void> {
+    await this.client.removeObject(bucket, objectName);
+  }
 }

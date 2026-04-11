@@ -1,0 +1,907 @@
+
+> frontend@0.1.0 lint
+> eslint
+
+
+/home/thiago/Projetos/eventhub/frontend/e2e/raffle-interaction.spec.ts
+  22:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/e2e/support/mocks.ts
+   5:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(admin)/admin/audit/page.tsx
+   8:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(admin)/admin/health/page.tsx
+  10:57  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  11:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(admin)/admin/tenants/page.tsx
+   12:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   18:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   19:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   44:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   69:18  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+   76:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   81:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   99:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:18  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(admin)/admin/users/page.tsx
+  19:38  warning  Unexpected any. Specify a different type                                                                       @typescript-eslint/no-explicit-any
+  23:16  warning  'setPage' is assigned a value but never used                                                                   @typescript-eslint/no-unused-vars
+  28:52  warning  Unexpected any. Specify a different type                                                                       @typescript-eslint/no-explicit-any
+  33:18  warning  Unexpected any. Specify a different type                                                                       @typescript-eslint/no-explicit-any
+  54:6   warning  React Hook useEffect has a missing dependency: 'fetchUsers'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  56:32  warning  Unexpected any. Specify a different type                                                                       @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(public)/auth/login/page.tsx
+  14:9  warning  'router' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(public)/checkout/page.tsx
+    8:17  warning  'FormField' is defined but never used        @typescript-eslint/no-unused-vars
+   12:3   warning  'ChevronLeftIcon' is defined but never used  @typescript-eslint/no-unused-vars
+  139:31  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(public)/checkout/success/page.tsx
+  13:5   warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(public)/checkout/success/page.tsx:13:5
+  11 |
+  12 |   useEffect(() => {
+> 13 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  14 |     setOrderId(String(Math.floor(Math.random() * 90000) + 10000));
+  15 |     // Disparar confetes após a montagem
+  16 |     const duration = 3 * 1000;  react-hooks/set-state-in-effect
+  22:21  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(public)/events/[slug]/page.tsx
+  48:12  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+  66:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(public)/events/[slug]/submit/page.tsx
+   52:9   warning  'router' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  105:19  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(public)/profile/page.tsx
+   21:3   warning  'CameraIcon' is defined but never used                                                                        @typescript-eslint/no-unused-vars
+   23:3   warning  'MapPinIcon' is defined but never used                                                                        @typescript-eslint/no-unused-vars
+   78:17  warning  'authUser' is assigned a value but never used                                                                 @typescript-eslint/no-unused-vars
+   78:27  warning  'logout' is assigned a value but never used                                                                   @typescript-eslint/no-unused-vars
+   80:50  warning  Unexpected any. Specify a different type                                                                      @typescript-eslint/no-explicit-any
+  135:6   warning  React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  168:19  warning  Unexpected any. Specify a different type                                                                      @typescript-eslint/no-explicit-any
+  208:19  warning  Unexpected any. Specify a different type                                                                      @typescript-eslint/no-explicit-any
+  221:19  warning  Unexpected any. Specify a different type                                                                      @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/(public)/u/[username]/page.tsx
+    4:21  warning  'useRouter' is defined but never used        @typescript-eslint/no-unused-vars
+    9:3   warning  'TrophyIcon' is defined but never used       @typescript-eslint/no-unused-vars
+   10:3   warning  'AcademicCapIcon' is defined but never used  @typescript-eslint/no-unused-vars
+   22:42  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  162:44  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  183:48  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/categories/page.tsx
+   35:14  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+   54:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   71:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:14  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/activities/page.tsx
+   45:6   warning  React Hook useEffect has a missing dependency: 'loadData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+   55:14  warning  'error' is defined but never used                                                                            @typescript-eslint/no-unused-vars
+   75:14  warning  'error' is defined but never used                                                                            @typescript-eslint/no-unused-vars
+   91:14  warning  'error' is defined but never used                                                                            @typescript-eslint/no-unused-vars
+  142:73  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                              react/no-unescaped-entities
+  142:88  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                              react/no-unescaped-entities
+  198:53  warning  Unexpected any. Specify a different type                                                                     @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/analytics/__tests__/EventAnalyticsPage.test.tsx
+   1:46  warning  'act' is defined but never used           @typescript-eslint/no-unused-vars
+   2:48  warning  'afterEach' is defined but never used     @typescript-eslint/no-unused-vars
+  18:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  24:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  91:86  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  92:92  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  93:84  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/analytics/page.tsx
+  10:3  warning  'ChevronRightIcon' is defined but never used  @typescript-eslint/no-unused-vars
+  29:3  warning  'LineChart' is defined but never used         @typescript-eslint/no-unused-vars
+  30:3  warning  'Line' is defined but never used              @typescript-eslint/no-unused-vars
+  36:8  warning  'Link' is defined but never used              @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/audit/page.tsx
+  3:40  warning  'use' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/certificates/new/page.tsx
+    8:3   warning  'CheckCircleIcon' is defined but never used                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+   30:10  warning  'error' is assigned a value but never used                                                                                                                                                                                                                                               @typescript-eslint/no-unused-vars
+   40:73  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   42:24  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   56:19  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   87:19  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  143:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/certificates/page.tsx
+  49:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/forms/page.tsx
+  20:9   warning  'router' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  22:10  warning  'event' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  23:10  warning  'form' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  95:19  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/gamification/__tests__/GamificationDashboardPage.test.tsx
+   43:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   57:83  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   58:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   59:85  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   60:89  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   61:90  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   67:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   72:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   77:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   90:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  103:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/gamification/page.tsx
+    67:38   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   113:6    warning  React Hook useEffect has missing dependencies: 'fetchBadges', 'fetchEventData', and 'fetchMonitoringData'. Either include them or remove the dependency array                                                                                                                            react-hooks/exhaustive-deps
+   163:14   warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   174:14   warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   205:19   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   216:14   warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   240:25   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   256:30   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   325:14   warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   410:52   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   541:56   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+   870:109  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   956:32   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  1094:140  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  1094:158  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/kanban/page.tsx
+   32:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   34:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   53:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   55:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  153:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/operations/monitors/page.tsx
+   6:3   warning  'UsersIcon' is defined but never used                                                                            @typescript-eslint/no-unused-vars
+   7:3   warning  'PlusIcon' is defined but never used                                                                             @typescript-eslint/no-unused-vars
+   9:3   warning  'UserMinusIcon' is defined but never used                                                                        @typescript-eslint/no-unused-vars
+  13:3   warning  'IdentificationIcon' is defined but never used                                                                   @typescript-eslint/no-unused-vars
+  37:14  warning  'error' is defined but never used                                                                                @typescript-eslint/no-unused-vars
+  55:6   warning  React Hook useEffect has a missing dependency: 'loadMonitors'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  69:21  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+  91:21  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/operations/raffle/__tests__/RaffleToolPage.test.tsx
+   1:37  warning  'waitFor' is defined but never used       @typescript-eslint/no-unused-vars
+  58:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  82:83  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  83:84  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  96:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/operations/raffle/page.tsx
+   38:42  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+   62:6   warning  React Hook useEffect has a missing dependency: 'fetchHistory'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  124:19  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+  183:58  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+  198:43  warning  Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/page.tsx
+   23:3   warning  'QueueListIcon' is defined but never used                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+   69:30  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   70:36  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   72:46  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  106:19  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  126:14  warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  136:67  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  136:94  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  139:14  warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  152:19  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  174:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  396:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  438:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/sponsors/page.tsx
+   12:3    warning  'ArrowsUpDownIcon' is defined but never used                                                                                                                                                                                                                                             @typescript-eslint/no-unused-vars
+   34:14   warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   43:6    warning  React Hook useEffect has a missing dependency: 'fetchSponsors'. Either include it or remove the dependency array                                                                                                                                                                         react-hooks/exhaustive-deps
+   58:14   warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   69:14   warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   92:14   warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  103:14   warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  113:14   warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  162:93   warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  162:98   warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  162:101  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  162:107  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  162:112  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  162:118  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  236:31   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  301:103  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  397:33   warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/submissions/CommitteeTab.tsx
+  51:37  warning  React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/submissions/SubmissionsTab.tsx
+   6:3   warning  'FunnelIcon' is defined but never used                                                                        @typescript-eslint/no-unused-vars
+   9:3   warning  'PlusIcon' is defined but never used                                                                          @typescript-eslint/no-unused-vars
+  10:3   warning  'CheckCircleIcon' is defined but never used                                                                   @typescript-eslint/no-unused-vars
+  51:37  warning  React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/submissions/__tests__/CommitteeTab.test.tsx
+   50:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   68:89  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   69:75  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  103:78  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:83  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/submissions/__tests__/ConfigTab.test.tsx
+  63:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  69:82  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  82:74  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  83:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  96:78  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  97:63  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/submissions/__tests__/SubmissionsTab.test.tsx
+   94:96  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   95:89  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   99:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  117:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  132:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/submissions/page.tsx
+   8:3   warning  'PlusIcon' is defined but never used                                                                            @typescript-eslint/no-unused-vars
+   9:3   warning  'TrashIcon' is defined but never used                                                                           @typescript-eslint/no-unused-vars
+  12:3   warning  'CalendarIcon' is defined but never used                                                                        @typescript-eslint/no-unused-vars
+  13:3   warning  'EnvelopeIcon' is defined but never used                                                                        @typescript-eslint/no-unused-vars
+  14:3   warning  'UserIcon' is defined but never used                                                                            @typescript-eslint/no-unused-vars
+  15:3   warning  'ArrowUpTrayIcon' is defined but never used                                                                     @typescript-eslint/no-unused-vars
+  16:3   warning  'CheckCircleIcon' is defined but never used                                                                     @typescript-eslint/no-unused-vars
+  17:3   warning  'TagIcon' is defined but never used                                                                             @typescript-eslint/no-unused-vars
+  18:3   warning  'BookOpenIcon' is defined but never used                                                                        @typescript-eslint/no-unused-vars
+  21:8   warning  'toast' is defined but never used                                                                               @typescript-eslint/no-unused-vars
+  47:39  warning  React Hook useEffect has a missing dependency: 'fetchConfig'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/page.tsx
+   8:3   warning  'EllipsisVerticalIcon' is defined but never used  @typescript-eslint/no-unused-vars
+  51:21  warning  Unexpected any. Specify a different type          @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/participants/page.tsx
+  68:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/profile/page.tsx
+    5:24  warning  'UserProfile' is defined but never used                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+   10:3   warning  'CheckCircleIcon' is defined but never used                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+   11:3   warning  'ExclamationCircleIcon' is defined but never used                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+   43:16  warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+   98:14  warning  'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  244:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/settings/branding/page.tsx
+  12:10  warning  'tenant' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  34:14  warning  'error' is defined but never used            @typescript-eslint/no-unused-vars
+  48:14  warning  'error' is defined but never used            @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/settings/page.tsx
+  35:16  error  'UserIcon' is not defined  react/jsx-no-undef
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/settings/profile/page.tsx
+  44:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+  59:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/settings/team/page.tsx
+   6:3   warning  'UsersIcon' is defined but never used     @typescript-eslint/no-unused-vars
+  10:3   warning  'KeyIcon' is defined but never used       @typescript-eslint/no-unused-vars
+  28:14  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+  48:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/speakers/[id]/edit/page.tsx
+  35:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/speakers/new/page.tsx
+  14:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/dashboard/speakers/page.tsx
+    6:10  warning  'UserPlusIcon' is defined but never used                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+   52:14  warning  'error' is defined but never used                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+   86:14  warning  'error' is defined but never used                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  151:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  264:46  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  264:46  warning  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                jsx-a11y/alt-text
+
+/home/thiago/Projetos/eventhub/frontend/src/app/monitor/events/[id]/tasks/page.tsx
+   7:3   warning  'ViewColumnsIcon' is defined but never used  @typescript-eslint/no-unused-vars
+  27:19  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/raffle-display/[id]/__tests__/RaffleDisplay.test.tsx
+   1:26  warning  'act' is defined but never used           @typescript-eslint/no-unused-vars
+  49:82  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:82  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  69:81  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:82  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  85:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/raffle-display/[id]/page.tsx
+  73:6  warning  React Hook useEffect has missing dependencies: 'displayWinner', 'isSpinning', and 'triggerAnimation'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  83:6  warning  React Hook useEffect has a missing dependency: 'DUMMY_NAMES'. Either include it or remove the dependency array                                            react-hooks/exhaustive-deps
+
+/home/thiago/Projetos/eventhub/frontend/src/app/speaker/__tests__/SpeakerDashboard.test.tsx
+   1:26  warning  'waitFor' is defined but never used       @typescript-eslint/no-unused-vars
+  14:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  16:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  24:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  79:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/speaker/activities/__tests__/SpeakerActivities.test.tsx
+    9:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   10:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   11:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   12:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   13:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   14:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   52:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   69:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   73:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   93:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   97:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  111:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/speaker/activities/page.tsx
+  50:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/app/speaker/feedbacks/page.tsx
+   9:3   warning  'FunnelIcon' is defined but never used                           @typescript-eslint/no-unused-vars
+  96:95  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  98:99  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/home/thiago/Projetos/eventhub/frontend/src/app/speaker/page.tsx
+  17:10  warning  'profile' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/app/speaker/profile/__tests__/SpeakerProfile.test.tsx
+   10:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   11:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   12:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   13:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   51:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   52:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   68:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   85:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  108:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/app/speaker/profile/page.tsx
+   15:11  warning  'user' is assigned a value but never used                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+   62:14  warning  'error' is defined but never used                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+   79:14  warning  'error' is defined but never used                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  104:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/thiago/Projetos/eventhub/frontend/src/components/admin/CreateTenantModal.tsx
+  49:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/admin/EditUserModal.tsx
+  10:3   warning  'HomeModernIcon' is defined but never used  @typescript-eslint/no-unused-vars
+  19:9   warning  Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  64:19  warning  Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  79:18  warning  Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  81:19  warning  Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/admin/HealthStatusCard.tsx
+  10:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/ActivityForm.tsx
+    5:10  warning  'activitiesService' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             @typescript-eslint/no-unused-vars
+    5:29  warning  'CreateActivityDto' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             @typescript-eslint/no-unused-vars
+    5:48  warning  'UpdateActivityDto' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             @typescript-eslint/no-unused-vars
+   10:20  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-explicit-any
+   26:53  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-explicit-any
+   34:7   warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/ActivityForm.tsx:34:7
+  32 |   useEffect(() => {
+  33 |     if (initialData) {
+> 34 |       setFormData({
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  35 |         title: initialData.title || '',
+  36 |         description: initialData.description || '',
+  37 |         location: initialData.location || '',  react-hooks/set-state-in-effect
+   45:56  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-explicit-any
+  331:27  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @next/next/no-img-element
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/ParticipantDetailDrawer.tsx
+   80:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   84:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:58  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  130:57  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  153:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/ParticipantsModal.tsx
+  29:6   warning  React Hook useEffect has a missing dependency: 'loadEnrollments'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  36:14  warning  'error' is defined but never used                                                                                   @typescript-eslint/no-unused-vars
+  49:14  warning  'error' is defined but never used                                                                                   @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/SecureDeleteModal.tsx
+  51:86  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  51:94  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/Sidebar.tsx
+  14:3  warning  'ChartBarIcon' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/SpeakerForm.tsx
+  4:19  warning  'Ticket' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/SuccessModal.tsx
+  32:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/__tests__/ActivityForm.test.tsx
+   39:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   40:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   41:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   67:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  238:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  258:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  291:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  304:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/__tests__/ParticipantDetailDrawer.test.tsx
+  37:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:89  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/__tests__/ParticipantsModal.test.tsx
+  43:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  80:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  96:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/__tests__/Sidebar.test.tsx
+  23:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  37:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  80:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/__tests__/SpeakerForm.test.tsx
+   50:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  103:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/checkin/CheckinScanner.tsx
+   31:17   warning  '_user' is assigned a value but never used                                                                                                                   @typescript-eslint/no-unused-vars
+   63:114  warning  Unexpected any. Specify a different type                                                                                                                     @typescript-eslint/no-explicit-any
+   83:21   warning  Unexpected any. Specify a different type                                                                                                                     @typescript-eslint/no-explicit-any
+  115:19   warning  Unexpected any. Specify a different type                                                                                                                     @typescript-eslint/no-explicit-any
+  138:19   warning  Unexpected any. Specify a different type                                                                                                                     @typescript-eslint/no-explicit-any
+  181:6    warning  React Hook useEffect has missing dependencies: 'participants.length', 'startScanner', and 'stopScanner'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  198:126  warning  Unexpected any. Specify a different type                                                                                                                     @typescript-eslint/no-explicit-any
+  229:21   warning  Unexpected any. Specify a different type                                                                                                                     @typescript-eslint/no-explicit-any
+  261:21   warning  Unexpected any. Specify a different type                                                                                                                     @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/checkin/__tests__/CheckinScanner.test.tsx
+    8:8    warning  'toast' is defined but never used         @typescript-eslint/no-unused-vars
+   55:33   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:110  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   84:92   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:10   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  141:10   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  158:70   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  177:10   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/ColumnManagerModal.tsx
+  11:3  warning  'ExclamationTriangleIcon' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/GanttView.tsx
+   29:38  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   34:33  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   34:57  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   35:17  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  139:43  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  165:27  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  175:48  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  177:45  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  177:45  warning  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                jsx-a11y/alt-text
+  205:53  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  225:25  warning  'idx' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/KanbanBoard.tsx
+  17:3  warning  'arrayMove' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+  46:7  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/KanbanBoard.tsx:46:7
+  44 |   useEffect(() => {
+  45 |     if (board?.columns) {
+> 46 |       setColumns(board.columns);
+     |       ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  47 |     }
+  48 |   }, [board?.columns]);
+  49 |  react-hooks/set-state-in-effect
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/KanbanTaskCard.tsx
+   50:17  warning  'e' is defined but never used                                                                                                                                                                                                                                                            @typescript-eslint/no-unused-vars
+  107:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/TaskModal.tsx
+   18:10  warning  'ptBR' is defined but never used                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+   37:3   warning  'eventId' is defined but never used                                                                                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+   48:50  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   76:22  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   78:55  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  105:64  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  260:45  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  308:43  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/WorkloadSidebar.tsx
+   5:21  warning  'ChartBarIcon' is defined but never used                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+   8:44  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  51:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/thiago/Projetos/eventhub/frontend/src/components/dashboard/kanban/__tests__/ColumnManagerModal.test.tsx
+  1:26  warning  'fireEvent' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/components/events/EventActionsDropdown.tsx
+  59:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+  71:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/components/events/ScheduleGrid.tsx
+  4:20  warning  'SpeakerAssociation' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/components/events/SocialShare.tsx
+  17:5  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/thiago/Projetos/eventhub/frontend/src/components/events/SocialShare.tsx:17:5
+  15 |
+  16 |   useEffect(() => {
+> 17 |     setEventUrl(window.location.href);
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  18 |   }, []);
+  19 |
+  20 |   const formatCalendarDate = (dateStr: string) => {  react-hooks/set-state-in-effect
+
+/home/thiago/Projetos/eventhub/frontend/src/components/events/SpeakersSection.tsx
+  10:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/events/__tests__/EventCard.test.tsx
+  21:6  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/events/__tests__/ScheduleGrid.test.tsx
+   9:35  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  11:35  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  16:22  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  17:23  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  18:26  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  19:20  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  20:22  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  21:34  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  22:28  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  23:23  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  24:28  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  25:24  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  26:36  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  27:23  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  28:26  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  29:32  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  30:21  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  31:31  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  32:22  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  37:27  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  37:35  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/thiago/Projetos/eventhub/frontend/src/components/events/__tests__/TicketWidget.test.tsx
+  17:6   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  24:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/profile/Badge3D.tsx
+  19:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/profile/BadgesShowcase.tsx
+    4:32  warning  'UserBadge' is defined but never used                            @typescript-eslint/no-unused-vars
+    5:36  warning  'ShareIcon' is defined but never used                            @typescript-eslint/no-unused-vars
+   69:19  warning  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  236:70  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  236:91  warning  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  267:32  warning  'err' is defined but never used                                  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/components/profile/__tests__/AvatarWithBorder.test.tsx
+  7:25  warning  'fill' is defined but never used                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+  7:43  warning  Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  8:5   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/thiago/Projetos/eventhub/frontend/src/components/profile/__tests__/Badge3D.test.tsx
+  7:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/profile/__tests__/BadgesShowcase.test.tsx
+   25:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   26:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   27:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   37:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  126:80  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  189:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/components/submissions/__tests__/SubmissionsList.test.tsx
+  41:6  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/context/__tests__/AuthContext.test.tsx
+    1:10  warning  'render' is defined but never used             @typescript-eslint/no-unused-vars
+    1:35  warning  'screen' is defined but never used             @typescript-eslint/no-unused-vars
+    1:43  warning  'fireEvent' is defined but never used          @typescript-eslint/no-unused-vars
+   35:21  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+   91:40  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  111:40  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  128:40  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+  167:21  warning  'rerender' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  176:12  warning  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/lib/__tests__/api.test.ts
+  161:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  209:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/lib/api.ts
+  11:73  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:20  warning  'token' is defined but never used         @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/activities.service.test.ts
+  24:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  36:84  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  79:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  89:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  98:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/analytics.service.test.ts
+   23:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   33:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   43:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   55:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   65:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   75:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   84:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   93:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/auth.service.test.ts
+  19:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:67  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/badges.service.test.ts
+  21:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  31:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  78:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  87:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  97:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/certificates.service.spec.ts
+   12:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   23:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   35:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   46:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   52:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   59:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   65:75  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   71:71  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   77:60  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   83:60  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   90:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   95:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  100:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  105:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  110:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  115:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  125:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/certificates.service.test.ts
+   14:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   27:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   43:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   56:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   73:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   89:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  105:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  121:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  134:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  149:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/events.service.spec.ts
+  30:11  warning  'result' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/events.service.test.ts
+   21:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   31:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   41:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   51:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   61:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   71:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   96:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  109:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/operations.service.test.ts
+  20:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  30:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  48:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  75:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  83:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  91:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/participants.service.test.ts
+  18:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  38:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/remaining_services.service.test.ts
+   1:36  warning  'beforeEach' is defined but never used    @typescript-eslint/no-unused-vars
+  19:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  48:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  49:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  65:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  71:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  80:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  87:22  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  93:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/speakers.service.test.ts
+   21:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   31:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   41:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   51:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   60:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   70:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   80:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   90:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  100:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  110:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/sponsors.service.test.ts
+   25:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   35:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   45:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   54:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   63:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   73:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   92:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/staff.service.test.ts
+  23:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  42:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  51:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/submissions.service.test.ts
+   25:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   35:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   45:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   55:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   65:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   74:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   90:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   98:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  116:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  125:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  133:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  141:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  158:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/tenants.service.test.ts
+  19:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/__tests__/users.service.test.ts
+   20:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   30:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   40:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   51:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   61:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   71:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   81:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   91:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  111:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/audit.service.ts
+  16:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/services/kanban.service.ts
+  52:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/thiago/Projetos/eventhub/frontend/src/test-setup.tsx
+   49:107  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  129:16   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  130:13   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  139:17   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  142:20   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 610 problems (1 error, 609 warnings)
+

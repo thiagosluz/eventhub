@@ -34,7 +34,7 @@ export function Navbar({ tenant }: { tenant?: Tenant }) {
         
         <div className="hidden md:flex items-center gap-10 text-sm font-semibold text-muted-foreground">
           <Link href="/events" className={`hover:text-primary transition-colors ${pathname === '/events' ? 'text-primary' : ''}`}>Eventos</Link>
-          <a href="#" className="hover:text-primary transition-colors">Organizadores</a>
+          <Link href="/organizers" className={`hover:text-primary transition-colors ${pathname === '/organizers' ? 'text-primary' : ''}`}>Organizadores</Link>
           <a href="#" className="hover:text-primary transition-colors">Preços</a>
           <a href="#" className="hover:text-primary transition-colors">Sobre</a>
         </div>

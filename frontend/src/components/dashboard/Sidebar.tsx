@@ -20,14 +20,12 @@ import { useAuth } from "@/context/AuthContext";
 const navigation = [
   { name: "Visão Geral", href: "/dashboard", icon: HomeIcon },
   { name: "Meus Eventos", href: "/dashboard/events", icon: CalendarIcon },
-  { name: "Palestrantes", href: "/dashboard/speakers", icon: UserIcon }, // Changed to UserIcon
-  { name: "Branding", href: "/dashboard/settings/branding", icon: ChartBarIcon }, // Added new item
-  { name: "Categorias", href: "/dashboard/categories", icon: Cog6ToothIcon },
   { name: "Inscritos", href: "/dashboard/participants", icon: UsersIcon },
+  { name: "Palestrantes", href: "/dashboard/speakers", icon: UserIcon },
+  { name: "Categorias", href: "/dashboard/categories", icon: Cog6ToothIcon },
   { name: "Revisões", href: "/dashboard/reviews", icon: AcademicCapIcon },
   { name: "Financeiro", href: "/dashboard/finance", icon: CreditCardIcon },
   { name: "Configurações", href: "/dashboard/settings", icon: Cog6ToothIcon },
-  { name: "Minha Equipe", href: "/dashboard/settings/team", icon: UsersIcon },
   
   // Speaker specific
   { name: "Minha Agenda", href: "/speaker/activities", icon: CalendarIcon },

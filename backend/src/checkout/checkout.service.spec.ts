@@ -30,6 +30,9 @@ describe("CheckoutService", () => {
     customFormAnswer: {
       create: jest.fn(),
     },
+    customForm: {
+      findUnique: jest.fn(),
+    },
     user: {
       findUnique: jest.fn(),
     },
@@ -145,10 +148,14 @@ describe("CheckoutService", () => {
       mockPrismaService.registration.create.mockResolvedValue({ id: "reg1" });
       mockPrismaService.activity.findMany.mockResolvedValue([]);
       mockPrismaService.user.findUnique.mockResolvedValue({ id: "u1" });
-      mockFreeTicketStrategy.process.mockResolvedValue({});
       mockPrismaService.customFormResponse.create.mockResolvedValue({
         id: "resp1",
       });
+      mockPrismaService.customForm.findUnique.mockResolvedValue({
+        id: "f1",
+        fields: [{ id: "fld1", type: "TEXT", required: true }],
+      });
+      mockPrismaService.customFormAnswer.create.mockResolvedValue({});
 
       await service.processCheckout({
         eventId: "e1",

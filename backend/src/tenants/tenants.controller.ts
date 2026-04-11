@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Patch, Req, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../auth/roles.decorator";
 import { RolesGuard } from "../auth/roles.guard";
@@ -37,5 +48,27 @@ export class TenantsController {
   @Patch("me")
   async updateMe(@Req() req: AuthRequest, @Body() data: UpdateTenantDto) {
     return this.tenantsService.updateTenant(req.user!.tenantId, data);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post("me/logo")
+  @UseInterceptors(FileInterceptor("file"))
+  async uploadLogo(
+    @Req() req: AuthRequest,
+    @UploadedFile() file: { buffer: Buffer; mimetype: string },
+  ) {
+    return this.tenantsService.uploadLogo(req.user!.tenantId, file);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post("me/cover")
+  @UseInterceptors(FileInterceptor("file"))
+  async uploadCover(
+    @Req() req: AuthRequest,
+    @UploadedFile() file: { buffer: Buffer; mimetype: string },
+  ) {
+    return this.tenantsService.uploadCover(req.user!.tenantId, file);
   }
 }

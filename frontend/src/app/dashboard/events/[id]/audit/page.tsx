@@ -11,7 +11,8 @@ import {
   UserIcon,
   TagIcon,
   InformationCircleIcon,
-  XMarkIcon
+  XMarkIcon,
+  ArrowDownTrayIcon
 } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from 'framer-motion';
 import { auditService, AuditLog } from "@/services/audit.service";
@@ -22,6 +23,7 @@ export default function EventAuditPage() {
   const router = useRouter();
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
   const [selectedLog, setSelectedLog] = useState<AuditLog | null>(null);
   
   // Filters
@@ -42,6 +44,31 @@ export default function EventAuditPage() {
     };
     fetchLogs();
   }, [id]);
+
+  const handleExport = async () => {
+    setExporting(true);
+    const toastId = toast.loading("Preparando exportação...");
+    try {
+      const csvData = await auditService.exportLogs(id as string);
+      
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `auditoria-evento-${id}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success("Logs exportados com sucesso!", { id: toastId });
+    } catch (error) {
+      console.error("Failed to export logs:", error);
+      toast.error("Erro ao exportar logs. Tente novamente.", { id: toastId });
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const filteredLogs = useMemo(() => {
     return logs.filter(log => {
@@ -146,6 +173,19 @@ export default function EventAuditPage() {
             </select>
           </div>
         </div>
+
+        <button
+          onClick={handleExport}
+          disabled={exporting || logs.length === 0}
+          className="flex items-center gap-2 px-6 py-2 bg-orange-600 text-white rounded-xl font-bold text-sm hover:bg-orange-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-orange-600/20"
+        >
+          {exporting ? (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <ArrowDownTrayIcon className="w-4 h-4" />
+          )}
+          Exportar CSV
+        </button>
       </div>
 
       {/* Logs Table */}

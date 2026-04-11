@@ -16,4 +16,28 @@ export class UpdateTenantDto {
     secondaryColor?: string;
     [key: string]: any;
   };
+
+  @IsString()
+  @IsOptional()
+  bio?: string;
+
+  @IsUrl()
+  @IsOptional()
+  websiteUrl?: string;
+
+  @IsUrl()
+  @IsOptional()
+  instagramUrl?: string;
+
+  @IsUrl()
+  @IsOptional()
+  linkedinUrl?: string;
+
+  @IsUrl()
+  @IsOptional()
+  twitterUrl?: string;
+
+  @IsUrl()
+  @IsOptional()
+  coverUrl?: string;
 }

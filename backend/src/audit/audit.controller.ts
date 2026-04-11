@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, UseGuards, Header } from "@nestjs/common";
 import { AuditService } from "./audit.service";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { RolesGuard } from "../auth/roles.guard";
@@ -11,8 +11,16 @@ export class AuditController {
   constructor(private readonly auditService: AuditService) {}
 
   @Get()
-  @Roles(UserRole.ORGANIZER) // Only organizers can see the audit log
+  @Roles(UserRole.ORGANIZER)
   async getAuditLogs(@Param("eventId") eventId: string) {
     return this.auditService.findByEvent(eventId);
+  }
+
+  @Get("export")
+  @Roles(UserRole.ORGANIZER)
+  @Header("Content-Type", "text/csv; charset=utf-8")
+  @Header("Content-Disposition", "attachment; filename=audit-logs.csv")
+  async exportAuditLogs(@Param("eventId") eventId: string) {
+    return this.auditService.exportToCsv(eventId);
   }
 }
