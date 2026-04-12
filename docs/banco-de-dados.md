@@ -105,8 +105,8 @@ Representa uma organização (instituição, empresa) que gerencia eventos.
 |-------|------|-----------|
 | id | `cuid()` | Identificador único |
 | name | `String` | Nome da organização |
-| slug | `String @unique` | Slug para URL |
-| logoUrl | `String?` | Logo da organização |
+| logoUrl | `String?` | Logo da organização (via MinIO) |
+| coverUrl | `String?` | Banner/Capa da organização (via MinIO) |
 | themeConfig | `Json?` | Configuração visual (cores, etc.) |
 
 #### User

@@ -47,6 +47,8 @@ O Next.js 16 utiliza o **App Router** (file-based routing com layouts aninhados)
 | `/auth/register` | `(public)/auth/register/page.tsx` | Tela de registro |
 | `/events` | `(public)/events/page.tsx` | Listagem pública de eventos |
 | `/events/[slug]` | `(public)/events/[slug]/page.tsx` | Detalhe do evento público |
+| `/organizers` | `(public)/organizers/page.tsx` | Diretório de organizadores ativos |
+| `/organizers/[slug]` | `(public)/organizers/[slug]/page.tsx` | Brand Hub — Vitrine do organizador |
 | `/checkout` | `(public)/checkout/page.tsx` | Fluxo de inscrição |
 | `/tickets` | `(public)/tickets/page.tsx` | Meus ingressos |
 | `/profile` | `(public)/profile/page.tsx` | Perfil do participante |
@@ -240,9 +242,15 @@ Provider React que gerencia o estado global de autenticação:
 
 ### Comandos
 
-```bash
-npm run test         # Rodar testes unitários
-npm run test:watch   # Modo watch
-npm run test:coverage # Cobertura
-npm run test:e2e     # Testes E2E (Playwright)
-```
+## Padrões de UX e Performance
+
+### Busca Assíncrona com Debounce
+Para módulos com alta densidade de dados (como a busca de participantes no check-in), o frontend utiliza o padrão **Debounce**:
+- **Atraso**: 500ms antes de disparar a requisição.
+- **Trava de Segurança**: Mínimo de 3 caracteres para iniciar a busca.
+- **Estado**: Carregamento visual (loading states) e tratamento de listas vazias/não encontradas.
+
+### Branding Dinâmico
+O frontend injeta cores dinâmicas a partir do `themeConfig` do tenant:
+- **Cores Primárias/Secundárias**: Aplicadas via CSS Variables ou classes dinâmicas.
+- **Logos/Banners**: Renderizados a partir de URLs do MinIO com fallback para placeholders premium.

@@ -165,7 +165,7 @@ backend/
 │   ├── speakers/             # Gestão de palestrantes
 │   ├── sponsors/             # Gestão de patrocinadores
 │   ├── staff/                # Monitores e equipe do evento
-│   ├── storage/              # Integração com MinIO (upload de arquivos)
+│   ├── storage/              # Módulo genérico de integração com MinIO. Centraliza lógica de upload, delete e geração de URLs assinadas para: Banners de eventos, Logos e Capas de Organizadores (Tenants), Comprovantes de submissão, Material de atividades
 │   ├── mail/                 # Envio de e-mails (BullMQ + Nodemailer)
 │   ├── tenants/              # Dados de organização
 │   ├── forms/                # Formulários dinâmicos

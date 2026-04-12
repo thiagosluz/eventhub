@@ -115,11 +115,11 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
    - Verificação de badges (`CHECKIN_STREAK`, `ACTIVITY_HOURS`).
    - **XP**: +200 XP para check-in geral, +50 XP para check-in em atividade.
 
-### Regras de Negócio
-- Check-in é **idempotente**: se já existir, retorna `alreadyCheckedIn: true`.
-- Apenas **ORGANIZER** do tenant ou **Monitor** designado podem fazer check-in.
-- Check-in em atividade valida se o participante está inscrito (quando `requiresEnrollment`).
-- Check-in pode ser **desfeito** (`undoCheckin`).
+| 5. | **Mecanismo de Busca Escalável** | Introduzida busca *server-side* com *debounce* de 500ms e trava de segurança (mín. 3 caracteres), permitindo gerir eventos com 10.000+ inscritos sem travamentos no navegador. |
+| 6. | **Idempotência** | Check-in é idempotente: se já existir, retorna `alreadyCheckedIn: true`. |
+| 7. | **Permissões** | Apenas **ORGANIZER** do tenant ou **Monitor** designado podem fazer check-in. |
+| 8. | **Extensibilidade** | Check-in em atividade valida inscrição prévia (quando `requiresEnrollment`). |
+| 9. | **Reversibilidade** | Check-in pode ser **desfeito** (`undoCheckin`). |
 
 ---
 
@@ -292,9 +292,11 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 - Todos os dados são isolados por `tenantId` ao nível de serviço.
 - O `tenantId` é extraído do token JWT do usuário autenticado.
 
-### Funcionalidades
-- Perfil público do tenant.
-- Atualização de marca (logo + tema visual JSON).
+### Funcionalidades de Identidade Visual
+- **Logos e Banners**: Gestão persistente de logos (proporção 1:1) e capas (banner) com integração nativa ao MinIO.
+- **Ecossistema de Organizadores**: Diretório global em `/organizers` que agrega todos os parceiros ativos na plataforma.
+- **Brand Hubs**: Páginas de marca dedicadas (`/organizers/[slug]`) exibindo informações da organização, redes sociais e eventos ativos.
+- **Personalização de Tema**: Configuração de cores primárias e secundárias que se propagam para todas as páginas do organizador.
 
 ---
 

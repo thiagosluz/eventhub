@@ -207,7 +207,7 @@ Este documento lista todos os endpoints da API REST do EventHub, agrupados por m
 | Método | Endpoint | Descrição | Auth | Role |
 |--------|----------|-----------|:----:|------|
 | `GET` | `/analytics/events/:eventId` | Relatório completo do evento | ✅ | ORGANIZER |
-| `GET` | `/analytics/events/:eventId/participants` | Lista de participantes | ✅ | ORGANIZER |
+| `GET` | `/analytics/events/:eventId/participants` | Lista de participantes (requer `search` e `limit`) | ✅ | ORGANIZER | 
 
 ---
 
@@ -238,9 +238,13 @@ Este documento lista todos os endpoints da API REST do EventHub, agrupados por m
 
 | Método | Endpoint | Descrição | Auth | Role |
 |--------|----------|-----------|:----:|------|
-| `GET` | `/tenants/public-data` | Dados públicos do tenant | ✅ | ORGANIZER |
+| `GET` | `/tenants/public-data` | Dados públicos do tenant atual | ✅ | ORGANIZER |
 | `GET` | `/tenants/profile` | Perfil do tenant | ✅ | ORGANIZER |
-| `PATCH` | `/tenants/branding` | Atualizar marca (logo + tema) | ✅ | ORGANIZER | 
+| `PATCH` | `/tenants/branding` | Atualizar cores e tema | ✅ | ORGANIZER | 
+| `POST` | `/tenants/me/logo` | Upload de logo (1:1, via MinIO) | ✅ | ORGANIZER |
+| `POST` | `/tenants/me/cover` | Upload de capa/banner (via MinIO) | ✅ | ORGANIZER |
+| `GET` | `/tenants/public/organizers` | Listar todos organizadores ativos | ❌ | - |
+| `GET` | `/tenants/public/organizers/:slug` | Detalhes públicos do organizador | ❌ | - |
 | `GET` | `/admin/tenants` | Listar todos os tenants | ✅ | SUPER_ADMIN |
 | `PATCH` | `/admin/tenants/:id/status` | Ativar/Desativar tenant | ✅ | SUPER_ADMIN |
 | `GET` | `/admin/audit-logs` | Logs de auditoria global | ✅ | SUPER_ADMIN |

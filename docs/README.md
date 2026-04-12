@@ -68,6 +68,12 @@
 | `participante@eventhub.com.br` | `123456` | Participante (PARTICIPANT) |
 | `revisor@eventhub.com.br` | `123456` | Revisor (REVIEWER) |
 
+## Destaques da Versão (Abril 2026)
+
+- **🚀 Ecossistema de Organizadores**: Diretório global e Brand Hubs personalizados para parceiros.
+- **⚡ Check-in de Alta Escala**: Motor de busca server-side com suporte a 10.000+ participantes.
+- **🎨 Branding Dinâmico**: Gestão de logos e banners via Object Storage (MinIO) com propagação de tema.
+
 ---
 
 *Última atualização: Abril 2026*
