@@ -32,7 +32,14 @@ test.describe('Fluxo de Monitoramento e Check-in', () => {
     // 3. Muda para aba Manual
     await page.getByRole('button', { name: /Manual \/ Busca/i }).click();
     
-    // Verifica se a Alice aparece nos resultados iniciais
+    // Busca por Alice para popular a lista (novo comportamento escalável)
+    const searchInput = page.getByPlaceholder(/Busque por nome/i);
+    await Promise.all([
+      page.waitForResponse(res => res.url().includes('/participants') && res.status() === 200),
+      searchInput.fill('Alice')
+    ]);
+    
+    // Verifica se a Alice aparece nos resultados
     await expect(page.getByText('Alice Participant')).toBeVisible();
     
     // 4. Realiza o Check-in

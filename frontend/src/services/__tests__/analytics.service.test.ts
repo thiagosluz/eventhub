@@ -34,7 +34,9 @@ describe('analyticsService', () => {
 
     const result = await analyticsService.getEventParticipants(eventId);
 
-    expect(api.get).toHaveBeenCalledWith(`/analytics/events/${eventId}/participants`);
+    expect(api.get).toHaveBeenCalledWith(`/analytics/events/${eventId}/participants`, {
+      params: { search: undefined, limit: undefined }
+    });
     expect(result).toEqual(mockData);
   });
 

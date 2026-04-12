@@ -262,7 +262,10 @@ export async function setupDefaultMocks(page: Page | BrowserContext) {
 
     // GET /analytics/events/{id}/participants
     if (url.match(/\/analytics\/events\/[^/]+\/participants/) && method === 'GET') {
-      return fulfill([
+      const parsedUrl = new URL(url);
+      const search = parsedUrl.searchParams.get('search')?.toLowerCase() || '';
+      
+      const allParticipants = [
         {
           id: 'p-1',
           userId: 'u-1',
@@ -287,7 +290,16 @@ export async function setupDefaultMocks(page: Page | BrowserContext) {
           attendances: [{ id: 'att-1', activityId: null }],
           enrollmentsCount: 1
         }
-      ]);
+      ];
+
+      const filtered = search.length >= 3 
+        ? allParticipants.filter(p => 
+            p.name.toLowerCase().includes(search) || 
+            p.email.toLowerCase().includes(search)
+          )
+        : [];
+
+      return fulfill(filtered);
     }
 
     // GET /analytics/events/{id}/checkins

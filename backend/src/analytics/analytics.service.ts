@@ -123,11 +123,29 @@ export class AnalyticsService {
     };
   }
 
-  async getEventParticipants(tenantId: string, eventId: string) {
+  async getEventParticipants(
+    tenantId: string,
+    eventId: string,
+    search?: string,
+    limit: number = 20,
+  ) {
+    if (search && search.length < 3) {
+      return [];
+    }
+
     const registrations = await this.prisma.registration.findMany({
       where: {
         eventId,
         event: { tenantId },
+        ...(search
+          ? {
+              OR: [
+                { user: { name: { contains: search, mode: "insensitive" } } },
+                { user: { email: { contains: search, mode: "insensitive" } } },
+                { tickets: { some: { qrCodeToken: { contains: search } } } },
+              ],
+            }
+          : {}),
       },
       include: {
         user: true,
@@ -142,6 +160,7 @@ export class AnalyticsService {
           },
         },
       },
+      take: limit,
       orderBy: { createdAt: "desc" },
     });
 

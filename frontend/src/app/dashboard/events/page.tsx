@@ -22,6 +22,7 @@ export default function EventsManagementPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [eventToDelete, setEventToDelete] = useState<Event | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
 
   const fetchEvents = async () => {
     setIsLoading(true);
@@ -107,8 +108,13 @@ export default function EventsManagementPage() {
       ) : filteredEvents.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredEvents.map((event) => (
-            <div key={event.id} className="premium-card bg-card border-border hover:shadow-2xl hover:shadow-primary/5 transition-all group flex flex-col">
-              <div className="aspect-video relative overflow-hidden bg-muted">
+            <div 
+              key={event.id} 
+              className={`premium-card bg-card border-border hover:shadow-2xl hover:shadow-primary/5 transition-all group flex flex-col ${
+                activeDropdownId === event.id ? 'z-50 relative' : 'z-0'
+              }`}
+            >
+              <div className="aspect-video relative overflow-hidden bg-muted rounded-t-2xl">
                 {event.bannerUrl ? (
                   <Image 
                     src={event.bannerUrl} 
@@ -137,6 +143,7 @@ export default function EventsManagementPage() {
                     event={event} 
                     onEventUpdated={fetchEvents}
                     onEventDeleted={() => setEventToDelete(event)}
+                    onOpenChange={(isOpen) => setActiveDropdownId(isOpen ? event.id : null)}
                   />
                 </div>
 
@@ -151,7 +158,7 @@ export default function EventsManagementPage() {
                   </div>
                 </div>
 
-                <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
+                <div className="mt-auto pt-6 border-t border-border flex items-center justify-between bg-card rounded-b-2xl">
                   <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                     <span className="text-foreground font-black">{event._count?.registrations ?? 0}</span> Inscritos
                   </div>

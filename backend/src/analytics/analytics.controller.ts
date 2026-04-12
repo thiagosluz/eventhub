@@ -50,12 +50,22 @@ export class AnalyticsController {
 
   @UseGuards(MonitorGuard)
   @Get("events/:id/participants")
-  async getEventParticipants(@Param("id") id: string, @Req() req: AuthRequest) {
+  async getEventParticipants(
+    @Param("id") id: string,
+    @Query("search") search: string,
+    @Query("limit") limit: string,
+    @Req() req: AuthRequest,
+  ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) {
       throw new Error("Tenant missing from request.");
     }
-    return this.analyticsService.getEventParticipants(tenantId, id);
+    return this.analyticsService.getEventParticipants(
+      tenantId,
+      id,
+      search,
+      limit ? parseInt(limit) : undefined,
+    );
   }
 
   @UseGuards(MonitorGuard)

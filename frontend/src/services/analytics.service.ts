@@ -91,8 +91,14 @@ export const analyticsService = {
     return api.get(`/analytics/events/${eventId}`);
   },
 
-  getEventParticipants: async (eventId: string): Promise<Participant[]> => {
-    return api.get(`/analytics/events/${eventId}/participants`);
+  getEventParticipants: async (
+    eventId: string,
+    search?: string,
+    limit?: number,
+  ): Promise<Participant[]> => {
+    return api.get(`/analytics/events/${eventId}/participants`, {
+      params: { search, limit },
+    });
   },
 
   getEventCheckins: async (eventId: string, activityId?: string): Promise<Checkin[]> => {

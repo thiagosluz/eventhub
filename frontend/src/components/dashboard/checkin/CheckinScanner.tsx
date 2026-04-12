@@ -166,29 +166,41 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
       startScanner();
     } else {
       stopScanner();
-      if (participants.length === 0) {
-        setIsFetchingParticipants(true);
-        analyticsService.getEventParticipants(eventId)
-          .then(setParticipants)
-          .catch(console.error)
-          .finally(() => setIsFetchingParticipants(false));
-      }
     }
 
     return () => {
       stopScanner();
     };
-  }, [eventId, activeTab]); // Remove startScanner/stopScanner dependencies to avoid loops
+  }, [eventId, activeTab]);
 
-  const filteredParticipants = useMemo(() => {
-    if (!searchQuery) return participants.slice(0, 10);
-    const query = searchQuery.toLowerCase();
-    return participants.filter(p => 
-      p.name.toLowerCase().includes(query) || 
-      p.email.toLowerCase().includes(query) ||
-      p.qrCodeToken?.toLowerCase().includes(query)
-    ).slice(0, 20);
-  }, [participants, searchQuery]);
+  // Debounced Search Implementation
+  useEffect(() => {
+    if (activeTab !== 'manual') return;
+    
+    // Clear list if query is too short
+    if (searchQuery.length > 0 && searchQuery.length < 3) {
+      setParticipants([]);
+      return;
+    }
+
+    // Initial load (empty search) will also be empty based on plan "prefiro que a lista fique vazia até que uma busca seja iniciada"
+    if (searchQuery.length === 0) {
+      setParticipants([]);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setIsFetchingParticipants(true);
+      analyticsService.getEventParticipants(eventId, searchQuery, 20)
+        .then(setParticipants)
+        .catch(console.error)
+        .finally(() => setIsFetchingParticipants(false));
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [eventId, activeTab, searchQuery]);
+
+  const filteredParticipants = participants;
 
   const handleManualCheckin = async (participant: Participant) => {
     if (!participant.qrCodeToken) return;
@@ -387,9 +399,29 @@ export function CheckinScanner({ eventId, backUrl }: { eventId: string; backUrl?
                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
                    <p className="text-[10px] font-black uppercase tracking-widest text-primary animate-pulse">Buscando participantes...</p>
                 </div>
-              ) : filteredParticipants.length > 0 ? (
+              ) : searchQuery.length > 0 && searchQuery.length < 3 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center space-y-3 opacity-60">
+                  <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center">
+                    <InformationCircleIcon className="w-6 h-6 text-slate-400" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-black text-slate-600 uppercase tracking-tight">Continue digitando...</p>
+                    <p className="text-[10px] font-bold text-slate-400">Digite pelo menos 3 caracteres para buscar.</p>
+                  </div>
+                </div>
+              ) : searchQuery.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center space-y-3 opacity-60">
+                   <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center">
+                    <MagnifyingGlassIcon className="w-6 h-6 text-primary/40" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-black text-primary/60 uppercase tracking-tight">Pronto para buscar</p>
+                    <p className="text-[10px] font-bold text-slate-400">Busque por nome, email ou ingresso.</p>
+                  </div>
+                </div>
+              ) : participants.length > 0 ? (
                 <div className="grid gap-3">
-                  {filteredParticipants.map(participant => (
+                  {participants.map(participant => (
                     <div 
                       key={participant.id} 
                       className="group p-4 rounded-2xl border border-border bg-slate-50 hover:bg-white hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all flex items-center justify-between gap-4"

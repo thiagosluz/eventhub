@@ -20,12 +20,14 @@ interface EventActionsDropdownProps {
   event: Event;
   onEventUpdated: () => void;
   onEventDeleted: () => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export const EventActionsDropdown: React.FC<EventActionsDropdownProps> = ({ 
   event, 
   onEventUpdated,
-  onEventDeleted 
+  onEventDeleted,
+  onOpenChange
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDuplicating, setIsDuplicating] = useState(false);
@@ -35,17 +37,19 @@ export const EventActionsDropdown: React.FC<EventActionsDropdownProps> = ({
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setIsOpen(false);
+        onOpenChange?.(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [onOpenChange]);
 
   const handleCopyLink = () => {
     const url = `${window.location.origin}/events/${event.slug}`;
     navigator.clipboard.writeText(url);
     toast.success("Link copiado para a área de transferência!");
     setIsOpen(false);
+    onOpenChange?.(false);
   };
 
   const handleToggleStatus = async () => {
@@ -60,6 +64,7 @@ export const EventActionsDropdown: React.FC<EventActionsDropdownProps> = ({
       toast.error("Erro ao atualizar status do evento.");
     }
     setIsOpen(false);
+    onOpenChange?.(false);
   };
 
   const handleDuplicate = async () => {
@@ -73,13 +78,18 @@ export const EventActionsDropdown: React.FC<EventActionsDropdownProps> = ({
     } finally {
       setIsDuplicating(false);
       setIsOpen(false);
+      onOpenChange?.(false);
     }
   };
 
   return (
     <div className="relative" ref={dropdownRef}>
       <button 
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          const nextState = !isOpen;
+          setIsOpen(nextState);
+          onOpenChange?.(nextState);
+        }}
         className="p-1 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-all"
         disabled={isDuplicating}
       >
@@ -87,7 +97,7 @@ export const EventActionsDropdown: React.FC<EventActionsDropdownProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-xl shadow-2xl shadow-black/20 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-100 origin-top-right">
+        <div className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-xl shadow-2xl shadow-black/30 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-100 origin-top-right">
           <div className="py-2">
             <Link 
               href={`/dashboard/events/${event.id}`}

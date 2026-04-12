@@ -77,10 +77,12 @@ describe("AnalyticsController", () => {
     });
 
     it("should call getEventParticipants", async () => {
-      await controller.getEventParticipants("e1", mockRequest);
+      await controller.getEventParticipants("e1", "", "20", mockRequest);
       expect(mockAnalyticsService.getEventParticipants).toHaveBeenCalledWith(
         "tenant_id",
         "e1",
+        "",
+        20,
       );
     });
 

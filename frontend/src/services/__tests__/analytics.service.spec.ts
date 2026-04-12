@@ -26,7 +26,9 @@ describe('analyticsService', () => {
   it('getEventParticipants should call API correctly', async () => {
     vi.mocked(api.get).mockResolvedValue([]);
     await analyticsService.getEventParticipants(eventId);
-    expect(api.get).toHaveBeenCalledWith(`/analytics/events/${eventId}/participants`);
+    expect(api.get).toHaveBeenCalledWith(`/analytics/events/${eventId}/participants`, {
+      params: { search: undefined, limit: undefined }
+    });
   });
 
   it('getEventCheckins should call API correctly', async () => {
