@@ -31,10 +31,10 @@ export default function EventCertificatesPage({ params }: { params: Promise<{ id
   const [isStrategyModalOpen, setIsStrategyModalOpen] = useState(false);
   const [selectedTemplateForIssue, setSelectedTemplateForIssue] = useState<string | null>(null);
   
-  // Exclusão
   const [templateToDelete, setTemplateToDelete] = useState<CertificateTemplate | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [requiresSafetyWord, setRequiresSafetyWord] = useState(false);
 
   const fetchTemplates = async () => {
     try {
@@ -91,23 +91,45 @@ export default function EventCertificatesPage({ params }: { params: Promise<{ id
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (safetyWord?: string) => {
     if (!templateToDelete) return;
+
+    // Se o modal requer a palavra mas ela não foi enviada ou está errada (fallback frontend)
+    if (requiresSafetyWord && safetyWord?.trim() !== "DELETAR") return;
+
     setIsDeleting(true);
+    setFeedback(null);
+    let shouldClear = true;
+
     try {
-      await certificatesService.deleteTemplate(templateToDelete.id);
+      await certificatesService.deleteTemplate(
+        templateToDelete.id, 
+        requiresSafetyWord, 
+        safetyWord?.trim()
+      );
+      
       setTemplates(templates.filter(t => t.id !== templateToDelete.id));
       setFeedback({ type: 'success', message: 'Template excluído com sucesso!' });
       setIsDeleteModalOpen(false);
+      setRequiresSafetyWord(false);
     } catch (error: any) {
-      setFeedback({ 
-        type: 'error', 
-        message: error.message || "Não foi possível excluir o template. Verifique se ele possui certificados emitidos." 
-      });
-      setIsDeleteModalOpen(false);
+      if (error.status === 409) {
+        setRequiresSafetyWord(true);
+        setFeedback({ 
+          type: 'error', 
+          message: "Este template possui certificados emitidos. Digite DELETAR para confirmar a exclusão de tudo." 
+        });
+        shouldClear = false;
+      } else {
+        setFeedback({ 
+          type: 'error', 
+          message: error.message || "Não foi possível excluir o template." 
+        });
+        setIsDeleteModalOpen(false);
+      }
     } finally {
       setIsDeleting(false);
-      setTemplateToDelete(null);
+      if (shouldClear) setTemplateToDelete(null);
     }
   };
 
@@ -261,11 +283,20 @@ export default function EventCertificatesPage({ params }: { params: Promise<{ id
       {/* Modal de Confirmação */}
       <DeleteConfirmationModal 
         isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setRequiresSafetyWord(false);
+          setTemplateToDelete(null);
+        }}
         onConfirm={handleDelete}
-        title="Excluir Template"
-        description={`Tem certeza que deseja excluir o template "${templateToDelete?.name}"? Esta ação não pode ser desfeita.`}
+        title={requiresSafetyWord ? "Exclusão Irreversível" : "Excluir Template"}
+        description={requiresSafetyWord 
+          ? `ALERTA: Existem ${templateToDelete?._count?.issuedCertificates ?? 0} certificados emitidos para este template. A exclusão irá APAGAR todos os registros desses participantes permanentemente.` 
+          : `Tem certeza que deseja excluir o template "${templateToDelete?.name}"? Esta ação não pode ser desfeita.`
+        }
         isLoading={isDeleting}
+        requiresSafetyWord={requiresSafetyWord}
+        safetyWord="DELETAR"
       />
 
       {/* Modal de Estratégia de Emissão */}

@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
   Delete,
@@ -113,10 +114,20 @@ export class CertificatesController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Delete("templates/:id")
-  async deleteTemplate(@Param("id") id: string, @Req() req: AuthRequest) {
+  async deleteTemplate(
+    @Param("id") id: string,
+    @Req() req: AuthRequest,
+    @Query("force") force?: string,
+    @Query("confirm") confirm?: string,
+  ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) throw new Error("Missing tenantId on token payload.");
-    return this.certificateTemplates.delete(tenantId, id);
+    return this.certificateTemplates.delete(
+      tenantId,
+      id,
+      force === "true",
+      confirm,
+    );
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

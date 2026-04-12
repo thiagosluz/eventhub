@@ -6,7 +6,9 @@ import {
   PhotoIcon, 
   CheckCircleIcon,
   InformationCircleIcon,
-  ArrowPathIcon
+  ArrowPathIcon,
+  PlusIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { CertificateTemplate } from "@/types/certificate";
 import { useRouter } from "next/navigation";
@@ -27,14 +29,8 @@ export default function CertificateTemplateForm({
   const [name, setName] = useState(initialData?.name || "");
   const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.backgroundUrl || null);
-  const [placeholders, setPlaceholders] = useState(
-    initialData?.layoutConfig.placeholders || [
-      { key: "participantName", label: "Nome do Participante", x: 100, y: 150, fontSize: 24, color: "#000000" },
-      { key: "eventName", label: "Nome do Evento", x: 100, y: 300, fontSize: 14, color: "#000000" },
-      { key: "workload", label: "Carga Horária", x: 100, y: 400, fontSize: 12, color: "#000000" },
-    ]
-  );
-  const [activePlaceholder, setActivePlaceholder] = useState<number | null>(null);
+  const [textBlocks, setTextBlocks] = useState(initialData?.layoutConfig.textBlocks || []);
+  const [activeTextBlock, setActiveTextBlock] = useState<number | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -46,11 +42,32 @@ export default function CertificateTemplateForm({
     }
   };
 
-  const handlePlaceholderChange = (index: number, field: string, value: any) => {
-    const updated = [...placeholders];
+  // Removido handlePlaceholderChange (Legado)
+
+  const handleTextBlockChange = (index: number, field: string, value: any) => {
+    const updated = [...textBlocks];
     (updated[index] as any)[field] = value;
-    setPlaceholders(updated);
+    setTextBlocks(updated);
   };
+
+  const addTextBlock = () => {
+    setTextBlocks([...textBlocks, {
+      text: "Certificamos que {{participantName}} participou do evento {{eventName}}.",
+      x: 100,
+      y: 250,
+      width: 650,
+      fontSize: 18,
+      lineHeight: 1.4,
+      color: "#000000",
+      align: "center"
+    }]);
+  };
+
+  const removeTextBlock = (index: number) => {
+    setTextBlocks(textBlocks.filter((_, i) => i !== index));
+  };
+
+  // Removido removePlaceholder (Legado)
 
   const handlePreview = async () => {
     if (!previewUrl) return;
@@ -58,7 +75,7 @@ export default function CertificateTemplateForm({
     try {
       const blob = await certificatesService.previewTemplate({
         backgroundUrl: previewUrl,
-        layoutConfig: { placeholders }
+        layoutConfig: { placeholders: [], textBlocks }
       });
       const url = URL.createObjectURL(blob);
       window.open(url, '_blank');
@@ -85,7 +102,7 @@ export default function CertificateTemplateForm({
         await certificatesService.updateTemplate(initialData.id, {
           name,
           backgroundUrl: initialData.backgroundUrl, // URL will be updated if file is uploaded
-          layoutConfig: { placeholders }
+          layoutConfig: { placeholders: [], textBlocks }
         });
 
         // Upload new background if changed
@@ -97,7 +114,7 @@ export default function CertificateTemplateForm({
         const template = await certificatesService.createTemplate(eventId, {
           name,
           backgroundUrl: "https://via.placeholder.com/800x600?text=Aguardando+Upload",
-          layoutConfig: { placeholders }
+          layoutConfig: { placeholders: [], textBlocks }
         });
 
         if (backgroundFile) {
@@ -143,49 +160,53 @@ export default function CertificateTemplateForm({
               id="certificate-preview-container"
               className="relative aspect-[1.414/1] rounded-2xl bg-muted border-2 border-dashed border-border overflow-hidden select-none"
               onMouseMove={(e) => {
-                if (activePlaceholder !== null) {
+                  // Removido arrasto de placeholders (Legado)
+                if (activeTextBlock !== null) {
                   const rect = e.currentTarget.getBoundingClientRect();
                   const x = ((e.clientX - rect.left) / rect.width) * 841.89;
                   const y = ((e.clientY - rect.top) / rect.height) * 595.28;
-                  handlePlaceholderChange(activePlaceholder, 'x', Math.round(x));
-                  handlePlaceholderChange(activePlaceholder, 'y', Math.round(y));
+                  handleTextBlockChange(activeTextBlock, 'x', Math.round(x));
+                  handleTextBlockChange(activeTextBlock, 'y', Math.round(y));
                 }
               }}
-              onMouseUp={() => setActivePlaceholder(null)}
-              onMouseLeave={() => setActivePlaceholder(null)}
+              onMouseUp={() => {
+                setActiveTextBlock(null);
+              }}
             >
               {previewUrl ? (
                 <div className="relative w-full h-full">
                   <img src={previewUrl} alt="Preview" className="w-full h-full object-contain pointer-events-none" />
-                  {placeholders.map((p, index) => {
-                    // Try to find label in our definitions
-                    const label = placeholdersList.find(pl => pl.key === p.key)?.label || p.key;
-                    return (
-                      <div 
-                        key={p.key}
-                        onMouseDown={(e) => {
-                          e.stopPropagation();
-                          setActivePlaceholder(index);
-                        }}
-                        className={`absolute border-2 px-3 py-1.5 whitespace-nowrap cursor-move transition-colors z-10 rounded-lg font-bold text-[10px] shadow-lg ${
-                          activePlaceholder === index 
-                            ? 'border-primary bg-primary text-white scale-105 ring-4 ring-primary/20' 
-                            : 'border-primary/50 bg-primary/10 text-primary hover:bg-primary/20 hover:border-primary'
-                        }`}
-                        style={{ 
-                          left: `${(p.x / 841.89) * 100}%`, 
-                          top: `${(p.y / 595.28) * 100}%`,
-                          color: p.color,
-                          borderColor: activePlaceholder === index ? 'var(--primary)' : `${p.color}80`
-                        }}
-                      >
-                         <div className="flex flex-col items-center">
-                           <span>{label}</span>
-                           <span className="text-[8px] opacity-70">X: {p.x} Y: {p.y}</span>
-                         </div>
-                      </div>
-                    );
-                  })}
+                  {/* Removido render de placeholders sobre a imagem (Legado) */}
+
+                  {textBlocks.map((b, index) => (
+                    <div 
+                      key={index}
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                        setActiveTextBlock(index);
+                      }}
+                      className={`absolute border-2 px-3 py-1.5 cursor-move transition-colors z-10 rounded-lg font-bold text-[10px] shadow-lg flex flex-col items-center gap-1 ${
+                        activeTextBlock === index 
+                          ? 'border-primary bg-primary text-white scale-105 ring-4 ring-primary/20' 
+                          : 'border-emerald-500/50 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 hover:border-emerald-500'
+                      }`}
+                      style={{ 
+                        left: `${(b.x / 841.89) * 100}%`, 
+                        top: `${(b.y / 595.28) * 100}%`,
+                        color: b.color,
+                        width: b.width ? `${(b.width / 841.89) * 100}%` : 'auto',
+                        borderColor: activeTextBlock === index ? 'var(--primary)' : `${b.color}80`
+                      }}
+                    >
+                       <div className="line-clamp-2 text-center overflow-hidden w-full">
+                         {b.text.replace(/\{\{(.*?)\}\}/g, '$1')}
+                       </div>
+                       <div className="flex items-center gap-2 text-[8px] opacity-70">
+                         <span>X: {b.x} Y: {b.y}</span>
+                         {b.width && <span>W: {b.width}</span>}
+                       </div>
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground">
@@ -203,7 +224,14 @@ export default function CertificateTemplateForm({
             {previewUrl && (
               <div className="flex justify-between items-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2">
                 <div className="flex gap-4">
-                  <span>Dica: Arraste os campos sobre o certificado</span>
+                  <button 
+                    type="button"
+                    onClick={addTextBlock}
+                    className="text-emerald-500 hover:underline flex items-center gap-1"
+                  >
+                    <PlusIcon className="w-3 h-3" />
+                    Adicionar Bloco de Texto
+                  </button>
                   <button 
                     type="button"
                     onClick={handlePreview}
@@ -265,55 +293,95 @@ export default function CertificateTemplateForm({
           </div>
           
           <div className="space-y-6">
-            {placeholders.map((p, idx) => {
-               const label = placeholdersList.find(pl => pl.key === p.key)?.label || p.key;
-               return (
-                <div key={p.key} className="p-4 rounded-xl bg-muted/30 border border-border/50 space-y-4">
+            {/* Removido Configuração de Placeholders Legados */}
+
+            {/* Nova Seção de Blocos de Texto */}
+            <div className="space-y-4">
+              <label className="text-[10px] font-black uppercase tracking-widest text-emerald-500 block border-b border-border pb-2">Blocos de Texto Dinâmicos</label>
+              
+              {textBlocks.length === 0 && (
+                <p className="text-[10px] text-muted-foreground italic text-center py-4">Nenhum bloco de texto adicionado.</p>
+              )}
+
+              {textBlocks.map((b, idx) => (
+                <div key={idx} className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 space-y-4">
                    <div className="flex items-center justify-between">
-                     <span className="text-[10px] font-black uppercase tracking-widest text-primary">{label}</span>
-                     <span className="text-[10px] font-mono text-muted-foreground">#{p.key}</span>
+                     <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500">Bloco #{idx + 1}</span>
+                     <button 
+                       type="button"
+                       onClick={() => removeTextBlock(idx)}
+                       className="p-1 hover:bg-destructive/10 rounded-lg text-destructive transition-colors"
+                     >
+                       <TrashIcon className="w-3.5 h-3.5" />
+                     </button>
                    </div>
-                   <div className="grid grid-cols-3 gap-3">
+
+                   <div className="space-y-2">
+                     <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70 italic">Conteúdo (Use {"{{var}}"})</label>
+                     <textarea 
+                       value={b.text}
+                       onChange={(e) => handleTextBlockChange(idx, 'text', e.target.value)}
+                       className="w-full h-24 p-3 rounded-lg bg-card border border-border text-[11px] font-medium outline-none focus:border-emerald-500 resize-none leading-relaxed"
+                     />
+                     <div className="flex flex-wrap gap-1">
+                        {placeholdersList.map(v => (
+                          <button
+                            key={v.key}
+                            type="button"
+                            onClick={() => handleTextBlockChange(idx, 'text', b.text + ` {{${v.key}}}`)}
+                            className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-500 text-[8px] font-black hover:bg-emerald-500/20 transition-colors uppercase"
+                          >
+                            + {v.label}
+                          </button>
+                        ))}
+                     </div>
+                   </div>
+
+                   <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1">
-                        <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Pos X</label>
+                        <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Largura Máx (Pts)</label>
                         <input 
                           type="number" 
-                          value={p.x} 
-                          onChange={(e) => handlePlaceholderChange(idx, 'x', parseInt(e.target.value))}
-                          className="w-full h-8 px-2 rounded-lg bg-card border border-border text-xs font-bold outline-none focus:border-primary"
+                          value={b.width} 
+                          onChange={(e) => handleTextBlockChange(idx, 'width', parseInt(e.target.value))}
+                          className="w-full h-8 px-2 rounded-lg bg-card border border-border text-[10px] font-bold outline-none focus:border-emerald-500"
                         />
                       </div>
-                       <div className="space-y-1">
-                        <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Pos Y</label>
-                        <input 
-                          type="number" 
-                          value={p.y} 
-                          onChange={(e) => handlePlaceholderChange(idx, 'y', parseInt(e.target.value))}
-                          className="w-full h-8 px-2 rounded-lg bg-card border border-border text-xs font-bold outline-none focus:border-primary"
-                        />
+                      <div className="space-y-1">
+                        <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Alinhamento</label>
+                        <select 
+                          value={b.align}
+                          onChange={(e) => handleTextBlockChange(idx, 'align', e.target.value)}
+                          className="w-full h-8 px-2 rounded-lg bg-card border border-border text-[10px] font-bold outline-none focus:border-emerald-500"
+                        >
+                          <option value="left">Esquerda</option>
+                          <option value="center">Centro</option>
+                          <option value="right">Direita</option>
+                          <option value="justify">Justificado</option>
+                        </select>
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Tamanho</label>
+                        <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Tamanho Fonte</label>
                         <input 
                           type="number" 
-                          value={p.fontSize} 
-                          onChange={(e) => handlePlaceholderChange(idx, 'fontSize', parseInt(e.target.value))}
-                          className="w-full h-8 px-2 rounded-lg bg-card border border-border text-xs font-bold outline-none focus:border-primary"
+                          value={b.fontSize} 
+                          onChange={(e) => handleTextBlockChange(idx, 'fontSize', parseInt(e.target.value))}
+                          className="w-full h-8 px-2 rounded-lg bg-card border border-border text-[10px] font-bold outline-none focus:border-emerald-500"
                         />
                       </div>
                       <div className="space-y-1">
                         <label className="text-[8px] font-black text-muted-foreground uppercase opacity-70">Cor</label>
                         <input 
                           type="color" 
-                          value={p.color} 
-                          onChange={(e) => handlePlaceholderChange(idx, 'color', e.target.value)}
-                          className="w-full h-8 px-1 py-1 rounded-lg bg-card border border-border cursor-pointer outline-none focus:border-primary"
+                          value={b.color} 
+                          onChange={(e) => handleTextBlockChange(idx, 'color', e.target.value)}
+                          className="w-full h-8 px-1 py-1 rounded-lg bg-card border border-border cursor-pointer outline-none focus:border-emerald-500"
                         />
                       </div>
                    </div>
                 </div>
-               );
-            })}
+              ))}
+            </div>
           </div>
 
           <div className="p-4 bg-primary/5 rounded-xl border border-primary/10">

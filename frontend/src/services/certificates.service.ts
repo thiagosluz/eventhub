@@ -111,11 +111,28 @@ export const certificatesService = {
     return res.blob();
   },
 
-  async deleteTemplate(id: string): Promise<void> {
-    const res = await fetch(`${API_BASE_URL}/certificates/templates/${id}`, {
+  async deleteTemplate(id: string, force = false, confirm?: string): Promise<void> {
+    let url = `${API_BASE_URL}/certificates/templates/${id}`;
+    const params = new URLSearchParams();
+    if (force) params.append("force", "true");
+    if (confirm) params.append("confirm", confirm);
+    
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+
+    const res = await fetch(url, {
       method: "DELETE",
       headers: getAuthHeader(),
     });
+    
+    if (res.status === 409) {
+      const errorData = await res.json();
+      const error = new Error(errorData.message || "Conflict");
+      (error as any).status = 409;
+      throw error;
+    }
+
     if (!res.ok) throw new Error("Falha ao excluir template.");
   },
 

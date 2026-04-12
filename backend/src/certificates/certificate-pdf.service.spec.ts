@@ -34,6 +34,7 @@ describe("CertificatePdfService", () => {
     },
     issuedCertificate: {
       create: jest.fn(),
+      findFirst: jest.fn(),
     },
   };
 
@@ -82,6 +83,7 @@ describe("CertificatePdfService", () => {
         user: { name: "User 1" },
         event: { name: "Test Event" },
       });
+      mockPrismaService.issuedCertificate.findFirst.mockResolvedValue(null);
       mockPrismaService.attendance.findMany.mockResolvedValue([]);
       mockMinioService.uploadObject.mockResolvedValue("http://minio/cert.pdf");
       mockPrismaService.issuedCertificate.create.mockResolvedValue({

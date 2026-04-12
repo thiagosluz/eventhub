@@ -52,6 +52,7 @@ describe("Certificates (e2e)", () => {
       create: jest.fn(),
       findUnique: jest.fn(),
       findMany: jest.fn(),
+      findFirst: jest.fn(),
     },
     user: {
       findUnique: jest.fn(),
@@ -136,6 +137,7 @@ describe("Certificates (e2e)", () => {
       });
       mockPrismaService.attendance.findMany.mockResolvedValue([]);
       mockMinioService.uploadObject.mockResolvedValue("http://minio/cert.pdf");
+      mockPrismaService.issuedCertificate.findFirst.mockResolvedValue(null);
       mockPrismaService.issuedCertificate.create.mockResolvedValue({
         id: "issued_1",
       });

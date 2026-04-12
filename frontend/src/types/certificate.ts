@@ -7,13 +7,16 @@ export interface CertificateTemplate {
   name: string;
   backgroundUrl: string;
   layoutConfig: {
-    placeholders: Array<{
-      key: string;
+    placeholders?: any[]; // Deprecated
+    textBlocks?: Array<{
+      text: string;
       x: number;
       y: number;
+      width?: number;
       fontSize?: number;
+      lineHeight?: number;
       color?: string;
-      fontFamily?: 'Helvetica' | 'Helvetica-Bold';
+      align?: "left" | "center" | "right" | "justify";
     }>;
   };
   createdAt: string;

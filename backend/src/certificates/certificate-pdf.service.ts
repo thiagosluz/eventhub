@@ -5,17 +5,21 @@ import { MinioService } from "../storage/minio.service";
 import { v4 as uuidv4 } from "uuid";
 import QRCode from "qrcode";
 
-interface LayoutPlaceholder {
-  key: string;
+// Removido LayoutPlaceholder (Legado)
+
+interface TextBlock {
+  text: string;
   x: number;
   y: number;
+  width?: number;
   fontSize?: number;
+  lineHeight?: number;
   color?: string;
-  fontFamily?: "Helvetica" | "Helvetica-Bold";
+  align?: "left" | "center" | "right" | "justify";
 }
 
 interface LayoutConfig {
-  placeholders?: LayoutPlaceholder[];
+  textBlocks?: TextBlock[];
 }
 
 @Injectable()
@@ -36,13 +40,21 @@ export class CertificatePdfService {
       workload: "10h",
     };
 
-    const placeholders = layoutConfig.placeholders ?? [
-      { key: "participantName", x: 100, y: 280, fontSize: 24 },
-      { key: "eventName", x: 100, y: 340, fontSize: 14 },
-      { key: "workload", x: 100, y: 380, fontSize: 12 },
-    ];
+    const textBlocks = layoutConfig.textBlocks ?? [];
 
-    return this.renderPdf(backgroundUrl, placeholders, data);
+    const validationHash = "PREVIEW-HASH-123456";
+    const qrCodeBuffer = await QRCode.toBuffer(
+      "https://eventhub.com/validate/preview",
+    );
+
+    return this.renderPdf(
+      backgroundUrl,
+      data,
+      qrCodeBuffer,
+      [],
+      validationHash,
+      textBlocks,
+    );
   }
 
   async generateAndStore(
@@ -82,11 +94,7 @@ export class CertificatePdfService {
     };
 
     const layout = (template.layoutConfig as LayoutConfig) ?? {};
-    const placeholders = layout.placeholders ?? [
-      { key: "participantName", x: 100, y: 280, fontSize: 24 },
-      { key: "eventName", x: 100, y: 340, fontSize: 14 },
-      { key: "workload", x: 100, y: 380, fontSize: 12 },
-    ];
+    const textBlocks = layout.textBlocks ?? [];
 
     const validationHash = uuidv4();
     const validationUrl = `${process.env.FRONTEND_URL || "http://localhost:3001"}/certificates/validate/${validationHash}`;
@@ -103,11 +111,11 @@ export class CertificatePdfService {
 
     const pdfBuffer = await this.renderPdf(
       template.backgroundUrl,
-      placeholders,
       data,
       qrCodeBuffer,
       attendances,
       validationHash,
+      textBlocks,
     );
 
     const objectName = `certificates/${template.eventId}/${registrationId}-${Date.now()}.pdf`;
@@ -145,11 +153,11 @@ export class CertificatePdfService {
 
   private async renderPdf(
     backgroundUrl: string,
-    placeholders: LayoutPlaceholder[],
     data: Record<string, string>,
     qrCodeBuffer?: Buffer,
     attendances?: any[],
     validationHash?: string,
+    textBlocks: TextBlock[] = [],
   ): Promise<Buffer> {
     const imageBuffer = await this.fetchImage(backgroundUrl);
     return new Promise((resolve, reject) => {
@@ -167,21 +175,11 @@ export class CertificatePdfService {
       // A4 Landscape is 841.89 x 595.28 points
       doc.image(imageBuffer, 0, 0, { width: 841.89, height: 595.28 });
 
-      for (const p of placeholders) {
-        const value = data[p.key] ?? "";
-        const fontSize = p.fontSize || 16;
+      // Removido render de placeholders (Legado)
 
-        doc.fontSize(fontSize);
-        if (p.fontFamily) {
-          doc.font(p.fontFamily);
-        } else if (p.key === "participantName") {
-          doc.font("Helvetica-Bold");
-        } else {
-          doc.font("Helvetica");
-        }
-
-        doc.fillColor(p.color || "#000000");
-        doc.text(value, p.x, p.y);
+      // Render Dynamic Text Blocks
+      for (const block of textBlocks) {
+        this.drawRichTextBlock(doc, block, data);
       }
 
       // ALWAYS add a backside since we want to place the QR Code there
@@ -267,6 +265,120 @@ export class CertificatePdfService {
 
       doc.end();
     });
+  }
+
+  private drawRichTextBlock(
+    doc: PDFKit.PDFDocument,
+    block: TextBlock,
+    data: Record<string, string>,
+  ) {
+    // 1. Preparar fragmentos
+    const variablePattern = /\{\{(.*?)\}\}/g;
+    const allFragments: Array<{ text: string; isBold: boolean }> = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = variablePattern.exec(block.text)) !== null) {
+      if (match.index > lastIndex) {
+        allFragments.push({
+          text: block.text.substring(lastIndex, match.index),
+          isBold: false,
+        });
+      }
+      const key = match[1].trim();
+      allFragments.push({
+        text: data[key] || `{{${key}}}`,
+        isBold: true,
+      });
+      lastIndex = variablePattern.lastIndex;
+    }
+    if (lastIndex < block.text.length) {
+      allFragments.push({
+        text: block.text.substring(lastIndex),
+        isBold: false,
+      });
+    }
+
+    // 2. Motor de Quebra de Linha (Word Wrap Manual)
+    const fontSize = block.fontSize || 16;
+    const maxWidth = block.width || 800;
+    const align = block.align || "left";
+    const lineHeight = block.lineHeight || 1.2;
+
+    doc.fontSize(fontSize);
+
+    interface LineFragment {
+      text: string;
+      isBold: boolean;
+      width: number;
+    }
+
+    interface Line {
+      fragments: LineFragment[];
+      totalWidth: number;
+    }
+
+    const lines: Line[] = [];
+    let currentLine: Line = { fragments: [], totalWidth: 0 };
+
+    for (const frag of allFragments) {
+      const words = frag.text.split(/(\s+)/);
+
+      for (const word of words) {
+        if (word === "") continue;
+
+        doc.font(frag.isBold ? "Helvetica-Bold" : "Helvetica");
+        const wordWidth = doc.widthOfString(word);
+
+        if (
+          currentLine.totalWidth + wordWidth > maxWidth &&
+          currentLine.fragments.length > 0
+        ) {
+          lines.push(currentLine);
+          currentLine = { fragments: [], totalWidth: 0 };
+          if (word.trim() === "") continue;
+        }
+
+        const lastFragInLine =
+          currentLine.fragments[currentLine.fragments.length - 1];
+        if (lastFragInLine && lastFragInLine.isBold === frag.isBold) {
+          lastFragInLine.text += word;
+          lastFragInLine.width += wordWidth;
+        } else {
+          currentLine.fragments.push({
+            text: word,
+            isBold: frag.isBold,
+            width: wordWidth,
+          });
+        }
+        currentLine.totalWidth += wordWidth;
+      }
+    }
+    if (currentLine.fragments.length > 0) {
+      lines.push(currentLine);
+    }
+
+    // 3. Renderização
+    doc.fillColor(block.color || "#000000");
+    let currentY = block.y;
+
+    for (const line of lines) {
+      let currentX = block.x;
+
+      if (align === "center") {
+        currentX = block.x + (maxWidth - line.totalWidth) / 2;
+      } else if (align === "right") {
+        currentX = block.x + (maxWidth - line.totalWidth);
+      }
+
+      for (const frag of line.fragments) {
+        doc.font(frag.isBold ? "Helvetica-Bold" : "Helvetica");
+        doc.text(frag.text, currentX, currentY, { lineBreak: false });
+        currentX += frag.width;
+      }
+
+      currentY += fontSize * lineHeight;
+    }
   }
 
   private async fetchImage(url: string): Promise<Buffer> {

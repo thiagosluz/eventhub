@@ -48,12 +48,22 @@ export class CertificateTemplatesService {
         backgroundUrl: data.backgroundUrl,
         layoutConfig: data.layoutConfig as object,
       },
+      include: {
+        _count: {
+          select: { issuedCertificates: true },
+        },
+      },
     });
   }
 
   async findOne(tenantId: string, id: string) {
     const template = await this.prisma.certificateTemplate.findFirst({
       where: { id, event: { tenantId } },
+      include: {
+        _count: {
+          select: { issuedCertificates: true },
+        },
+      },
     });
     if (!template) throw new NotFoundException("Template não encontrado.");
     return template;
@@ -71,6 +81,11 @@ export class CertificateTemplatesService {
         name: data.name,
         backgroundUrl: data.backgroundUrl,
         layoutConfig: data.layoutConfig as object | undefined,
+      },
+      include: {
+        _count: {
+          select: { issuedCertificates: true },
+        },
       },
     });
   }
@@ -94,7 +109,11 @@ export class CertificateTemplatesService {
     });
   }
 
-  async delete(tenantId: string, id: string) {
+  async delete(tenantId: string, id: string, force = false, confirm?: string) {
+    console.log(
+      `[Certificates] Tentativa de deleção: ID=${id}, Force=${force}, Confirm=${confirm}`,
+    );
+
     const template = await this.prisma.certificateTemplate.findFirst({
       where: { id, event: { tenantId } },
       include: {
@@ -106,14 +125,29 @@ export class CertificateTemplatesService {
 
     if (!template) throw new NotFoundException("Template não encontrado.");
 
-    if (template._count.issuedCertificates > 0) {
+    if (template._count.issuedCertificates > 0 && !force) {
       throw new ConflictException(
         "Não é possível excluir um template que já possui certificados emitidos.",
       );
     }
 
-    return this.prisma.certificateTemplate.delete({
-      where: { id },
+    if (force && confirm?.trim() !== "DELETAR") {
+      throw new ConflictException(
+        "Para excluir um template com certificados, você deve digitar a palavra de segurança 'DELETAR'.",
+      );
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      // Se for forçado, deleta os certificados primeiro
+      if (force) {
+        await tx.issuedCertificate.deleteMany({
+          where: { templateId: id },
+        });
+      }
+
+      return tx.certificateTemplate.delete({
+        where: { id },
+      });
     });
   }
 
@@ -126,6 +160,11 @@ export class CertificateTemplatesService {
         name: `${original.name} (Cópia)`,
         backgroundUrl: original.backgroundUrl,
         layoutConfig: original.layoutConfig as object,
+      },
+      include: {
+        _count: {
+          select: { issuedCertificates: true },
+        },
       },
     });
   }
