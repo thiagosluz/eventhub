@@ -18,6 +18,9 @@ export interface CertificateTemplate {
   };
   createdAt: string;
   updatedAt: string;
+  _count?: {
+    issuedCertificates: number;
+  };
 }
 
 export interface IssuedCertificate {

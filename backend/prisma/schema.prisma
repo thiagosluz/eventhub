@@ -1,23 +1,660 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
-//  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+model Tenant {
+  id            String         @id @default(cuid())
+  name          String
+  slug          String         @unique
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  logoUrl       String?
+  themeConfig   Json?
+  isActive      Boolean        @default(true)
+  bio           String?
+  instagramUrl  String?
+  linkedinUrl   String?
+  twitterUrl    String?
+  websiteUrl    String?
+  coverUrl      String?
+  activityTypes ActivityType[]
+  auditLogs     AuditLog[]
+  badges        Badge[]
+  events        Event[]
+  speakers      Speaker[]
+  speakerRoles  SpeakerRole[]
+  users         User[]
+}
+
+model User {
+  id                   String               @id @default(cuid())
+  email                String               @unique
+  password             String
+  name                 String
+  role                 UserRole
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  tenantId             String?
+  avatarUrl            String?
+  bio                  String?
+  refreshToken         String?
+  resetPasswordExpires DateTime?
+  resetPasswordToken   String?
+  mustChangePassword   Boolean              @default(false)
+  coins                Int                  @default(0)
+  interests            String[]             @default([])
+  level                Int                  @default(1)
+  profileTheme         String?              @default("zinc")
+  publicProfile        Boolean              @default(false)
+  username             String?              @unique
+  xp                   Int                  @default(0)
+  auditLogs            AuditLog[]
+  claimCodes           BadgeClaimCode[]
+  eventMonitors        EventMonitor[]
+  eventReviewers       EventReviewer[]
+  gamificationAlerts   GamificationAlert[]
+  registrations        Registration[]
+  reviews              Review[]
+  acceptedInvitations  ReviewerInvitation[] @relation("AcceptedByUser")
+  reviewerInvitations  ReviewerInvitation[] @relation("InvitedByUser")
+  speaker              Speaker?
+  submissions          Submission[]         @relation("SubmissionAuthor")
+  kanbanAssignments    TaskAssignment[]
+  kanbanComments       TaskComment[]
+  tenant               Tenant?              @relation(fields: [tenantId], references: [id])
+  userBadges           UserBadge[]
+  xpLogs               XpGainLog[]
+}
+
+model Event {
+  id                       String                @id @default(cuid())
+  tenantId                 String
+  name                     String
+  slug                     String
+  description              String?
+  location                 String?
+  startDate                DateTime
+  endDate                  DateTime
+  status                   EventStatus           @default(DRAFT)
+  bannerUrl                String?
+  logoUrl                  String?
+  themeConfig              Json?
+  seoTitle                 String?
+  seoDescription           String?
+  createdAt                DateTime              @default(now())
+  updatedAt                DateTime              @updatedAt
+  reviewEndDate            DateTime?
+  reviewStartDate          DateTime?
+  scientificCommitteeEmail String?
+  scientificCommitteeHead  String?
+  submissionEndDate        DateTime?
+  submissionStartDate      DateTime?
+  submissionsEnabled       Boolean               @default(false)
+  activities               Activity[]
+  auditLogs                AuditLog[]
+  badges                   Badge[]
+  certificateTemplates     CertificateTemplate[]
+  forms                    CustomForm[]
+  tenant                   Tenant                @relation(fields: [tenantId], references: [id])
+  monitors                 EventMonitor[]
+  reviewers                EventReviewer[]
+  gamificationAlerts       GamificationAlert[]
+  kanbanBoards             KanbanBoard[]
+  raffleHistories          RaffleHistory[]
+  registrations            Registration[]
+  reviewerInvitations      ReviewerInvitation[]
+  sponsorCategories        SponsorCategory[]
+  submissions              Submission[]
+  submissionModalities     SubmissionModality[]
+  submissionRules          SubmissionRule[]
+  thematicAreas            ThematicArea[]
+  tickets                  Ticket[]
+  userBadges               UserBadge[]
+  xpLogs                   XpGainLog[]
+
+  @@unique([tenantId, slug])
+}
+
+model KanbanBoard {
+  id        String         @id @default(cuid())
+  eventId   String
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  name      String         @default("Quadro Principal")
+  event     Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  columns   KanbanColumn[]
+
+  @@index([eventId])
+}
+
+model KanbanColumn {
+  id        String       @id @default(cuid())
+  boardId   String
+  name      String
+  order     Int          @default(0)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  color     String       @default("zinc")
+  board     KanbanBoard  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  tasks     KanbanTask[]
+
+  @@index([boardId])
+}
+
+model KanbanTask {
+  id                String           @id @default(cuid())
+  columnId          String
+  title             String
+  description       String?
+  priority          TaskPriority     @default(MEDIUM)
+  deadline          DateTime?
+  order             Int              @default(0)
+  externalReference String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  column            KanbanColumn     @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  assignments       TaskAssignment[]
+  comments          TaskComment[]
+
+  @@index([columnId])
+}
+
+model TaskAssignment {
+  taskId     String
+  userId     String
+  assignedAt DateTime   @default(now())
+  task       KanbanTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, userId])
+}
+
+model TaskComment {
+  id        String     @id @default(cuid())
+  taskId    String
+  userId    String
+  content   String
+  createdAt DateTime   @default(now())
+  task      KanbanTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User       @relation(fields: [userId], references: [id])
+
+  @@index([taskId])
+}
+
+model ActivityType {
+  id         String     @id @default(cuid())
+  tenantId   String
+  name       String
+  activities Activity[]
+  tenant     Tenant     @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, name])
+}
+
+model SpeakerRole {
+  id               String            @id @default(cuid())
+  tenantId         String
+  name             String
+  activitySpeakers ActivitySpeaker[]
+  tenant           Tenant            @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, name])
+}
+
+model Activity {
+  id                   String               @id @default(cuid())
+  eventId              String
+  title                String
+  description          String?
+  location             String?
+  startAt              DateTime
+  endAt                DateTime
+  capacity             Int?
+  status               ActivityStatus       @default(SCHEDULED)
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  requiresEnrollment   Boolean              @default(false)
+  typeId               String?
+  confirmationDays     Int?
+  requiresConfirmation Boolean              @default(false)
+  event                Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  type                 ActivityType?        @relation(fields: [typeId], references: [id])
+  enrollments          ActivityEnrollment[]
+  feedbacks            ActivityFeedback[]
+  materials            ActivityMaterial[]
+  speakers             ActivitySpeaker[]
+  attendances          Attendance[]
+  raffleHistories      RaffleHistory[]
+}
+
+model Speaker {
+  id          String            @id @default(cuid())
+  tenantId    String
+  name        String
+  bio         String?
+  avatarUrl   String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  email       String?
+  linkedinUrl String?
+  websiteUrl  String?
+  userId      String?           @unique
+  activities  ActivitySpeaker[]
+  tenant      Tenant            @relation(fields: [tenantId], references: [id])
+  user        User?             @relation(fields: [userId], references: [id])
+}
+
+model ActivitySpeaker {
+  activityId String
+  speakerId  String
+  roleId     String?
+  activity   Activity     @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  role       SpeakerRole? @relation(fields: [roleId], references: [id])
+  speaker    Speaker      @relation(fields: [speakerId], references: [id], onDelete: Cascade)
+
+  @@id([activityId, speakerId])
+}
+
+model Registration {
+  id                String               @id @default(cuid())
+  eventId           String
+  userId            String
+  createdAt         DateTime             @default(now())
+  enrollments       ActivityEnrollment[]
+  activityFeedbacks ActivityFeedback[]
+  formResponses     CustomFormResponse[]
+  certificates      IssuedCertificate[]
+  raffleHistories   RaffleHistory[]
+  event             Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user              User                 @relation(fields: [userId], references: [id])
+  tickets           Ticket[]
+}
+
+model ActivityEnrollment {
+  id             String           @id @default(cuid())
+  activityId     String
+  registrationId String
+  createdAt      DateTime         @default(now())
+  confirmedAt    DateTime?
+  status         EnrollmentStatus @default(CONFIRMED)
+  activity       Activity         @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  registration   Registration     @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+}
+
+model Ticket {
+  id             String       @id @default(cuid())
+  eventId        String
+  registrationId String
+  type           TicketType   @default(FREE)
+  status         TicketStatus @default(PENDING)
+  price          Decimal      @default(0)
+  qrCodeToken    String?      @unique
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  attendances    Attendance[]
+  event          Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+}
+
+model CustomForm {
+  id        String               @id @default(cuid())
+  eventId   String
+  name      String
+  type      FormType
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  event     Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  fields    CustomFormField[]
+  responses CustomFormResponse[]
+}
+
+model CustomFormField {
+  id        String             @id @default(cuid())
+  formId    String
+  label     String
+  type      FormFieldType
+  required  Boolean            @default(false)
+  order     Int
+  options   Json?
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  answers   CustomFormAnswer[]
+  form      CustomForm         @relation(fields: [formId], references: [id], onDelete: Cascade)
+}
+
+model CustomFormResponse {
+  id             String             @id @default(cuid())
+  formId         String
+  registrationId String?
+  submissionId   String?
+  createdAt      DateTime           @default(now())
+  answers        CustomFormAnswer[]
+  form           CustomForm         @relation(fields: [formId], references: [id], onDelete: Cascade)
+  registration   Registration?      @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  submission     Submission?        @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+}
+
+model CustomFormAnswer {
+  id         String             @id @default(cuid())
+  responseId String
+  fieldId    String
+  value      String
+  field      CustomFormField    @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  response   CustomFormResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
+}
+
+model Submission {
+  id             String               @id @default(cuid())
+  eventId        String
+  authorId       String
+  title          String
+  abstract       String?
+  fileUrl        String
+  status         SubmissionStatus     @default(SUBMITTED)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  modalityId     String?
+  thematicAreaId String?
+  formResponses  CustomFormResponse[]
+  reviews        Review[]
+  author         User                 @relation("SubmissionAuthor", fields: [authorId], references: [id])
+  event          Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  modality       SubmissionModality?  @relation(fields: [modalityId], references: [id])
+  thematicArea   ThematicArea?        @relation(fields: [thematicAreaId], references: [id])
+}
+
+model Review {
+  id             String                @id @default(cuid())
+  submissionId   String
+  reviewerId     String
+  score          Int?
+  recommendation ReviewRecommendation?
+  comments       String?
+  createdAt      DateTime              @default(now())
+  reviewer       User                  @relation(fields: [reviewerId], references: [id])
+  submission     Submission            @relation(fields: [submissionId], references: [id])
+}
+
+model EventReviewer {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+}
+
+model ReviewerInvitation {
+  id           String           @id @default(cuid())
+  eventId      String
+  email        String
+  token        String           @unique
+  status       InvitationStatus @default(PENDING)
+  expiresAt    DateTime
+  invitedById  String
+  acceptedById String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  acceptedBy   User?            @relation("AcceptedByUser", fields: [acceptedById], references: [id])
+  event        Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  invitedBy    User             @relation("InvitedByUser", fields: [invitedById], references: [id])
+
+  @@unique([eventId, email])
+}
+
+model SubmissionModality {
+  id          String       @id @default(cuid())
+  eventId     String
+  name        String
+  description String?
+  templateUrl String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  submissions Submission[]
+  event       Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, name])
+}
+
+model ThematicArea {
+  id          String       @id @default(cuid())
+  eventId     String
+  name        String
+  createdAt   DateTime     @default(now())
+  submissions Submission[]
+  event       Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, name])
+}
+
+model SubmissionRule {
+  id        String   @id @default(cuid())
+  eventId   String
+  title     String
+  fileUrl   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Attendance {
+  id         String    @id @default(cuid())
+  ticketId   String
+  activityId String?
+  checkedAt  DateTime  @default(now())
+  activity   Activity? @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  ticket     Ticket    @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+}
+
+model CertificateTemplate {
+  id                 String              @id @default(cuid())
+  eventId            String
+  name               String
+  backgroundUrl      String
+  layoutConfig       Json
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  event              Event               @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  issuedCertificates IssuedCertificate[]
+}
+
+model IssuedCertificate {
+  id             String              @id @default(cuid())
+  templateId     String
+  registrationId String
+  fileUrl        String
+  issuedAt       DateTime            @default(now())
+  validationHash String              @unique @default(uuid())
+  registration   Registration        @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  template       CertificateTemplate @relation(fields: [templateId], references: [id])
+
+  @@unique([templateId, registrationId])
+}
+
+model SponsorCategory {
+  id           String      @id @default(cuid())
+  eventId      String
+  name         String
+  displayOrder Int         @default(0)
+  size         SponsorSize @default(MEDIUM)
+  color        String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  sponsors     Sponsor[]
+  event        Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Sponsor {
+  id           String          @id @default(cuid())
+  categoryId   String
+  name         String
+  logoUrl      String
+  websiteUrl   String?
+  displayOrder Int             @default(0)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  category     SponsorCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model RaffleHistory {
+  id             String       @id @default(cuid())
+  eventId        String
+  activityId     String?
+  registrationId String
+  prizeName      String?
+  rule           RaffleRule   @default(ONLY_CHECKED_IN)
+  hasReceived    Boolean      @default(false)
+  drawnAt        DateTime     @default(now())
+  activity       Activity?    @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  event          Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+}
+
+model Badge {
+  id                 String             @id @default(cuid())
+  tenantId           String
+  eventId            String?
+  name               String
+  description        String?
+  iconUrl            String?
+  color              String             @default("blue")
+  triggerRule        BadgeTrigger       @default(MANUAL)
+  manualDeliveryMode ManualDeliveryMode @default(GLOBAL_CODE)
+  minRequirement     Int?               @default(0)
+  claimCode          String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  event              Event?             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  tenant             Tenant             @relation(fields: [tenantId], references: [id])
+  claimCodes         BadgeClaimCode[]
+  userBadges         UserBadge[]
+}
+
+model BadgeClaimCode {
+  id        String    @id @default(cuid())
+  badgeId   String
+  code      String    @unique
+  isUsed    Boolean   @default(false)
+  userId    String?
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  badge     Badge     @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  user      User?     @relation(fields: [userId], references: [id])
+
+  @@index([badgeId])
+  @@index([code])
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  userId   String
+  badgeId  String
+  eventId  String?
+  earnedAt DateTime @default(now())
+  badge    Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  event    Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, badgeId, eventId])
+}
+
+model ActivityMaterial {
+  id         String   @id @default(cuid())
+  activityId String
+  title      String
+  fileUrl    String
+  fileType   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+}
+
+model ActivityFeedback {
+  id             String        @id @default(cuid())
+  activityId     String
+  rating         Int
+  comment        String?
+  registrationId String?
+  createdAt      DateTime      @default(now())
+  activity       Activity      @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  registration   Registration? @relation(fields: [registrationId], references: [id])
+}
+
+model EventMonitor {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+}
+
+model XpGainLog {
+  id        String   @id @default(cuid())
+  userId    String
+  amount    Int
+  reason    String
+  createdAt DateTime @default(now())
+  uniqueKey String?
+  eventId   String?
+  event     Event?   @relation(fields: [eventId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, uniqueKey])
+  @@index([userId, createdAt])
+  @@index([eventId, createdAt])
+}
+
+model GamificationAlert {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  type      String
+  message   String
+  metadata  Json?
+  resolved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  eventId    String?
+  userId     String
+  action     String
+  resource   String
+  resourceId String?
+  payload    Json?
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  tenantId   String?
+  event      Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  tenant     Tenant?  @relation(fields: [tenantId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@index([eventId, createdAt])
+  @@index([userId, createdAt])
+  @@index([tenantId, createdAt])
+}
+
 enum UserRole {
-  SUPER_ADMIN
   ORGANIZER
   REVIEWER
-  SPEAKER
   PARTICIPANT
+  SPEAKER
+  SUPER_ADMIN
 }
 
 enum TicketType {
@@ -94,610 +731,10 @@ enum RaffleRule {
   ONLY_CHECKED_IN
 }
 
-model Tenant {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique
-  logoUrl     String?
-  themeConfig Json?
-  bio         String?
-  websiteUrl  String?
-  instagramUrl String?
-  linkedinUrl String?
-  twitterUrl  String?
-  coverUrl    String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  users         User[]
-  events        Event[]
-  speakers      Speaker[]
-  activityTypes ActivityType[]
-  speakerRoles  SpeakerRole[]
-  badges        Badge[]
-  auditLogs     AuditLog[]
-}
-
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String
-  role      UserRole
-  avatarUrl String?
-  bio       String?
-  
-  refreshToken         String?
-  resetPasswordToken   String?
-  resetPasswordExpires DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  tenantId String?
-  tenant   Tenant? @relation(fields: [tenantId], references: [id])
-
-  registrations Registration[]
-  reviews       Review[]
-  submissions   Submission[]   @relation("SubmissionAuthor")
-  userBadges    UserBadge[]
-  claimCodes    BadgeClaimCode[]
-  eventReviewers      EventReviewer[]
-  reviewerInvitations ReviewerInvitation[] @relation("InvitedByUser")
-  acceptedInvitations ReviewerInvitation[] @relation("AcceptedByUser")
-  mustChangePassword  Boolean              @default(false)
-  speaker             Speaker?
-  eventMonitors       EventMonitor[]
-  xpLogs              XpGainLog[]
-  auditLogs           AuditLog[]
-  kanbanAssignments   TaskAssignment[]
-  kanbanComments      TaskComment[]
-
-  // Gamification & Identity
-  username       String?  @unique
-  interests      String[] @default([])
-  profileTheme   String?  @default("zinc")
-  publicProfile  Boolean  @default(false)
-  xp             Int      @default(0)
-  coins          Int      @default(0)
-  level          Int      @default(1)
-  gamificationAlerts GamificationAlert[]
-}
-
-model Event {
-  id       String @id @default(cuid())
-  tenantId String
-  tenant   Tenant @relation(fields: [tenantId], references: [id])
-
-  name        String
-  slug        String
-  description String?
-  location    String?
-  startDate   DateTime
-  endDate     DateTime
-  status      EventStatus @default(DRAFT)
-
-  bannerUrl      String?
-  logoUrl        String?
-  themeConfig    Json?
-  seoTitle       String?
-  seoDescription String?
-
-  // === Submission Module Config ===
-  submissionsEnabled       Boolean   @default(false)
-  submissionStartDate      DateTime?
-  submissionEndDate        DateTime?
-  reviewStartDate          DateTime?
-  reviewEndDate            DateTime?
-  scientificCommitteeHead  String?
-  scientificCommitteeEmail String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  activities           Activity[]
-  registrations        Registration[]
-  tickets              Ticket[]
-  forms                CustomForm[]
-  submissions          Submission[]
-  certificateTemplates CertificateTemplate[]
-  sponsorCategories    SponsorCategory[]
-  raffleHistories      RaffleHistory[]
-  badges               Badge[]
-  userBadges           UserBadge[]
-  submissionModalities SubmissionModality[]
-  thematicAreas        ThematicArea[]
-  submissionRules      SubmissionRule[]
-  reviewers            EventReviewer[]
-  reviewerInvitations  ReviewerInvitation[]
-  monitors             EventMonitor[]
-  xpLogs               XpGainLog[]
-  gamificationAlerts   GamificationAlert[]
-  auditLogs           AuditLog[]
-  kanbanBoards         KanbanBoard[]
-
-  @@unique([tenantId, slug])
-}
-
-model KanbanBoard {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  name    String @default("Quadro Principal")
-
-  columns KanbanColumn[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([eventId])
-}
-
-model KanbanColumn {
-  id      String      @id @default(cuid())
-  boardId String
-  board   KanbanBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
-
-  name    String
-  order   Int         @default(0)
-  color   String      @default("zinc")
-  tasks   KanbanTask[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([boardId])
-}
-
-model KanbanTask {
-  id       String       @id @default(cuid())
-  columnId String
-  column   KanbanColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
-
-  title       String
-  description String?
-  priority    TaskPriority @default(MEDIUM)
-  deadline    DateTime?
-  order       Int          @default(0)
-
-  assignments TaskAssignment[]
-  comments    TaskComment[]
-  
-  // Link opcional para automação (ex: link para uma atividade)
-  externalReference String?  // e.g., 'activity:123'
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([columnId])
-}
-
-model TaskAssignment {
-  taskId String
-  task   KanbanTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  userId String
-  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  assignedAt DateTime @default(now())
-
-  @@id([taskId, userId])
-}
-
-model TaskComment {
-  id     String     @id @default(cuid())
-  taskId String
-  task   KanbanTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  
-  userId String
-  user   User       @relation(fields: [userId], references: [id])
-  
-  content String
-  createdAt DateTime @default(now())
-
-  @@index([taskId])
-}
-
-model ActivityType {
-  id         String     @id @default(cuid())
-  tenantId   String
-  tenant     Tenant     @relation(fields: [tenantId], references: [id])
-  name       String
-  activities Activity[]
-
-  @@unique([tenantId, name])
-}
-
-model SpeakerRole {
-  id               String            @id @default(cuid())
-  tenantId         String
-  tenant           Tenant            @relation(fields: [tenantId], references: [id])
-  name             String
-  activitySpeakers ActivitySpeaker[]
-
-  @@unique([tenantId, name])
-}
-
-model Activity {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  title       String
-  description String?
-  location    String?
-  startAt     DateTime
-  endAt       DateTime
-  capacity    Int?
-  status      ActivityStatus @default(SCHEDULED)
-
-  typeId               String?
-  type                 ActivityType? @relation(fields: [typeId], references: [id])
-  requiresEnrollment   Boolean       @default(false)
-  requiresConfirmation Boolean       @default(false)
-  confirmationDays     Int?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  speakers        ActivitySpeaker[]
-  enrollments     ActivityEnrollment[]
-  attendances     Attendance[]
-  raffleHistories RaffleHistory[]
-  materials       ActivityMaterial[]
-  feedbacks       ActivityFeedback[]
-}
-
-model Speaker {
-  id       String @id @default(cuid())
-  tenantId String
-  tenant   Tenant @relation(fields: [tenantId], references: [id])
-
-  name        String
-  email       String?
-  bio         String?
-  avatarUrl   String?
-  linkedinUrl String?
-  websiteUrl  String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userId    String?  @unique
-  user      User?    @relation(fields: [userId], references: [id])
-
-  activities ActivitySpeaker[]
-}
-
-model ActivitySpeaker {
-  activityId String
-  speakerId  String
-  roleId     String?
-
-  activity Activity     @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  speaker  Speaker      @relation(fields: [speakerId], references: [id], onDelete: Cascade)
-  role     SpeakerRole? @relation(fields: [roleId], references: [id])
-
-  @@id([activityId, speakerId])
-}
-
-model Registration {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
-  createdAt DateTime @default(now())
-
-  tickets         Ticket[]
-  enrollments     ActivityEnrollment[]
-  formResponses   CustomFormResponse[]
-  certificates    IssuedCertificate[]
-  raffleHistories RaffleHistory[]
-  activityFeedbacks ActivityFeedback[]
-}
-
-model ActivityEnrollment {
-  id         String   @id @default(cuid())
-  activityId String
-  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
-
-  registrationId String
-  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
-
-  status      EnrollmentStatus @default(CONFIRMED)
-  confirmedAt DateTime?
-
-  createdAt DateTime @default(now())
-}
-
-model Ticket {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  registrationId String
-  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
-
-  type   TicketType   @default(FREE)
-  status TicketStatus @default(PENDING)
-  price  Decimal      @default(0)
-
-  qrCodeToken String? @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  attendances Attendance[]
-}
-
-model CustomForm {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  name String
-  type FormType
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  responses CustomFormResponse[]
-  fields    CustomFormField[]
-}
-
-model CustomFormField {
-  id     String     @id @default(cuid())
-  formId String
-  form   CustomForm @relation(fields: [formId], references: [id], onDelete: Cascade)
-
-  label    String
-  type     FormFieldType
-  required Boolean       @default(false)
-  order    Int
-  options  Json?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  answers CustomFormAnswer[]
-}
-
-model CustomFormResponse {
-  id     String     @id @default(cuid())
-  formId String
-  form   CustomForm @relation(fields: [formId], references: [id], onDelete: Cascade)
-
-  registrationId String?
-  registration   Registration? @relation(fields: [registrationId], references: [id], onDelete: Cascade)
-
-  submissionId String?
-  submission   Submission? @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-
-  answers CustomFormAnswer[]
-}
-
-model CustomFormAnswer {
-  id         String             @id @default(cuid())
-  responseId String
-  response   CustomFormResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
-
-  fieldId String
-  field   CustomFormField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
-
-  value String
-}
-
-model Submission {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  authorId String
-  author   User   @relation("SubmissionAuthor", fields: [authorId], references: [id])
-
-  title    String
-  abstract String?
-  fileUrl  String
-  status   SubmissionStatus @default(SUBMITTED)
-
-  modalityId     String?
-  modality       SubmissionModality? @relation(fields: [modalityId], references: [id])
-
-  thematicAreaId String?
-  thematicArea   ThematicArea? @relation(fields: [thematicAreaId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  reviews       Review[]
-  formResponses CustomFormResponse[]
-}
-
-model Review {
-  id           String     @id @default(cuid())
-  submissionId String
-  submission   Submission @relation(fields: [submissionId], references: [id])
-
-  reviewerId String
-  reviewer   User   @relation(fields: [reviewerId], references: [id])
-
-  score          Int?
-  recommendation ReviewRecommendation?
-  comments       String?
-
-  createdAt DateTime @default(now())
-}
-
-model EventReviewer {
-  id        String   @id @default(cuid())
-  eventId   String
-  userId    String
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-
-  @@unique([eventId, userId])
-}
-
-model ReviewerInvitation {
-  id          String           @id @default(cuid())
-  eventId     String
-  event       Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  email       String
-  token       String           @unique
-  status      InvitationStatus @default(PENDING)
-  expiresAt   DateTime
-  invitedById String
-  invitedBy   User             @relation("InvitedByUser", fields: [invitedById], references: [id])
-  acceptedById String?
-  acceptedBy  User?            @relation("AcceptedByUser", fields: [acceptedById], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([eventId, email])
-}
-
-model SubmissionModality {
-  id          String  @id @default(cuid())
-  eventId     String
-  event       Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  name        String
-  description String?
-  templateUrl String?
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  submissions Submission[]
-
-  @@unique([eventId, name])
-}
-
-model ThematicArea {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  name    String
-
-  createdAt DateTime @default(now())
-
-  submissions Submission[]
-
-  @@unique([eventId, name])
-}
-
-model SubmissionRule {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  title   String
-  fileUrl String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Attendance {
-  id String @id @default(cuid())
-
-  ticketId String
-  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-
-  activityId String?
-  activity   Activity? @relation(fields: [activityId], references: [id], onDelete: Cascade)
-
-  checkedAt DateTime @default(now())
-}
-
-model CertificateTemplate {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  name          String
-  backgroundUrl String
-  layoutConfig  Json // Coordenadas e estilos vindos do frontend
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  issuedCertificates IssuedCertificate[]
-}
-
-model IssuedCertificate {
-  id String @id @default(cuid())
-
-  templateId String
-  template   CertificateTemplate @relation(fields: [templateId], references: [id])
-
-  registrationId String
-  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
-
-  fileUrl        String
-  validationHash String   @unique @default(uuid())
-  issuedAt       DateTime @default(now())
-}
-
 enum SponsorSize {
   SMALL
   MEDIUM
   LARGE
-}
-
-model SponsorCategory {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  name         String
-  displayOrder Int         @default(0)
-  size         SponsorSize @default(MEDIUM)
-  color        String? // Hex color for the category (e.g., Gold)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  sponsors Sponsor[]
-}
-
-model Sponsor {
-  id         String          @id @default(cuid())
-  categoryId String
-  category   SponsorCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  name         String
-  logoUrl      String
-  websiteUrl   String?
-  displayOrder Int     @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model RaffleHistory {
-  id      String @id @default(cuid())
-  eventId String
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  activityId String?
-  activity   Activity? @relation(fields: [activityId], references: [id], onDelete: Cascade)
-
-  registrationId String
-  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
-
-  prizeName   String?
-  rule        RaffleRule @default(ONLY_CHECKED_IN)
-  hasReceived Boolean    @default(false)
-
-  drawnAt DateTime @default(now())
 }
 
 enum BadgeTrigger {
@@ -716,159 +753,9 @@ enum ManualDeliveryMode {
   GLOBAL_CODE
 }
 
-model Badge {
-  id       String  @id @default(cuid())
-  tenantId String
-  tenant   Tenant  @relation(fields: [tenantId], references: [id])
-  eventId  String?
-  event    Event?  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  name        String
-  description String?
-  iconUrl     String? // Pode ser Emoji ou URL SVG
-  color       String       @default("blue") // blue, purple, gold, emerald
-  triggerRule BadgeTrigger @default(MANUAL)
-  manualDeliveryMode ManualDeliveryMode @default(GLOBAL_CODE)
-  minRequirement Int?      @default(0) // Quantidade para Early Bird ou Check-in Streak
-  claimCode      String?   // Código secreto para reivindicação manual (Global)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userBadges UserBadge[]
-  claimCodes BadgeClaimCode[]
-}
-
-model BadgeClaimCode {
-  id      String @id @default(cuid())
-  badgeId String
-  badge   Badge  @relation(fields: [badgeId], references: [id], onDelete: Cascade)
-  
-  code    String @unique
-  isUsed  Boolean @default(false)
-  userId  String?
-  user    User?   @relation(fields: [userId], references: [id])
-  usedAt  DateTime?
-
-  createdAt DateTime @default(now())
-
-  @@index([badgeId])
-  @@index([code])
-}
-
-model UserBadge {
-  id       String   @id @default(cuid())
-  userId   String
-  user     User     @relation(fields: [userId], references: [id])
-  badgeId  String
-  badge    Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
-  eventId  String?
-  event    Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  earnedAt DateTime @default(now())
-
-  // Garante que o usuário só ganhe a mesma badge 1 vez por evento
-  @@unique([userId, badgeId, eventId])
-}
-
-model ActivityMaterial {
-  id         String   @id @default(cuid())
-  activityId String
-  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  
-  title      String
-  fileUrl    String
-  fileType   String? // PDF, ZIP, SLIDES
-  
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model ActivityFeedback {
-  id         String   @id @default(cuid())
-  activityId String
-  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  
-  rating     Int      // 1-5
-  comment    String?
-  
-  registrationId String?
-  registration   Registration? @relation(fields: [registrationId], references: [id])
-
-  createdAt  DateTime @default(now())
-}
-
 enum InvitationStatus {
   PENDING
   ACCEPTED
   REJECTED
   EXPIRED
 }
-
-model EventMonitor {
-  id        String   @id @default(cuid())
-  eventId   String
-  userId    String
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-
-  @@unique([eventId, userId])
-}
-
-model XpGainLog {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  eventId   String?
-  event     Event?   @relation(fields: [eventId], references: [id], onDelete: SetNull)
-  amount    Int
-  reason    String   // e.g., 'CHECKIN', 'PROFILE_COMPLETED'
-  uniqueKey String?  // Optional unique key to prevent duplicate rewards (e.g., 'ACTIVITY_123')
-  createdAt DateTime @default(now())
-
-  @@unique([userId, uniqueKey])
-  @@index([userId, createdAt])
-  @@index([eventId, createdAt])
-}
-
-model GamificationAlert {
-  id        String   @id @default(cuid())
-  eventId   String
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  type      String   // e.g., 'XP_SPIKE'
-  message   String
-  metadata  Json?    // e.g., { totalXp: 1200, windowMinutes: 5 }
-  resolved  Boolean  @default(false)
-  createdAt DateTime @default(now())
-
-  @@index([eventId, createdAt])
-}
-
-model AuditLog {
-  id        String   @id @default(cuid())
-  eventId   String?
-  event     Event?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  
-  action    String   
-  resource  String   
-  resourceId String?  
-  
-  payload   Json?    
-  ip        String?
-  userAgent String?
-  
-  tenantId  String?
-  tenant    Tenant?  @relation(fields: [tenantId], references: [id])
-  
-  createdAt DateTime @default(now())
-
-  @@index([eventId, createdAt])
-  @@index([userId, createdAt])
-  @@index([tenantId, createdAt])
-}
-

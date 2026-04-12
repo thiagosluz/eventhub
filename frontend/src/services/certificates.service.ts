@@ -78,14 +78,14 @@ export const certificatesService = {
     return res.json();
   },
 
-  async issueBulkTemplate(templateId: string, sendEmail = true): Promise<{ total: number; processed: number }> {
+  async issueBulkTemplate(templateId: string, sendEmail = true, strategy: "skip" | "overwrite" = "skip"): Promise<{ total: number; processed: number; failed: number; details: any[] }> {
     const res = await fetch(`${API_BASE_URL}/certificates/templates/${templateId}/issue-bulk`, {
       method: "POST",
       headers: {
         ...getAuthHeader(),
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ sendEmail }),
+      body: JSON.stringify({ sendEmail, strategy }),
     });
     if (!res.ok) throw new Error("Falha ao emitir certificados em massa.");
     return res.json();
@@ -109,5 +109,22 @@ export const certificatesService = {
     });
     if (!res.ok) throw new Error("Falha ao gerar pré-visualização.");
     return res.blob();
+  },
+
+  async deleteTemplate(id: string): Promise<void> {
+    const res = await fetch(`${API_BASE_URL}/certificates/templates/${id}`, {
+      method: "DELETE",
+      headers: getAuthHeader(),
+    });
+    if (!res.ok) throw new Error("Falha ao excluir template.");
+  },
+
+  async duplicateTemplate(id: string): Promise<CertificateTemplate> {
+    const res = await fetch(`${API_BASE_URL}/certificates/templates/${id}/duplicate`, {
+      method: "POST",
+      headers: getAuthHeader(),
+    });
+    if (!res.ok) throw new Error("Falha ao duplicar template.");
+    return res.json();
   },
 };

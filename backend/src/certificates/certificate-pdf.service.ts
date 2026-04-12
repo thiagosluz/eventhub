@@ -48,6 +48,7 @@ export class CertificatePdfService {
   async generateAndStore(
     templateId: string,
     registrationId: string,
+    strategy: "skip" | "overwrite" = "skip",
   ): Promise<{ fileUrl: string; issuedId: string }> {
     const template = await this.prisma.certificateTemplate.findFirst({
       where: { id: templateId },
@@ -63,6 +64,15 @@ export class CertificatePdfService {
     });
     if (!registration) {
       throw new NotFoundException("Inscrição não encontrada para este evento.");
+    }
+
+    // Se a estratégia for "skip", verificar se já existe um certificado emitido
+    const existing = await this.prisma.issuedCertificate.findFirst({
+      where: { templateId, registrationId },
+    });
+
+    if (existing && strategy === "skip") {
+      return { fileUrl: existing.fileUrl, issuedId: existing.id };
     }
 
     const data: Record<string, string> = {
@@ -107,6 +117,19 @@ export class CertificatePdfService {
       data: pdfBuffer,
       contentType: "application/pdf",
     });
+
+    if (existing) {
+      // Opcional: deletar arquivo antigo do MinIO se desejar economizar espaço
+      const updated = await this.prisma.issuedCertificate.update({
+        where: { id: existing.id },
+        data: {
+          fileUrl,
+          validationHash,
+          issuedAt: new Date(),
+        },
+      });
+      return { fileUrl, issuedId: updated.id };
+    }
 
     const issued = await this.prisma.issuedCertificate.create({
       data: {

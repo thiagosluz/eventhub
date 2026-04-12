@@ -8,6 +8,7 @@ import {
   Post,
   Req,
   Res,
+  Delete,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -111,6 +112,24 @@ export class CertificatesController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
+  @Delete("templates/:id")
+  async deleteTemplate(@Param("id") id: string, @Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId on token payload.");
+    return this.certificateTemplates.delete(tenantId, id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post("templates/:id/duplicate")
+  async duplicateTemplate(@Param("id") id: string, @Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId on token payload.");
+    return this.certificateTemplates.duplicate(tenantId, id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
   @Post("templates/preview")
   async previewTemplate(
     @Body() body: { backgroundUrl: string; layoutConfig: any },
@@ -135,7 +154,7 @@ export class CertificatesController {
   @Post("templates/:templateId/issue-bulk")
   async issueBulk(
     @Param("templateId") templateId: string,
-    @Body() body: { sendEmail?: boolean },
+    @Body() body: { sendEmail?: boolean; strategy?: "skip" | "overwrite" },
     @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
@@ -158,6 +177,7 @@ export class CertificatesController {
         const { fileUrl } = await this.certificatePdf.generateAndStore(
           templateId,
           reg.id,
+          body.strategy || "skip",
         );
 
         if (body.sendEmail && reg.user.email) {
@@ -178,9 +198,11 @@ export class CertificatesController {
       }
     }
 
+    const successes = results.filter((r) => r.status === "success");
     return {
       total: registrations.length,
-      processed: results.length,
+      processed: successes.length,
+      failed: registrations.length - successes.length,
       details: results,
     };
   }
