@@ -91,7 +91,7 @@ describe('certificatesService', () => {
       json: async () => mockData,
     });
 
-    const result = await certificatesService.issueCertificate('t1', 'r1');
+    const result = await certificatesService.issueCertificate('t1', { registrationId: 'r1' });
 
     expect(fetch).toHaveBeenCalledWith(
       expect.stringContaining('/certificates/issue'),

@@ -61,6 +61,22 @@ export default function SettingsOverviewPage() {
             <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>
         </Link>
+
+        <Link href="/dashboard/settings/categories" className="premium-card group p-8 bg-card border-border hover:border-primary transition-all flex flex-col justify-between">
+          <div>
+            <div className="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <ShieldCheckIcon className="w-8 h-8 text-amber-500" />
+            </div>
+            <h3 className="text-2xl font-black tracking-tight mb-2">Categorias e Papéis</h3>
+            <p className="text-muted-foreground font-medium text-sm leading-relaxed mb-6">
+              Gerencie os tipos de atividades e papéis de palestrantes disponíveis para sua organização.
+            </p>
+          </div>
+          <div className="flex items-center text-amber-500 font-black text-xs uppercase tracking-widest gap-2">
+            Editar Taxonomias
+            <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
       </div>
 
       {/* Proximo Passos / Coming Soon */}

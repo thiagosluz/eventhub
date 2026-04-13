@@ -22,7 +22,6 @@ const navigation = [
   { name: "Meus Eventos", href: "/dashboard/events", icon: CalendarIcon },
   { name: "Inscritos", href: "/dashboard/participants", icon: UsersIcon },
   { name: "Palestrantes", href: "/dashboard/speakers", icon: UserIcon },
-  { name: "Categorias", href: "/dashboard/categories", icon: Cog6ToothIcon },
   { name: "Revisões", href: "/dashboard/reviews", icon: AcademicCapIcon },
   { name: "Financeiro", href: "/dashboard/finance", icon: CreditCardIcon },
   { name: "Configurações", href: "/dashboard/settings", icon: Cog6ToothIcon },

@@ -57,7 +57,12 @@ export class CertificatesController {
   async createTemplate(
     @Param("eventId") eventId: string,
     @Body()
-    body: { name: string; backgroundUrl: string; layoutConfig?: object },
+    body: {
+      name: string;
+      backgroundUrl: string;
+      category?: string;
+      layoutConfig?: object;
+    },
     @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
@@ -65,6 +70,7 @@ export class CertificatesController {
     return this.certificateTemplates.create(tenantId, eventId, {
       name: body.name,
       backgroundUrl: body.backgroundUrl,
+      category: body.category as any,
       layoutConfig: body.layoutConfig ?? { placeholders: [] },
     });
   }
@@ -84,7 +90,12 @@ export class CertificatesController {
   async updateTemplate(
     @Param("id") id: string,
     @Body()
-    body: { name?: string; backgroundUrl?: string; layoutConfig?: object },
+    body: {
+      name?: string;
+      backgroundUrl?: string;
+      category?: string;
+      layoutConfig?: object;
+    },
     @Req() req: AuthRequest,
   ) {
     const tenantId = req.user?.tenantId;
@@ -165,9 +176,10 @@ export class CertificatesController {
   @Post("templates/:templateId/issue-bulk")
   async issueBulk(
     @Param("templateId") templateId: string,
-    @Body() body: { sendEmail?: boolean; strategy?: "skip" | "overwrite" },
+    @Body() body: { sendEmail?: boolean; strategy?: "skip" | "overwrite" } = {},
     @Req() req: AuthRequest,
   ) {
+    body = body || {};
     const tenantId = req.user?.tenantId;
     if (!tenantId) throw new Error("Missing tenantId on token payload.");
 
@@ -176,44 +188,158 @@ export class CertificatesController {
       templateId,
     );
 
-    // Find all registrations for this event
-    const registrations = await this.prisma.registration.findMany({
-      where: { eventId: template.eventId },
-      include: { user: true },
-    });
-
     const results = [];
-    for (const reg of registrations) {
-      try {
-        const { fileUrl } = await this.certificatePdf.generateAndStore(
-          templateId,
-          reg.id,
-          body.strategy || "skip",
-        );
+    if ((template as any).category === "PARTICIPANT") {
+      const registrations = await this.prisma.registration.findMany({
+        where: { eventId: template.eventId },
+        include: { user: true },
+      });
 
-        if (body.sendEmail && reg.user.email) {
-          await this.mail.enqueue({
-            to: reg.user.email,
-            subject: "Seu certificado está pronto",
-            text: `Acesse seu certificado em: ${fileUrl}`,
-            html: `<p>Acesse seu certificado em: <a href="${fileUrl}">${fileUrl}</a></p>`,
+      for (const reg of registrations) {
+        try {
+          const { fileUrl } = await this.certificatePdf.generateAndStore(
+            templateId,
+            { registrationId: reg.id, userId: reg.userId },
+            body.strategy || "skip",
+          );
+
+          if (body.sendEmail && reg.user.email) {
+            await this.mail.enqueue({
+              to: reg.user.email,
+              subject: "Seu certificado está pronto",
+              text: `Acesse seu certificado em: ${fileUrl}`,
+              html: `<p>Acesse seu certificado em: <a href="${fileUrl}">${fileUrl}</a></p>`,
+            });
+          }
+          results.push({ registrationId: reg.id, status: "success", fileUrl });
+        } catch (error: any) {
+          results.push({
+            registrationId: reg.id,
+            status: "error",
+            error: error.message,
           });
         }
-        results.push({ registrationId: reg.id, status: "success", fileUrl });
-      } catch (error: any) {
-        results.push({
-          registrationId: reg.id,
-          status: "error",
-          error: error.message,
-        });
+      }
+    } else if ((template as any).category === "SPEAKER") {
+      const activities = await this.prisma.activity.findMany({
+        where: { eventId: template.eventId },
+        include: {
+          speakers: { include: { speaker: { include: { user: true } } } },
+        },
+      });
+
+      for (const activity of activities) {
+        for (const actSpeaker of activity.speakers) {
+          try {
+            const { fileUrl } = await this.certificatePdf.generateAndStore(
+              templateId,
+              {
+                userId: actSpeaker.speaker.userId || undefined,
+                activityId: activity.id,
+              },
+              body.strategy || "skip",
+            );
+
+            const email =
+              actSpeaker.speaker.user?.email || actSpeaker.speaker.email;
+            if (body.sendEmail && email) {
+              await this.mail.enqueue({
+                to: email,
+                subject: "Seu certificado de palestrante está pronto",
+                text: `Acesse seu certificado em: ${fileUrl}`,
+                html: `<p>Acesse seu certificado em: <a href="${fileUrl}">${fileUrl}</a></p>`,
+              });
+            }
+            results.push({
+              speakerId: actSpeaker.speakerId,
+              status: "success",
+              fileUrl,
+            });
+          } catch (error: any) {
+            results.push({
+              speakerId: actSpeaker.speakerId,
+              status: "error",
+              error: error.message,
+            });
+          }
+        }
+      }
+    } else if ((template as any).category === "REVIEWER") {
+      const reviewers = await this.prisma.user.findMany({
+        where: {
+          reviews: {
+            some: {
+              submission: { eventId: template.eventId },
+            },
+          },
+        },
+      });
+
+      for (const reviewer of reviewers) {
+        try {
+          const { fileUrl } = await this.certificatePdf.generateAndStore(
+            templateId,
+            { userId: reviewer.id },
+            body.strategy || "skip",
+          );
+
+          if (body.sendEmail && reviewer.email) {
+            await this.mail.enqueue({
+              to: reviewer.email,
+              subject: "Seu certificado de revisor científico está pronto",
+              text: `Acesse seu certificado em: ${fileUrl}`,
+              html: `<p>Acesse seu certificado em: <a href="${fileUrl}">${fileUrl}</a></p>`,
+            });
+          }
+          results.push({ reviewerId: reviewer.id, status: "success", fileUrl });
+        } catch (error: any) {
+          results.push({
+            reviewerId: reviewer.id,
+            status: "error",
+            error: error.message,
+          });
+        }
+      }
+    } else if ((template as any).category === "MONITOR") {
+      const monitors = await this.prisma.eventMonitor.findMany({
+        where: { eventId: template.eventId },
+        include: { user: true },
+      });
+
+      for (const monitor of monitors) {
+        try {
+          const { fileUrl } = await this.certificatePdf.generateAndStore(
+            templateId,
+            { userId: monitor.userId },
+            body.strategy || "skip",
+          );
+
+          if (body.sendEmail && monitor.user.email) {
+            await this.mail.enqueue({
+              to: monitor.user.email,
+              subject: "Seu certificado de monitoria está pronto",
+              text: `Acesse seu certificado em: ${fileUrl}`,
+              html: `<p>Acesse seu certificado em: <a href="${fileUrl}">${fileUrl}</a></p>`,
+            });
+          }
+          results.push({
+            monitorId: monitor.userId,
+            status: "success",
+            fileUrl,
+          });
+        } catch (error: any) {
+          results.push({
+            monitorId: monitor.userId,
+            status: "error",
+            error: error.message,
+          });
+        }
       }
     }
 
-    const successes = results.filter((r) => r.status === "success");
     return {
-      total: registrations.length,
-      processed: successes.length,
-      failed: registrations.length - successes.length,
+      total: results.length,
+      processed: results.filter((r) => r.status === "success").length,
       details: results,
     };
   }
@@ -225,23 +351,40 @@ export class CertificatesController {
     @Body()
     body: {
       templateId: string;
-      registrationId: string;
+      registrationId?: string;
+      userId?: string;
+      activityId?: string;
       sendEmail?: boolean;
     },
   ) {
     const { fileUrl, issuedId } = await this.certificatePdf.generateAndStore(
       body.templateId,
-      body.registrationId,
+      {
+        registrationId: body.registrationId,
+        userId: body.userId,
+        activityId: body.activityId,
+      },
     );
 
     if (body.sendEmail) {
-      const reg = await this.prisma.registration.findUnique({
-        where: { id: body.registrationId },
-        include: { user: true },
-      });
-      if (reg?.user.email) {
+      // Resolve email
+      let email: string | undefined;
+      if (body.registrationId) {
+        const reg = await this.prisma.registration.findUnique({
+          where: { id: body.registrationId },
+          include: { user: true },
+        });
+        email = reg?.user?.email;
+      } else if (body.userId) {
+        const user = await this.prisma.user.findUnique({
+          where: { id: body.userId },
+        });
+        email = user?.email;
+      }
+
+      if (email) {
         await this.mail.enqueue({
-          to: reg.user.email,
+          to: email,
           subject: "Seu certificado está pronto",
           text: `Acesse seu certificado em: ${fileUrl}`,
           html: `<p>Acesse seu certificado em: <a href="${fileUrl}">${fileUrl}</a></p>`,
@@ -249,7 +392,7 @@ export class CertificatesController {
       }
     }
 
-    return { issuedId, fileUrl };
+    return { fileUrl, issuedId };
   }
 
   @UseGuards(JwtAuthGuard)
@@ -260,8 +403,8 @@ export class CertificatesController {
 
     return this.prisma.issuedCertificate.findMany({
       where: {
-        registration: { userId },
-      },
+        OR: [{ userId }, { registration: { userId } }],
+      } as any,
       include: {
         template: {
           include: {
@@ -274,7 +417,13 @@ export class CertificatesController {
             },
           },
         },
-      },
+        activity: {
+          select: {
+            title: true,
+            type: { select: { name: true } },
+          },
+        },
+      } as any,
       orderBy: { issuedAt: "desc" },
     });
   }
@@ -287,23 +436,32 @@ export class CertificatesController {
         registration: {
           include: { user: true, event: true },
         },
+        user: true,
+        activity: { include: { type: true } },
         template: {
           include: { event: true },
         },
-      },
+      } as any,
     });
 
     if (!certificate) {
       throw new NotFoundException("Certificado inválido ou não encontrado.");
     }
 
+    const participantName =
+      (certificate as any).user?.name ||
+      (certificate as any).registration?.user?.name ||
+      "N/A";
+
     return {
       isValid: true,
       hash: certificate.validationHash,
       issuedAt: certificate.issuedAt,
       fileUrl: certificate.fileUrl,
-      participantName: certificate.registration.user.name,
-      eventName: certificate.template.event.name,
+      participantName,
+      eventName: (certificate as any).template.event.name,
+      category: (certificate as any).template.category,
+      activityTitle: (certificate as any).activity?.title,
     };
   }
 }

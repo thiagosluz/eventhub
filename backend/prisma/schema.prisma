@@ -68,6 +68,7 @@ model User {
   tenant               Tenant?              @relation(fields: [tenantId], references: [id])
   userBadges           UserBadge[]
   xpLogs               XpGainLog[]
+  issuedCertificates   IssuedCertificate[]
 }
 
 model Event {
@@ -229,6 +230,7 @@ model Activity {
   speakers             ActivitySpeaker[]
   attendances          Attendance[]
   raffleHistories      RaffleHistory[]
+  issuedCertificates   IssuedCertificate[]
 }
 
 model Speaker {
@@ -452,12 +454,20 @@ model Attendance {
   ticket     Ticket    @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 }
 
+enum CertificateCategory {
+  PARTICIPANT
+  SPEAKER
+  REVIEWER
+  MONITOR
+}
+
 model CertificateTemplate {
   id                 String              @id @default(cuid())
   eventId            String
   name               String
   backgroundUrl      String
   layoutConfig       Json
+  category           CertificateCategory @default(PARTICIPANT)
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   event              Event               @relation(fields: [eventId], references: [id], onDelete: Cascade)
@@ -467,14 +477,19 @@ model CertificateTemplate {
 model IssuedCertificate {
   id             String              @id @default(cuid())
   templateId     String
-  registrationId String
+  registrationId String?
+  userId         String?
+  activityId     String?
   fileUrl        String
+  metadata       Json?
   issuedAt       DateTime            @default(now())
   validationHash String              @unique @default(uuid())
-  registration   Registration        @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  registration   Registration?       @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  user           User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity       Activity?           @relation(fields: [activityId], references: [id], onDelete: Cascade)
   template       CertificateTemplate @relation(fields: [templateId], references: [id])
 
-  @@unique([templateId, registrationId])
+  @@unique([templateId, registrationId, userId, activityId])
 }
 
 model SponsorCategory {

@@ -59,7 +59,11 @@ export class CertificatePdfService {
 
   async generateAndStore(
     templateId: string,
-    registrationId: string,
+    context: {
+      registrationId?: string;
+      userId?: string;
+      activityId?: string;
+    },
     strategy: "skip" | "overwrite" = "skip",
   ): Promise<{ fileUrl: string; issuedId: string }> {
     const template = await this.prisma.certificateTemplate.findFirst({
@@ -70,44 +74,138 @@ export class CertificatePdfService {
       throw new NotFoundException("Template de certificado não encontrado.");
     }
 
-    const registration = await this.prisma.registration.findFirst({
-      where: { id: registrationId, eventId: template.eventId },
-      include: { user: true, event: true },
-    });
-    if (!registration) {
-      throw new NotFoundException("Inscrição não encontrada para este evento.");
+    const data: Record<string, string> = {
+      eventName: template.event.name,
+    };
+    let attendances: any[] = [];
+
+    // 1. Context Resolution based on Category
+    if (template.category === "PARTICIPANT") {
+      if (!context.registrationId)
+        throw new Error("registrationId is required for participant category");
+      const registration = await this.prisma.registration.findFirst({
+        where: { id: context.registrationId, eventId: template.eventId },
+        include: { user: true, event: true },
+      });
+      if (!registration)
+        throw new NotFoundException("Inscrição não encontrada.");
+
+      data.participantName = registration.user.name;
+      data.workload =
+        template.event?.startDate &&
+        template.event?.endDate &&
+        template.event.startDate.toLocaleDateString() ===
+          template.event.endDate.toLocaleDateString()
+          ? "8h"
+          : "20h"; // Exemplo de lógica dinâmica simples
+
+      attendances = await this.prisma.attendance.findMany({
+        where: {
+          ticket: { registrationId: registration.id },
+          activity: { eventId: template.eventId },
+        },
+        include: { activity: true },
+        orderBy: { activity: { startAt: "asc" } },
+      });
+    } else if (template.category === "SPEAKER") {
+      const speakerId = (context as any).speakerId;
+      if (!speakerId && !context.userId)
+        throw new Error("speakerId or userId is required for speaker category");
+      if (!context.activityId)
+        throw new Error("activityId is required for speaker category");
+
+      const activitySpeaker = await this.prisma.activitySpeaker.findFirst({
+        where: {
+          activityId: context.activityId,
+          OR: [
+            { speaker: { userId: context.userId } },
+            { speakerId: (context as any).speakerId },
+          ],
+        },
+        include: {
+          speaker: { include: { user: true } },
+          activity: { include: { type: true } },
+          role: true,
+        },
+      });
+
+      if (!activitySpeaker)
+        throw new NotFoundException(
+          "Palestrante não encontrado nesta atividade.",
+        );
+
+      data.speakerName = activitySpeaker.speaker.name;
+      data.activityTitle = activitySpeaker.activity.title;
+      data.activityType = activitySpeaker.activity.type?.name || "Atividade";
+      data.speakerRole = activitySpeaker.role?.name || "Palestrante";
+    } else if (template.category === "MONITOR") {
+      if (!context.userId)
+        throw new Error("userId is required for monitor category");
+      const monitor = await this.prisma.eventMonitor.findFirst({
+        where: { eventId: template.eventId, userId: context.userId },
+        include: { user: true },
+      });
+      if (!monitor) throw new NotFoundException("Monitor não encontrado.");
+
+      data.monitorName = monitor.user.name;
+      data.workload = "20h"; // Exemplo
+    } else if (template.category === "REVIEWER") {
+      if (!context.userId)
+        throw new Error("userId is required for reviewer category");
+
+      const user = await this.prisma.user.findUnique({
+        where: { id: context.userId },
+      });
+      if (!user) throw new NotFoundException("Usuário não encontrado.");
+
+      const reviewsCount = await this.prisma.review.count({
+        where: {
+          reviewerId: context.userId,
+          submission: { eventId: template.eventId },
+        },
+      });
+
+      const areas = await this.prisma.thematicArea.findMany({
+        where: {
+          submissions: {
+            some: {
+              reviews: {
+                some: { reviewerId: context.userId },
+              },
+            },
+          },
+          eventId: template.eventId,
+        },
+      });
+
+      data.reviewerName = user.name;
+      data.submissionCount = reviewsCount.toString();
+      data.area_tematica = areas.map((a) => a.name).join(", ");
+    } else {
+      // Default fallback
+      data.recipientName = "Membro do Evento";
     }
 
-    // Se a estratégia for "skip", verificar se já existe um certificado emitido
+    // 2. Uniqueness Check
     const existing = await this.prisma.issuedCertificate.findFirst({
-      where: { templateId, registrationId },
+      where: {
+        templateId,
+        registrationId: context.registrationId || null,
+        userId: context.userId || null,
+        activityId: context.activityId || null,
+      },
     });
 
     if (existing && strategy === "skip") {
       return { fileUrl: existing.fileUrl, issuedId: existing.id };
     }
 
-    const data: Record<string, string> = {
-      participantName: registration.user.name,
-      eventName: registration.event.name,
-      workload: "8h",
-    };
-
+    // 3. Render and Store
     const layout = (template.layoutConfig as LayoutConfig) ?? {};
     const textBlocks = layout.textBlocks ?? [];
-
     const validationHash = uuidv4();
     const validationUrl = `${process.env.FRONTEND_URL || "http://localhost:3001"}/certificates/validate/${validationHash}`;
     const qrCodeBuffer = await QRCode.toBuffer(validationUrl);
-
-    const attendances = await this.prisma.attendance.findMany({
-      where: {
-        ticket: { registrationId: registration.id },
-        activity: { eventId: template.eventId },
-      },
-      include: { activity: true },
-      orderBy: { activity: { startAt: "asc" } },
-    });
 
     const pdfBuffer = await this.renderPdf(
       template.backgroundUrl,
@@ -118,7 +216,8 @@ export class CertificatePdfService {
       textBlocks,
     );
 
-    const objectName = `certificates/${template.eventId}/${registrationId}-${Date.now()}.pdf`;
+    const fileName = `${template.category.toLowerCase()}-${context.userId || context.registrationId}-${Date.now()}.pdf`;
+    const objectName = `certificates/${template.eventId}/${fileName}`;
     const fileUrl = await this.minio.uploadObject({
       bucket: "certificates",
       objectName,
@@ -126,8 +225,8 @@ export class CertificatePdfService {
       contentType: "application/pdf",
     });
 
+    // 4. Persistence
     if (existing) {
-      // Opcional: deletar arquivo antigo do MinIO se desejar economizar espaço
       const updated = await this.prisma.issuedCertificate.update({
         where: { id: existing.id },
         data: {
@@ -142,9 +241,12 @@ export class CertificatePdfService {
     const issued = await this.prisma.issuedCertificate.create({
       data: {
         templateId: template.id,
-        registrationId: registration.id,
+        registrationId: context.registrationId,
+        userId: context.userId,
+        activityId: context.activityId,
         fileUrl,
         validationHash,
+        metadata: data as any,
       },
     });
 

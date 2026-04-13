@@ -34,7 +34,23 @@ describe("CertificatePdfService", () => {
     },
     issuedCertificate: {
       create: jest.fn(),
+      update: jest.fn(),
       findFirst: jest.fn(),
+    },
+    activitySpeaker: {
+      findFirst: jest.fn(),
+    },
+    eventMonitor: {
+      findFirst: jest.fn(),
+    },
+    review: {
+      count: jest.fn(),
+    },
+    thematicArea: {
+      findMany: jest.fn(),
+    },
+    user: {
+      findUnique: jest.fn(),
     },
   };
 
@@ -65,36 +81,141 @@ describe("CertificatePdfService", () => {
   describe("generateAndStore", () => {
     it("should throw NotFoundException if template not found", async () => {
       mockPrismaService.certificateTemplate.findFirst.mockResolvedValue(null);
-      await expect(service.generateAndStore("tmpl_1", "reg_1")).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.generateAndStore("tmpl_1", { registrationId: "reg_1" }),
+      ).rejects.toThrow(NotFoundException);
     });
 
-    it("should generate and store certificate successfully", async () => {
+    it("should generate a PARTICIPANT certificate successfully", async () => {
       mockPrismaService.certificateTemplate.findFirst.mockResolvedValue({
         id: "tmpl_1",
         eventId: "event_1",
         backgroundUrl: "http://test.com/bg.png",
-        layoutConfig: { placeholders: [] },
-        event: { name: "Test Event" },
+        layoutConfig: { textBlocks: [] },
+        event: {
+          name: "Test Event",
+          startDate: new Date(),
+          endDate: new Date(),
+        },
+        category: "PARTICIPANT",
       });
       mockPrismaService.registration.findFirst.mockResolvedValue({
         id: "reg_1",
-        user: { name: "User 1" },
+        user: { name: "User Participant", cpf: "123.456.789-00" },
         event: { name: "Test Event" },
       });
       mockPrismaService.issuedCertificate.findFirst.mockResolvedValue(null);
       mockPrismaService.attendance.findMany.mockResolvedValue([]);
-      mockMinioService.uploadObject.mockResolvedValue("http://minio/cert.pdf");
+      mockMinioService.uploadObject.mockResolvedValue(
+        "http://minio/cert-p.pdf",
+      );
       mockPrismaService.issuedCertificate.create.mockResolvedValue({
         id: "issued_1",
       });
 
-      const result = await service.generateAndStore("tmpl_1", "reg_1");
+      const result = await service.generateAndStore("tmpl_1", {
+        registrationId: "reg_1",
+      });
 
-      expect(result.fileUrl).toBe("http://minio/cert.pdf");
-      expect(mockMinioService.uploadObject).toHaveBeenCalled();
-      expect(mockPrismaService.issuedCertificate.create).toHaveBeenCalled();
+      expect(result.fileUrl).toBe("http://minio/cert-p.pdf");
+      expect(mockPrismaService.registration.findFirst).toHaveBeenCalled();
+    });
+
+    it("should generate a SPEAKER certificate successfully", async () => {
+      mockPrismaService.certificateTemplate.findFirst.mockResolvedValue({
+        id: "tmpl_speaker",
+        eventId: "event_1",
+        backgroundUrl: "http://test.com/bg.png",
+        layoutConfig: { textBlocks: [] },
+        event: { name: "Test Event" },
+        category: "SPEAKER",
+      });
+      mockPrismaService.activitySpeaker.findFirst.mockResolvedValue({
+        speaker: { name: "Speaker Name", user: { name: "Speaker Name" } },
+        activity: { title: "Test Workshop", type: { name: "Workshop" } },
+        role: { name: "Coordinator" },
+      });
+      mockPrismaService.issuedCertificate.findFirst.mockResolvedValue(null);
+      mockMinioService.uploadObject.mockResolvedValue(
+        "http://minio/cert-s.pdf",
+      );
+      mockPrismaService.issuedCertificate.create.mockResolvedValue({
+        id: "issued_2",
+      });
+
+      const result = await service.generateAndStore("tmpl_speaker", {
+        userId: "user_s",
+        activityId: "act_1",
+      });
+
+      expect(result.fileUrl).toBe("http://minio/cert-s.pdf");
+      expect(mockPrismaService.activitySpeaker.findFirst).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({ activityId: "act_1" }),
+        }),
+      );
+    });
+
+    it("should generate a REVIEWER certificate successfully", async () => {
+      mockPrismaService.certificateTemplate.findFirst.mockResolvedValue({
+        id: "tmpl_reviewer",
+        eventId: "event_1",
+        backgroundUrl: "http://test.com/bg.png",
+        layoutConfig: { textBlocks: [] },
+        event: { name: "Test Event" },
+        category: "REVIEWER",
+      });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        name: "Reviewer Name",
+      });
+      mockPrismaService.review.count.mockResolvedValue(5);
+      mockPrismaService.thematicArea.findMany.mockResolvedValue([
+        { name: "Tech" },
+        { name: "Health" },
+      ]);
+      mockPrismaService.issuedCertificate.findFirst.mockResolvedValue(null);
+      mockMinioService.uploadObject.mockResolvedValue(
+        "http://minio/cert-r.pdf",
+      );
+      mockPrismaService.issuedCertificate.create.mockResolvedValue({
+        id: "issued_3",
+      });
+
+      const result = await service.generateAndStore("tmpl_reviewer", {
+        userId: "user_r",
+      });
+
+      expect(result.fileUrl).toBe("http://minio/cert-r.pdf");
+      expect(mockPrismaService.review.count).toHaveBeenCalled();
+      expect(mockPrismaService.thematicArea.findMany).toHaveBeenCalled();
+    });
+
+    it("should generate a MONITOR certificate successfully", async () => {
+      mockPrismaService.certificateTemplate.findFirst.mockResolvedValue({
+        id: "tmpl_monitor",
+        eventId: "event_1",
+        backgroundUrl: "http://test.com/bg.png",
+        layoutConfig: { textBlocks: [] },
+        event: { name: "Test Event" },
+        category: "MONITOR",
+      });
+      mockPrismaService.eventMonitor.findFirst.mockResolvedValue({
+        user: { name: "Monitor Name" },
+      });
+      mockPrismaService.issuedCertificate.findFirst.mockResolvedValue(null);
+      mockMinioService.uploadObject.mockResolvedValue(
+        "http://minio/cert-m.pdf",
+      );
+      mockPrismaService.issuedCertificate.create.mockResolvedValue({
+        id: "issued_4",
+      });
+
+      const result = await service.generateAndStore("tmpl_monitor", {
+        userId: "user_m",
+      });
+
+      expect(result.fileUrl).toBe("http://minio/cert-m.pdf");
+      expect(mockPrismaService.eventMonitor.findFirst).toHaveBeenCalled();
     });
   });
 });

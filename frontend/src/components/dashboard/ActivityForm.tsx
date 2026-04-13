@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { CalendarIcon, MapPinIcon, UsersIcon, UserIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, MapPinIcon, UsersIcon, UserIcon, PlusIcon, TrashIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 import { activityTypesService, speakerRolesService, ActivityType, SpeakerRole } from '@/services/management.service';
 import { speakersService, Speaker } from '@/services/speakers.service';
-import { activitiesService, CreateActivityDto, UpdateActivityDto } from '@/services/activities.service';
 import { Activity } from '@/types/event';
+import { QuickCategoryModal } from './QuickCategoryModal';
+import Link from 'next/link';
 
 interface ActivityFormProps {
   initialData?: Activity | null;
@@ -28,6 +29,13 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
       roleId: s.role?.id || s.roleId || ''
     })) as { speakerId: string; roleId: string }[]
   });
+
+  const [types, setTypes] = useState<ActivityType[]>([]);
+  const [roles, setRoles] = useState<SpeakerRole[]>([]);
+  const [availableSpeakers, setAvailableSpeakers] = useState<Speaker[]>([]);
+  
+  const [isQuickModalOpen, setIsQuickModalOpen] = useState(false);
+  const [quickModalType, setQuickModalType] = useState<'ACTIVITY_TYPE' | 'SPEAKER_ROLE'>('ACTIVITY_TYPE');
   
   useEffect(() => {
     if (initialData) {
@@ -63,10 +71,6 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
       });
     }
   }, [initialData]);
-
-  const [types, setTypes] = useState<ActivityType[]>([]);
-  const [roles, setRoles] = useState<SpeakerRole[]>([]);
-  const [availableSpeakers, setAvailableSpeakers] = useState<Speaker[]>([]);
 
   useEffect(() => {
     Promise.all([
@@ -119,268 +123,315 @@ export function ActivityForm({ initialData, onSubmit, isLoading }: ActivityFormP
     });
   };
 
+  const handleQuickCreate = (item: { id: string, name: string }) => {
+    if (quickModalType === 'ACTIVITY_TYPE') {
+      setTypes(prev => [...prev, item]);
+      setFormData(prev => ({ ...prev, typeId: item.id }));
+    } else {
+      setRoles(prev => [...prev, item]);
+      // Note: roles is used in multiple dropdowns, we just update the list, 
+      // the user will select it in the specific speaker slot.
+    }
+  };
+
   return (
-    <form aria-label="Formulário de Atividade" onSubmit={handleSubmit} className="space-y-8">
-      <div className="space-y-6">
-        {/* Basic Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2 md:col-span-2">
-            <label htmlFor="title" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Título da Atividade</label>
-            <input
-              id="title"
-              required
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
-              placeholder="Ex: Palestra de Abertura"
+    <>
+      <form aria-label="Formulário de Atividade" onSubmit={handleSubmit} className="space-y-8">
+        <div className="space-y-6">
+          {/* Basic Info */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2 md:col-span-2">
+              <label htmlFor="title" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Título da Atividade</label>
+              <input
+                id="title"
+                required
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
+                placeholder="Ex: Palestra de Abertura"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <label htmlFor="typeId" className="text-xs font-black uppercase tracking-widest text-muted-foreground">Tipo de Atividade</label>
+                <div className="flex items-center gap-2">
+                   <button 
+                     type="button"
+                     onClick={() => { setQuickModalType('ACTIVITY_TYPE'); setIsQuickModalOpen(true); }}
+                     className="text-[9px] font-black uppercase text-primary hover:underline flex items-center gap-0.5"
+                   >
+                     <PlusIcon className="w-2.5 h-2.5" /> Novo
+                   </button>
+                   <Link 
+                     href="/dashboard/settings/categories" 
+                     target="_blank"
+                     className="text-[9px] font-black uppercase text-muted-foreground hover:text-primary flex items-center gap-0.5"
+                   >
+                     <Cog6ToothIcon className="w-2.5 h-2.5" /> Gerenciar
+                   </Link>
+                </div>
+              </div>
+              <select
+                id="typeId"
+                value={formData.typeId}
+                onChange={(e) => setFormData({ ...formData, typeId: e.target.value })}
+                className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm appearance-none"
+              >
+                <option value="">Selecione um tipo...</option>
+                {types.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+              </select>
+            </div>
+
+            <div className="space-y-2 flex flex-col justify-center">
+              <label className="flex items-center gap-3 cursor-pointer group mt-6">
+                <input
+                  type="checkbox"
+                  checked={formData.requiresEnrollment}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      requiresEnrollment: e.target.checked,
+                    })
+                  }
+                  className="w-5 h-5 rounded-lg border-border text-primary focus:ring-primary/20"
+                />
+                <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                  Requer Inscrição Prévia
+                </span>
+              </label>
+            </div>
+
+            {formData.requiresEnrollment && (
+              <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-primary/5 rounded-2xl border border-primary/10 animate-in fade-in slide-in-from-top-2 duration-300">
+                <div className="flex flex-col justify-center">
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={formData.requiresConfirmation}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          requiresConfirmation: e.target.checked,
+                        })
+                      }
+                      className="w-5 h-5 rounded-lg border-border text-primary focus:ring-primary/20"
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                        Requer Confirmação do Participante
+                      </span>
+                      <span className="text-[10px] text-muted-foreground font-medium">
+                        O participante terá um prazo para confirmar a presença.
+                      </span>
+                    </div>
+                  </label>
+                </div>
+
+                {formData.requiresConfirmation && (
+                  <div className="space-y-2 animate-in fade-in slide-in-from-left-2 duration-300">
+                    <label htmlFor={`confirmationDays`} className="text-[10px] font-black uppercase tracking-widest text-muted-foreground px-1">
+                      Prazo para Confirmação (Dias)
+                    </label>
+                    <select
+                      id={`confirmationDays`}
+                      value={formData.confirmationDays}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          confirmationDays: Number(e.target.value),
+                        })
+                      }
+                      className="w-full h-10 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
+                    >
+                      {[1, 2, 3, 4, 5, 6, 7].map((d) => (
+                        <option key={d} value={d}>
+                          {d} {d === 1 ? 'dia' : 'dias'}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="description" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Descrição</label>
+            <textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full p-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
+              rows={3}
             />
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="typeId" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Tipo de Atividade</label>
-            <select
-              id="typeId"
-              value={formData.typeId}
-              onChange={(e) => setFormData({ ...formData, typeId: e.target.value })}
-              className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm appearance-none"
-            >
-              <option value="">Selecione um tipo...</option>
-              {types.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
-            </select>
-          </div>
-
-          <div className="space-y-2 flex flex-col justify-center">
-            <label className="flex items-center gap-3 cursor-pointer group mt-6">
-              <input
-                type="checkbox"
-                checked={formData.requiresEnrollment}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    requiresEnrollment: e.target.checked,
-                  })
-                }
-                className="w-5 h-5 rounded-lg border-border text-primary focus:ring-primary/20"
-              />
-              <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
-                Requer Inscrição Prévia
-              </span>
-            </label>
-          </div>
-
-          {formData.requiresEnrollment && (
-            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-primary/5 rounded-2xl border border-primary/10 animate-in fade-in slide-in-from-top-2 duration-300">
-              <div className="flex flex-col justify-center">
-                <label className="flex items-center gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    checked={formData.requiresConfirmation}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        requiresConfirmation: e.target.checked,
-                      })
-                    }
-                    className="w-5 h-5 rounded-lg border-border text-primary focus:ring-primary/20"
-                  />
-                  <div className="flex flex-col">
-                    <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
-                      Requer Confirmação do Participante
-                    </span>
-                    <span className="text-[10px] text-muted-foreground font-medium">
-                      O participante terá um prazo para confirmar a presença.
-                    </span>
-                  </div>
-                </label>
+          {/* Schedule */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label htmlFor="startAt" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Data/Hora Início</label>
+              <div className="relative">
+                <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                  id="startAt"
+                  required
+                  type="datetime-local"
+                  value={formData.startAt}
+                  onChange={(e) => setFormData({ ...formData, startAt: e.target.value })}
+                  className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
+                />
               </div>
-
-              {formData.requiresConfirmation && (
-                <div className="space-y-2 animate-in fade-in slide-in-from-left-2 duration-300">
-                  <label htmlFor={`confirmationDays`} className="text-[10px] font-black uppercase tracking-widest text-muted-foreground px-1">
-                    Prazo para Confirmação (Dias)
-                  </label>
-                  <select
-                    id={`confirmationDays`}
-                    value={formData.confirmationDays}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        confirmationDays: Number(e.target.value),
-                      })
-                    }
-                    className="w-full h-10 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
-                  >
-                    {[1, 2, 3, 4, 5, 6, 7].map((d) => (
-                      <option key={d} value={d}>
-                        {d} {d === 1 ? 'dia' : 'dias'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
             </div>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <label htmlFor="description" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Descrição</label>
-          <textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full p-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
-            rows={3}
-          />
-        </div>
-
-        {/* Schedule */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label htmlFor="startAt" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Data/Hora Início</label>
-            <div className="relative">
-              <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                id="startAt"
-                required
-                type="datetime-local"
-                value={formData.startAt}
-                onChange={(e) => setFormData({ ...formData, startAt: e.target.value })}
-                className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
-              />
+            <div className="space-y-2">
+              <label htmlFor="endAt" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Data/Hora Término</label>
+              <div className="relative">
+                <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                  id="endAt"
+                  required
+                  type="datetime-local"
+                  value={formData.endAt}
+                  onChange={(e) => setFormData({ ...formData, endAt: e.target.value })}
+                  className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
+                />
+              </div>
             </div>
           </div>
-          <div className="space-y-2">
-            <label htmlFor="endAt" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Data/Hora Término</label>
-            <div className="relative">
-              <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                id="endAt"
-                required
-                type="datetime-local"
-                value={formData.endAt}
-                onChange={(e) => setFormData({ ...formData, endAt: e.target.value })}
-                className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
-              />
-            </div>
-          </div>
-        </div>
 
-        {/* Location and Capacity */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label htmlFor="location" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Localização (Opcional)</label>
-            <div className="relative">
-              <MapPinIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                id="location"
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
-                placeholder="Ex: Auditório Principal"
-              />
+          {/* Location and Capacity */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label htmlFor="location" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Localização (Opcional)</label>
+              <div className="relative">
+                <MapPinIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                  id="location"
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
+                  placeholder="Ex: Auditório Principal"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="capacity" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Capacidade (Vagas)</label>
+              <div className="relative">
+                <UsersIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                  id="capacity"
+                  type="number"
+                  value={formData.capacity}
+                  onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
+                  className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
+                  placeholder="Ilimitada se vazio"
+                />
+              </div>
             </div>
           </div>
-          <div className="space-y-2">
-            <label htmlFor="capacity" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Capacidade (Vagas)</label>
-            <div className="relative">
-              <UsersIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                id="capacity"
-                type="number"
-                value={formData.capacity}
-                onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
-                className="w-full h-12 pl-12 pr-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm"
-                placeholder="Ilimitada se vazio"
-              />
-            </div>
-          </div>
-        </div>
 
-        {/* Speakers Section */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Palestrantes e Papéis</label>
-            <button
-              type="button"
-              onClick={addSpeaker}
-              className="text-xs font-bold text-primary flex items-center gap-1 hover:underline"
-            >
-              <PlusIcon className="w-3 h-3" /> Adicionar Palestrante
-            </button>
-          </div>
-          
-          <div className="space-y-3">
-            {formData.speakers.map((s, index) => (
-              <div key={index} className="flex gap-4 items-end bg-muted/20 p-4 rounded-2xl border border-border/50">
-                <div className="flex-1 space-y-2">
-                  <label htmlFor={`speaker-${index}`} className="text-[10px] font-black uppercase text-muted-foreground">Palestrante</label>
-                  <div className="relative">
-                    <select
-                      id={`speaker-${index}`}
-                      value={s.speakerId}
-                      onChange={(e) => updateSpeaker(index, 'speakerId', e.target.value)}
-                      className="w-full h-11 pl-11 pr-3 rounded-lg border border-border bg-card outline-none text-xs font-bold appearance-none transition-all focus:border-primary"
-                    >
-                      <option value="">Selecione...</option>
-                      {availableSpeakers.map(sp => <option key={sp.id} value={sp.id}>{sp.name}</option>)}
-                    </select>
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-border/50">
-                      {(() => {
-                        const selectedSpeaker = availableSpeakers.find(sp => sp.id === s.speakerId);
-                        return selectedSpeaker?.avatarUrl ? (
-                          <img 
-                            src={selectedSpeaker.avatarUrl} 
-                            alt="Avatar" 
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <UserIcon className="w-3 h-3 text-muted-foreground" />
-                        );
-                      })()}
+          {/* Speakers Section */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Palestrantes e Papéis</label>
+              <button
+                type="button"
+                onClick={addSpeaker}
+                className="text-xs font-bold text-primary flex items-center gap-1 hover:underline"
+              >
+                <PlusIcon className="w-3 h-3" /> Adicionar Palestrante
+              </button>
+            </div>
+            
+            <div className="space-y-3">
+              {formData.speakers.map((s, index) => (
+                <div key={index} className="flex gap-4 items-end bg-muted/20 p-4 rounded-2xl border border-border/50">
+                  <div className="flex-1 space-y-2">
+                    <label htmlFor={`speaker-${index}`} className="text-[10px] font-black uppercase text-muted-foreground">Palestrante</label>
+                    <div className="relative">
+                      <select
+                        id={`speaker-${index}`}
+                        value={s.speakerId}
+                        onChange={(e) => updateSpeaker(index, 'speakerId', e.target.value)}
+                        className="w-full h-11 pl-11 pr-3 rounded-lg border border-border bg-card outline-none text-xs font-bold appearance-none transition-all focus:border-primary"
+                      >
+                        <option value="">Selecione...</option>
+                        {availableSpeakers.map(sp => <option key={sp.id} value={sp.id}>{sp.name}</option>)}
+                      </select>
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-border/50">
+                        {(() => {
+                          const selectedSpeaker = availableSpeakers.find(sp => sp.id === s.speakerId);
+                          return selectedSpeaker?.avatarUrl ? (
+                            <img 
+                              src={selectedSpeaker.avatarUrl} 
+                              alt="Avatar" 
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <UserIcon className="w-3 h-3 text-muted-foreground" />
+                          );
+                        })()}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex-1 space-y-2">
-                  <label htmlFor={`role-${index}`} className="text-[10px] font-black uppercase text-muted-foreground">Papel</label>
-                  <select
-                    id={`role-${index}`}
-                    value={s.roleId}
-                    onChange={(e) => updateSpeaker(index, 'roleId', e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg border border-border bg-card outline-none text-xs font-bold"
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label htmlFor={`role-${index}`} className="text-[10px] font-black uppercase text-muted-foreground">Papel</label>
+                      <button 
+                         type="button"
+                         onClick={() => { setQuickModalType('SPEAKER_ROLE'); setIsQuickModalOpen(true); }}
+                         className="text-[8px] font-black uppercase text-primary hover:underline flex items-center gap-0.5"
+                       >
+                         <PlusIcon className="w-2 h-2" /> Novo
+                       </button>
+                    </div>
+                    <select
+                      id={`role-${index}`}
+                      value={s.roleId}
+                      onChange={(e) => updateSpeaker(index, 'roleId', e.target.value)}
+                      className="w-full h-10 px-3 rounded-lg border border-border bg-card outline-none text-xs font-bold"
+                    >
+                      <option value="">Padrão</option>
+                      {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
+                    </select>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeSpeaker(index)}
+                    className="p-2.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                   >
-                    <option value="">Padrão</option>
-                    {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
-                  </select>
+                    <TrashIcon className="w-4 h-4" />
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => removeSpeaker(index)}
-                  className="p-2.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
-                >
-                  <TrashIcon className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-            {formData.speakers.length === 0 && (
-              <p className="text-xs text-center py-4 text-muted-foreground italic">Nenhum palestrante associado.</p>
-            )}
+              ))}
+              {formData.speakers.length === 0 && (
+                <p className="text-xs text-center py-4 text-muted-foreground italic">Nenhum palestrante associado.</p>
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex justify-end pt-4">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="premium-button !px-12 flex items-center gap-2"
-        >
-          {isLoading ? (
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          ) : (
-            initialData ? 'Salvar Alterações' : 'Criar Atividade'
-          )}
-        </button>
-      </div>
-    </form>
+        <div className="flex justify-end pt-4">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="premium-button !px-12 flex items-center gap-2"
+          >
+            {isLoading ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              initialData ? 'Salvar Alterações' : 'Criar Atividade'
+            )}
+          </button>
+        </div>
+      </form>
+
+      <QuickCategoryModal 
+        isOpen={isQuickModalOpen}
+        onClose={() => setIsQuickModalOpen(false)}
+        type={quickModalType}
+        onCreated={handleQuickCreate}
+      />
+    </>
   );
 }

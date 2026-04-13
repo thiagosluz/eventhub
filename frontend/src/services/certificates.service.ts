@@ -65,14 +65,18 @@ export const certificatesService = {
     return res.json();
   },
 
-  async issueCertificate(templateId: string, registrationId: string, sendEmail = true): Promise<{ issuedId: string; fileUrl: string }> {
+  async issueCertificate(
+    templateId: string, 
+    params: { registrationId?: string; userId?: string; activityId?: string }, 
+    sendEmail = true
+  ): Promise<{ issuedId: string; fileUrl: string }> {
     const res = await fetch(`${API_BASE_URL}/certificates/issue`, {
       method: "POST",
       headers: {
         ...getAuthHeader(),
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ templateId, registrationId, sendEmail }),
+      body: JSON.stringify({ templateId, ...params, sendEmail }),
     });
     if (!res.ok) throw new Error("Falha ao emitir certificado.");
     return res.json();

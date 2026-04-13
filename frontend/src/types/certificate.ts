@@ -7,7 +7,6 @@ export interface CertificateTemplate {
   name: string;
   backgroundUrl: string;
   layoutConfig: {
-    placeholders?: any[]; // Deprecated
     textBlocks?: Array<{
       text: string;
       x: number;
@@ -19,6 +18,7 @@ export interface CertificateTemplate {
       align?: "left" | "center" | "right" | "justify";
     }>;
   };
+  category: 'PARTICIPANT' | 'SPEAKER' | 'REVIEWER' | 'MONITOR';
   createdAt: string;
   updatedAt: string;
   _count?: {
@@ -30,7 +30,10 @@ export interface IssuedCertificate {
   id: string;
   templateId: string;
   template?: CertificateTemplate;
-  registrationId: string;
+  registrationId?: string;
+  userId?: string;
+  activityId?: string;
   fileUrl: string;
   issuedAt: string;
+  metadata?: any;
 }

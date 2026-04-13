@@ -34,7 +34,12 @@ export class CertificateTemplatesService {
   async create(
     tenantId: string,
     eventId: string,
-    data: { name: string; backgroundUrl: string; layoutConfig: object },
+    data: {
+      name: string;
+      backgroundUrl: string;
+      layoutConfig: object;
+      category?: string;
+    },
   ) {
     const event = await this.prisma.event.findFirst({
       where: { id: eventId, tenantId },
@@ -46,8 +51,9 @@ export class CertificateTemplatesService {
         eventId,
         name: data.name,
         backgroundUrl: data.backgroundUrl,
+        category: (data.category as any) ?? "PARTICIPANT",
         layoutConfig: data.layoutConfig as object,
-      },
+      } as any,
       include: {
         _count: {
           select: { issuedCertificates: true },
@@ -72,7 +78,12 @@ export class CertificateTemplatesService {
   async update(
     tenantId: string,
     id: string,
-    data: { name?: string; backgroundUrl?: string; layoutConfig?: object },
+    data: {
+      name?: string;
+      backgroundUrl?: string;
+      layoutConfig?: object;
+      category?: string;
+    },
   ) {
     await this.findOne(tenantId, id);
     return this.prisma.certificateTemplate.update({
@@ -80,8 +91,9 @@ export class CertificateTemplatesService {
       data: {
         name: data.name,
         backgroundUrl: data.backgroundUrl,
+        category: data.category as any,
         layoutConfig: data.layoutConfig as object | undefined,
-      },
+      } as any,
       include: {
         _count: {
           select: { issuedCertificates: true },

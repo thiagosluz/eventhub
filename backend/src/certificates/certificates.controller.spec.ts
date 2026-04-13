@@ -141,6 +141,7 @@ describe("CertificatesController", () => {
       mockTemplatesService.findOne.mockResolvedValue({
         id: "t1",
         eventId: "e1",
+        category: "PARTICIPANT",
       });
       (mockPrismaService.registration.findMany as jest.Mock).mockResolvedValue([
         { id: "reg1", user: { email: "u1@t.com" } },

@@ -236,9 +236,14 @@ export default function EventCertificatesPage({ params }: { params: Promise<{ id
               <div className="p-6 space-y-6">
                 <div>
                   <h3 className="text-xl font-bold text-foreground line-clamp-1">{template.name}</h3>
-                  <p className="text-xs text-muted-foreground font-medium mt-1">
-                    {template.layoutConfig.placeholders.length} Variáveis configuradas
-                  </p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="px-1.5 py-0.5 rounded-md bg-primary/10 text-primary text-[9px] font-black uppercase tracking-tighter">
+                      {template.category}
+                    </span>
+                    <p className="text-[10px] text-muted-foreground font-bold">
+                      {template.layoutConfig?.textBlocks?.length || 0} blocos de texto
+                    </p>
+                  </div>
                 </div>
 
                 <div className="flex flex-col gap-2">

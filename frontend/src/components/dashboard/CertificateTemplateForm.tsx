@@ -29,6 +29,7 @@ export default function CertificateTemplateForm({
   const [name, setName] = useState(initialData?.name || "");
   const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.backgroundUrl || null);
+  const [category, setCategory] = useState<'PARTICIPANT' | 'SPEAKER' | 'REVIEWER' | 'MONITOR'>(initialData?.category || "PARTICIPANT");
   const [textBlocks, setTextBlocks] = useState(initialData?.layoutConfig.textBlocks || []);
   const [activeTextBlock, setActiveTextBlock] = useState<number | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -51,8 +52,20 @@ export default function CertificateTemplateForm({
   };
 
   const addTextBlock = () => {
+    let suggestedText = "Certificamos que {{participantName}} participou do evento {{eventName}}.";
+    
+    if (category === 'SPEAKER') {
+      suggestedText = "Certificamos que {{speakerName}} atuou como palestrante na atividade {{activityTitle}} durante o evento {{eventName}}.";
+    } else if (category === 'REVIEWER') {
+      suggestedText = "Certificamos que {{reviewerName}} atuou como revisor(a) técnico(a) no evento {{eventName}}, avaliando {{submissionCount}} trabalhos nas áreas de {{area_tematica}}.";
+    } else if (category === 'MONITOR') {
+      suggestedText = "Certificamos que {{monitorName}} atuou como monitor(a) no evento {{eventName}} com carga horária de {{workload}}.";
+    } else if (category === 'PARTICIPANT') {
+      suggestedText = "Certificamos que {{participantName}} participou do evento {{eventName}} com carga horária de {{workload}}.";
+    }
+
     setTextBlocks([...textBlocks, {
-      text: "Certificamos que {{participantName}} participou do evento {{eventName}}.",
+      text: suggestedText,
       x: 100,
       y: 250,
       width: 650,
@@ -75,7 +88,7 @@ export default function CertificateTemplateForm({
     try {
       const blob = await certificatesService.previewTemplate({
         backgroundUrl: previewUrl,
-        layoutConfig: { placeholders: [], textBlocks }
+        layoutConfig: { textBlocks }
       });
       const url = URL.createObjectURL(blob);
       window.open(url, '_blank');
@@ -101,8 +114,9 @@ export default function CertificateTemplateForm({
         // Update template
         await certificatesService.updateTemplate(initialData.id, {
           name,
+          category,
           backgroundUrl: initialData.backgroundUrl, // URL will be updated if file is uploaded
-          layoutConfig: { placeholders: [], textBlocks }
+          layoutConfig: { textBlocks }
         });
 
         // Upload new background if changed
@@ -113,8 +127,9 @@ export default function CertificateTemplateForm({
         // Create new template
         const template = await certificatesService.createTemplate(eventId, {
           name,
+          category,
           backgroundUrl: "https://via.placeholder.com/800x600?text=Aguardando+Upload",
-          layoutConfig: { placeholders: [], textBlocks }
+          layoutConfig: { textBlocks }
         });
 
         if (backgroundFile) {
@@ -131,11 +146,45 @@ export default function CertificateTemplateForm({
     }
   };
 
-  const placeholdersList = [
-    { key: "participantName", label: "Nome do Participante" },
-    { key: "eventName", label: "Nome do Evento" },
-    { key: "workload", label: "Carga Horária" },
-  ];
+  const getPlaceholdersForCategory = () => {
+    const common = [
+      { key: "eventName", label: "Nome do Evento" },
+    ];
+    
+    switch (category) {
+      case 'PARTICIPANT':
+        return [
+          ...common,
+          { key: "participantName", label: "Nome do Participante" },
+          { key: "workload", label: "Carga Horária Total" },
+        ];
+      case 'SPEAKER':
+        return [
+          ...common,
+          { key: "speakerName", label: "Nome do Palestrante" },
+          { key: "activityTitle", label: "Título da Atividade" },
+          { key: "activityType", label: "Tipo (Ex: Oficina)" },
+          { key: "speakerRole", label: "Papel (Ex: Coordenador)" },
+        ];
+      case 'MONITOR':
+        return [
+          ...common,
+          { key: "monitorName", label: "Nome do Monitor" },
+          { key: "workload", label: "Carga Horária (Staff)" },
+        ];
+      case 'REVIEWER':
+        return [
+          ...common,
+          { key: "reviewerName", label: "Nome do Revisor" },
+          { key: "area_tematica", label: "Área Acadêmica" },
+          { key: "submissionCount", label: "Qtd. Trabalhos" },
+        ];
+      default:
+        return common;
+    }
+  };
+
+  const placeholdersList = getPlaceholdersForCategory();
 
   return (
     <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -150,8 +199,23 @@ export default function CertificateTemplateForm({
               onChange={(e) => setName(e.target.value)}
               placeholder="Ex: Certificado de Participação - SECOMP"
               className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm shadow-sm"
-              required
+               required
             />
+          </div>
+
+          <div className="space-y-4">
+            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Categoria / Finalidade</label>
+            <select 
+              value={category}
+              onChange={(e) => setCategory(e.target.value as any)}
+              className="w-full h-12 px-4 rounded-xl border border-border bg-card focus:border-primary outline-none font-bold text-sm shadow-sm"
+              required
+            >
+              <option value="PARTICIPANT">Participante (Inscrição Geral)</option>
+              <option value="SPEAKER">Palestrante (Atividade Específica)</option>
+              <option value="MONITOR">Monitor / Staff (Evento)</option>
+              <option value="REVIEWER">Revisor Acadêmico (Trabalhos)</option>
+            </select>
           </div>
 
           <div className="space-y-4">

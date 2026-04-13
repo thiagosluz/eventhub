@@ -39,6 +39,7 @@ describe("Certificates (e2e)", () => {
       findFirst: jest.fn(),
       create: jest.fn(),
       findMany: jest.fn(),
+      update: jest.fn(),
     },
     registration: {
       findMany: jest.fn(),
@@ -50,12 +51,30 @@ describe("Certificates (e2e)", () => {
     },
     issuedCertificate: {
       create: jest.fn(),
+      update: jest.fn(),
       findUnique: jest.fn(),
       findMany: jest.fn(),
       findFirst: jest.fn(),
     },
     user: {
       findUnique: jest.fn(),
+      findMany: jest.fn(),
+    },
+    activity: {
+      findMany: jest.fn(),
+    },
+    activitySpeaker: {
+      findFirst: jest.fn(),
+    },
+    eventMonitor: {
+      findFirst: jest.fn(),
+      findMany: jest.fn(),
+    },
+    review: {
+      count: jest.fn(),
+    },
+    thematicArea: {
+      findMany: jest.fn(),
     },
     auditLog: {
       create: jest.fn().mockResolvedValue({ id: "log_1" }),
@@ -114,8 +133,8 @@ describe("Certificates (e2e)", () => {
     }
   });
 
-  describe("POST /certificates/issue", () => {
-    it("should issue a certificate (Organizer)", async () => {
+  describe("POST /certificates/templates/:templateId/issue-bulk", () => {
+    it("should issue bulk certificates for PARTICIPANTS", async () => {
       const token = await jwtService.signAsync({
         sub: "org_1",
         email: "org@test.com",
@@ -123,54 +142,152 @@ describe("Certificates (e2e)", () => {
         role: "ORGANIZER",
       });
 
-      mockPrismaService.certificateTemplate.findFirst.mockResolvedValue({
-        id: "tmpl_1",
+      const template = {
+        id: "tmpl_p",
         eventId: "event_1",
-        backgroundUrl: "http://test.com/bg.png",
-        layoutConfig: {},
-        event: { name: "Test Event" },
-      });
+        category: "PARTICIPANT",
+        event: { name: "E1", startDate: new Date(), endDate: new Date() },
+      };
+
+      mockPrismaService.certificateTemplate.findFirst.mockResolvedValue(
+        template,
+      );
+      mockPrismaService.registration.findMany.mockResolvedValue([
+        {
+          id: "reg_1",
+          userId: "user_1",
+          user: { name: "U1", email: "u1@test.com" },
+        },
+      ]);
       mockPrismaService.registration.findFirst.mockResolvedValue({
         id: "reg_1",
-        user: { name: "User 1" },
-        event: { name: "Test Event" },
+        user: { name: "U1", cpf: "123" },
+        event: { name: "E1" },
       });
-      mockPrismaService.attendance.findMany.mockResolvedValue([]);
-      mockMinioService.uploadObject.mockResolvedValue("http://minio/cert.pdf");
       mockPrismaService.issuedCertificate.findFirst.mockResolvedValue(null);
+      mockPrismaService.attendance.findMany.mockResolvedValue([]);
+      mockMinioService.uploadObject.mockResolvedValue("url");
       mockPrismaService.issuedCertificate.create.mockResolvedValue({
-        id: "issued_1",
+        id: "i1",
       });
 
       return request(app.getHttpServer())
-        .post("/certificates/issue")
+        .post("/certificates/templates/tmpl_p/issue-bulk")
         .set("Authorization", `Bearer ${token}`)
-        .send({
-          templateId: "tmpl_1",
-          registrationId: "reg_1",
-        })
+        .send({ sendEmail: true })
         .expect(201)
         .then((response) => {
-          expect(response.body).toHaveProperty("issuedId");
-          expect(response.body.fileUrl).toBe("http://minio/cert.pdf");
+          expect(response.body.processed).toBe(1);
+          expect(mockMailService.enqueue).toHaveBeenCalled();
+        });
+    });
+
+    it("should issue bulk certificates for REVIEWERS", async () => {
+      const token = await jwtService.signAsync({
+        sub: "org_1",
+        tenantId: "tenant_1",
+        role: "ORGANIZER",
+      });
+
+      const template = {
+        id: "tmpl_r",
+        eventId: "event_1",
+        category: "REVIEWER",
+        event: { name: "E1" },
+      };
+
+      mockPrismaService.certificateTemplate.findFirst.mockResolvedValue(
+        template,
+      );
+      mockPrismaService.user.findMany.mockResolvedValue([
+        { id: "rev_1", name: "R1", email: "r1@test.com" },
+      ]);
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "rev_1",
+        name: "R1",
+      });
+      mockPrismaService.review.count.mockResolvedValue(3);
+      mockPrismaService.thematicArea.findMany.mockResolvedValue([
+        { name: "Track A" },
+      ]);
+      mockPrismaService.issuedCertificate.findFirst.mockResolvedValue(null);
+      mockMinioService.uploadObject.mockResolvedValue("url");
+      mockPrismaService.issuedCertificate.create.mockResolvedValue({
+        id: "i1",
+      });
+
+      return request(app.getHttpServer())
+        .post("/certificates/templates/tmpl_r/issue-bulk")
+        .set("Authorization", `Bearer ${token}`)
+        .send({}) // Send empty body to verify resilience
+        .expect(201)
+        .then((response) => {
+          expect(response.body.processed).toBe(1);
+        });
+    });
+
+    it("should issue bulk certificates for MONITORS", async () => {
+      const token = await jwtService.signAsync({
+        sub: "org_1",
+        tenantId: "tenant_1",
+        role: "ORGANIZER",
+      });
+
+      const template = {
+        id: "tmpl_m",
+        eventId: "event_1",
+        category: "MONITOR",
+        event: { name: "E1" },
+      };
+
+      mockPrismaService.certificateTemplate.findFirst.mockResolvedValue(
+        template,
+      );
+      mockPrismaService.eventMonitor.findMany.mockResolvedValue([
+        { userId: "mon_1", user: { name: "M1", email: "m1@test.com" } },
+      ]);
+      mockPrismaService.eventMonitor.findFirst.mockResolvedValue({
+        userId: "mon_1",
+        user: { name: "M1" },
+        event: { name: "E1" },
+      });
+      mockPrismaService.issuedCertificate.findFirst.mockResolvedValue(null);
+      mockMinioService.uploadObject.mockResolvedValue("url");
+      mockPrismaService.issuedCertificate.create.mockResolvedValue({
+        id: "i1",
+      });
+
+      return request(app.getHttpServer())
+        .post("/certificates/templates/tmpl_m/issue-bulk")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(201)
+        .then((response) => {
+          expect(response.body.processed).toBe(1);
         });
     });
   });
 
   describe("GET /certificates/my", () => {
-    it("should list my certificates (Participant)", async () => {
+    it("should list certificates with mixed context", async () => {
       const token = await jwtService.signAsync({
         sub: "user_1",
-        email: "user@test.com",
-        tenantId: "tenant_1",
         role: "PARTICIPANT",
       });
 
       mockPrismaService.issuedCertificate.findMany.mockResolvedValue([
         {
-          id: "issued_1",
-          fileUrl: "url",
-          template: { name: "T1", event: { name: "E1" } },
+          id: "i1",
+          template: {
+            name: "T1",
+            category: "PARTICIPANT",
+            event: { name: "E1" },
+          },
+          activity: null,
+        },
+        {
+          id: "i2",
+          template: { name: "T2", category: "SPEAKER", event: { name: "E1" } },
+          activity: { title: "Talk 1", type: { name: "Lecture" } },
         },
       ]);
 
@@ -179,34 +296,35 @@ describe("Certificates (e2e)", () => {
         .set("Authorization", `Bearer ${token}`)
         .expect(200)
         .then((response) => {
-          expect(Array.isArray(response.body)).toBe(true);
-          expect(response.body[0].fileUrl).toBe("url");
+          expect(response.body.length).toBe(2);
+          expect(response.body[1].template.category).toBe("SPEAKER");
         });
     });
   });
 
   describe("GET /certificates/validate/:hash", () => {
-    it("should validate a certificate (Public)", async () => {
+    it("should validate a SPEAKER certificate resolving correctly", async () => {
       mockPrismaService.issuedCertificate.findUnique.mockResolvedValue({
-        id: "issued_1",
-        validationHash: "hash_1",
+        id: "i2",
+        validationHash: "hash2",
         issuedAt: new Date(),
         fileUrl: "url",
-        registration: {
-          user: { name: "User 1" },
-          event: { name: "Event 1" },
-        },
+        registration: null,
+        user: { name: "Speaker Name" },
         template: {
+          category: "SPEAKER",
           event: { name: "Event 1" },
         },
+        activity: { title: "Workshop" },
       });
 
       return request(app.getHttpServer())
-        .get("/certificates/validate/hash_1")
+        .get("/certificates/validate/hash2")
         .expect(200)
         .then((response) => {
           expect(response.body.isValid).toBe(true);
-          expect(response.body.participantName).toBe("User 1");
+          expect(response.body.participantName).toBe("Speaker Name");
+          expect(response.body.activityTitle).toBe("Workshop");
         });
     });
   });
