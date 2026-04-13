@@ -85,8 +85,8 @@ Tenant (Organização)
   │     ├── Badges (conquistas)
   │     └── Raffles (sorteios)
   ├── Speakers (palestrantes do tenant)
-  ├── Activity Types (tipos de atividade)
-  └── Speaker Roles (papéis de palestrantes)
+  ├── Activity Types (tipos de atividade - Escopo Global Tenant)
+  └── Speaker Roles (papéis de palestrantes - Escopo Global Tenant)
 ```
 
 ---
@@ -213,13 +213,13 @@ frontend/
 │   │   │   │       ├── operations/ # Operações (checkin, sorteio)
 │   │   │   │       ├── sponsors/   # Patrocinadores
 │   │   │   │       └── submissions/ # Trabalhos científicos
-│   │   │   ├── categories/         # Tipos de atividade / Papéis
 │   │   │   ├── finance/            # Módulo financeiro
 │   │   │   ├── force-password-change/ # Troca forçada de senha
 │   │   │   ├── participants/       # Gestão de participantes
 │   │   │   ├── profile/            # Perfil do organizador
 │   │   │   ├── reviews/            # Painel de revisão
 │   │   │   ├── settings/           # Configurações
+│   │   │   │   └── categories/     # Gestão global de taxonomias (ActivityTypes/SpeakerRoles)
 │   │   │   └── speakers/           # Gestão de palestrantes
 │   │   ├── monitor/                # Área do monitor (check-in)
 │   │   ├── certificates/           # Validação pública de certificados

@@ -127,14 +127,12 @@ Este documento lista todos os endpoints da API REST do EventHub, agrupados por m
 
 | Método | Endpoint | Descrição | Auth | Role |
 |--------|----------|-----------|:----:|------|
-| `POST` | `/certificates/templates` | Criar template | ✅ | ORGANIZER |
-| `GET` | `/certificates/templates/:eventId` | Listar templates do evento | ✅ | ORGANIZER |
-| `PATCH` | `/certificates/templates/:templateId` | Atualizar template | ✅ | ORGANIZER |
-| `DELETE` | `/certificates/templates/:templateId` | Excluir template | ✅ | ORGANIZER |
-| `POST` | `/certificates/issue` | Emitir certificado para participante | ✅ | ORGANIZER |
-| `POST` | `/certificates/issue/batch` | Emissão em lote | ✅ | ORGANIZER |
+| `POST` | `/certificates/templates/:templateId/background` | Upload de fundo | ✅ | ORGANIZER |
+| `POST` | `/certificates/templates/:templateId/duplicate` | Duplicar template | ✅ | ORGANIZER |
+| `POST` | `/certificates/templates/preview` | Gerar pré-visualização (PDF stream) | ✅ | ORGANIZER |
+| `POST` | `/certificates/issue` | Emitir certificado (individual) | ✅ | ORGANIZER |
+| `POST` | `/certificates/templates/:templateId/issue-bulk` | Emissão em lote para evento | ✅ | ORGANIZER |
 | `GET` | `/certificates/my` | Meus certificados | ✅ | Qualquer |
-| `GET` | `/certificates/event/:eventId` | Certificados emitidos do evento | ✅ | ORGANIZER |
 | `GET` | `/certificates/validate/:hash` | Validação pública | ❌ | - |
 | `GET` | `/certificates/download/:certificateId` | Download PDF | ✅ | Owner |
 
@@ -216,6 +214,28 @@ Este documento lista todos os endpoints da API REST do EventHub, agrupados por m
 | Método | Endpoint | Descrição | Auth | Role |
 |--------|----------|-----------|:----:|------|
 | `GET` | `/dashboard/stats` | Métricas gerais do tenant | ✅ | ORGANIZER |
+
+---
+
+## 🏷️ Management / Taxonomies — Gestão Global
+
+Endpoints para gestão de tipos de dados mestres da organização.
+
+### Tipos de Atividade
+
+| Método | Endpoint | Descrição | Auth | Role |
+|--------|----------|-----------|:----:|------|
+| `GET` | `/activities/types` | Listar tipos de atividade | ✅ | ORGANIZER |
+| `POST` | `/activities/types` | Criar tipo (body: `{ name }`) | ✅ | ORGANIZER |
+| `DELETE` | `/activities/types/:id` | Remover tipo | ✅ | ORGANIZER |
+
+### Papéis de Palestrante
+
+| Método | Endpoint | Descrição | Auth | Role |
+|--------|----------|-----------|:----:|------|
+| `GET` | `/speakers/roles` | Listar papéis | ✅ | ORGANIZER |
+| `POST` | `/speakers/roles` | Criar papel (body: `{ name }`) | ✅ | ORGANIZER |
+| `DELETE` | `/speakers/roles/:id` | Remover papel | ✅ | ORGANIZER |
 
 ---
 

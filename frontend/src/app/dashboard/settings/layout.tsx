@@ -6,7 +6,8 @@ import {
   SwatchIcon, 
   UserGroupIcon,
   AdjustmentsHorizontalIcon,
-  UserIcon
+  UserIcon,
+  ShieldCheckIcon
 } from "@heroicons/react/24/outline";
 
 const tabs = [
@@ -14,6 +15,7 @@ const tabs = [
   { name: "Identidade Visual", href: "/dashboard/settings/branding", icon: SwatchIcon },
   { name: "Perfil Público", href: "/dashboard/settings/profile", icon: UserIcon },
   { name: "Minha Equipe", href: "/dashboard/settings/team", icon: UserGroupIcon },
+  { name: "Categorias e Papéis", href: "/dashboard/settings/categories", icon: ShieldCheckIcon },
 ];
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {

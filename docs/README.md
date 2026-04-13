@@ -72,7 +72,9 @@
 
 - **🚀 Ecossistema de Organizadores**: Diretório global e Brand Hubs personalizados para parceiros.
 - **⚡ Check-in de Alta Escala**: Motor de busca server-side com suporte a 10.000+ participantes.
-- **🎨 Branding Dinâmico**: Gestão de logos e banners via Object Storage (MinIO) com propagação de tema.
+- **🎨 Editor de Certificados**: Interface premium com preview em tempo real e sugestões de IA inclusivas.
+- **🏷️ Taxonomias Globais**: Gestão centralizada de tipos de atividade e papéis ao nível da organização.
+- **🖼️ Branding Dinâmico**: Gestão de logos e banners via Object Storage (MinIO) com propagação de tema.
 
 ---
 

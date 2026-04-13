@@ -76,10 +76,12 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 ### Funcionalidades
 - CRUD de atividades dentro de um evento.
 - Campos: título, descrição, local, horário, capacidade, tipo, status.
-- Vinculação de **palestrantes** com papéis.
+- **Vinculação de palestrantes** com papéis.
 - Inscrição em atividades (com ou sem confirmação).
 - Upload de **materiais** (slides, PDFs, etc.).
 - **Feedback** dos participantes (nota 1-5 + comentário).
+- **Taxonomias Globais**: Tipo de atividade e Papel do palestrante são geridos ao nível da organização (Settings), permitindo reutilização.
+- **Criação Rápida**: Modal integrado ao formulário de atividade permite criar novos tipos/papéis sem abandonar o fluxo de montagem da grade.
 
 ### Regras de Negócio
 - Atividade pode exigir **inscrição prévia** (`requiresEnrollment`).
@@ -138,9 +140,12 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 ## 7. Certificados
 
 ### Funcionalidades
-- **Templates**: Background + layout JSON (posições e estilos dos campos).
+- **Editor Premium**: Interface moderna com **live preview**, edição de placeholders e configurações de estilo.
+- **Sugestões Contextuais**: Textos sugeridos automaticamente baseados na categoria (PARTICIPANTE, PALESTRANTE, MONITOR, REVISOR).
+- **Linguagem Inclusiva**: Templates de texto preparados para gêneros masculino e feminino.
+- **Área do Participante Modernizada**: Listagem com **badges de categoria** e filtros por papel para fácil identificação.
 - **Emissão individual** ou **em lote** para participantes de um evento.
-- Geração de **PDF** com PDFKit.
+- Geração de **PDF** com PDFKit (tag `{{cpf}}` removida para maior privacidade).
 - **Hash de validação** único por certificado.
 - **Validação pública**: Qualquer pessoa pode validar um certificado pelo hash.
 - **Download** do PDF pelo dono do certificado.
@@ -292,8 +297,13 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 - Todos os dados são isolados por `tenantId` ao nível de serviço.
 - O `tenantId` é extraído do token JWT do usuário autenticado.
 
-### Funcionalidades de Identidade Visual
-- **Logos e Banners**: Gestão persistente de logos (proporção 1:1) e capas (banner) com integração nativa ao MinIO.
+### Funcionalidades de Configuração
+- **Tabs de Navegação**: Layout centralizado com abas para:
+  - **Geral**: Visão geral e cards de atalho.
+  - **Identidade Visual**: Logos e Banners (integração nativa ao MinIO).
+  - **Perfil Público**: Bio e redes sociais do organizador.
+  - **Minha Equipe**: Gestão de time e permissões.
+  - **Categorias e Papéis**: Gestão global de taxonomias de atividades e palestrantes.
 - **Ecossistema de Organizadores**: Diretório global em `/organizers` que agrega todos os parceiros ativos na plataforma.
 - **Brand Hubs**: Páginas de marca dedicadas (`/organizers/[slug]`) exibindo informações da organização, redes sociais e eventos ativos.
 - **Personalização de Tema**: Configuração de cores primárias e secundárias que se propagam para todas as páginas do organizador.
