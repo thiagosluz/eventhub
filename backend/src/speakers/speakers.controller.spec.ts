@@ -98,6 +98,66 @@ describe("SpeakersController", () => {
         "tenant-1",
         "Keynote",
       );
+      expect(mockSpeakersService.createRole).toHaveBeenCalledWith(
+        "tenant-1",
+        "Keynote",
+      );
+    });
+
+    it("should find all roles", async () => {
+      mockSpeakersService.findAllRoles.mockResolvedValue([]);
+      await controller.findAllRoles(orgReq as any);
+      expect(mockSpeakersService.findAllRoles).toHaveBeenCalled();
+    });
+
+    it("should remove a role", async () => {
+      await controller.removeRole(orgReq as any, "r1");
+      expect(mockSpeakersService.removeRole).toHaveBeenCalledWith(
+        "tenant-1",
+        "r1",
+      );
+    });
+
+    it("should find all speakers", async () => {
+      mockSpeakersService.findAll.mockResolvedValue([]);
+      await controller.findAll(orgReq as any);
+      expect(mockSpeakersService.findAll).toHaveBeenCalledWith("tenant-1");
+    });
+
+    it("should find one speaker", async () => {
+      mockSpeakersService.findOne.mockResolvedValue({ id: "s1" });
+      await controller.findOne(orgReq as any, "s1");
+      expect(mockSpeakersService.findOne).toHaveBeenCalledWith(
+        "tenant-1",
+        "s1",
+      );
+    });
+
+    it("should remove a speaker", async () => {
+      await controller.remove(orgReq as any, "s1");
+      expect(mockSpeakersService.remove).toHaveBeenCalledWith("tenant-1", "s1");
+    });
+  });
+
+  describe("Portal do Palestrante - Feedbacks", () => {
+    it("should get my feedbacks", async () => {
+      mockSpeakersService.findByUserId.mockResolvedValue({ id: "sp-1" });
+      mockSpeakersService.getFeedbacks.mockResolvedValue([]);
+      const result = await controller.getMyFeedbacks(mockRequest as any);
+      expect(result).toEqual([]);
+      expect(mockSpeakersService.getFeedbacks).toHaveBeenCalledWith("sp-1");
+    });
+  });
+
+  describe("Uploads", () => {
+    it("should upload avatar", async () => {
+      const file = { buffer: Buffer.from(""), mimetype: "image/png" };
+      mockSpeakersService.uploadAvatar.mockResolvedValue({ url: "ok" });
+      await controller.uploadFile(mockRequest as any, file);
+      expect(mockSpeakersService.uploadAvatar).toHaveBeenCalledWith(
+        "tenant-1",
+        file,
+      );
     });
   });
 

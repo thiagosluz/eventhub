@@ -77,6 +77,17 @@ describe("SubmissionConfigController", () => {
     );
   });
 
+  it("should create modality without template file", async () => {
+    const body = { name: "M2" };
+    await controller.createModality("e1", body as any, null, mockRequest);
+    expect(service.createModality).toHaveBeenCalledWith(
+      "tenant_id",
+      "e1",
+      body,
+      undefined,
+    );
+  });
+
   it("should delete modality", async () => {
     await controller.deleteModality("e1", "m1", mockRequest);
     expect(service.deleteModality).toHaveBeenCalledWith(

@@ -42,6 +42,14 @@ describe("KanbanAutomationService", () => {
       expect(mockKanbanService.getBoards).not.toHaveBeenCalled();
     });
 
+    it("should return silently if board details not found", async () => {
+      mockPrisma.activity.findUnique.mockResolvedValue({ id: "a1" });
+      mockKanbanService.getBoards.mockResolvedValue([{ id: "b1" }]);
+      mockKanbanService.getBoardDetails.mockResolvedValue(null);
+      await service.handleActivityUpsert("a1");
+      expect(mockPrisma.kanbanTask.findFirst).not.toHaveBeenCalled();
+    });
+
     it("should create task when activity has no speakers", async () => {
       const activity = {
         id: "a1",
@@ -70,6 +78,20 @@ describe("KanbanAutomationService", () => {
           title: expect.stringContaining("Palestra AI"),
           priority: "HIGH",
         }),
+      );
+    });
+
+    it("should fallback to columns[0] if backlog column name not found", async () => {
+      const activity = { id: "a1", eventId: "e1", title: "T", speakers: [] };
+      mockPrisma.activity.findUnique.mockResolvedValue(activity);
+      mockKanbanService.getBoards.mockResolvedValue([{ id: "b1" }]);
+      mockKanbanService.getBoardDetails.mockResolvedValue({
+        id: "b1",
+        columns: [{ id: "fallback-c", name: "Outra", tasks: [] }],
+      });
+      await service.handleActivityUpsert("a1");
+      expect(mockKanbanService.createTask).toHaveBeenCalledWith(
+        expect.objectContaining({ columnId: "fallback-c" }),
       );
     });
 
@@ -117,6 +139,28 @@ describe("KanbanAutomationService", () => {
 
       await service.handleActivityUpsert("a1");
       expect(mockKanbanService.moveTask).toHaveBeenCalledWith("t1", "c2", 0);
+    });
+
+    it("should fallback to last column if done column name not found", async () => {
+      const activity = {
+        id: "a1",
+        eventId: "e1",
+        title: "T",
+        speakers: [{ id: "1" }],
+      };
+      mockPrisma.activity.findUnique.mockResolvedValue(activity);
+      mockKanbanService.getBoards.mockResolvedValue([{ id: "b1" }]);
+      mockKanbanService.getBoardDetails.mockResolvedValue({
+        id: "b1",
+        columns: [{ id: "c1" }, { id: "last-column" }],
+      });
+      mockPrisma.kanbanTask.findFirst.mockResolvedValue({ id: "t1" });
+      await service.handleActivityUpsert("a1");
+      expect(mockKanbanService.moveTask).toHaveBeenCalledWith(
+        "t1",
+        "last-column",
+        0,
+      );
     });
   });
 });

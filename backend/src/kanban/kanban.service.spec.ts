@@ -172,8 +172,6 @@ describe("KanbanService", () => {
     });
   });
 
-  // ─── updateBoard ───
-
   describe("updateBoard", () => {
     it("should rename board", async () => {
       mockPrisma.kanbanBoard.update.mockResolvedValue({
@@ -185,6 +183,17 @@ describe("KanbanService", () => {
       expect(mockPrisma.kanbanBoard.update).toHaveBeenCalledWith({
         where: { id: "b1" },
         data: { name: "Novo Nome" },
+      });
+    });
+  });
+
+  describe("updateTask", () => {
+    it("should update task properties", async () => {
+      mockPrisma.kanbanTask.update.mockResolvedValue({ id: "t1" });
+      await service.updateTask("t1", { title: "Updated" });
+      expect(mockPrisma.kanbanTask.update).toHaveBeenCalledWith({
+        where: { id: "t1" },
+        data: { title: "Updated" },
       });
     });
   });
@@ -371,6 +380,16 @@ describe("KanbanService", () => {
     });
   });
 
+  describe("getTaskDetails", () => {
+    it("should return task with assignments and comments", async () => {
+      const task = { id: "t1", assignments: [], comments: [] };
+      mockPrisma.kanbanTask.findUnique.mockResolvedValue(task);
+      const result = await service.getTaskDetails("t1");
+      expect(result).toEqual(task);
+      expect(mockPrisma.kanbanTask.findUnique).toHaveBeenCalled();
+    });
+  });
+
   // ─── getWorkload ───
 
   describe("getWorkload", () => {
@@ -409,6 +428,13 @@ describe("KanbanService", () => {
             ],
           },
         }),
+      );
+    });
+
+    it("should throw NotFound if event not found", async () => {
+      mockPrisma.event.findUnique.mockResolvedValue(null);
+      await expect(service.getWorkload("e1")).rejects.toThrow(
+        "Evento não encontrado",
       );
     });
   });

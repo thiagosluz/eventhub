@@ -67,6 +67,12 @@ describe("SubmissionsController", () => {
       });
     });
 
+    it("should throw error if authorId is missing from request", async () => {
+      await expect(
+        controller.createSubmission({} as any, {} as any, { user: {} } as any),
+      ).rejects.toThrow("Missing user id on token payload.");
+    });
+
     it("should throw error if file missing", async () => {
       await expect(
         controller.createSubmission(null, {} as any, mockRequest),
@@ -82,6 +88,12 @@ describe("SubmissionsController", () => {
         "event1",
       );
     });
+
+    it("should throw error if tenantId is missing from request", async () => {
+      await expect(
+        controller.listSubmissionsForEvent("event1", { user: {} } as any),
+      ).rejects.toThrow("Missing tenantId on token payload.");
+    });
   });
 
   describe("listAssignedToMe", () => {
@@ -89,12 +101,24 @@ describe("SubmissionsController", () => {
       await controller.listAssignedToMe(mockRequest);
       expect(service.listAssignedToReviewer).toHaveBeenCalledWith("user_id");
     });
+
+    it("should throw if reviewerId missing", async () => {
+      await expect(
+        controller.listAssignedToMe({ user: {} } as any),
+      ).rejects.toThrow("Missing user id on token payload.");
+    });
   });
 
   describe("listMySubmissions", () => {
     it("should call service.listMySubmissions", async () => {
       await controller.listMySubmissions(mockRequest);
       expect(service.listMySubmissions).toHaveBeenCalledWith("user_id");
+    });
+
+    it("should throw if authorId missing", async () => {
+      await expect(
+        controller.listMySubmissions({ user: {} } as any),
+      ).rejects.toThrow("Missing user id on token payload.");
     });
   });
 
@@ -114,6 +138,12 @@ describe("SubmissionsController", () => {
         recommendation: "ACCEPT",
         comments: "Good",
       });
+    });
+
+    it("should throw if reviewerId missing", async () => {
+      await expect(
+        controller.submitReview({} as any, { user: {} } as any),
+      ).rejects.toThrow("Missing user id on token payload.");
     });
   });
 

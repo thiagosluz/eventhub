@@ -68,6 +68,26 @@ describe("ReviewerManagementService", () => {
       expect(mockPrisma.reviewerInvitation.upsert).toHaveBeenCalled();
     });
 
+    it("should handle re-inviting an existing pending reviewer", async () => {
+      (mockPrisma.event.findUnique as jest.Mock).mockResolvedValue({
+        id: "ev-1",
+        name: "E",
+      });
+      (mockPrisma.reviewerInvitation.findUnique as jest.Mock).mockResolvedValue(
+        {
+          status: InvitationStatus.PENDING,
+        },
+      );
+
+      const result = await service.inviteReviewer(
+        "ev-1",
+        "test@test.com",
+        "user-1",
+      );
+      expect(result.message).toBe("Convite enviado com sucesso");
+      expect(mockPrisma.reviewerInvitation.upsert).toHaveBeenCalled();
+    });
+
     it("should throw NotFoundException if event is missing", async () => {
       (mockPrisma.event.findUnique as jest.Mock).mockResolvedValue(null);
       await expect(
@@ -116,6 +136,13 @@ describe("ReviewerManagementService", () => {
 
       expect(result.message).toContain("já existia");
       expect(mockPrisma.eventReviewer.upsert).toHaveBeenCalled();
+    });
+
+    it("should throw NotFound if event not found in manualRegister", async () => {
+      (mockPrisma.event.findUnique as jest.Mock).mockResolvedValue(null);
+      await expect(service.manualRegister("ev-1", {} as any)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 

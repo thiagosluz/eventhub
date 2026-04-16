@@ -1,62 +1,69 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { TenantsController } from "./tenants.controller";
 import { TenantsService } from "./tenants.service";
-import { UpdateTenantDto } from "./dto/update-tenant.dto";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { RolesGuard } from "../auth/roles.guard";
 
 describe("TenantsController", () => {
   let controller: TenantsController;
-  let service: TenantsService;
 
   const mockTenantsService = {
     getPublicTenant: jest.fn(),
     getTenant: jest.fn(),
     updateTenant: jest.fn(),
+    uploadLogo: jest.fn(),
+    uploadCover: jest.fn(),
   };
 
   const mockRequest = {
     user: {
-      tenantId: "tenant_id",
+      tenantId: "t1",
     },
   } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TenantsController],
-      providers: [
-        {
-          provide: TenantsService,
-          useValue: mockTenantsService,
-        },
-      ],
-    }).compile();
+      providers: [{ provide: TenantsService, useValue: mockTenantsService }],
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(RolesGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     controller = module.get<TenantsController>(TenantsController);
-    service = module.get<TenantsService>(TenantsService);
   });
 
   it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 
-  describe("getPublicTenant", () => {
-    it("should call service.getPublicTenant", async () => {
-      await controller.getPublicTenant();
-      expect(service.getPublicTenant).toHaveBeenCalled();
-    });
+  it("should get public tenant", async () => {
+    await controller.getPublicTenant();
+    expect(mockTenantsService.getPublicTenant).toHaveBeenCalled();
   });
 
-  describe("getMe", () => {
-    it("should call service.getTenant", async () => {
-      await controller.getMe(mockRequest);
-      expect(service.getTenant).toHaveBeenCalledWith("tenant_id");
-    });
+  it("should get me", async () => {
+    await controller.getMe(mockRequest);
+    expect(mockTenantsService.getTenant).toHaveBeenCalledWith("t1");
   });
 
-  describe("updateMe", () => {
-    it("should call service.updateTenant", async () => {
-      const dto: UpdateTenantDto = { name: "New Name" };
-      await controller.updateMe(mockRequest, dto);
-      expect(service.updateTenant).toHaveBeenCalledWith("tenant_id", dto);
-    });
+  it("should update me", async () => {
+    const dto = { name: "New" };
+    await controller.updateMe(mockRequest, dto as any);
+    expect(mockTenantsService.updateTenant).toHaveBeenCalledWith("t1", dto);
+  });
+
+  it("should upload logo", async () => {
+    const file = { buffer: Buffer.from(""), mimetype: "image/png" };
+    await controller.uploadLogo(mockRequest, file as any);
+    expect(mockTenantsService.uploadLogo).toHaveBeenCalledWith("t1", file);
+  });
+
+  it("should upload cover", async () => {
+    const file = { buffer: Buffer.from(""), mimetype: "image/png" };
+    await controller.uploadCover(mockRequest, file as any);
+    expect(mockTenantsService.uploadCover).toHaveBeenCalledWith("t1", file);
   });
 });

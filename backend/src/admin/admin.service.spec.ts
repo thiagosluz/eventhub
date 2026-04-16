@@ -70,6 +70,14 @@ describe("AdminService", () => {
       const result = await service.listTenants(1, 10);
       expect(result).toEqual({ data: [], total: 0, page: 1, limit: 10 });
     });
+
+    it("should use default args for paginated tenants", async () => {
+      mockPrismaService.tenant.findMany.mockResolvedValue([]);
+      mockPrismaService.tenant.count.mockResolvedValue(0);
+
+      const result = await service.listTenants();
+      expect(result).toEqual({ data: [], total: 0, page: 1, limit: 10 });
+    });
   });
 
   describe("toggleTenantStatus", () => {
@@ -99,8 +107,20 @@ describe("AdminService", () => {
 
       const result = await service.getGlobalAuditLogs(1, 20, {
         tenantId: "t1",
+        userId: "u1",
+        action: "TEST",
         startDate: "2024-01-01",
+        endDate: "2024-12-31",
       });
+      expect(result.data).toEqual([]);
+      expect(mockPrismaService.auditLog.findMany).toHaveBeenCalled();
+    });
+
+    it("should return paginated logs with default arguments", async () => {
+      mockPrismaService.auditLog.findMany.mockResolvedValue([]);
+      mockPrismaService.auditLog.count.mockResolvedValue(0);
+
+      const result = await service.getGlobalAuditLogs();
       expect(result.data).toEqual([]);
       expect(mockPrismaService.auditLog.findMany).toHaveBeenCalled();
     });
@@ -207,7 +227,20 @@ describe("AdminService", () => {
       mockPrismaService.user.findMany.mockResolvedValue([]);
       mockPrismaService.user.count.mockResolvedValue(0);
 
-      const result = await service.listGlobalUsers(1, 20, { search: "test" });
+      const result = await service.listGlobalUsers(1, 20, {
+        search: "test",
+        role: "ORGANIZER",
+        tenantId: "t1",
+      });
+      expect(result.data).toEqual([]);
+      expect(mockPrismaService.user.findMany).toHaveBeenCalled();
+    });
+
+    it("should return paginated global users with default arguments", async () => {
+      mockPrismaService.user.findMany.mockResolvedValue([]);
+      mockPrismaService.user.count.mockResolvedValue(0);
+
+      const result = await service.listGlobalUsers();
       expect(result.data).toEqual([]);
       expect(mockPrismaService.user.findMany).toHaveBeenCalled();
     });
@@ -247,6 +280,13 @@ describe("AdminService", () => {
   });
 
   describe("resetGlobalUserPassword", () => {
+    it("should throw NotFoundException if user missing", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue(null);
+      await expect(service.resetGlobalUserPassword("id")).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
     it("should reset password to default value", async () => {
       mockPrismaService.user.findUnique.mockResolvedValue({ id: "id" });
       mockPrismaService.user.update.mockResolvedValue({ id: "id" });

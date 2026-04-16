@@ -58,6 +58,12 @@ describe("ReviewerManagementController", () => {
     );
   });
 
+  it("should throw if invitedById missing", async () => {
+    await expect(
+      controller.inviteReviewer("e1", {} as any, { user: {} } as any),
+    ).rejects.toThrow("Missing user id");
+  });
+
   it("should manual register reviewer", async () => {
     const dto = { email: "e", name: "n" };
     await controller.manualRegister("e1", dto as any);

@@ -15,6 +15,7 @@ export default {
     '.dto.ts$',
     '.entity.ts$',
     '.guard.ts$',
+    '.spec.ts$',
   ],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',

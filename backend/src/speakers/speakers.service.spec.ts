@@ -81,7 +81,37 @@ describe("SpeakersService", () => {
     });
   });
 
+  describe("findAll", () => {
+    it("should return all speakers of a tenant", async () => {
+      mockPrismaService.speaker.findMany.mockResolvedValue([{ id: "s1" }]);
+      const result = await service.findAll("t1");
+      expect(result).toHaveLength(1);
+      expect(mockPrismaService.speaker.findMany).toHaveBeenCalled();
+    });
+  });
+
   describe("update", () => {
+    it("should upgrade user to speaker when linking via update", async () => {
+      const existingSpeaker = { id: "s1", userId: null, tenantId: "t1" };
+      mockPrismaService.speaker.findFirst.mockResolvedValue(existingSpeaker);
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "u2",
+        role: UserRole.PARTICIPANT,
+      });
+      mockPrismaService.speaker.update.mockResolvedValue({
+        id: "s1",
+        userId: "u2",
+      });
+
+      await service.update("t1", "s1", { userId: "u2" });
+
+      expect(mockPrismaService.user.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: "u2" },
+          data: { role: UserRole.SPEAKER },
+        }),
+      );
+    });
     it("should downgrade user role when unlinking (userId: null)", async () => {
       const existingSpeaker = { id: "s1", userId: "u1", tenantId: "t1" };
       mockPrismaService.speaker.findFirst.mockResolvedValue(existingSpeaker);
@@ -115,6 +145,25 @@ describe("SpeakersService", () => {
       expect(mockPrismaService.user.update).toHaveBeenCalledWith({
         where: { id: "u1" },
         data: { name: "New Name", bio: "New Bio" },
+      });
+    });
+
+    it("should sync email and avatarUrl to linked user", async () => {
+      const existingSpeaker = { id: "s1", userId: "u1", tenantId: "t1" };
+      mockPrismaService.speaker.findFirst.mockResolvedValue(existingSpeaker);
+      mockPrismaService.speaker.update.mockResolvedValue({
+        id: "s1",
+        userId: "u1",
+      });
+
+      await service.update("t1", "s1", {
+        email: "new@test.com",
+        avatarUrl: "http://ava.com",
+      });
+
+      expect(mockPrismaService.user.update).toHaveBeenCalledWith({
+        where: { id: "u1" },
+        data: { email: "new@test.com", avatarUrl: "http://ava.com" },
       });
     });
 

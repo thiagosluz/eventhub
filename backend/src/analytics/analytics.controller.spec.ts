@@ -76,13 +76,28 @@ describe("AnalyticsController", () => {
       );
     });
 
-    it("should call getEventParticipants", async () => {
-      await controller.getEventParticipants("e1", "", "20", mockRequest);
+    it("should call getEventParticipants with provided limit", async () => {
+      await controller.getEventParticipants("e1", "search", "50", mockRequest);
       expect(mockAnalyticsService.getEventParticipants).toHaveBeenCalledWith(
         "tenant_id",
         "e1",
-        "",
-        20,
+        "search",
+        50,
+      );
+    });
+
+    it("should call getEventParticipants with default limit if undefined", async () => {
+      await controller.getEventParticipants(
+        "e1",
+        "search",
+        undefined as any,
+        mockRequest,
+      );
+      expect(mockAnalyticsService.getEventParticipants).toHaveBeenCalledWith(
+        "tenant_id",
+        "e1",
+        "search",
+        undefined,
       );
     });
 
@@ -135,6 +150,40 @@ describe("AnalyticsController", () => {
         "tenant_id",
         "ub1",
       );
+    });
+  });
+
+  describe("Error cases", () => {
+    const invalidRequest = { user: {} } as any;
+
+    it("should throw error if tenantId is missing in getEventAnalytics", async () => {
+      await expect(
+        controller.getEventAnalytics("e1", invalidRequest),
+      ).rejects.toThrow("Tenant missing from request.");
+    });
+
+    it("should throw error if tenantId is missing in getEventParticipants", async () => {
+      await expect(
+        controller.getEventParticipants("e1", "", "20", invalidRequest),
+      ).rejects.toThrow("Tenant missing from request.");
+    });
+
+    it("should throw error if tenantId is missing in getEventCheckins", async () => {
+      await expect(
+        controller.getEventCheckins("e1", "a1", invalidRequest),
+      ).rejects.toThrow("Tenant missing from request.");
+    });
+
+    it("should throw ForbiddenException if tenantId missing in getBadgesHistory", async () => {
+      await expect(
+        controller.getBadgesHistory("e1", invalidRequest),
+      ).rejects.toThrow("Tenant ID missing");
+    });
+
+    it("should throw ForbiddenException if tenantId missing in revokeBadge", async () => {
+      await expect(
+        controller.revokeBadge("ub1", invalidRequest),
+      ).rejects.toThrow("Tenant ID missing");
     });
   });
 });

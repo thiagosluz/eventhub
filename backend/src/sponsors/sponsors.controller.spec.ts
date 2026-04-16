@@ -139,5 +139,33 @@ describe("SponsorsController", () => {
         mockSponsorsService.listPublicSponsorsByEventSlug,
       ).toHaveBeenCalledWith("event-slug", undefined);
     });
+
+    it("should handle invalid auth header format", async () => {
+      const req = { headers: { authorization: "InvalidToken" } };
+      await controller.listPublicSponsors("event-slug", req as any);
+      expect(
+        mockSponsorsService.listPublicSponsorsByEventSlug,
+      ).toHaveBeenCalledWith("event-slug", undefined);
+    });
+
+    it("should handle jwt decoding error", async () => {
+      const req = { headers: { authorization: "Bearer broken" } };
+      mockJwtService.decode.mockImplementation(() => {
+        throw new Error("Decode failed");
+      });
+      await controller.listPublicSponsors("event-slug", req as any);
+      expect(
+        mockSponsorsService.listPublicSponsorsByEventSlug,
+      ).toHaveBeenCalledWith("event-slug", undefined);
+    });
+
+    it("should handle payload without tenantId", async () => {
+      const req = { headers: { authorization: "Bearer ok" } };
+      mockJwtService.decode.mockReturnValue({ role: "ADMIN" });
+      await controller.listPublicSponsors("event-slug", req as any);
+      expect(
+        mockSponsorsService.listPublicSponsorsByEventSlug,
+      ).toHaveBeenCalledWith("event-slug", undefined);
+    });
   });
 });

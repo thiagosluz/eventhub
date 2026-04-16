@@ -99,7 +99,33 @@ describe("CheckoutService", () => {
       );
     });
 
-    it("should process checkout successfully", async () => {
+    it("should process checkout and skip email if user has no email", async () => {
+      mockPrismaService.event.findUnique.mockResolvedValue({
+        id: "event_1",
+        name: "Test Event",
+      });
+      mockPrismaService.registration.findFirst.mockResolvedValue(null);
+      mockPrismaService.registration.create.mockResolvedValue({
+        id: "reg_new",
+      });
+      mockPrismaService.activity.findMany.mockResolvedValue([]);
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "user_1",
+        email: null,
+      });
+      mockFreeTicketStrategy.process.mockResolvedValue({
+        tickets: [],
+        totalAmount: "0.00",
+      });
+
+      const result = await service.processCheckout(checkoutInput);
+
+      expect(result.registrationId).toBe("reg_new");
+      expect(mockFreeTicketStrategy.process).toHaveBeenCalled();
+      expect(mockMailService.enqueue).not.toHaveBeenCalled();
+    });
+
+    it("should process checkout successfully and enqueue email", async () => {
       mockPrismaService.event.findUnique.mockResolvedValue({
         id: "event_1",
         name: "Test Event",
@@ -143,7 +169,108 @@ describe("CheckoutService", () => {
       ).toHaveBeenCalled();
     });
 
-    it("should process custom form responses if provided", async () => {
+    it("should throw NotFound if custom form does not exist", async () => {
+      mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1" });
+      mockPrismaService.customForm.findUnique.mockResolvedValue(null);
+
+      await expect(
+        service.processCheckout({
+          eventId: "e1",
+          userId: "u1",
+          activityIds: [],
+          formResponses: [{ formId: "f_invalid", answers: [] }],
+        }),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it("should throw BadRequest if required field is empty", async () => {
+      mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1" });
+      mockPrismaService.customForm.findUnique.mockResolvedValue({
+        id: "f1",
+        fields: [{ id: "fld1", type: "TEXT", required: true, label: "Name" }],
+      });
+
+      await expect(
+        service.processCheckout({
+          eventId: "e1",
+          userId: "u1",
+          activityIds: [],
+          formResponses: [
+            { formId: "f1", answers: [{ fieldId: "fld1", value: "" }] },
+          ],
+        }),
+      ).rejects.toThrow('O campo "Name" é obrigatório.');
+    });
+
+    it("should throw BadRequest if email field is invalid", async () => {
+      mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1" });
+      mockPrismaService.customForm.findUnique.mockResolvedValue({
+        id: "f1",
+        fields: [
+          { id: "fld1", type: "EMAIL", required: false, label: "Email" },
+        ],
+      });
+
+      await expect(
+        service.processCheckout({
+          eventId: "e1",
+          userId: "u1",
+          activityIds: [],
+          formResponses: [
+            {
+              formId: "f1",
+              answers: [{ fieldId: "fld1", value: "invalid-email" }],
+            },
+          ],
+        }),
+      ).rejects.toThrow('O campo "Email" deve ser um e-mail válido.');
+    });
+
+    it("should throw BadRequest if number field is invalid", async () => {
+      mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1" });
+      mockPrismaService.customForm.findUnique.mockResolvedValue({
+        id: "f1",
+        fields: [{ id: "fld1", type: "NUMBER", required: false, label: "Age" }],
+      });
+
+      await expect(
+        service.processCheckout({
+          eventId: "e1",
+          userId: "u1",
+          activityIds: [],
+          formResponses: [
+            {
+              formId: "f1",
+              answers: [{ fieldId: "fld1", value: "not-a-number" }],
+            },
+          ],
+        }),
+      ).rejects.toThrow('O campo "Age" deve ser um número válido.');
+    });
+
+    it("should throw BadRequest if date field is invalid", async () => {
+      mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1" });
+      mockPrismaService.customForm.findUnique.mockResolvedValue({
+        id: "f1",
+        fields: [{ id: "fld1", type: "DATE", required: false, label: "Birth" }],
+      });
+
+      await expect(
+        service.processCheckout({
+          eventId: "e1",
+          userId: "u1",
+          activityIds: [],
+          formResponses: [
+            {
+              formId: "f1",
+              answers: [{ fieldId: "fld1", value: "invalid-date" }],
+            },
+          ],
+        }),
+      ).rejects.toThrow('O campo "Birth" deve ser uma data válida.');
+    });
+
+    it("should process valid complex form responses activating all switch cases", async () => {
       mockPrismaService.event.findUnique.mockResolvedValue({ id: "e1" });
       mockPrismaService.registration.create.mockResolvedValue({ id: "reg1" });
       mockPrismaService.activity.findMany.mockResolvedValue([]);
@@ -153,7 +280,12 @@ describe("CheckoutService", () => {
       });
       mockPrismaService.customForm.findUnique.mockResolvedValue({
         id: "f1",
-        fields: [{ id: "fld1", type: "TEXT", required: true }],
+        fields: [
+          { id: "f_text", type: "TEXT", required: true },
+          { id: "f_email", type: "EMAIL", required: true },
+          { id: "f_number", type: "NUMBER", required: true },
+          { id: "f_date", type: "DATE", required: true },
+        ],
       });
       mockPrismaService.customFormAnswer.create.mockResolvedValue({});
 
@@ -162,12 +294,23 @@ describe("CheckoutService", () => {
         userId: "u1",
         activityIds: [],
         formResponses: [
-          { formId: "f1", answers: [{ fieldId: "fld1", value: "answer1" }] },
+          {
+            formId: "f1",
+            answers: [
+              { fieldId: "f_text", value: "ok" },
+              { fieldId: "f_email", value: "a@a.com" },
+              { fieldId: "f_number", value: "10" },
+              { fieldId: "f_date", value: "2024-01-01" },
+              { fieldId: "f_empty", value: "" },
+            ],
+          },
         ],
       });
 
       expect(mockPrismaService.customFormResponse.create).toHaveBeenCalled();
-      expect(mockPrismaService.customFormAnswer.create).toHaveBeenCalled();
+      expect(mockPrismaService.customFormAnswer.create).toHaveBeenCalledTimes(
+        5,
+      );
     });
   });
 });

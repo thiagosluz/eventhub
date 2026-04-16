@@ -4,7 +4,6 @@ import { TenantsService } from "./tenants.service";
 
 describe("PublicTenantsController", () => {
   let controller: PublicTenantsController;
-  let service: TenantsService;
 
   const mockTenantsService = {
     findAllPublic: jest.fn(),
@@ -18,22 +17,19 @@ describe("PublicTenantsController", () => {
     }).compile();
 
     controller = module.get<PublicTenantsController>(PublicTenantsController);
-    service = module.get<TenantsService>(TenantsService);
   });
 
   it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 
-  it("should list all public tenants", async () => {
-    mockTenantsService.findAllPublic.mockResolvedValue([]);
+  it("should find all public tenants", async () => {
     await controller.findAll();
-    expect(service.findAllPublic).toHaveBeenCalled();
+    expect(mockTenantsService.findAllPublic).toHaveBeenCalled();
   });
 
-  it("should get one public tenant by slug", async () => {
-    mockTenantsService.findOnePublic.mockResolvedValue({ id: "1" });
-    await controller.findOne("slug");
-    expect(service.findOnePublic).toHaveBeenCalledWith("slug");
+  it("should find one public tenant by slug", async () => {
+    await controller.findOne("slug-1");
+    expect(mockTenantsService.findOnePublic).toHaveBeenCalledWith("slug-1");
   });
 });

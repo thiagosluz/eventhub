@@ -163,5 +163,53 @@ describe("TenantsService", () => {
       );
       expect(mockMinioService.uploadObject).toHaveBeenCalled();
     });
+
+    it("should throw NotFound if tenant not found in uploadLogo", async () => {
+      mockPrismaService.tenant.findUnique.mockResolvedValue(null);
+      await expect(service.uploadLogo("inv", {} as any)).rejects.toThrow(
+        "Organizador não encontrado",
+      );
+    });
+
+    it("should throw NotFound if tenant not found in uploadCover", async () => {
+      mockPrismaService.tenant.findUnique.mockResolvedValue(null);
+      await expect(service.uploadCover("inv", {} as any)).rejects.toThrow(
+        "Organizador não encontrado",
+      );
+    });
+  });
+
+  describe("deleteOldFile edge cases", () => {
+    it("should skip deletion if URL does not contain event-media path", async () => {
+      mockPrismaService.tenant.findUnique.mockResolvedValue({
+        id: "t1",
+        logoUrl: "http://external.com/image.png",
+      });
+      await service.uploadLogo("t1", {
+        buffer: Buffer.from(""),
+        mimetype: "image/png",
+      });
+      expect(mockMinioService.deleteObject).not.toHaveBeenCalled();
+    });
+
+    it("should catch and log error if MinIO deletion fails", async () => {
+      const consoleSpy = jest.spyOn(console, "error").mockImplementation();
+      mockPrismaService.tenant.findUnique.mockResolvedValue({
+        id: "t1",
+        logoUrl: "http://minio/event-media/logo.png",
+      });
+      mockMinioService.deleteObject.mockRejectedValue(new Error("MinIO error"));
+
+      await service.uploadLogo("t1", {
+        buffer: Buffer.from(""),
+        mimetype: "image/png",
+      });
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "Erro ao deletar arquivo antigo do MinIO:",
+        expect.any(Error),
+      );
+      consoleSpy.mockRestore();
+    });
   });
 });

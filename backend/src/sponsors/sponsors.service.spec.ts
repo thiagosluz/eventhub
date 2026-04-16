@@ -78,6 +78,13 @@ describe("SponsorsService", () => {
       expect(result).toBeDefined();
     });
 
+    it("should throw NotFound if event not found", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue(null);
+      await expect(service.listCategoriesByEvent("t1", "e1")).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
     it("should update a category", async () => {
       mockPrismaService.sponsorCategory.findUnique.mockResolvedValue({
         id: "c1",
@@ -178,6 +185,25 @@ describe("SponsorsService", () => {
       mockPrismaService.sponsorCategory.findMany.mockResolvedValue([]);
       const result = await service.listPublicSponsorsByEventSlug("slug");
       expect(result).toBeDefined();
+    });
+
+    it("should list sponsors for organizer even if not published", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue({ id: "e1" });
+      await service.listPublicSponsorsByEventSlug("slug", "t1");
+      expect(mockPrismaService.event.findFirst).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            OR: expect.arrayContaining([{ tenantId: "t1" }]),
+          }),
+        }),
+      );
+    });
+
+    it("should throw NotFound if public event not found", async () => {
+      mockPrismaService.event.findFirst.mockResolvedValue(null);
+      await expect(
+        service.listPublicSponsorsByEventSlug("slug"),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 

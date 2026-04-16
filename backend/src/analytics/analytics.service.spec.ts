@@ -146,4 +146,65 @@ describe("AnalyticsService", () => {
       expect(result[0].activityName).toBe("Workshop");
     });
   });
+
+  describe("Edge cases", () => {
+    it("should return empty array if search is too short in getEventParticipants", async () => {
+      const result = await service.getEventParticipants("t1", "e1", "ab");
+      expect(result).toEqual([]);
+      expect(mockPrismaService.registration.findMany).not.toHaveBeenCalled();
+    });
+
+    it("should default to activityId null in getEventCheckins if not provided", async () => {
+      mockPrismaService.attendance.findMany.mockResolvedValue([]);
+      await service.getEventCheckins("t1", "e1");
+      expect(mockPrismaService.attendance.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({ activityId: null }),
+        }),
+      );
+    });
+
+    it("should handle attendance mapping check with undefined activityId", async () => {
+      mockPrismaService.attendance.findMany.mockResolvedValue([
+        {
+          id: "att1",
+          checkedAt: new Date(),
+          activityId: undefined, // undefined case for branch 109
+          activity: null,
+          ticket: { registration: { user: { name: "A", email: "a@a.com" } } },
+        },
+      ]);
+      const result = await service.getEventCheckins("t1", "e1");
+      expect(result[0].activityName).toBe("Check-in Geral");
+    });
+
+    it("should handle participant mapping when tickets or attendances are missing", async () => {
+      mockPrismaService.registration.findMany.mockResolvedValue([
+        {
+          id: "r1",
+          user: { name: "N", email: "E" },
+          tickets: [],
+          enrollments: [],
+          createdAt: new Date(),
+        },
+      ]);
+      const result = await service.getEventParticipants("t1", "e1");
+      expect(result[0].attendances).toEqual([]);
+      expect(result[0].ticketType).toBe("FREE");
+    });
+
+    it("should use capacity 0 as fallback for occupancyRate", async () => {
+      const mockEvent = {
+        id: "e1",
+        name: "Conf",
+        activities: [
+          { id: "a1", enrollments: [{}, {}], attendances: [], capacity: null },
+        ], // capacity null e attendances vazio
+        registrations: [],
+      };
+      mockPrismaService.event.findFirst.mockResolvedValue(mockEvent);
+      const result = await service.getEventAnalytics("t1", "e1");
+      expect(result.activityParticipation[0].occupancyRate).toBe(0);
+    });
+  });
 });
