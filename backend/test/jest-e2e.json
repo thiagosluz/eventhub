@@ -1,15 +1,25 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
+  "rootDir": "..",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "^src/(.*)$": "<rootDir>/../src/$1"
+    "^src/(.*)$": "<rootDir>/src/$1"
   },
-  "setupFiles": ["<rootDir>/setup.ts"],
+  "setupFiles": ["<rootDir>/test/setup.ts"],
+  "collectCoverage": true,
+  "collectCoverageFrom": ["src/**/*.(t|j)s"],
+  "coveragePathIgnorePatterns": [
+    "main.ts",
+    "generated/",
+    ".module.ts$",
+    ".dto.ts$",
+    ".entity.ts$"
+  ],
+  "coverageDirectory": "coverage-e2e",
   "transformIgnorePatterns": [
     "/node_modules/(?!(uuid)/)"
   ]

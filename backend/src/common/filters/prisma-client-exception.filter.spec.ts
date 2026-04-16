@@ -1,14 +1,29 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { PrismaClientExceptionFilter } from "./prisma-client-exception.filter";
 import { ArgumentsHost, HttpStatus } from "@nestjs/common";
+import { HttpAdapterHost } from "@nestjs/core";
 import { Prisma } from "@prisma/client";
 
 describe("PrismaClientExceptionFilter", () => {
   let filter: PrismaClientExceptionFilter;
 
+  const mockHttpAdapter = {
+    isHeadersSent: jest.fn().mockReturnValue(false),
+    reply: jest.fn(),
+    setErrorHandler: jest.fn(),
+    setNotFoundHandler: jest.fn(),
+  };
+
+  const mockHttpAdapterHost = {
+    httpAdapter: mockHttpAdapter,
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PrismaClientExceptionFilter],
+      providers: [
+        PrismaClientExceptionFilter,
+        { provide: HttpAdapterHost, useValue: mockHttpAdapterHost },
+      ],
     }).compile();
 
     filter = module.get<PrismaClientExceptionFilter>(
@@ -73,5 +88,36 @@ describe("PrismaClientExceptionFilter", () => {
       message: "Not found",
       error: "Not Found",
     });
+  });
+
+  it("should call super.catch for unknown prisma error codes", () => {
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis(),
+      headersSent: false,
+      isHeadersSent: false,
+    };
+    const mockArgumentsHost = {
+      switchToHttp: () => ({
+        getResponse: () => mockResponse,
+        getRequest: () => ({}),
+      }),
+      getArgByIndex: jest.fn(),
+      getArgs: jest.fn(),
+      getType: jest.fn(),
+      switchToRpc: jest.fn(),
+      switchToWs: jest.fn(),
+    } as unknown as ArgumentsHost;
+
+    const exception = new Prisma.PrismaClientKnownRequestError("Unknown", {
+      code: "P9999",
+      clientVersion: "1.0",
+    });
+
+    const superCatchSpy = jest.spyOn(Object.getPrototypeOf(filter), "catch");
+
+    filter.catch(exception, mockArgumentsHost);
+
+    expect(superCatchSpy).toHaveBeenCalledWith(exception, mockArgumentsHost);
   });
 });

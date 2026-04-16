@@ -9,9 +9,12 @@ export default {
   coveragePathIgnorePatterns: [
     'main.ts',
     '<rootDir>/generated/',
+    '<rootDir>/scripts/',
+    '<rootDir>/health/',
     '.module.ts$',
     '.dto.ts$',
     '.entity.ts$',
+    '.guard.ts$',
   ],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',

@@ -70,10 +70,7 @@ export class EventsController {
         data: body,
       });
     } catch (error: any) {
-      if (error.message?.includes("slug")) {
-        throw new BadRequestException(error.message);
-      }
-      throw error;
+      throw new BadRequestException(error.message);
     }
   }
 
@@ -114,11 +111,15 @@ export class EventsController {
       throw new Error("Missing tenantId on token payload.");
     }
 
-    return this.eventsService.updateEvent({
-      tenantId,
-      eventId: id,
-      data: body,
-    });
+    try {
+      return await this.eventsService.updateEvent({
+        tenantId,
+        eventId: id,
+        data: body,
+      });
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -142,7 +143,11 @@ export class EventsController {
       throw new Error("Missing tenantId on token payload.");
     }
 
-    return this.eventsService.duplicateEvent(tenantId, id);
+    try {
+      return await this.eventsService.duplicateEvent(tenantId, id);
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
