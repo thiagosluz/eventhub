@@ -169,6 +169,7 @@ export class SpeakersService {
           include: {
             event: { select: { name: true, slug: true } },
             type: true,
+            materials: { orderBy: { createdAt: "asc" } },
             _count: { select: { enrollments: true } },
           },
         },
@@ -206,6 +207,12 @@ export class SpeakersService {
         fileUrl: data.fileUrl,
         fileType: data.fileType,
       },
+    });
+  }
+
+  async removeMaterial(materialId: string) {
+    return this.prisma.activityMaterial.delete({
+      where: { id: materialId },
     });
   }
 }

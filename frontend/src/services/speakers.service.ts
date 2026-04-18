@@ -88,4 +88,11 @@ export const speakersService = {
   ): Promise<{ id: string }> => {
     return api.post<{ id: string }>(`/speakers/me/activities/${activityId}/materials`, data);
   },
+
+  removeActivityMaterial: async (
+    activityId: string,
+    materialId: string,
+  ): Promise<void> => {
+    return api.delete(`/speakers/me/activities/${activityId}/materials/${materialId}`);
+  },
 };

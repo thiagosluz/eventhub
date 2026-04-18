@@ -13,14 +13,27 @@ import {
   ChevronLeftIcon,
   ClockIcon,
   UsersIcon,
-  UserIcon
+  UserIcon,
+  DocumentIcon,
+  CloudArrowUpIcon,
+  ArrowTopRightOnSquareIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ActivityForm } from '@/components/dashboard/ActivityForm';
 import { ParticipantsModal } from '@/components/dashboard/ParticipantsModal';
 import { DeleteConfirmationModal } from '@/components/dashboard/DeleteConfirmationModal';
+import { ConfirmationModal } from '@/components/common/ConfirmationModal';
 import { toast } from 'react-hot-toast';
+
+interface MaterialForm {
+  title: string;
+  fileUrl: string;
+  fileType: string;
+}
+
+const EMPTY_MATERIAL: MaterialForm = { title: '', fileUrl: '', fileType: 'SLIDES' };
 
 export default function ActivitiesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: eventId } = use(params);
@@ -39,6 +52,14 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
   // Participants Modal state
   const [isParticipantsModalOpen, setIsParticipantsModalOpen] = useState(false);
   const [selectedActivityForParticipants, setSelectedActivityForParticipants] = useState<Activity | null>(null);
+
+  // Material Modals State
+  const [uploadMaterialModal, setUploadMaterialModal] = useState<{ activityId: string; activityTitle: string } | null>(null);
+  const [materialForm, setMaterialForm] = useState<MaterialForm>(EMPTY_MATERIAL);
+  const [isSavingMaterial, setIsSavingMaterial] = useState(false);
+
+  const [deleteMaterialModal, setDeleteMaterialModal] = useState<{ activityId: string; materialId: string } | null>(null);
+  const [isDeletingMaterial, setIsDeletingMaterial] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -92,6 +113,43 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
       toast.error('Erro ao excluir atividade.');
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  const handleSubmitMaterial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!uploadMaterialModal) return;
+    if (!materialForm.title.trim() || !materialForm.fileUrl.trim()) {
+      toast.error('Preencha o título e a URL do material.');
+      return;
+    }
+
+    setIsSavingMaterial(true);
+    try {
+      await activitiesService.addActivityMaterial(uploadMaterialModal.activityId, materialForm);
+      toast.success('Material adicionado!');
+      setUploadMaterialModal(null);
+      setMaterialForm(EMPTY_MATERIAL);
+      loadData();
+    } catch {
+      toast.error('Erro ao adicionar material.');
+    } finally {
+      setIsSavingMaterial(false);
+    }
+  };
+
+  const handleConfirmDeleteMaterial = async () => {
+    if (!deleteMaterialModal) return;
+    setIsDeletingMaterial(true);
+    try {
+      await activitiesService.removeActivityMaterial(deleteMaterialModal.activityId, deleteMaterialModal.materialId);
+      toast.success('Material removido!');
+      setDeleteMaterialModal(null);
+      loadData();
+    } catch {
+      toast.error('Erro ao remover material.');
+    } finally {
+      setIsDeletingMaterial(false);
     }
   };
 
@@ -221,40 +279,94 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
                     )}
                   </div>
                 </div>
-                  <div className="flex items-center gap-2 self-end md:self-start pt-2">
-                    {activity.requiresEnrollment && (
+                  <div className="flex flex-col gap-2 mt-4 md:mt-0 w-full md:w-auto">
+                    <div className="flex items-center gap-2 self-end md:self-start w-full md:w-auto">
+                      {activity.requiresEnrollment && (
+                        <button
+                          onClick={() => {
+                            setSelectedActivityForParticipants(activity);
+                            setIsParticipantsModalOpen(true);
+                          }}
+                          className="flex-1 md:flex-none justify-center p-3 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-all border border-primary/20 shadow-sm flex items-center gap-2"
+                          title="Visualizar Inscritos"
+                        >
+                          <UsersIcon className="w-4 h-4" />
+                          <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Inscritos</span>
+                        </button>
+                      )}
                       <button
                         onClick={() => {
-                          setSelectedActivityForParticipants(activity);
-                          setIsParticipantsModalOpen(true);
+                          setMaterialForm(EMPTY_MATERIAL);
+                          setUploadMaterialModal({ activityId: activity.id, activityTitle: activity.title });
                         }}
-                        className="p-3 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-all border border-primary/20 shadow-sm flex items-center gap-2"
-                        title="Visualizar Inscritos"
+                        className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all border border-transparent hover:border-primary/20 shadow-sm"
+                        title="Adicionar Material"
                       >
-                        <UsersIcon className="w-4 h-4" />
-                        <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Inscritos</span>
+                        <DocumentIcon className="w-4 h-4" />
                       </button>
-                    )}
-                    <button
-                      onClick={() => {
-                        setEditingActivity(activity);
-                        setIsModalOpen(true);
-                      }}
-                      className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all border border-transparent hover:border-primary/20 shadow-sm"
-                    >
-                      <PencilIcon className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        setActivityToDelete(activity.id);
-                        setIsDeleteModalOpen(true);
-                      }}
-                      className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all border border-transparent hover:border-destructive/20 shadow-sm"
-                    >
-                      <TrashIcon className="w-4 h-4" />
-                    </button>
+                      <button
+                        onClick={() => {
+                          setEditingActivity(activity);
+                          setIsModalOpen(true);
+                        }}
+                        className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all border border-transparent hover:border-primary/20 shadow-sm"
+                        title="Editar"
+                      >
+                        <PencilIcon className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          setActivityToDelete(activity.id);
+                          setIsDeleteModalOpen(true);
+                        }}
+                        className="p-3 rounded-xl bg-muted text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all border border-transparent hover:border-destructive/20 shadow-sm"
+                        title="Excluir"
+                      >
+                        <TrashIcon className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
               </div>
+
+              {/* Materiais Loop */}
+              {activity.materials && activity.materials.length > 0 && (
+                <div className="flex flex-col gap-2 pt-6 mt-4 border-t border-border/10">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Materiais da Atividade</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {activity.materials.map((mat: any) => (
+                      <div key={mat.id} className="group/mat flex items-center justify-between p-3 rounded-2xl bg-muted/30 border border-border/50 hover:bg-card hover:border-primary/30 transition-all">
+                        <div className="flex items-center gap-3 overflow-hidden">
+                          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                            <DocumentIcon className="w-5 h-5" />
+                          </div>
+                          <div className="truncate">
+                            <p className="text-xs font-bold text-foreground truncate">{mat.title}</p>
+                            <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">{mat.fileType}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1 opacity-0 group-hover/mat:opacity-100 transition-opacity">
+                          <a
+                            href={mat.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-lg hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors"
+                            title="Acessar material"
+                          >
+                            <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+                          </a>
+                          <button
+                            onClick={() => setDeleteMaterialModal({ activityId: activity.id, materialId: mat.id })}
+                            className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+                            title="Remover material"
+                          >
+                            <TrashIcon className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))
         )}
@@ -306,6 +418,118 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
           }}
         />
       )}
+
+      {/* Upload Material Modal */}
+      {uploadMaterialModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-card w-full max-w-md rounded-3xl shadow-2xl border border-border p-8 animate-in zoom-in-95 duration-300">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-xl font-black tracking-tight">Adicionar Material</h2>
+                <p className="text-xs text-muted-foreground mt-1 truncate max-w-[250px]">
+                  {uploadMaterialModal.activityTitle}
+                </p>
+              </div>
+              <button onClick={() => setUploadMaterialModal(null)} className="p-2 hover:bg-muted rounded-xl transition-colors">
+                <XMarkIcon className="w-5 h-5 text-muted-foreground" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmitMaterial} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+                  Título do Material *
+                </label>
+                <div className="relative">
+                  <DocumentIcon className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    type="text"
+                    value={materialForm.title}
+                    onChange={(e) => setMaterialForm({ ...materialForm, title: e.target.value })}
+                    className="w-full h-12 pl-11 pr-4 rounded-xl border border-border bg-muted/30 focus:border-primary focus:bg-card outline-none font-bold text-sm transition-all"
+                    placeholder="Ex: Slides da Apresentação"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+                  Tipo de Arquivo *
+                </label>
+                <div className="flex gap-2">
+                  {["SLIDES", "PDF", "VIDEO", "LINK"].map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setMaterialForm({ ...materialForm, fileType: type })}
+                      className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all ${
+                        materialForm.fileType === type
+                          ? "bg-primary text-white border-primary"
+                          : "bg-muted/30 text-muted-foreground border-border hover:border-primary/30"
+                      }`}
+                    >
+                      {type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+                  URL / Link *
+                </label>
+                <div className="relative">
+                  <CloudArrowUpIcon className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    type="url"
+                    value={materialForm.fileUrl}
+                    onChange={(e) => setMaterialForm({ ...materialForm, fileUrl: e.target.value })}
+                    className="w-full h-12 pl-11 pr-4 rounded-xl border border-border bg-muted/30 focus:border-primary focus:bg-card outline-none font-bold text-sm transition-all"
+                    placeholder="https://..."
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setUploadMaterialModal(null)}
+                  className="flex-1 py-3 rounded-xl border border-border text-sm font-black uppercase tracking-widest text-muted-foreground hover:bg-muted transition-all"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingMaterial}
+                  className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {isSavingMaterial ? (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <PlusIcon className="w-4 h-4" />
+                  )}
+                  Adicionar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Material Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={!!deleteMaterialModal}
+        onClose={() => setDeleteMaterialModal(null)}
+        onConfirm={handleConfirmDeleteMaterial}
+        title="Remover Material"
+        description="Tem certeza que deseja remover este material? Esta ação não pode ser desfeita e os participantes não terão mais acesso a ele."
+        confirmText="Sim, remover material"
+        cancelText="Cancelar"
+        variant="danger"
+        isLoading={isDeletingMaterial}
+      />
     </div>
   );
 }

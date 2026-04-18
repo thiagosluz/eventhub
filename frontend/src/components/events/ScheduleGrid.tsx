@@ -9,7 +9,11 @@ import {
   UserGroupIcon, 
   TagIcon,
   XMarkIcon,
-  InformationCircleIcon
+  InformationCircleIcon,
+  DocumentArrowDownIcon,
+  LinkIcon,
+  FilmIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
@@ -239,44 +243,91 @@ export function ScheduleGrid({ activities }: ScheduleGridProps) {
                   </div>
                 )}
 
-                {selectedActivity.speakers && selectedActivity.speakers.length > 0 && (
-                  <div className="space-y-4">
-                    <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Palestrantes e Convidados</p>
-                    <div className="grid gap-4">
-                      {selectedActivity.speakers.map((assoc, idx) => (
-                        <div key={idx} className="flex items-start gap-4 p-4 rounded-3xl bg-muted/30 border border-border/50">
-                          <div className="h-16 w-16 rounded-2xl overflow-hidden bg-muted flex-shrink-0">
-                            {assoc.speaker.avatarUrl ? (
-                              <Image 
-                                src={assoc.speaker.avatarUrl} 
-                                alt={assoc.speaker.name} 
-                                width={64} 
-                                height={64} 
-                                className="object-cover h-full w-full"
-                              />
-                            ) : (
-                              <div className="h-full w-full flex items-center justify-center text-xl font-black text-primary">
-                                {assoc.speaker.name[0]}
-                              </div>
-                            )}
-                          </div>
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-black text-lg">{assoc.speaker.name}</h4>
-                              {assoc.role && (
-                                <span className="text-[10px] font-black uppercase tracking-widest bg-primary/10 text-primary px-2 py-0.5 rounded">
-                                  {assoc.role.name}
-                                </span>
+                {selectedActivity.speakers &&
+                  selectedActivity.speakers.length > 0 && (
+                    <div className="space-y-4">
+                      <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+                        Palestrantes e Convidados
+                      </p>
+                      <div className="grid gap-4">
+                        {selectedActivity.speakers.map((assoc, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start gap-4 p-4 rounded-3xl bg-muted/30 border border-border/50"
+                          >
+                            <div className="h-16 w-16 rounded-2xl overflow-hidden bg-muted flex-shrink-0">
+                              {assoc.speaker.avatarUrl ? (
+                                <Image
+                                  src={assoc.speaker.avatarUrl}
+                                  alt={assoc.speaker.name}
+                                  width={64}
+                                  height={64}
+                                  className="object-cover h-full w-full"
+                                />
+                              ) : (
+                                <div className="h-full w-full flex items-center justify-center text-xl font-black text-primary">
+                                  {assoc.speaker.name[0]}
+                                </div>
                               )}
                             </div>
-                            {assoc.speaker.bio && (
-                              <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
-                                {assoc.speaker.bio}
-                              </p>
-                            )}
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-black text-lg">{assoc.speaker.name}</h4>
+                                {assoc.role && (
+                                  <span className="text-[10px] font-black uppercase tracking-widest bg-primary/10 text-primary px-2 py-0.5 rounded">
+                                    {assoc.role.name}
+                                  </span>
+                                )}
+                              </div>
+                              {assoc.speaker.bio && (
+                                <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                                  {assoc.speaker.bio}
+                                </p>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                {/* Materials Section */}
+                {selectedActivity.materials && selectedActivity.materials.length > 0 && (
+                  <div className="space-y-4">
+                    <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+                      Materiais da Sessão
+                    </p>
+                    <div className="grid gap-3">
+                      {selectedActivity.materials.map((mat) => {
+                        const fileType = mat.fileType?.toUpperCase() || '';
+                        const Icon = fileType === 'PDF' ? DocumentTextIcon
+                          : fileType === 'VIDEO' ? FilmIcon
+                          : fileType === 'SLIDES' ? DocumentArrowDownIcon
+                          : LinkIcon;
+                        return (
+                          <a
+                            key={mat.id}
+                            href={mat.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-3 p-4 rounded-2xl bg-primary/5 border border-primary/10 hover:bg-primary/10 hover:border-primary/30 transition-all group/mat"
+                          >
+                            <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                              <Icon className="w-5 h-5" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-black truncate">{mat.title}</p>
+                              {mat.fileType && (
+                                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{mat.fileType}</p>
+                              )}
+                            </div>
+                            <span className="text-[10px] font-black text-primary uppercase tracking-widest opacity-0 group-hover/mat:opacity-100 transition-opacity">
+                              Abrir →
+                            </span>
+                          </a>
+                        );
+                      })}
                     </div>
                   </div>
                 )}

@@ -62,6 +62,15 @@ export interface Tenant {
   coverUrl?: string;
 }
 
+export interface ActivityMaterial {
+  id: string;
+  activityId: string;
+  title: string;
+  fileUrl: string;
+  fileType?: string;
+  createdAt: string;
+}
+
 export interface Activity {
   id: string;
   title: string;
@@ -79,6 +88,7 @@ export interface Activity {
   confirmationDays?: number;
   speakers?: SpeakerAssociation[];
   enrollments?: ActivityEnrollment[];
+  materials?: ActivityMaterial[];
 }
 
 export interface Ticket {

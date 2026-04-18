@@ -26,11 +26,16 @@ vi.mock("@heroicons/react/24/outline", () => ({
   CameraIcon: (props: any) => <div {...props} data-testid="CameraIcon" />,
 }));
 
+vi.mock("@heroicons/react/24/solid", () => ({
+  StarIcon: (props: any) => <div {...props} data-testid="StarIconSolid" />,
+}));
+
 // Mock do speakersService
 vi.mock("@/services/speakers.service", () => ({
   speakersService: {
     getMe: vi.fn(),
     getMyActivities: vi.fn(),
+    getMyFeedbacks: vi.fn(),
   },
 }));
 
@@ -57,6 +62,7 @@ describe("SpeakerDashboard Component", () => {
     (useAuth as any).mockReturnValue({ user: mockUser });
     (speakersService.getMe as any).mockResolvedValue(mockProfile);
     (speakersService.getMyActivities as any).mockResolvedValue(mockActivities);
+    (speakersService.getMyFeedbacks as any).mockResolvedValue([]);
   });
 
   it("deve carregar e exibir dados do palestrante corretamente", async () => {

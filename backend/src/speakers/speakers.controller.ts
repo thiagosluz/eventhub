@@ -76,6 +76,27 @@ export class SpeakersController {
     return this.speakersService.addMaterial(activityId, data);
   }
 
+  @Delete("me/activities/:activityId/materials/:materialId")
+  @Roles(UserRole.SPEAKER)
+  async removeMaterial(
+    @Req() req: AuthRequest,
+    @Param("activityId") activityId: string,
+    @Param("materialId") materialId: string,
+  ) {
+    // Validar se a atividade pertence ao palestrante
+    const speaker = await this.speakersService.findByUserId(req.user!.sub);
+    const activities = await this.speakersService.findActivities(speaker.id);
+    const hasActivity = activities.some((a) => a.activityId === activityId);
+
+    if (!hasActivity) {
+      throw new Error(
+        "Você não tem permissão para remover materiais desta atividade.",
+      );
+    }
+
+    return this.speakersService.removeMaterial(materialId);
+  }
+
   @Post()
   @Roles(UserRole.ORGANIZER)
   async create(@Req() req: AuthRequest, @Body() data: CreateSpeakerDto) {

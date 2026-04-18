@@ -10,6 +10,7 @@ import {
   ArrowRightIcon,
   MicrophoneIcon
 } from "@heroicons/react/24/outline";
+import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
 export default function SpeakerDashboard() {
@@ -17,16 +18,25 @@ export default function SpeakerDashboard() {
   const [profile, setProfile] = useState<Speaker | null>(null);
   const [activities, setActivities] = useState<ActivitySpeaker[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [feedbackAvg, setFeedbackAvg] = useState<number | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [me, myActivities] = await Promise.all([
+        const [me, myActivities, myFeedbacks] = await Promise.all([
           speakersService.getMe(),
-          speakersService.getMyActivities()
+          speakersService.getMyActivities(),
+          speakersService.getMyFeedbacks(),
         ]);
         setProfile(me);
         setActivities(myActivities);
+
+        if (myFeedbacks.length > 0) {
+          const avg = myFeedbacks.reduce((acc, fb) => acc + fb.rating, 0) / myFeedbacks.length;
+          setFeedbackAvg(avg);
+        } else {
+          setFeedbackAvg(null);
+        }
       } catch (error) {
         console.error("Error loading dashboard data:", error);
       } finally {
@@ -109,7 +119,14 @@ export default function SpeakerDashboard() {
           </div>
           <div>
             <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Média de Feedback</p>
-            <p className="text-2xl font-black text-foreground">4.9</p>
+            {feedbackAvg !== null ? (
+              <div className="flex items-center gap-1.5">
+                <p className="text-2xl font-black text-foreground">{feedbackAvg.toFixed(1)}</p>
+                <StarIconSolid className="w-4 h-4 text-amber-500" />
+              </div>
+            ) : (
+              <p className="text-sm font-bold text-muted-foreground italic">Sem avaliações</p>
+            )}
           </div>
         </div>
       </div>

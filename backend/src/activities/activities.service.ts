@@ -127,6 +127,7 @@ export class ActivitiesService implements OnModuleInit {
           },
         },
         enrollments: true,
+        materials: { orderBy: { createdAt: "asc" } },
       },
       orderBy: { startAt: "asc" },
     });
@@ -147,6 +148,7 @@ export class ActivitiesService implements OnModuleInit {
       requiresEnrollment: a.requiresEnrollment,
       requiresConfirmation: a.requiresConfirmation,
       confirmationDays: a.confirmationDays,
+      materials: a.materials,
       speakers: a.speakers.map((as) => ({
         speaker: as.speaker,
         role: as.role ? { id: as.role.id, name: as.role.name } : null,
@@ -177,6 +179,7 @@ export class ActivitiesService implements OnModuleInit {
             },
           },
         },
+        materials: { orderBy: { createdAt: "asc" } },
         _count: {
           select: { enrollments: true },
         },
@@ -201,6 +204,7 @@ export class ActivitiesService implements OnModuleInit {
       requiresEnrollment: a.requiresEnrollment,
       requiresConfirmation: a.requiresConfirmation,
       confirmationDays: a.confirmationDays,
+      materials: a.materials,
       type: a.type ? { id: a.type.id, name: a.type.name } : null,
       speakers: a.speakers.map((as) => ({
         speaker: as.speaker,
@@ -560,6 +564,35 @@ export class ActivitiesService implements OnModuleInit {
         status: EnrollmentStatus.CONFIRMED,
         confirmedAt: new Date(),
       },
+    });
+  }
+
+  async addMaterial(
+    tenantId: string,
+    activityId: string,
+    data: { title: string; fileUrl: string; fileType?: string },
+  ) {
+    await this.getActivityForTenant(tenantId, activityId);
+
+    return this.prisma.activityMaterial.create({
+      data: {
+        activityId,
+        title: data.title,
+        fileUrl: data.fileUrl,
+        fileType: data.fileType || "SLIDES",
+      },
+    });
+  }
+
+  async removeMaterial(
+    tenantId: string,
+    activityId: string,
+    materialId: string,
+  ) {
+    await this.getActivityForTenant(tenantId, activityId);
+
+    return this.prisma.activityMaterial.delete({
+      where: { id: materialId },
     });
   }
 }

@@ -1,36 +1,29 @@
-# Plan: Image Size Recommendations
+# Organizer Materials Integration Plan
 
-Implement visual guides and recommendations for image uploads (Banner and Logo) in the event management dashboard to ensure high-quality visual identity.
+This plan was created by the `project-planner` agent to satisfy Phase 1 of the Orchestration Mode.
 
-## User Review Required
+## Goal
+Add the capability for Event Organizers to upload and remove materials for any activity directly from the dashboard programming grid.
 
-> [!IMPORTANT]
-> **Recommended Sizes**:
-> - **Banner**: 1920x1080px (16:9)
-> - **Logo**: 512x512px (1:1)
-> These sizes are standardized for high-definition displays and social sharing (OG).
+## Implementation Details
 
-## Proposed Changes
+### BACKEND (`backend-specialist`)
+1. **`backend/src/activities/activities.service.ts`**
+   - Add `addMaterial(tenantId, activityId, data)` method.
+   - Add `removeMaterial(tenantId, activityId, materialId)` method.
+   
+2. **`backend/src/activities/activities.controller.ts`**
+   - Bind `POST activities/:activityId/materials` `@Roles(UserRole.ORGANIZER)`.
+   - Bind `DELETE activities/:activityId/materials/:materialId` `@Roles(UserRole.ORGANIZER)`.
 
-### Frontend: Event Management UI
+### FRONTEND (`frontend-specialist`)
+3. **`frontend/src/services/activities.service.ts`**
+   - Bind API methods `addActivityMaterial(activityId, data)` & `removeActivityMaterial(activityId, materialId)`.
+   
+4. **`frontend/src/app/dashboard/events/[id]/activities/page.tsx`**
+   - Render `materials` array in Activity Card UI.
+   - Embed `<ConfirmationModal>` and Add Material Modals for Event Organizers.
+   - Implement `handleDeleteMaterial` & `handleAddMaterial`.
 
-#### [MODIFY] [page.tsx](file:///home/thiago/Projetos/eventhub/frontend/src/app/dashboard/events/[id]/page.tsx)
-- **Banner Section**:
-    - Add a small, discreet subtitle below "Banner Principal" with: "Comp: 1920x1080px (16:9). Formatos: JPG, PNG, WEBP."
-    - Update the placeholder text inside the dropzone from "CLIQUE PARA ENVIAR" to include the size recommendation or a secondary line with the size.
-- **Logo Section**:
-    - Add a small subtitle below "Logo do Evento" with: "Sugestão: 512x512px (1:1)."
-    - Update the placeholder icon area to include the recommendation.
-
-## Open Questions
-
-1. **Max File Size**: Should we also mention a maximum file size (e.g., "Máx: 2MB") to prevent slow loading times?
-
-## Verification Plan
-
-### Automated Tests
-- Run `npm run lint` in frontend to ensure no regressions.
-
-### Manual Verification
-- Visual check of the management page to ensure the text is elegant and doesn't clutter the UI.
-- Verify responsiveness of the new text on smaller screens.
+### TESTING (`test-engineer`)
+5. Validate Endpoints and UI integrity using integration checks and script scanners (`security_scan.py`, `lint_runner.py`).

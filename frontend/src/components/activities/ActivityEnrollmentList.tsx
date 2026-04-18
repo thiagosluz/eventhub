@@ -9,7 +9,12 @@ import {
   ClockIcon, 
   MapPinIcon,
   ExclamationCircleIcon,
-  LockClosedIcon
+  LockClosedIcon,
+  DocumentArrowDownIcon,
+  LinkIcon,
+  FilmIcon,
+  DocumentTextIcon,
+  ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/24/outline";
 
 import { ConfirmationModal } from "@/components/common/ConfirmationModal";
@@ -150,6 +155,39 @@ export function ActivityEnrollmentList({ eventId }: ActivityEnrollmentListProps)
                     </div>
                   )}
                 </div>
+
+                {/* Materials Section */}
+                {activity.materials && activity.materials.length > 0 && (
+                  <div className="pt-3 mt-1 border-t border-border/50">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
+                      <DocumentArrowDownIcon className="w-3.5 h-3.5 text-primary" />
+                      Materiais da Sessão
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {activity.materials.map((mat) => {
+                        const ft = mat.fileType?.toUpperCase() || '';
+                        const Icon = ft === 'PDF' ? DocumentTextIcon
+                          : ft === 'VIDEO' ? FilmIcon
+                          : ft === 'SLIDES' ? DocumentArrowDownIcon
+                          : LinkIcon;
+                        return (
+                          <a
+                            key={mat.id}
+                            href={mat.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary/5 border border-primary/15 rounded-xl text-[11px] font-bold text-primary hover:bg-primary/10 hover:border-primary/30 transition-all group/mat"
+                          >
+                            <Icon className="w-3.5 h-3.5" />
+                            <span className="truncate max-w-[120px]">{mat.title}</span>
+                            <ArrowTopRightOnSquareIcon className="w-3 h-3 opacity-50 group-hover/mat:opacity-100 transition-opacity" />
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 

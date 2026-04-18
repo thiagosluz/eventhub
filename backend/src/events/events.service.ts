@@ -191,6 +191,7 @@ export class EventsService {
                 role: true,
               },
             },
+            materials: { orderBy: { createdAt: "asc" } },
           },
         },
         tenant: {

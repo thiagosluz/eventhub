@@ -57,5 +57,13 @@ export const activitiesService = {
 
   confirmEnrollment: async (activityId: string, enrollmentId: string): Promise<ActivityEnrollment> => {
     return api.post<ActivityEnrollment>(`/activities/${activityId}/enrollments/${enrollmentId}/confirm`, {});
+  },
+
+  addActivityMaterial: async (activityId: string, data: { title: string; fileUrl: string; fileType: string }): Promise<void> => {
+    return api.post(`/activities/${activityId}/materials`, data);
+  },
+
+  removeActivityMaterial: async (activityId: string, materialId: string): Promise<void> => {
+    return api.delete(`/activities/${activityId}/materials/${materialId}`);
   }
 };

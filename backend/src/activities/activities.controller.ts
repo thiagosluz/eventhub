@@ -208,4 +208,30 @@ export class ActivitiesController {
       enrollmentId,
     );
   }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Post("activities/:activityId/materials")
+  async addMaterial(
+    @Param("activityId") activityId: string,
+    @Req() req: AuthRequest,
+    @Body() body: { title: string; fileUrl: string; fileType?: string },
+  ) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId");
+    return this.activities.addMaterial(tenantId, activityId, body);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Delete("activities/:activityId/materials/:materialId")
+  async removeMaterial(
+    @Param("activityId") activityId: string,
+    @Param("materialId") materialId: string,
+    @Req() req: AuthRequest,
+  ) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new Error("Missing tenantId");
+    return this.activities.removeMaterial(tenantId, activityId, materialId);
+  }
 }
