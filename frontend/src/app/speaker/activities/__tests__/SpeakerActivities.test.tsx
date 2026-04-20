@@ -17,7 +17,14 @@ vi.mock("@heroicons/react/24/outline", () => ({
   PlusIcon: (props: any) => <div {...props} />,
   ArrowTopRightOnSquareIcon: (props: any) => <div {...props} />,
   TrashIcon: (props: any) => <div {...props} data-testid="TrashIcon" />,
+  QrCodeIcon: (props: any) => <div {...props} />,
+  ClipboardDocumentIcon: (props: any) => <div {...props} />,
+  CheckIcon: (props: any) => <div {...props} />,
   ExclamationTriangleIcon: (props: any) => <div {...props} />,
+}));
+
+vi.mock("qrcode.react", () => ({
+  QRCodeCanvas: (props: any) => <div data-testid="qrcode-canvas" {...props} />,
 }));
 
 vi.mock("@/services/speakers.service", () => ({
@@ -193,8 +200,8 @@ describe("SpeakerActivitiesPage Component", () => {
       expect(screen.getByText("Tem certeza que deseja remover este material? Esta ação não pode ser desfeita e os participantes não terão mais acesso a ele.")).toBeInTheDocument();
     });
 
-    // Clica no botão "Sim, remover material"
-    const confirmButton = screen.getByRole("button", { name: "Sim, remover material" });
+    // Clica no botão "Excluir Material"
+    const confirmButton = screen.getByRole("button", { name: "Excluir Material" });
     fireEvent.click(confirmButton);
 
     await waitFor(() => {

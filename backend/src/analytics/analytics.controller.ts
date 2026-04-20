@@ -135,4 +135,48 @@ export class AnalyticsController {
     if (!tenantId) throw new ForbiddenException("Tenant ID missing");
     return this.badgesService.revokeBadge(tenantId, userBadgeId);
   }
+
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get("events/:id/feedbacks")
+  async getEventFeedbacks(
+    @Req() req: AuthRequest,
+    @Param("id") id: string,
+    @Query("activityId") activityId?: string,
+    @Query("speakerId") speakerId?: string,
+    @Query("rating") rating?: string,
+    @Query("page") page?: string,
+    @Query("limit") limit?: string,
+  ) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new ForbiddenException("Tenant ID missing");
+    return this.analyticsService.getEventFeedbacks(tenantId, id, {
+      activityId,
+      speakerId,
+      rating: rating ? parseInt(rating) : undefined,
+      page: page ? parseInt(page) : undefined,
+      limit: limit ? parseInt(limit) : undefined,
+    });
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get("events/:id/feedback-highlights")
+  async getEventFeedbackHighlights(
+    @Param("id") id: string,
+    @Req() req: AuthRequest,
+  ) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new ForbiddenException("Tenant ID missing");
+    return this.analyticsService.getEventFeedbackHighlights(tenantId, id);
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @Get("events/:id/speakers")
+  async getEventSpeakers(@Param("id") id: string, @Req() req: AuthRequest) {
+    const tenantId = req.user?.tenantId;
+    if (!tenantId) throw new ForbiddenException("Tenant ID missing");
+    return this.analyticsService.getEventSpeakers(tenantId, id);
+  }
 }

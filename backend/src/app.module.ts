@@ -14,6 +14,7 @@ import { SubmissionConfigService } from "./submissions/submission-config.service
 import { ReviewerManagementService } from "./submissions/reviewer-management.service";
 import { ReviewerManagementController } from "./submissions/reviewer-management.controller";
 import { ActivitiesProcessor } from "./activities/activities.processor";
+import { PublicActivitiesController } from "./activities/public-activities.controller";
 import { CheckoutController } from "./checkout/checkout.controller";
 import { CheckoutService } from "./checkout/checkout.service";
 import { FreeTicketStrategy } from "./checkout/free-ticket.strategy";
@@ -80,6 +81,7 @@ import { KanbanModule } from "./kanban/kanban.module";
     SubmissionsController,
     SubmissionConfigController,
     ActivitiesController,
+    PublicActivitiesController,
     CheckoutController,
     CheckinController,
     CertificatesController,

@@ -105,6 +105,7 @@ vi.mock('@heroicons/react/24/solid', () => ({
   CheckIcon: MockIcon('CheckIcon'),
   TrophyIcon: MockIcon('TrophyIcon'),
   SparklesIcon: MockIcon('SparklesIcon'),
+  StarIcon: MockIcon('StarIcon'),
 }));
 
 // Mock da AuthContext

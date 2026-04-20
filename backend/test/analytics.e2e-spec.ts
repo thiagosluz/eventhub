@@ -33,6 +33,14 @@ describe("Analytics (e2e)", () => {
     auditLog: {
       create: jest.fn().mockResolvedValue({ id: "log_1" }),
     },
+    activityFeedback: {
+      aggregate: jest.fn(),
+      findMany: jest.fn(),
+      count: jest.fn(),
+    },
+    speaker: {
+      findMany: jest.fn(),
+    },
   };
 
   const mockQueue = { add: jest.fn() };
@@ -88,6 +96,9 @@ describe("Analytics (e2e)", () => {
         id: "e1",
         activities: [],
         registrations: [],
+      });
+      mockPrismaService.activityFeedback.aggregate.mockResolvedValue({
+        _avg: { rating: 4.5 },
       });
 
       return request(app.getHttpServer())

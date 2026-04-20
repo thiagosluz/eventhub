@@ -10,6 +10,9 @@ vi.mock('@/services/analytics.service', () => ({
     getEventAnalytics: vi.fn(),
     getEventParticipants: vi.fn(),
     getEventCheckins: vi.fn(),
+    getEventFeedbacks: vi.fn(),
+    getEventFeedbackHighlights: vi.fn(),
+    getEventSpeakers: vi.fn(),
   },
 }));
 
@@ -91,6 +94,9 @@ describe('EventAnalyticsPage', () => {
     vi.mocked(analyticsService.getEventAnalytics).mockResolvedValue(mockAnalytics as any);
     vi.mocked(analyticsService.getEventParticipants).mockResolvedValue(mockParticipants as any);
     vi.mocked(analyticsService.getEventCheckins).mockResolvedValue(mockCheckins as any);
+    vi.mocked(analyticsService.getEventSpeakers).mockResolvedValue([] as any);
+    vi.mocked(analyticsService.getEventFeedbacks).mockResolvedValue({ data: [], total: 0, averageRating: 0 } as any);
+    vi.mocked(analyticsService.getEventFeedbackHighlights).mockResolvedValue([] as any);
     global.URL.createObjectURL = vi.fn().mockReturnValue('mock-url');
   });
 

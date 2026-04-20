@@ -111,11 +111,20 @@ export class AnalyticsService {
       ),
     ).length;
 
+    // 6. Feedback Aggregation
+    const feedbackAggregation = await this.prisma.activityFeedback.aggregate({
+      where: {
+        activity: { eventId },
+      },
+      _avg: { rating: true },
+    });
+
     return {
       eventId: event.id,
       eventName: event.name,
       totalRegistrations: event.registrations.length,
       totalCheckins,
+      averageFeedback: feedbackAggregation._avg.rating || 0,
       activityParticipation,
       registrationStatus,
       ticketDistribution,
@@ -218,5 +227,148 @@ export class AnalyticsService {
       ticketType: att.ticket.type,
       activityName: att.activity?.title || "Check-in Geral",
     }));
+  }
+
+  async getEventFeedbacks(
+    tenantId: string,
+    eventId: string,
+    filters: {
+      activityId?: string;
+      speakerId?: string;
+      rating?: number;
+      page?: number;
+      limit?: number;
+    },
+  ) {
+    const skip = ((filters.page || 1) - 1) * (filters.limit || 10);
+    const take = filters.limit || 10;
+
+    const where = {
+      activity: {
+        eventId,
+        event: {
+          tenantId,
+        },
+        ...(filters.activityId ? { id: filters.activityId } : {}),
+        ...(filters.speakerId
+          ? { speakers: { some: { speakerId: filters.speakerId } } }
+          : {}),
+      },
+      ...(filters.rating ? { rating: filters.rating } : {}),
+    };
+
+    const [data, total, aggregation, highlightsData] = await Promise.all([
+      this.prisma.activityFeedback.findMany({
+        where,
+        include: {
+          activity: {
+            include: {
+              speakers: {
+                include: {
+                  speaker: true,
+                },
+              },
+            },
+          },
+          registration: {
+            include: {
+              user: true,
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take,
+      }),
+      this.prisma.activityFeedback.count({ where }),
+      this.prisma.activityFeedback.aggregate({
+        where,
+        _avg: { rating: true },
+      }),
+      this.getEventFeedbackHighlights(tenantId, eventId),
+    ]);
+
+    const highlightIds = new Set(highlightsData.map((h) => h.id));
+
+    return {
+      data: data.map((f) => ({
+        id: f.id,
+        rating: f.rating,
+        comment: f.comment,
+        isAnonymous: f.isAnonymous,
+        createdAt: f.createdAt,
+        userName:
+          f.isAnonymous || !f.registration
+            ? "Participante Anônimo"
+            : f.registration.user.name,
+        activityTitle: f.activity.title,
+        speakers: f.activity.speakers.map((s) => s.speaker.name),
+        isActivityHighlight: highlightIds.has(f.activityId),
+      })),
+      total,
+      averageRating: aggregation._avg.rating || 0,
+    };
+  }
+
+  async getEventFeedbackHighlights(tenantId: string, eventId: string) {
+    const feedbackStats = await this.prisma.activityFeedback.groupBy({
+      by: ["activityId"],
+      where: {
+        activity: {
+          eventId,
+          event: { tenantId },
+        },
+      },
+      _avg: { rating: true },
+      _count: { id: true },
+      orderBy: {
+        _avg: { rating: "desc" },
+      },
+      having: {
+        id: { _count: { gte: 1 } }, // Mínimo de 1 avaliação (ajustável)
+      },
+      take: 3,
+    });
+
+    if (feedbackStats.length === 0) return [];
+
+    const activities = await this.prisma.activity.findMany({
+      where: {
+        id: { in: feedbackStats.map((s) => s.activityId) },
+      },
+      include: {
+        speakers: {
+          include: {
+            speaker: true,
+          },
+        },
+      },
+    });
+
+    return feedbackStats.map((stat) => {
+      const activity = activities.find((a) => a.id === stat.activityId);
+      return {
+        id: stat.activityId,
+        title: activity?.title || "Atividade Desconhecida",
+        averageRating: stat._avg.rating || 0,
+        feedbackCount: stat._count.id,
+        speakers: activity?.speakers.map((s) => s.speaker.name) || [],
+        isHighlight: (stat._avg.rating || 0) >= 4.8,
+      };
+    });
+  }
+
+  async getEventSpeakers(tenantId: string, eventId: string) {
+    const speakers = await this.prisma.speaker.findMany({
+      where: {
+        tenantId,
+        activities: {
+          some: {
+            activity: { eventId },
+          },
+        },
+      },
+    });
+    return speakers;
   }
 }

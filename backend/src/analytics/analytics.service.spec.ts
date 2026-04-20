@@ -16,6 +16,18 @@ describe("AnalyticsService", () => {
     attendance: {
       findMany: jest.fn(),
     },
+    activityFeedback: {
+      aggregate: jest.fn(),
+      findMany: jest.fn(),
+      count: jest.fn(),
+      groupBy: jest.fn(),
+    },
+    speaker: {
+      findMany: jest.fn(),
+    },
+    activity: {
+      findMany: jest.fn(),
+    },
   };
 
   beforeEach(async () => {
@@ -62,11 +74,15 @@ describe("AnalyticsService", () => {
       };
 
       mockPrismaService.event.findFirst.mockResolvedValue(mockEvent);
+      mockPrismaService.activityFeedback.aggregate.mockResolvedValue({
+        _avg: { rating: 4.5 },
+      });
 
       const result = await service.getEventAnalytics("t1", "e1");
 
       expect(result.eventId).toBe("e1");
       expect(result.totalRegistrations).toBe(1);
+      expect(result.averageFeedback).toBe(4.5);
 
       // Activity participation check
       expect(result.activityParticipation[0].enrolled).toBe(3);
@@ -203,8 +219,105 @@ describe("AnalyticsService", () => {
         registrations: [],
       };
       mockPrismaService.event.findFirst.mockResolvedValue(mockEvent);
+      mockPrismaService.activityFeedback.aggregate.mockResolvedValue({
+        _avg: { rating: 0 },
+      });
       const result = await service.getEventAnalytics("t1", "e1");
       expect(result.activityParticipation[0].occupancyRate).toBe(0);
+    });
+  });
+
+  describe("getEventFeedbacks", () => {
+    it("should return paginated feedbacks with average rating", async () => {
+      mockPrismaService.activityFeedback.findMany.mockResolvedValue([
+        {
+          id: "f1",
+          rating: 5,
+          comment: "Great!",
+          isAnonymous: false,
+          createdAt: new Date(),
+          activity: {
+            title: "Workshop",
+            speakers: [{ speaker: { name: "Speaker 1" } }],
+          },
+          registration: { user: { name: "User 1" } },
+        },
+      ]);
+      mockPrismaService.activityFeedback.count.mockResolvedValue(1);
+      mockPrismaService.activityFeedback.aggregate.mockResolvedValue({
+        _avg: { rating: 5 },
+      });
+      mockPrismaService.activityFeedback.groupBy.mockResolvedValue([]);
+
+      const result = await service.getEventFeedbacks("t1", "e1", {});
+
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].userName).toBe("User 1");
+      expect(result.averageRating).toBe(5);
+    });
+
+    it("should handle anonymous feedbacks", async () => {
+      mockPrismaService.activityFeedback.findMany.mockResolvedValue([
+        {
+          id: "f2",
+          rating: 4,
+          comment: "Good",
+          isAnonymous: true,
+          createdAt: new Date(),
+          activity: { title: "Talk", speakers: [] },
+          registration: { user: { name: "Secret" } },
+        },
+      ]);
+      mockPrismaService.activityFeedback.count.mockResolvedValue(1);
+      mockPrismaService.activityFeedback.aggregate.mockResolvedValue({
+        _avg: { rating: 4 },
+      });
+      mockPrismaService.activityFeedback.groupBy.mockResolvedValue([]);
+
+      const result = await service.getEventFeedbacks("t1", "e1", {});
+
+      expect(result.data[0].userName).toBe("Participante Anônimo");
+    });
+  });
+
+  describe("getEventSpeakers", () => {
+    it("should return speakers for the event", async () => {
+      mockPrismaService.speaker.findMany.mockResolvedValue([
+        { id: "s1", name: "John Doe" },
+      ]);
+
+      const result = await service.getEventSpeakers("t1", "e1");
+
+      expect(result).toHaveLength(1);
+      expect(result[0].name).toBe("John Doe");
+    });
+  });
+
+  describe("getEventFeedbackHighlights", () => {
+    it("should return top rated activities", async () => {
+      mockPrismaService.activityFeedback.groupBy.mockResolvedValue([
+        { activityId: "a1", _avg: { rating: 5.0 }, _count: { id: 10 } },
+      ]);
+      mockPrismaService.activity.findMany.mockResolvedValue([
+        {
+          id: "a1",
+          title: "Keynote",
+          speakers: [{ speaker: { name: "Speaker 1" } }],
+        },
+      ]);
+
+      const result = await service.getEventFeedbackHighlights("t1", "e1");
+
+      expect(result).toHaveLength(1);
+      expect(result[0].title).toBe("Keynote");
+      expect(result[0].averageRating).toBe(5.0);
+      expect(result[0].isHighlight).toBe(true);
+    });
+
+    it("should return empty array if no feedbacks exist", async () => {
+      mockPrismaService.activityFeedback.groupBy.mockResolvedValue([]);
+      const result = await service.getEventFeedbackHighlights("t1", "e1");
+      expect(result).toEqual([]);
     });
   });
 });

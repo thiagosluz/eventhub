@@ -13,6 +13,12 @@ export interface Speaker {
   userId?: string | null;
 }
 
+export interface SpeakerSummary {
+  totalActivities: number;
+  totalEnrollments: number;
+  averageRating: number | null;
+}
+
 export interface ActivitySpeaker {
   activityId: string;
   speakerId: string;
@@ -38,6 +44,12 @@ export interface ActivityFeedback {
   comment?: string;
   createdAt: string;
   activity: { title: string };
+}
+
+export interface PaginatedFeedbacks {
+  data: ActivityFeedback[];
+  total: number;
+  averageRating: number | null;
 }
 
 export const speakersService = {
@@ -78,8 +90,25 @@ export const speakersService = {
     return api.get<ActivitySpeaker[]>('/speakers/me/activities');
   },
 
-  getMyFeedbacks: async (): Promise<ActivityFeedback[]> => {
-    return api.get<ActivityFeedback[]>('/speakers/me/feedbacks');
+  getMySummary: async (): Promise<SpeakerSummary> => {
+    return api.get<SpeakerSummary>('/speakers/me/summary');
+  },
+
+  getMyFeedbacks: async (filters: {
+    activityId?: string;
+    rating?: number;
+    page?: number;
+    limit?: number;
+  } = {}): Promise<PaginatedFeedbacks> => {
+    const params = new URLSearchParams();
+    if (filters.activityId) params.append('activityId', filters.activityId);
+    if (filters.rating) params.append('rating', filters.rating.toString());
+    if (filters.page) params.append('page', filters.page.toString());
+    if (filters.limit) params.append('limit', filters.limit.toString());
+    const queryString = params.toString();
+    const url = queryString ? `/speakers/me/feedbacks?${queryString}` : '/speakers/me/feedbacks';
+
+    return api.get<PaginatedFeedbacks>(url);
   },
 
   addActivityMaterial: async (

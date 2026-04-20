@@ -14,8 +14,12 @@ import {
   PlusIcon,
   ArrowTopRightOnSquareIcon,
   TrashIcon,
+  QrCodeIcon,
+  ClipboardDocumentIcon,
+  CheckIcon,
 } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
+import { QRCodeCanvas } from "qrcode.react";
 import { ConfirmationModal } from "@/components/common/ConfirmationModal";
 
 interface MaterialForm {
@@ -38,6 +42,17 @@ export default function SpeakerActivitiesPage() {
   // Delete Modal state
   const [deleteModal, setDeleteModal] = useState<{ activityId: string; materialId: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // QR Code Modal state
+  const [qrCodeModal, setQrCodeModal] = useState<{ activityId: string; activityTitle: string } | null>(null);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setIsCopied(true);
+    toast.success("Link copiado!");
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
   useEffect(() => {
     loadActivities();
@@ -89,7 +104,7 @@ export default function SpeakerActivitiesPage() {
     }
   };
 
-  const confirmDeleteMaterial = async () => {
+  const handleDeleteMaterial = async () => {
     if (!deleteModal) return;
     setIsDeleting(true);
     
@@ -243,6 +258,14 @@ export default function SpeakerActivitiesPage() {
                     Adicionar Material
                   </button>
 
+                  <button
+                    onClick={() => setQrCodeModal({ activityId: item.activityId, activityTitle: item.activity.title })}
+                    className="w-full py-2.5 bg-background text-foreground border border-border rounded-xl text-xs font-black uppercase tracking-widest hover:bg-muted transition-all flex items-center justify-center gap-2"
+                  >
+                    <QrCodeIcon className="w-4 h-4" />
+                    QR Code de Feedback
+                  </button>
+
                   {/* Status Badge */}
                   <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center gap-3">
                     <CheckBadgeIcon className="w-6 h-6 text-emerald-500" />
@@ -372,14 +395,94 @@ export default function SpeakerActivitiesPage() {
       <ConfirmationModal
         isOpen={!!deleteModal}
         onClose={() => setDeleteModal(null)}
-        onConfirm={confirmDeleteMaterial}
+        onConfirm={handleDeleteMaterial}
         title="Remover Material"
         description="Tem certeza que deseja remover este material? Esta ação não pode ser desfeita e os participantes não terão mais acesso a ele."
-        confirmText="Sim, remover material"
+        confirmText="Excluir Material"
         cancelText="Cancelar"
         variant="danger"
         isLoading={isDeleting}
       />
+
+      {/* QR Code Modal */}
+      {qrCodeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-card w-full max-w-lg rounded-3xl border border-border shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            <div className="p-6 border-b border-border flex items-center justify-between">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">Feedback ao Vivo</p>
+                <h3 className="text-xl font-black">{qrCodeModal.activityTitle}</h3>
+              </div>
+              <button
+                onClick={() => setQrCodeModal(null)}
+                className="p-2 hover:bg-muted rounded-full transition-colors"
+              >
+                <XMarkIcon className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="p-12 flex flex-col items-center justify-center space-y-8 bg-white">
+              <div className="p-6 bg-white rounded-[2rem] shadow-2xl border border-zinc-100 ring-8 ring-zinc-50">
+                <QRCodeCanvas
+                  value={`${typeof window !== 'undefined' ? window.location.origin : ''}/f/${qrCodeModal.activityId}`}
+                  size={280}
+                  level="H"
+                  includeMargin={false}
+                  imageSettings={{
+                    src: "/logo-icon.png", // Caso exista um ícone de logo
+                    x: undefined,
+                    y: undefined,
+                    height: 40,
+                    width: 40,
+                    excavate: true,
+                  }}
+                />
+              </div>
+
+              <div className="w-full max-w-sm space-y-4">
+                <div className="text-center space-y-2">
+                  <p className="text-xl font-black text-zinc-900">Peça para os participantes lerem o código</p>
+                  <p className="text-sm text-zinc-500 font-medium">
+                    Ou compartilhe o link direto para a página de avaliação.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 p-2 bg-zinc-100 rounded-2xl border border-zinc-200">
+                  <div className="flex-1 px-3 overflow-hidden">
+                    <p className="text-xs font-bold text-zinc-600 truncate">
+                      {typeof window !== 'undefined' ? window.location.origin : ''}/f/{qrCodeModal.activityId}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard(`${window.location.origin}/f/${qrCodeModal.activityId}`)}
+                    className={`p-3 rounded-xl transition-all flex items-center gap-2 ${
+                      isCopied ? 'bg-emerald-500 text-white' : 'bg-white text-zinc-900 shadow-sm hover:bg-zinc-50'
+                    }`}
+                  >
+                    {isCopied ? (
+                      <CheckIcon className="w-4 h-4" />
+                    ) : (
+                      <ClipboardDocumentIcon className="w-4 h-4" />
+                    )}
+                    <span className="text-[10px] font-black uppercase tracking-widest">
+                      {isCopied ? 'Copiado' : 'Copiar'}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 bg-zinc-50 border-t border-zinc-100 flex justify-center">
+              <button
+                onClick={() => setQrCodeModal(null)}
+                className="px-8 py-3 bg-foreground text-background rounded-2xl font-black uppercase tracking-widest text-xs hover:opacity-90 transition-opacity"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

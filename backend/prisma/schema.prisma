@@ -596,6 +596,7 @@ model ActivityFeedback {
   rating         Int
   comment        String?
   registrationId String?
+  isAnonymous    Boolean       @default(false)
   createdAt      DateTime      @default(now())
   activity       Activity      @relation(fields: [activityId], references: [id], onDelete: Cascade)
   registration   Registration? @relation(fields: [registrationId], references: [id])

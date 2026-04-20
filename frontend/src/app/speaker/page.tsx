@@ -18,25 +18,19 @@ export default function SpeakerDashboard() {
   const [profile, setProfile] = useState<Speaker | null>(null);
   const [activities, setActivities] = useState<ActivitySpeaker[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [feedbackAvg, setFeedbackAvg] = useState<number | null>(null);
+  const [summary, setSummary] = useState<{ totalActivities: number; totalEnrollments: number; averageRating: number | null } | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [me, myActivities, myFeedbacks] = await Promise.all([
+        const [me, myActivities, mySummary] = await Promise.all([
           speakersService.getMe(),
           speakersService.getMyActivities(),
-          speakersService.getMyFeedbacks(),
+          speakersService.getMySummary(),
         ]);
         setProfile(me);
         setActivities(myActivities);
-
-        if (myFeedbacks.length > 0) {
-          const avg = myFeedbacks.reduce((acc, fb) => acc + fb.rating, 0) / myFeedbacks.length;
-          setFeedbackAvg(avg);
-        } else {
-          setFeedbackAvg(null);
-        }
+        setSummary(mySummary);
       } catch (error) {
         console.error("Error loading dashboard data:", error);
       } finally {
@@ -97,7 +91,7 @@ export default function SpeakerDashboard() {
           </div>
           <div>
             <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Total de Atividades</p>
-            <p className="text-2xl font-black text-foreground">{activities.length}</p>
+            <p className="text-2xl font-black text-foreground">{summary?.totalActivities || 0}</p>
           </div>
         </div>
 
@@ -107,9 +101,7 @@ export default function SpeakerDashboard() {
           </div>
           <div>
             <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Inscritos Totais</p>
-            <p className="text-2xl font-black text-foreground">
-              {activities.reduce((acc, curr) => acc + (curr.activity._count?.enrollments || 0), 0)}
-            </p>
+            <p className="text-2xl font-black text-foreground">{summary?.totalEnrollments || 0}</p>
           </div>
         </div>
 
@@ -119,14 +111,16 @@ export default function SpeakerDashboard() {
           </div>
           <div>
             <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Média de Feedback</p>
-            {feedbackAvg !== null ? (
-              <div className="flex items-center gap-1.5">
-                <p className="text-2xl font-black text-foreground">{feedbackAvg.toFixed(1)}</p>
-                <StarIconSolid className="w-4 h-4 text-amber-500" />
-              </div>
-            ) : (
-              <p className="text-sm font-bold text-muted-foreground italic">Sem avaliações</p>
-            )}
+            <div className="flex items-center gap-1.5 mt-0.5">
+              {summary?.averageRating ? (
+                <>
+                  <span className="text-2xl font-black text-foreground">{summary.averageRating.toFixed(1)}</span>
+                  <StarIconSolid className="w-5 h-5 text-amber-500 mb-1" />
+                </>
+              ) : (
+                <span className="text-sm font-bold text-muted-foreground italic">Sem avaliações</span>
+              )}
+            </div>
           </div>
         </div>
       </div>

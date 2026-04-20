@@ -32,6 +32,8 @@ describe("SpeakersService", () => {
     },
     activityFeedback: {
       findMany: jest.fn(),
+      count: jest.fn(),
+      aggregate: jest.fn(),
     },
     activityMaterial: {
       create: jest.fn(),
@@ -230,8 +232,14 @@ describe("SpeakersService", () => {
       mockPrismaService.activityFeedback.findMany.mockResolvedValue([
         { id: "f1" },
       ]);
+      mockPrismaService.activityFeedback.count.mockResolvedValue(1);
+      mockPrismaService.activityFeedback.aggregate.mockResolvedValue({
+        _avg: { rating: 4.5 },
+      });
       const result = await service.getFeedbacks("s1");
-      expect(result).toHaveLength(1);
+      expect(result.data).toHaveLength(1);
+      expect(result.total).toBe(1);
+      expect(result.averageRating).toBe(4.5);
     });
 
     it("should find speaker by userId", async () => {

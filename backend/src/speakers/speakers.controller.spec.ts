@@ -142,10 +142,19 @@ describe("SpeakersController", () => {
   describe("Portal do Palestrante - Feedbacks", () => {
     it("should get my feedbacks", async () => {
       mockSpeakersService.findByUserId.mockResolvedValue({ id: "sp-1" });
-      mockSpeakersService.getFeedbacks.mockResolvedValue([]);
+      mockSpeakersService.getFeedbacks.mockResolvedValue({
+        data: [],
+        total: 0,
+        averageRating: 0,
+      });
       const result = await controller.getMyFeedbacks(mockRequest as any);
-      expect(result).toEqual([]);
-      expect(mockSpeakersService.getFeedbacks).toHaveBeenCalledWith("sp-1");
+      expect(result).toEqual({ data: [], total: 0, averageRating: 0 });
+      expect(mockSpeakersService.getFeedbacks).toHaveBeenCalledWith("sp-1", {
+        activityId: undefined,
+        rating: undefined,
+        page: 1,
+        limit: 10,
+      });
     });
   });
 

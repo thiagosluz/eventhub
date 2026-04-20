@@ -5,6 +5,7 @@ export interface EventAnalytics {
   eventName: string;
   totalRegistrations: number;
   totalCheckins: number;
+  averageFeedback: number;
   activityParticipation: {
     id: string;
     name: string;
@@ -48,6 +49,40 @@ export interface Checkin {
   email: string;
   ticketType: string;
   activityName: string;
+}
+
+export interface EventFeedback {
+  id: string;
+  rating: number;
+  comment: string;
+  isAnonymous: boolean;
+  createdAt: string;
+  userName: string;
+  activityTitle: string;
+  speakers: string[];
+  isActivityHighlight: boolean;
+}
+
+export interface FeedbackHighlight {
+  id: string;
+  title: string;
+  averageRating: number;
+  feedbackCount: number;
+  speakers: string[];
+  isHighlight: boolean;
+}
+
+export interface PaginatedEventFeedbacks {
+  data: EventFeedback[];
+  total: number;
+  averageRating: number;
+}
+
+export interface EventSpeaker {
+  id: string;
+  name: string;
+  bio?: string;
+  avatarUrl?: string;
 }
 
 export interface GamificationStats {
@@ -130,5 +165,26 @@ export const analyticsService = {
 
   revokeBadge: async (userBadgeId: string): Promise<void> => {
     return api.delete(`/analytics/gamification/badges/${userBadgeId}/revoke`);
+  },
+
+  getEventFeedbacks: async (
+    eventId: string,
+    params: {
+      activityId?: string;
+      speakerId?: string;
+      rating?: number;
+      page?: number;
+      limit?: number;
+    },
+  ): Promise<PaginatedEventFeedbacks> => {
+    return api.get(`/analytics/events/${eventId}/feedbacks`, { params });
+  },
+
+  getEventSpeakers: async (eventId: string): Promise<EventSpeaker[]> => {
+    return api.get(`/analytics/events/${eventId}/speakers`);
+  },
+
+  getEventFeedbackHighlights: async (eventId: string): Promise<FeedbackHighlight[]> => {
+    return api.get(`/analytics/events/${eventId}/feedback-highlights`);
   },
 };

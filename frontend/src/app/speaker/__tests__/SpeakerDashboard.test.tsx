@@ -35,7 +35,7 @@ vi.mock("@/services/speakers.service", () => ({
   speakersService: {
     getMe: vi.fn(),
     getMyActivities: vi.fn(),
-    getMyFeedbacks: vi.fn(),
+    getMySummary: vi.fn(),
   },
 }));
 
@@ -62,7 +62,11 @@ describe("SpeakerDashboard Component", () => {
     (useAuth as any).mockReturnValue({ user: mockUser });
     (speakersService.getMe as any).mockResolvedValue(mockProfile);
     (speakersService.getMyActivities as any).mockResolvedValue(mockActivities);
-    (speakersService.getMyFeedbacks as any).mockResolvedValue([]);
+    (speakersService.getMySummary as any).mockResolvedValue({
+      totalActivities: 1,
+      totalEnrollments: 150,
+      averageRating: 4.5,
+    });
   });
 
   it("deve carregar e exibir dados do palestrante corretamente", async () => {

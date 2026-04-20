@@ -179,21 +179,90 @@ export class SpeakersService {
     });
   }
 
-  async getFeedbacks(speakerId: string) {
-    // Busca feedbacks de todas as atividades deste palestrante
+  async getSummary(speakerId: string) {
     const activities = await this.prisma.activitySpeaker.findMany({
       where: { speakerId },
-      select: { activityId: true },
-    });
-    const activityIds = activities.map((a) => a.activityId);
-
-    return this.prisma.activityFeedback.findMany({
-      where: { activityId: { in: activityIds } },
       include: {
-        activity: { select: { title: true } },
+        activity: {
+          select: {
+            _count: { select: { enrollments: true } },
+            feedbacks: { select: { rating: true } },
+          },
+        },
       },
-      orderBy: { createdAt: "desc" },
     });
+
+    let totalEnrollments = 0;
+    let totalRatings = 0;
+    let sumRatings = 0;
+    const totalActivities = activities.length;
+
+    activities.forEach((as) => {
+      totalEnrollments += as.activity._count.enrollments;
+      as.activity.feedbacks.forEach((f) => {
+        totalRatings++;
+        sumRatings += f.rating;
+      });
+    });
+
+    const averageRating = totalRatings > 0 ? sumRatings / totalRatings : null;
+
+    return {
+      totalActivities,
+      totalEnrollments,
+      averageRating,
+    };
+  }
+
+  async getFeedbacks(
+    speakerId: string,
+    filters: {
+      activityId?: string;
+      rating?: number;
+      page?: number;
+      limit?: number;
+    } = {},
+  ) {
+    const { activityId, rating, page = 1, limit = 10 } = filters;
+    const skip = (page - 1) * limit;
+
+    // Busca feedbacks de todas as atividades deste palestrante ou de uma específica
+    const activityIds = activityId
+      ? [activityId]
+      : (
+          await this.prisma.activitySpeaker.findMany({
+            where: { speakerId },
+            select: { activityId: true },
+          })
+        ).map((a) => a.activityId);
+
+    const where = {
+      activityId: { in: activityIds },
+      ...(rating ? { rating } : {}),
+    };
+
+    const [data, total, aggregation] = await Promise.all([
+      this.prisma.activityFeedback.findMany({
+        where,
+        include: {
+          activity: { select: { title: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: limit,
+      }),
+      this.prisma.activityFeedback.count({ where }),
+      this.prisma.activityFeedback.aggregate({
+        where,
+        _avg: { rating: true },
+      }),
+    ]);
+
+    return {
+      data,
+      total,
+      averageRating: aggregation._avg.rating,
+    };
   }
 
   async addMaterial(

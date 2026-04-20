@@ -96,12 +96,12 @@ describe('speakersService', () => {
   });
 
   it('getMyFeedbacks deve buscar feedbacks recebidos', async () => {
-    const mockData = [{ id: 'f1', rating: 5 }];
+    const mockData = { data: [{ id: 'f1', rating: 5 }], total: 1 };
     (api.get as any).mockResolvedValue(mockData);
 
-    const result = await speakersService.getMyFeedbacks();
+    const result = await speakersService.getMyFeedbacks({ page: 1, limit: 10 });
 
-    expect(api.get).toHaveBeenCalledWith('/speakers/me/feedbacks');
+    expect(api.get).toHaveBeenCalledWith('/speakers/me/feedbacks?page=1&limit=10');
     expect(result).toEqual(mockData);
   });
 

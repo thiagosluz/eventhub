@@ -595,4 +595,76 @@ export class ActivitiesService implements OnModuleInit {
       where: { id: materialId },
     });
   }
+
+  async getPublicActivityInfo(activityId: string) {
+    const activity = await this.prisma.activity.findUnique({
+      where: { id: activityId },
+      include: {
+        event: {
+          select: {
+            name: true,
+            tenant: {
+              select: {
+                logoUrl: true,
+                name: true,
+              },
+            },
+          },
+        },
+        speakers: {
+          include: {
+            speaker: {
+              select: {
+                name: true,
+                avatarUrl: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!activity) {
+      throw new NotFoundException("Atividade não encontrada");
+    }
+
+    return {
+      id: activity.id,
+      title: activity.title,
+      startAt: activity.startAt,
+      endAt: activity.endAt,
+      eventName: activity.event.name,
+      tenantName: activity.event.tenant.name,
+      tenantLogo: activity.event.tenant.logoUrl,
+      speakers: activity.speakers.map((s) => ({
+        name: s.speaker.name,
+        avatarUrl: s.speaker.avatarUrl,
+      })),
+    };
+  }
+
+  async submitPublicFeedback(
+    activityId: string,
+    data: { rating: number; comment?: string },
+  ) {
+    const activity = await this.prisma.activity.findUnique({
+      where: { id: activityId },
+    });
+
+    if (!activity) {
+      throw new NotFoundException("Atividade não encontrada");
+    }
+
+    if (data.rating < 1 || data.rating > 5) {
+      throw new Error("Nota deve estar entre 1 e 5");
+    }
+
+    return this.prisma.activityFeedback.create({
+      data: {
+        activityId,
+        rating: data.rating,
+        comment: data.comment,
+      },
+    });
+  }
 }

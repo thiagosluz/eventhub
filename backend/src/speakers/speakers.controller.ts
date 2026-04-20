@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -48,11 +49,29 @@ export class SpeakersController {
     return this.speakersService.findActivities(speaker.id);
   }
 
+  @Get("me/summary")
+  @Roles(UserRole.SPEAKER)
+  async getMySummary(@Req() req: AuthRequest) {
+    const speaker = await this.speakersService.findByUserId(req.user!.sub);
+    return this.speakersService.getSummary(speaker.id);
+  }
+
   @Get("me/feedbacks")
   @Roles(UserRole.SPEAKER)
-  async getMyFeedbacks(@Req() req: AuthRequest) {
+  async getMyFeedbacks(
+    @Req() req: AuthRequest,
+    @Query("activityId") activityId?: string,
+    @Query("rating") rating?: string,
+    @Query("page") page?: string,
+    @Query("limit") limit?: string,
+  ) {
     const speaker = await this.speakersService.findByUserId(req.user!.sub);
-    return this.speakersService.getFeedbacks(speaker.id);
+    return this.speakersService.getFeedbacks(speaker.id, {
+      activityId,
+      rating: rating ? parseInt(rating) : undefined,
+      page: page ? parseInt(page) : 1,
+      limit: limit ? parseInt(limit) : 10,
+    });
   }
 
   @Post("me/activities/:activityId/materials")
