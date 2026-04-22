@@ -1,26 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 
 test.describe('Dashboard - Perfil do Usuário', () => {
   test.beforeEach(async ({ page }) => {
     await setupDefaultMocks(page);
-    
-    await page.addInitScript(() => {
-      const token = 'fake-jwt-token';
-      const user = {
-        id: 'clv_user_thiago',
-        name: 'Thiago Organizador',
-        email: 'organizador@eventhub.com.br',
-        role: 'ORGANIZER',
-        tenantId: 'clv_tenant_hq'
-      };
-      
-      window.localStorage.setItem('eventhub_token', token);
-      window.localStorage.setItem('eventhub_user', JSON.stringify(user));
-      
-      // Injeta cookie para o Middleware do Next.js
-      document.cookie = `eventhub_token=${token}; path=/`;
-    });
+    await injectAuth(page);
 
     await page.goto('/dashboard/profile');
   });

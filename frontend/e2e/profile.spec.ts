@@ -1,20 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 
 test.describe('Perfil do Usuário', () => {
   test.beforeEach(async ({ page }) => {
     await setupDefaultMocks(page);
-    
-    await page.addInitScript(() => {
-      window.localStorage.setItem('eventhub_user', JSON.stringify({
-        id: 'clv_user_thiago',
-        email: 'organizador@eventhub.com.br',
-        name: 'Thiago Silva',
-        role: 'ORGANIZER',
-        tenantId: 'clv_tenant_hq'
-      }));
-      window.localStorage.setItem('eventhub_token', 'fake-token-e2e');
-    });
+    await injectAuth(page, { name: 'Thiago Silva' });
 
     await page.goto('/dashboard/profile');
   });

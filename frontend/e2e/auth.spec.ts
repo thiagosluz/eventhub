@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { makeFakeJwt, setupDefaultMocks } from './support/mocks';
 
 test.describe('Authentication Flow', () => {
   test.beforeEach(async ({ page }) => {
@@ -16,7 +16,8 @@ test.describe('Authentication Flow', () => {
           contentType: 'application/json',
           body: JSON.stringify({
             user: { id: 1, email: 'organizer@example.com', name: 'Organizer', role: 'ORGANIZER' },
-            access_token: 'fake-jwt-token'
+            access_token: makeFakeJwt({ sub: '1', role: 'ORGANIZER' }),
+            refresh_token: makeFakeJwt({ sub: '1', role: 'ORGANIZER', type: 'refresh' }),
           }),
         });
       } else {

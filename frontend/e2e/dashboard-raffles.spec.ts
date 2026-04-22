@@ -1,22 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 
 test.describe('Dashboard - Sorteador de Prêmios', () => {
-  test.beforeEach(async ({ page, context }) => {
+  test.beforeEach(async ({ page }) => {
     await setupDefaultMocks(page);
-    
-    // Injeta auth via cookies (para middleware) e localStorage (para front) e via context (mais robusto)
-    const token = 'fake-jwt-token';
-    const user = { id: 'clv_user_thiago', name: 'Thiago Organizador', role: 'ORGANIZER', tenantId: 'clv_tenant_hq' };
+    await injectAuth(page);
 
-    await context.addCookies([{ name: 'eventhub_token', value: token, domain: 'localhost', path: '/' }]);
-
-    await page.addInitScript(({ token, user }) => {
-      window.localStorage.setItem('eventhub_token', token);
-      window.localStorage.setItem('eventhub_user', JSON.stringify(user));
-    }, { token, user });
-
-    // Vai para a página de sorteio do evento ev-1 (mockado)
     await page.goto('/dashboard/events/ev-1/operations/raffle');
   });
 

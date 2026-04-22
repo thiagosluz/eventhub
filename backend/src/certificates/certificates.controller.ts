@@ -16,6 +16,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { imageUploadConfig } from "../common/upload/upload.config";
 import { Request, Response } from "express";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../auth/roles.decorator";
@@ -106,7 +107,7 @@ export class CertificatesController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Post("templates/:id/background")
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(FileInterceptor("file", imageUploadConfig))
   async uploadTemplateBackground(
     @Param("id") id: string,
     @UploadedFile() file: { buffer: Buffer; mimetype: string } | undefined,

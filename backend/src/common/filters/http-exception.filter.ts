@@ -5,6 +5,7 @@ import {
   HttpException,
 } from "@nestjs/common";
 import { Request, Response } from "express";
+import { captureException } from "../observability/sentry";
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -19,6 +20,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
       typeof exceptionResponse === "object" && exceptionResponse !== null
         ? (exceptionResponse as any).message || exception.message
         : exception.message;
+
+    if (status >= 500) {
+      captureException(exception, {
+        path: request.url,
+        method: request.method,
+        statusCode: status,
+      });
+    }
 
     response.status(status).json({
       statusCode: status,

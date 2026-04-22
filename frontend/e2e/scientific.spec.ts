@@ -1,24 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 
 test.describe('Fluxo Científico (Submissões e Revisões)', () => {
   test.beforeEach(async ({ page }) => {
-    // Mock de autenticação e dados básicos
     await setupDefaultMocks(page);
-    
-    // Injeta o estado de autenticação no localStorage antes da navegação
-    await page.addInitScript(() => {
-      window.localStorage.setItem('eventhub_user', JSON.stringify({
-        id: 'clv_user_thiago',
-        email: 'organizador@eventhub.com.br',
-        name: 'Thiago Silva',
-        role: 'ORGANIZER',
-        tenantId: 'clv_tenant_hq'
-      }));
-      window.localStorage.setItem('eventhub_token', 'fake-token-e2e');
-    });
-    
-    // Caminho para a página de submissões do evento
+    await injectAuth(page, { name: 'Thiago Silva' });
+
     await page.goto('/dashboard/events/ev-1/submissions');
   });
 
@@ -85,16 +72,10 @@ test.describe('Fluxo Científico (Submissões e Revisões)', () => {
 test.describe('Submissão de Trabalho (Autor)', () => {
   test.beforeEach(async ({ page }) => {
     await setupDefaultMocks(page);
-    
-    await page.addInitScript(() => {
-      window.localStorage.setItem('eventhub_user', JSON.stringify({
-        id: 'clv_user_thiago',
-        email: 'autor@eventhub.com.br',
-        name: 'Autor de Teste',
-        role: 'USER',
-        tenantId: 'clv_tenant_hq'
-      }));
-      window.localStorage.setItem('eventhub_token', 'fake-token-e2e');
+    await injectAuth(page, {
+      email: 'autor@eventhub.com.br',
+      name: 'Autor de Teste',
+      role: 'PARTICIPANT',
     });
   });
 

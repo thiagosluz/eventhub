@@ -13,6 +13,7 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { imageUploadConfig } from "../common/upload/upload.config";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../auth/roles.decorator";
 import { RolesGuard } from "../auth/roles.guard";
@@ -130,7 +131,7 @@ export class SpeakersController {
 
   @Post("upload")
   @Roles(UserRole.ORGANIZER, UserRole.SPEAKER)
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(FileInterceptor("file", imageUploadConfig))
   async uploadFile(@Req() req: AuthRequest, @UploadedFile() file: any) {
     return this.speakersService.uploadAvatar(req.user!.tenantId, file);
   }

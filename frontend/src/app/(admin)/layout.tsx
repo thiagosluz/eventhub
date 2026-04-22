@@ -12,6 +12,7 @@ import {
   Activity
 } from "lucide-react";
 import { useEffect } from "react";
+import { ThemeToggle } from "@/components/ui";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -93,10 +94,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 pb-10 overflow-y-auto">
-        <header className="h-16 flex-shrink-0 flex items-center px-8 border-b border-gray-800 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-10">
+        <header className="h-16 flex-shrink-0 flex items-center justify-between px-8 border-b border-gray-800 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-10">
           <div className="flex items-center gap-2 text-red-500 bg-red-500/10 px-3 py-1.5 rounded-full text-xs font-bold border border-red-500/20">
             <ShieldAlert className="w-3.5 h-3.5" />
             ZONA DE RISCO DE DADOS
+          </div>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
           </div>
         </header>
         <div className="flex-1">

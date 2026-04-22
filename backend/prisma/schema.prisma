@@ -41,7 +41,6 @@ model User {
   tenantId             String?
   avatarUrl            String?
   bio                  String?
-  refreshToken         String?
   resetPasswordExpires DateTime?
   resetPasswordToken   String?
   mustChangePassword   Boolean              @default(false)
@@ -69,6 +68,22 @@ model User {
   userBadges           UserBadge[]
   xpLogs               XpGainLog[]
   issuedCertificates   IssuedCertificate[]
+  refreshTokens        RefreshToken[]
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  userAgent String?
+  ip        String?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 model Event {

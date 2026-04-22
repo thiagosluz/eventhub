@@ -1,18 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 
 test.describe('Submission Visibility', () => {
-  test.beforeEach(async ({ page, context }) => {
-    // Inject auth token to skip login flow
-    const token = 'fake-jwt-token';
-    const user = { id: 'clv_user_thiago', name: 'Thiago Organizador', role: 'ORGANIZER', tenantId: 'clv_tenant_hq' };
-
-    await context.addCookies([{ name: 'eventhub_token', value: token, domain: 'localhost', path: '/' }]);
-
-    await page.addInitScript(({ token, user }) => {
-      window.localStorage.setItem('eventhub_token', token);
-      window.localStorage.setItem('eventhub_user', JSON.stringify(user));
-    }, { token, user });
+  test.beforeEach(async ({ page }) => {
+    await injectAuth(page);
   });
 
   test('should show submission form when submissions are enabled', async ({ page }) => {

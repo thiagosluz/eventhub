@@ -1,21 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 
 test.describe('Página de Checkout - Inscrição em Evento', () => {
   test.beforeEach(async ({ page }) => {
-    // Configura mocks globais
     await setupDefaultMocks(page);
-    
-    // Mock do login para garantir que estamos autenticados (usado pelo AuthContext)
-    await page.addInitScript(() => {
-      localStorage.setItem('eventhub_user', JSON.stringify({
-        id: 'clv_user_thiago',
-        email: 'organizador@eventhub.com.br',
-        name: 'Thiago Organizador',
-        role: 'ORGANIZER'
-      }));
-      localStorage.setItem('eventhub_token', 'fake-jwt-token');
-    });
+    await injectAuth(page);
   });
 
   test('deve validar campos obrigatórios no formulário de inscrição', async ({ page }) => {

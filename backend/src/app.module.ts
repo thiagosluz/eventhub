@@ -1,5 +1,9 @@
 import { Module } from "@nestjs/common";
 import { BullModule } from "@nestjs/bullmq";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { APP_GUARD } from "@nestjs/core";
+import { LoggerModule } from "nestjs-pino";
+import { buildLoggerOptions } from "./common/logging/logger.config";
 import { AuthModule } from "./auth/auth.module";
 import { ProtectedExampleController } from "./example/protected.controller";
 import { EventsController } from "./events/events.controller";
@@ -46,6 +50,7 @@ import { KanbanModule } from "./kanban/kanban.module";
 
 @Module({
   imports: [
+    LoggerModule.forRoot(buildLoggerOptions()),
     AuthModule,
     DashboardModule,
     PrismaModule,
@@ -74,6 +79,13 @@ import { KanbanModule } from "./kanban/kanban.module";
       { name: "assign-reviews" },
       { name: "activities" },
     ),
+    ThrottlerModule.forRoot([
+      {
+        name: "default",
+        ttl: 60_000,
+        limit: 120,
+      },
+    ]),
   ],
   controllers: [
     ProtectedExampleController,
@@ -107,6 +119,10 @@ import { KanbanModule } from "./kanban/kanban.module";
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseTimeInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

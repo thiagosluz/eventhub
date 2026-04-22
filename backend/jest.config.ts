@@ -18,6 +18,7 @@ export default {
     '.spec.ts$',
   ],
   coverageDirectory: '../coverage',
+  coverageReporters: ['text', 'text-summary', 'lcov', 'json-summary', 'cobertura'],
   testEnvironment: 'node',
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/$1',

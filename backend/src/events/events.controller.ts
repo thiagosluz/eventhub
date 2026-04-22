@@ -15,6 +15,7 @@ import {
   Delete,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { imageUploadConfig } from "../common/upload/upload.config";
 import { Request, Response } from "express";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../auth/roles.decorator";
@@ -228,7 +229,7 @@ export class EventsController {
     },
   })
   @Post("events/:id/banner")
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(FileInterceptor("file", imageUploadConfig))
   async uploadBanner(
     @Param("id") id: string,
     @UploadedFile() file: any,
@@ -258,7 +259,7 @@ export class EventsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Post("events/:id/logo")
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(FileInterceptor("file", imageUploadConfig))
   async uploadLogo(
     @Param("id") id: string,
     @UploadedFile() file: any,

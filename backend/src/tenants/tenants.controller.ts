@@ -10,6 +10,7 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { imageUploadConfig } from "../common/upload/upload.config";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../auth/roles.decorator";
 import { RolesGuard } from "../auth/roles.guard";
@@ -53,7 +54,7 @@ export class TenantsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Post("me/logo")
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(FileInterceptor("file", imageUploadConfig))
   async uploadLogo(
     @Req() req: AuthRequest,
     @UploadedFile() file: { buffer: Buffer; mimetype: string },
@@ -64,7 +65,7 @@ export class TenantsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ORGANIZER)
   @Post("me/cover")
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(FileInterceptor("file", imageUploadConfig))
   async uploadCover(
     @Req() req: AuthRequest,
     @UploadedFile() file: { buffer: Buffer; mimetype: string },

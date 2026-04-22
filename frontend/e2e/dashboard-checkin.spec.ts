@@ -1,24 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 
 test.describe('Dashboard - Fluxo de Check-in', () => {
   test.beforeEach(async ({ page }) => {
     await setupDefaultMocks(page);
-    
-    // Auto-login
-    await page.addInitScript(() => {
-      const token = 'fake-jwt-token';
-      const user = {
-        id: 'clv_user_thiago',
-        name: 'Thiago Organizador',
-        email: 'organizador@eventhub.com.br',
-        role: 'ORGANIZER',
-        tenantId: 'clv_tenant_hq'
-      };
-      window.localStorage.setItem('eventhub_token', token);
-      window.localStorage.setItem('eventhub_user', JSON.stringify(user));
-      document.cookie = `eventhub_token=${token}; path=/`;
-    });
+    await injectAuth(page);
 
     // Navega para check-in de um evento específico
     await page.goto('/dashboard/events/ev-1/operations/checkin');

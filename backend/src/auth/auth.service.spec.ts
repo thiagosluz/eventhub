@@ -1,5 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { AuthService } from "./auth.service";
+import { AuthService, hashRefreshToken } from "./auth.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { JwtService } from "@nestjs/jwt";
 import { UnauthorizedException, NotFoundException } from "@nestjs/common";
@@ -20,6 +20,12 @@ describe("AuthService", () => {
     },
     tenant: {
       create: jest.fn(),
+    },
+    refreshToken: {
+      findUnique: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
+      updateMany: jest.fn(),
     },
   };
 
@@ -57,21 +63,53 @@ describe("AuthService", () => {
       ).rejects.toThrow(UnauthorizedException);
     });
 
-    it("should return session if valid", async () => {
+    it("should return session if valid and persist refresh token hash", async () => {
       const user = {
         id: "u1",
         email: "t@e.com",
         password: "h",
         role: "USER",
         tenantId: "t1",
+        mustChangePassword: false,
       };
       mockPrismaService.user.findUnique.mockResolvedValue(user);
       (argon2.verify as jest.Mock).mockResolvedValue(true);
       mockJwtService.signAsync.mockResolvedValue("tok");
+      mockPrismaService.refreshToken.create.mockResolvedValue({ id: "rt1" });
 
-      const result = await service.login({ email: "t@e.com", password: "p" });
+      const result = await service.login({
+        email: "t@e.com",
+        password: "p",
+      });
       expect(result.access_token).toBe("tok");
-      expect(mockPrismaService.user.update).toHaveBeenCalled();
+      expect(mockPrismaService.refreshToken.create).toHaveBeenCalled();
+      const createArgs = mockPrismaService.refreshToken.create.mock.calls[0][0];
+      expect(createArgs.data.userId).toBe("u1");
+      expect(createArgs.data.tokenHash).toBe(hashRefreshToken("tok"));
+      expect(createArgs.data.expiresAt).toBeInstanceOf(Date);
+    });
+
+    it("persists request metadata when provided", async () => {
+      const user = {
+        id: "u1",
+        email: "t@e.com",
+        password: "h",
+        role: "USER",
+        tenantId: "t1",
+        mustChangePassword: false,
+      };
+      mockPrismaService.user.findUnique.mockResolvedValue(user);
+      (argon2.verify as jest.Mock).mockResolvedValue(true);
+      mockJwtService.signAsync.mockResolvedValue("tok");
+      mockPrismaService.refreshToken.create.mockResolvedValue({ id: "rt1" });
+
+      await service.login(
+        { email: "t@e.com", password: "p" },
+        { userAgent: "Mozilla/5.0", ip: "1.2.3.4" },
+      );
+      const createArgs = mockPrismaService.refreshToken.create.mock.calls[0][0];
+      expect(createArgs.data.userAgent).toBe("Mozilla/5.0");
+      expect(createArgs.data.ip).toBe("1.2.3.4");
     });
   });
 
@@ -92,6 +130,7 @@ describe("AuthService", () => {
       });
       mockJwtService.signAsync.mockResolvedValue("tok");
       (argon2.hash as jest.Mock).mockResolvedValue("hashed");
+      mockPrismaService.refreshToken.create.mockResolvedValue({ id: "rt1" });
 
       const result = await service.registerOrganizer({
         email: "t@e.com",
@@ -116,6 +155,7 @@ describe("AuthService", () => {
       });
       mockJwtService.signAsync.mockResolvedValue("tok");
       (argon2.hash as jest.Mock).mockResolvedValue("hashed");
+      mockPrismaService.refreshToken.create.mockResolvedValue({ id: "rt1" });
 
       const result = await service.registerParticipant({
         email: "p@e.com",
@@ -127,29 +167,87 @@ describe("AuthService", () => {
   });
 
   describe("refresh", () => {
-    it("should throw Unauthorized if refresh token invalid", async () => {
-      mockPrismaService.user.findFirst.mockResolvedValue(null);
+    it("should throw Unauthorized if refresh token empty", async () => {
+      await expect(service.refresh("")).rejects.toThrow(UnauthorizedException);
+    });
+
+    it("should throw Unauthorized if refresh token not found", async () => {
+      mockPrismaService.refreshToken.findUnique.mockResolvedValue(null);
       await expect(service.refresh("bad")).rejects.toThrow(
         UnauthorizedException,
       );
     });
 
-    it("should return new session", async () => {
-      const user = { id: "u1", email: "t@e.com", role: "USER", tenantId: "t1" };
-      mockPrismaService.user.findFirst.mockResolvedValue(user);
+    it("should throw Unauthorized if refresh token revoked", async () => {
+      mockPrismaService.refreshToken.findUnique.mockResolvedValue({
+        id: "rt1",
+        expiresAt: new Date(Date.now() + 1000),
+        revokedAt: new Date(),
+        user: { id: "u1", role: "USER", tenantId: "t1" },
+      });
+      await expect(service.refresh("tok")).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+
+    it("should throw Unauthorized if refresh token expired", async () => {
+      mockPrismaService.refreshToken.findUnique.mockResolvedValue({
+        id: "rt1",
+        expiresAt: new Date(Date.now() - 1000),
+        revokedAt: null,
+        user: { id: "u1", role: "USER", tenantId: "t1" },
+      });
+      await expect(service.refresh("tok")).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+
+    it("should rotate token and return new session", async () => {
+      const user = {
+        id: "u1",
+        email: "t@e.com",
+        role: "USER",
+        tenantId: "t1",
+        mustChangePassword: false,
+      };
+      mockPrismaService.refreshToken.findUnique.mockResolvedValue({
+        id: "rt1",
+        expiresAt: new Date(Date.now() + 60_000),
+        revokedAt: null,
+        user,
+      });
       mockJwtService.signAsync.mockResolvedValue("new_tok");
+      mockPrismaService.refreshToken.update.mockResolvedValue({ id: "rt1" });
+      mockPrismaService.refreshToken.create.mockResolvedValue({ id: "rt2" });
 
       const result = await service.refresh("valid");
       expect(result.access_token).toBe("new_tok");
+      expect(mockPrismaService.refreshToken.update).toHaveBeenCalledWith({
+        where: { id: "rt1" },
+        data: { revokedAt: expect.any(Date) },
+      });
+      expect(mockPrismaService.refreshToken.create).toHaveBeenCalled();
     });
   });
 
   describe("logout", () => {
-    it("should clear refresh token", async () => {
+    it("should revoke a specific refresh token when provided", async () => {
+      await service.logout("u1", "sometoken");
+      expect(mockPrismaService.refreshToken.updateMany).toHaveBeenCalledWith({
+        where: {
+          userId: "u1",
+          tokenHash: hashRefreshToken("sometoken"),
+          revokedAt: null,
+        },
+        data: { revokedAt: expect.any(Date) },
+      });
+    });
+
+    it("should revoke all active tokens when no token provided", async () => {
       await service.logout("u1");
-      expect(mockPrismaService.user.update).toHaveBeenCalledWith({
-        where: { id: "u1" },
-        data: { refreshToken: null },
+      expect(mockPrismaService.refreshToken.updateMany).toHaveBeenCalledWith({
+        where: { userId: "u1", revokedAt: null },
+        data: { revokedAt: expect.any(Date) },
       });
     });
   });
@@ -181,7 +279,7 @@ describe("AuthService", () => {
       );
     });
 
-    it("should update password if token valid", async () => {
+    it("should update password and revoke refresh tokens", async () => {
       mockPrismaService.user.findFirst.mockResolvedValue({
         id: "u1",
         email: "t@e.com",
@@ -194,6 +292,10 @@ describe("AuthService", () => {
           data: expect.objectContaining({ password: "new_hashed" }),
         }),
       );
+      expect(mockPrismaService.refreshToken.updateMany).toHaveBeenCalledWith({
+        where: { userId: "u1", revokedAt: null },
+        data: { revokedAt: expect.any(Date) },
+      });
     });
   });
 
@@ -206,5 +308,18 @@ describe("AuthService", () => {
         data: { password: "forced_hashed", mustChangePassword: false },
       });
     });
+  });
+});
+
+describe("hashRefreshToken", () => {
+  it("is deterministic and hex formatted", () => {
+    const a = hashRefreshToken("abc");
+    const b = hashRefreshToken("abc");
+    expect(a).toBe(b);
+    expect(a).toMatch(/^[a-f0-9]{64}$/);
+  });
+
+  it("produces different hashes for different inputs", () => {
+    expect(hashRefreshToken("abc")).not.toBe(hashRefreshToken("def"));
   });
 });

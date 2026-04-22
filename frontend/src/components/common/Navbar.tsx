@@ -3,15 +3,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { Tenant } from "@/types/event";
+import { ThemeToggle } from "@/components/ui";
 
 export function Navbar({ tenant }: { tenant?: Tenant }) {
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuth();
 
   return (
-    <nav className="fixed top-0 w-full z-50 px-8 sm:px-12 lg:px-16 py-6 border-b border-border/50 bg-background/80 backdrop-blur-md">
+    <nav
+      role="navigation"
+      aria-label="Principal"
+      className="fixed top-0 w-full z-50 px-8 sm:px-12 lg:px-16 py-6 border-b border-border/50 bg-background/80 backdrop-blur-md"
+    >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 group">
+        <Link href="/" className="flex items-center gap-3 group" aria-label="EventHub - Página inicial">
           {tenant?.logoUrl ? (
             <Image 
               src={tenant.logoUrl} 
@@ -33,13 +38,24 @@ export function Navbar({ tenant }: { tenant?: Tenant }) {
         </Link>
         
         <div className="hidden md:flex items-center gap-10 text-sm font-semibold text-muted-foreground">
-          <Link href="/events" className={`hover:text-primary transition-colors ${pathname === '/events' ? 'text-primary' : ''}`}>Eventos</Link>
-          <Link href="/organizers" className={`hover:text-primary transition-colors ${pathname === '/organizers' ? 'text-primary' : ''}`}>Organizadores</Link>
-          <a href="#" className="hover:text-primary transition-colors">Preços</a>
-          <a href="#" className="hover:text-primary transition-colors">Sobre</a>
+          <Link
+            href="/events"
+            aria-current={pathname === "/events" ? "page" : undefined}
+            className={`hover:text-primary transition-colors ${pathname === "/events" ? "text-primary" : ""}`}
+          >
+            Eventos
+          </Link>
+          <Link
+            href="/organizers"
+            aria-current={pathname === "/organizers" ? "page" : undefined}
+            className={`hover:text-primary transition-colors ${pathname === "/organizers" ? "text-primary" : ""}`}
+          >
+            Organizadores
+          </Link>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
           {!isAuthenticated ? (
             <>
               <Link href="/auth/login" className="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors px-4 py-2">

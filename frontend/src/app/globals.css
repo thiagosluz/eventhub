@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Brand Colors - Professional Emerald & Forest (Dynamic support) */
   --primary: 160 84% 39%; /* Fallback Emerald 600 */
@@ -29,10 +31,41 @@
   --shadow-inner-glow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
 }
 
+/* Dark theme overrides using OKLCH for smooth tonal mapping */
+.dark {
+  --color-background: oklch(0.17 0.02 250);
+  --color-foreground: oklch(0.96 0.005 250);
+
+  --color-card: oklch(0.22 0.02 250);
+  --color-card-foreground: oklch(0.96 0.005 250);
+
+  --color-muted: oklch(0.28 0.02 250);
+  --color-muted-foreground: oklch(0.7 0.02 250);
+
+  --color-border: oklch(0.32 0.02 250);
+
+  --shadow-premium: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
+  --shadow-inner-glow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+
 @layer base {
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
   body {
     @apply bg-background text-foreground transition-colors duration-500 antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 0.375rem;
   }
 }
 
@@ -92,4 +125,8 @@
   .backface-hidden {
     backface-visibility: hidden;
   }
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
 }

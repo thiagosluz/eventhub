@@ -1,20 +1,14 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 
 test.describe('Fluxo de Monitoramento e Check-in', () => {
   test.beforeEach(async ({ page }) => {
     await setupDefaultMocks(page);
-    
-    // Login como Staff/Monitor
-    await page.addInitScript(() => {
-      localStorage.setItem('eventhub_user', JSON.stringify({
-        id: 'user-staff',
-        email: 'staff@eventhub.com.br',
-        name: 'Staff Member',
-        role: 'STAFF',
-        tenantId: 'clv_tenant_hq'
-      }));
-      localStorage.setItem('eventhub_token', 'fake-staff-token');
+    await injectAuth(page, {
+      id: 'user-monitor',
+      email: 'monitor@eventhub.com.br',
+      name: 'Monitor Member',
+      role: 'MONITOR',
     });
   });
 

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { UserCircleIcon, ArrowRightOnRectangleIcon, UserIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { ThemeToggle } from "@/components/ui";
 
 export default function MonitorLayout({
   children,
@@ -46,6 +47,8 @@ export default function MonitorLayout({
         </div>
 
         <div className="flex items-center gap-4">
+          <ThemeToggle />
+
           {/* User Profile Dropdown */}
           <div className="relative">
             <div 

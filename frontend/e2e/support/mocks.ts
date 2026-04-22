@@ -1,5 +1,75 @@
 import { Page, BrowserContext } from '@playwright/test';
 
+/**
+ * Build a decodable (unsigned) JWT that passes the Next.js middleware check.
+ * The backend is always mocked by Playwright, so signature validity never matters.
+ */
+export function makeFakeJwt(payload: Record<string, unknown> = {}): string {
+  const b64 = (o: object) =>
+    Buffer.from(JSON.stringify(o))
+      .toString('base64')
+      .replace(/=+$/, '')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_');
+  const expSeconds = Math.floor(Date.now() / 1000) + 60 * 60;
+  return `${b64({ alg: 'HS256', typ: 'JWT' })}.${b64({ exp: expSeconds, ...payload })}.sig`;
+}
+
+export type InjectAuthUser = {
+  id?: string;
+  name?: string;
+  email?: string;
+  role?: string;
+  tenantId?: string | null;
+  isSpeaker?: boolean;
+  mustChangePassword?: boolean;
+};
+
+/**
+ * Inject a decodable JWT + user payload into localStorage and the browser cookie
+ * jar so the Next.js middleware accepts protected routes during E2E.
+ * The cookie is added at the context level (not via document.cookie) to make it
+ * available on the very first navigation — which is when the middleware runs.
+ */
+export async function injectAuth(page: Page, overrides: InjectAuthUser = {}) {
+  const user = {
+    id: 'clv_user_thiago',
+    name: 'Thiago Organizador',
+    email: 'organizador@eventhub.com.br',
+    role: 'ORGANIZER',
+    tenantId: 'clv_tenant_hq',
+    ...overrides,
+  };
+  const token = makeFakeJwt({
+    sub: user.id,
+    email: user.email,
+    role: user.role,
+    tenantId: user.tenantId,
+    isSpeaker: overrides.isSpeaker ?? false,
+    mustChangePassword: overrides.mustChangePassword ?? false,
+  });
+
+  await page.context().addCookies([
+    {
+      name: 'eventhub_token',
+      value: token,
+      domain: 'localhost',
+      path: '/',
+      sameSite: 'Lax',
+    },
+  ]);
+
+  await page.addInitScript(
+    ({ token, user }) => {
+      window.localStorage.setItem('eventhub_token', token);
+      window.localStorage.setItem('eventhub_user', JSON.stringify(user));
+    },
+    { token, user },
+  );
+
+  return { token, user };
+}
+
 export async function setupDefaultMocks(page: Page | BrowserContext) {
   let hasClaimedB2 = false;
   let latestRaffle: any = null;
@@ -652,13 +722,16 @@ export async function setupDefaultMocks(page: Page | BrowserContext) {
     // =====================================================
     if (url.includes('/auth/login') && method === 'POST') {
       return fulfill({
-        access_token: 'fake-jwt-token',
-        refresh_token: 'fake-refresh-token',
+        access_token: makeFakeJwt({ sub: 'clv_user_thiago', role: 'ORGANIZER' }),
+        refresh_token: makeFakeJwt({ sub: 'clv_user_thiago', role: 'ORGANIZER', type: 'refresh' }),
         user: { id: 'clv_user_thiago', email: 'organizador@eventhub.com.br', name: 'Thiago Organizador', role: 'ORGANIZER' }
       });
     }
     if (url.includes('/auth/refresh') && method === 'POST') {
-      return fulfill({ access_token: 'fake-jwt-token-refreshed', refresh_token: 'fake-refresh-token-2' });
+      return fulfill({
+        access_token: makeFakeJwt({ sub: 'clv_user_thiago', role: 'ORGANIZER' }),
+        refresh_token: makeFakeJwt({ sub: 'clv_user_thiago', role: 'ORGANIZER', type: 'refresh' }),
+      });
     }
 
     // =====================================================

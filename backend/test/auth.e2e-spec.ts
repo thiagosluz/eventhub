@@ -8,6 +8,8 @@ import { AssignReviewsProcessor } from "./../src/submissions/submissions.process
 import { MailProcessor } from "./../src/mail/mail.processor";
 import { KanbanAlertsProcessor } from "./../src/kanban/kanban.processor";
 import { getQueueToken } from "@nestjs/bullmq";
+import { CustomValidationPipe } from "./../src/common/pipes/validation.pipe";
+import { HttpExceptionFilter } from "./../src/common/filters/http-exception.filter";
 
 describe("AuthController (e2e)", () => {
   let app: INestApplication;
@@ -20,6 +22,12 @@ describe("AuthController (e2e)", () => {
     },
     tenant: {
       create: jest.fn(),
+    },
+    refreshToken: {
+      create: jest.fn().mockResolvedValue({ id: "rt_1" }),
+      findUnique: jest.fn(),
+      update: jest.fn(),
+      updateMany: jest.fn(),
     },
     auditLog: {
       create: jest.fn().mockResolvedValue({ id: "log_1" }),
@@ -52,6 +60,8 @@ describe("AuthController (e2e)", () => {
       .compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new CustomValidationPipe());
+    app.useGlobalFilters(new HttpExceptionFilter());
     await app.init();
   });
 
@@ -61,7 +71,7 @@ describe("AuthController (e2e)", () => {
     }
   });
 
-  it("/auth/register-organizer (POST)", () => {
+  it("/auth/register-organizer (POST) should succeed with valid payload", () => {
     const registerDto = {
       tenantName: "Test Tenant",
       tenantSlug: "test-tenant",
@@ -77,8 +87,9 @@ describe("AuthController (e2e)", () => {
       ...registerDto,
       role: "ORGANIZER",
       tenantId: "tenant_1",
+      mustChangePassword: false,
     });
-    mockPrismaService.user.update.mockResolvedValue({ id: "user_1" });
+    mockPrismaService.refreshToken.create.mockResolvedValue({ id: "rt_1" });
 
     return request(app.getHttpServer())
       .post("/auth/register-organizer")
@@ -90,13 +101,26 @@ describe("AuthController (e2e)", () => {
       });
   });
 
-  it("/auth/login (POST)", () => {
-    // Note: We need to mock argon2.verify too if we were doing a real login check,
-    // but here we are mocking the service behavior through prisma.
-    // However, AuthService calls argon2.verify. In the first E2E setup,
-    // I didn't mock argon2 because it's a library.
-    // But in E2E, the real AuthService is used.
-    // So if I want to test login, I need to provide a hashed password in mock.
-    // For now, let's assume registration was successful and we just test the endpoint structure.
+  it("/auth/register-organizer (POST) should return 400 on invalid payload", () => {
+    return request(app.getHttpServer())
+      .post("/auth/register-organizer")
+      .send({ tenantName: "", tenantSlug: "x", name: "n", email: "not-email" })
+      .expect(400);
+  });
+
+  it("/auth/login (POST) should return 400 when email missing", () => {
+    return request(app.getHttpServer())
+      .post("/auth/login")
+      .send({ password: "x" })
+      .expect(400);
+  });
+
+  it("/health (GET) should return 200 without authentication", () => {
+    return request(app.getHttpServer())
+      .get("/health")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.status).toBe("ok");
+      });
   });
 });

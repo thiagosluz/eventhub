@@ -5,6 +5,7 @@ import {
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as argon2 from "argon2";
+import { createHash } from "crypto";
 import { PrismaService } from "../prisma/prisma.service";
 import { MailService } from "../mail/mail.service";
 import { v4 as uuidv4 } from "uuid";
@@ -22,6 +23,27 @@ interface LoginInput {
   password: string;
 }
 
+interface SessionMeta {
+  userAgent?: string;
+  ip?: string;
+}
+
+type SessionUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  tenantId: string | null;
+  mustChangePassword: boolean;
+  speaker?: { id: string } | null;
+};
+
+const REFRESH_TOKEN_TTL_DAYS = 7;
+
+export function hashRefreshToken(token: string): string {
+  return createHash("sha256").update(token).digest("hex");
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -30,7 +52,10 @@ export class AuthService {
     private readonly mailService: MailService,
   ) {}
 
-  async registerOrganizer(input: RegisterOrganizerInput) {
+  async registerOrganizer(
+    input: RegisterOrganizerInput,
+    meta: SessionMeta = {},
+  ) {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: input.email },
     });
@@ -58,11 +83,12 @@ export class AuthService {
       },
     });
 
-    return this.createSession(user);
+    return this.createSession(user as SessionUser, meta);
   }
 
   async registerParticipant(
     input: Omit<RegisterOrganizerInput, "tenantName" | "tenantSlug">,
+    meta: SessionMeta = {},
   ) {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: input.email },
@@ -91,10 +117,10 @@ export class AuthService {
       },
     });
 
-    return this.createSession(user);
+    return this.createSession(user as SessionUser, meta);
   }
 
-  async login(input: LoginInput) {
+  async login(input: LoginInput, meta: SessionMeta = {}) {
     const user = await this.prisma.user.findUnique({
       where: { email: input.email },
       include: {
@@ -107,30 +133,60 @@ export class AuthService {
       throw new UnauthorizedException("Credenciais inválidas.");
     }
 
-    return this.createSession(user);
+    return this.createSession(user as unknown as SessionUser, meta);
   }
 
-  async refresh(refreshToken: string) {
-    const user = await this.prisma.user.findFirst({
-      where: { refreshToken },
-      include: {
-        tenant: true,
-        speaker: { select: { id: true } },
-      },
-    });
-
-    if (!user) {
+  async refresh(refreshToken: string, meta: SessionMeta = {}) {
+    if (!refreshToken) {
       throw new UnauthorizedException("Token de atualização inválido.");
     }
 
-    return this.createSession(user);
+    const tokenHash = hashRefreshToken(refreshToken);
+
+    const record = await this.prisma.refreshToken.findUnique({
+      where: { tokenHash },
+      include: {
+        user: {
+          include: {
+            tenant: true,
+            speaker: { select: { id: true } },
+          },
+        },
+      },
+    });
+
+    if (
+      !record ||
+      record.revokedAt ||
+      record.expiresAt.getTime() < Date.now()
+    ) {
+      throw new UnauthorizedException("Token de atualização inválido.");
+    }
+
+    // Rotate: revoke the current refresh token and issue a fresh session.
+    await this.prisma.refreshToken.update({
+      where: { id: record.id },
+      data: { revokedAt: new Date() },
+    });
+
+    return this.createSession(record.user as unknown as SessionUser, meta);
   }
 
-  async logout(userId: string) {
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: { refreshToken: null },
+  async logout(userId: string, refreshToken?: string) {
+    if (refreshToken) {
+      const tokenHash = hashRefreshToken(refreshToken);
+      await this.prisma.refreshToken.updateMany({
+        where: { userId, tokenHash, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
+      return { ok: true };
+    }
+
+    await this.prisma.refreshToken.updateMany({
+      where: { userId, revokedAt: null },
+      data: { revokedAt: new Date() },
     });
+    return { ok: true };
   }
 
   async forgotPassword(email: string) {
@@ -185,6 +241,11 @@ export class AuthService {
         mustChangePassword: false,
       },
     });
+
+    await this.prisma.refreshToken.updateMany({
+      where: { userId: user.id, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
   }
 
   async changeForcedPassword(userId: string, newPassword: string) {
@@ -198,13 +259,26 @@ export class AuthService {
     });
   }
 
-  private async createSession(user: any) {
+  private async createSession(user: SessionUser, meta: SessionMeta = {}) {
     const access_token = await this.generateToken(user, "15m");
-    const refresh_token = await this.generateToken(user, "7d");
+    const refresh_token = await this.generateToken(
+      user,
+      `${REFRESH_TOKEN_TTL_DAYS}d`,
+    );
 
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: { refreshToken: refresh_token },
+    const tokenHash = hashRefreshToken(refresh_token);
+    const expiresAt = new Date(
+      Date.now() + REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
+    );
+
+    await this.prisma.refreshToken.create({
+      data: {
+        userId: user.id,
+        tokenHash,
+        expiresAt,
+        userAgent: meta.userAgent?.slice(0, 255),
+        ip: meta.ip?.slice(0, 64),
+      },
     });
 
     return {
@@ -222,7 +296,7 @@ export class AuthService {
     };
   }
 
-  private async generateToken(user: any, expiresIn: string) {
+  private async generateToken(user: SessionUser, expiresIn: string) {
     const payload = {
       sub: user.id,
       email: user.email,
@@ -232,6 +306,8 @@ export class AuthService {
       mustChangePassword: user.mustChangePassword,
     };
 
-    return this.jwtService.signAsync(payload, { expiresIn: expiresIn as any });
+    return this.jwtService.signAsync(payload, {
+      expiresIn: expiresIn as never,
+    });
   }
 }

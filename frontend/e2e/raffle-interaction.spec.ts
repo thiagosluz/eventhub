@@ -1,30 +1,16 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 
 test.describe('Interação em Tempo Real - Organizador vs Telão', () => {
   test('deve atualizar o telão automaticamente após o organizador realizar um sorteio', async ({ browser }) => {
-    // 1. Cria um contexto compartilhado
     const sharedContext = await browser.newContext();
-    
-    // Configura mocks no nível do contexto
+
     await setupDefaultMocks(sharedContext);
 
     const organizerPage = await sharedContext.newPage();
     const displayPage = await sharedContext.newPage();
 
-    // 2. Setup Auth para o Organizador (Injetando no contexto/páginas)
-    const token = 'fake-jwt-token';
-    const user = { id: 'clv_user_thiago', name: 'Thiago Organizador', role: 'ORGANIZER', tenantId: 'clv_tenant_hq' };
-    
-    await sharedContext.addCookies([{ name: 'eventhub_token', value: token, domain: 'localhost', path: '/' }]);
-    
-    // Injeta auth no localStorage para ambas as páginas (embora só o organizador precise, o telão é público)
-    const initScript = ({ token, user }: { token: string, user: any }) => {
-      window.localStorage.setItem('eventhub_token', token);
-      window.localStorage.setItem('eventhub_user', JSON.stringify(user));
-    };
-    
-    await organizerPage.addInitScript(initScript, { token, user });
+    await injectAuth(organizerPage);
 
     // 3. Navega para as páginas
     await organizerPage.goto('/dashboard/events/ev-1/operations/raffle');

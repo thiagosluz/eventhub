@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BellIcon, UserCircleIcon, ArrowRightOnRectangleIcon, UserIcon } from "@heroicons/react/24/outline";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { ThemeToggle } from "@/components/ui";
 import Image from "next/image";
 import { tenantsService } from "@/services/tenants.service";
 import { Tenant } from "@/types/event";
@@ -65,8 +66,12 @@ export default function DashboardLayout({
             </h2>
           </div>
           <div className="flex items-center gap-4">
-            <button className="p-2 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-all relative">
-              <BellIcon className="w-6 h-6" />
+            <ThemeToggle />
+            <button
+              aria-label="Notificações"
+              className="p-2 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-all relative"
+            >
+              <BellIcon className="w-6 h-6" aria-hidden="true" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-card" />
             </button>
             <div className="h-8 w-[1px] bg-border mx-2" />

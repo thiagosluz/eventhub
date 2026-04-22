@@ -18,9 +18,9 @@ describe("AuthController", () => {
   };
 
   const mockRequest = {
-    user: {
-      sub: "user_id",
-    },
+    user: { sub: "user_id" },
+    headers: { "user-agent": "jest", "x-forwarded-for": "9.9.9.9" },
+    ip: "127.0.0.1",
   } as any;
 
   beforeEach(async () => {
@@ -43,7 +43,7 @@ describe("AuthController", () => {
   });
 
   describe("registerOrganizer", () => {
-    it("should call authService.registerOrganizer", async () => {
+    it("should call authService.registerOrganizer with request metadata", async () => {
       const dto = {
         tenantName: "T",
         tenantSlug: "s",
@@ -51,38 +51,50 @@ describe("AuthController", () => {
         email: "e",
         password: "p",
       };
-      await controller.registerOrganizer(dto);
-      expect(service.registerOrganizer).toHaveBeenCalledWith(dto);
+      await controller.registerOrganizer(dto, mockRequest);
+      expect(service.registerOrganizer).toHaveBeenCalledWith(
+        dto,
+        expect.objectContaining({ userAgent: "jest", ip: "9.9.9.9" }),
+      );
     });
   });
 
   describe("registerParticipant", () => {
     it("should call authService.registerParticipant", async () => {
       const dto = { name: "N", email: "e", password: "p" };
-      await controller.registerParticipant(dto);
-      expect(service.registerParticipant).toHaveBeenCalledWith(dto);
+      await controller.registerParticipant(dto, mockRequest);
+      expect(service.registerParticipant).toHaveBeenCalledWith(
+        dto,
+        expect.objectContaining({ userAgent: "jest" }),
+      );
     });
   });
 
   describe("login", () => {
     it("should call authService.login", async () => {
       const dto = { email: "e", password: "p" };
-      await controller.login(dto);
-      expect(service.login).toHaveBeenCalledWith(dto);
+      await controller.login(dto, mockRequest);
+      expect(service.login).toHaveBeenCalledWith(
+        dto,
+        expect.objectContaining({ ip: "9.9.9.9" }),
+      );
     });
   });
 
   describe("refresh", () => {
     it("should call authService.refresh", async () => {
-      await controller.refresh({ refresh_token: "rt" });
-      expect(service.refresh).toHaveBeenCalledWith("rt");
+      await controller.refresh({ refresh_token: "rt" }, mockRequest);
+      expect(service.refresh).toHaveBeenCalledWith(
+        "rt",
+        expect.objectContaining({ userAgent: "jest" }),
+      );
     });
   });
 
   describe("logout", () => {
-    it("should call authService.logout", async () => {
-      await controller.logout(mockRequest);
-      expect(service.logout).toHaveBeenCalledWith("user_id");
+    it("should call authService.logout passing token", async () => {
+      await controller.logout({ refresh_token: "rt" }, mockRequest);
+      expect(service.logout).toHaveBeenCalledWith("user_id", "rt");
     });
   });
 

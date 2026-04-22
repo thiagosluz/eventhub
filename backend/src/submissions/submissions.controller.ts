@@ -11,6 +11,7 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { submissionUploadConfig } from "../common/upload/upload.config";
 import { Request } from "express";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../auth/roles.decorator";
@@ -37,7 +38,7 @@ export class SubmissionsController {
 
   @UseGuards(JwtAuthGuard)
   @Post("submissions")
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(FileInterceptor("file", submissionUploadConfig))
   async createSubmission(
     @UploadedFile() file: any,
     @Body() body: CreateSubmissionDto,

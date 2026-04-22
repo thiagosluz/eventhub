@@ -1,24 +1,13 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 import path from 'path';
 import fs from 'fs';
 
 test.describe('Dashboard - Submissões Científicas', () => {
-  test.beforeEach(async ({ page, context }) => {
+  test.beforeEach(async ({ page }) => {
     await setupDefaultMocks(page);
-    
-    // Injeta auth
-    const token = 'fake-jwt-token';
-    const user = { id: 'clv_user_thiago', name: 'Thiago Organizador', role: 'ORGANIZER', tenantId: 'clv_tenant_hq' };
+    await injectAuth(page);
 
-    await context.addCookies([{ name: 'eventhub_token', value: token, domain: 'localhost', path: '/' }]);
-
-    await page.addInitScript(({ token, user }) => {
-      window.localStorage.setItem('eventhub_token', token);
-      window.localStorage.setItem('eventhub_user', JSON.stringify(user));
-    }, { token, user });
-
-    // Inicia pela configuração de submissão do evento ev-1 (mockado)
     await page.goto('/dashboard/events/ev-1/submissions');
   });
 

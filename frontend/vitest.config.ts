@@ -8,13 +8,14 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test-setup.tsx'],
-    exclude: ['**/node_modules/**', '**/e2e/**'],
+    exclude: ['**/node_modules/**', '**/e2e/**', '**/*.stories.*', '**/storybook-static/**'],
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'text-summary', 'json', 'json-summary', 'lcov', 'html'],
+      reportsDirectory: './coverage',
       include: ['src/**'],
       exclude: [
         'src/types/**',
@@ -22,6 +23,7 @@ export default defineConfig({
         'src/test-setup.ts',
         'src/app/layout.tsx',
         'src/app/providers.tsx',
+        'src/**/*.stories.*',
       ],
     },
   },

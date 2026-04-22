@@ -1,19 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { setupDefaultMocks } from './support/mocks';
+import { setupDefaultMocks, injectAuth } from './support/mocks';
 
 test.describe('Fluxo de Gamificação e Engajamento', () => {
   test.beforeEach(async ({ page }) => {
-    // Configura mocks e injeção de localStorage para autenticação
     await setupDefaultMocks(page);
-    
-    await page.addInitScript(() => {
-      localStorage.setItem('eventhub_token', 'mock-token');
-      localStorage.setItem('eventhub_user', JSON.stringify({
-        id: 'clv_user_thiago',
-        email: 'organizador@eventhub.com.br',
-        name: 'Thiago Participante',
-        role: 'PARTICIPANT'
-      }));
+    await injectAuth(page, {
+      name: 'Thiago Participante',
+      role: 'PARTICIPANT',
     });
   });
 

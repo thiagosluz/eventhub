@@ -12,6 +12,7 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { documentUploadConfig } from "../common/upload/upload.config";
 import { Request } from "express";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../auth/roles.decorator";
@@ -55,7 +56,7 @@ export class SubmissionConfigController {
   // === Modalities ===
 
   @Post("modalities")
-  @UseInterceptors(FileInterceptor("templateFile"))
+  @UseInterceptors(FileInterceptor("templateFile", documentUploadConfig))
   async createModality(
     @Param("eventId") eventId: string,
     @Body() body: CreateModalityDto,
@@ -118,7 +119,7 @@ export class SubmissionConfigController {
   // === Submission Rules ===
 
   @Post("rules")
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(FileInterceptor("file", documentUploadConfig))
   async createRule(
     @Param("eventId") eventId: string,
     @Body() body: CreateSubmissionRuleDto,

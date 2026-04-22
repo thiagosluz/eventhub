@@ -3,53 +3,80 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "@/services/auth.service";
 import { useAuth } from "@/context/AuthContext";
-import { AuthResponse } from "@/types/auth";
+import { Button, Input } from "@/components/ui";
+import {
+  registerOrganizerSchema,
+  registerParticipantSchema,
+  type RegisterOrganizerInput,
+  type RegisterParticipantInput,
+} from "@/lib/validation/auth";
 
 type Role = "ORGANIZER" | "PARTICIPANT";
 
+type FormValues = RegisterOrganizerInput & Partial<RegisterParticipantInput>;
+
 export default function RegisterPage() {
   const [role, setRole] = useState<Role>("PARTICIPANT");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [tenantName, setTenantName] = useState("");
-  const [tenantSlug, setTenantSlug] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const router = useRouter();
   const { login } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormValues>({
+    resolver: zodResolver(
+      role === "ORGANIZER" ? registerOrganizerSchema : registerParticipantSchema,
+    ) as never,
+    mode: "onBlur",
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      tenantName: "",
+      tenantSlug: "",
+    },
+  });
 
+  const handleRoleChange = (next: Role) => {
+    setRole(next);
+    setSubmitError(null);
+    reset(undefined, { keepValues: true });
+  };
+
+  const onSubmit = async (values: FormValues) => {
+    setSubmitError(null);
     try {
-      const response: AuthResponse = role === "ORGANIZER"
-        ? await authService.registerOrganizer({
-            name,
-            email,
-            password,
-            tenantName,
-            tenantSlug,
-          })
-        : await authService.registerParticipant({
-            name,
-            email,
-            password,
-          });
-      
+      const response =
+        role === "ORGANIZER"
+          ? await authService.registerOrganizer({
+              name: values.name,
+              email: values.email,
+              password: values.password,
+              tenantName: values.tenantName!,
+              tenantSlug: values.tenantSlug!,
+            })
+          : await authService.registerParticipant({
+              name: values.name,
+              email: values.email,
+              password: values.password,
+            });
+
       login(response);
       router.push("/");
     } catch (err: unknown) {
-      console.error(err);
-      const errorMessage = err instanceof Error ? err.message : "Falha ao criar conta. Tente novamente.";
-      setError(errorMessage);
-    } finally {
-      setIsLoading(false);
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Falha ao criar conta. Tente novamente.";
+      setSubmitError(message);
     }
   };
 
@@ -59,8 +86,19 @@ export default function RegisterPage() {
         <div className="text-center space-y-2">
           <Link href="/" className="inline-flex items-center gap-2 group mb-4">
             <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
-              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
               </svg>
             </div>
             <span className="text-3xl font-bold tracking-tight text-foreground">
@@ -74,23 +112,32 @@ export default function RegisterPage() {
         </div>
 
         <div className="premium-card p-10 space-y-8 bg-card border-border shadow-2xl">
-          {/* Role Toggle */}
-          <div className="flex p-1 bg-muted rounded-2xl">
+          <div
+            role="tablist"
+            aria-label="Tipo de conta"
+            className="flex p-1 bg-muted rounded-2xl"
+          >
             <button
-              onClick={() => setRole("PARTICIPANT")}
+              type="button"
+              role="tab"
+              aria-selected={role === "PARTICIPANT"}
+              onClick={() => handleRoleChange("PARTICIPANT")}
               className={`flex-1 py-3 text-sm font-black rounded-xl transition-all ${
                 role === "PARTICIPANT"
-                  ? "bg-white text-primary shadow-sm"
+                  ? "bg-card text-primary shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Sou Participante
             </button>
             <button
-              onClick={() => setRole("ORGANIZER")}
+              type="button"
+              role="tab"
+              aria-selected={role === "ORGANIZER"}
+              onClick={() => handleRoleChange("ORGANIZER")}
               className={`flex-1 py-3 text-sm font-black rounded-xl transition-all ${
                 role === "ORGANIZER"
-                  ? "bg-white text-primary shadow-sm"
+                  ? "bg-card text-primary shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -98,111 +145,99 @@ export default function RegisterPage() {
             </button>
           </div>
 
-          {error && (
-            <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-medium">
-              {error}
+          {submitError && (
+            <div
+              role="alert"
+              className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-medium"
+            >
+              {submitError}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2 col-span-2">
-              <label className="text-sm font-bold text-foreground ml-1" htmlFor="name">
-                Nome Completo
-              </label>
-              <input
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            noValidate
+          >
+            <div className="md:col-span-2">
+              <Input
                 id="name"
                 type="text"
-                required
+                label="Nome Completo"
                 placeholder="Ex: João Silva"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full h-12 px-4 rounded-xl border border-border bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium"
+                autoComplete="name"
+                required
+                error={errors.name?.message}
+                {...register("name")}
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-foreground ml-1" htmlFor="email">
-                E-mail
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                placeholder="seu@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-12 px-4 rounded-xl border border-border bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium"
-              />
-            </div>
+            <Input
+              id="email"
+              type="email"
+              label="E-mail"
+              placeholder="seu@email.com"
+              autoComplete="email"
+              required
+              error={errors.email?.message}
+              {...register("email")}
+            />
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-foreground ml-1" htmlFor="password">
-                Senha
-              </label>
-              <input
-                id="password"
-                type="password"
-                required
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-12 px-4 rounded-xl border border-border bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium"
-              />
-            </div>
+            <Input
+              id="password"
+              type="password"
+              label="Senha"
+              placeholder="••••••••"
+              autoComplete="new-password"
+              required
+              helperText="Mínimo de 8 caracteres"
+              error={errors.password?.message}
+              {...register("password")}
+            />
 
             {role === "ORGANIZER" && (
               <>
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-foreground ml-1" htmlFor="tenantName">
-                    Nome da Organização
-                  </label>
-                  <input
-                    id="tenantName"
-                    type="text"
-                    required
-                    placeholder="Ex: Tech Events Ltd"
-                    value={tenantName}
-                    onChange={(e) => setTenantName(e.target.value)}
-                    className="w-full h-12 px-4 rounded-xl border border-border bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium"
-                  />
-                </div>
+                <Input
+                  id="tenantName"
+                  type="text"
+                  label="Nome da Organização"
+                  placeholder="Ex: Tech Events Ltd"
+                  required
+                  error={errors.tenantName?.message}
+                  {...register("tenantName")}
+                />
 
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-foreground ml-1" htmlFor="tenantSlug">
-                    Slug da Organização
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="tenantSlug"
-                      type="text"
-                      required
-                      placeholder="tech-events"
-                      value={tenantSlug}
-                      onChange={(e) => setTenantSlug(e.target.value.toLowerCase().replace(/\s+/g, "-"))}
-                      className="w-full h-12 px-4 rounded-xl border border-border bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium"
-                    />
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-muted-foreground uppercase bg-muted px-2 py-1 rounded">
-                      URL Única
-                    </div>
-                  </div>
-                </div>
+                <Input
+                  id="tenantSlug"
+                  type="text"
+                  label="Slug da Organização"
+                  placeholder="tech-events"
+                  required
+                  helperText="Apenas minúsculas, números e hífens"
+                  error={errors.tenantSlug?.message}
+                  {...register("tenantSlug", {
+                    onChange: (e) =>
+                      setValue(
+                        "tenantSlug",
+                        e.target.value.toLowerCase().replace(/\s+/g, "-"),
+                        { shouldValidate: false },
+                      ),
+                  })}
+                />
               </>
             )}
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="premium-button w-full !py-4 text-lg font-black shadow-xl shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all col-span-2 mt-4"
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Criando Conta...
-                </div>
-              ) : (
-                "Finalizar Cadastro"
-              )}
-            </button>
+            <div className="md:col-span-2">
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                fullWidth
+                isLoading={isSubmitting}
+              >
+                {isSubmitting ? "Criando Conta..." : "Finalizar Cadastro"}
+              </Button>
+            </div>
           </form>
         </div>
 

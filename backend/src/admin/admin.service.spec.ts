@@ -4,6 +4,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { JwtService } from "@nestjs/jwt";
 import { NotFoundException, ConflictException } from "@nestjs/common";
 import * as argon2 from "argon2";
+import { MailService } from "../mail/mail.service";
 
 jest.mock("argon2", () => ({
   hash: jest.fn().mockResolvedValue("hashed_password"),
@@ -35,11 +36,18 @@ describe("AdminService", () => {
       findMany: jest.fn(),
       update: jest.fn(),
     },
+    refreshToken: {
+      updateMany: jest.fn(),
+    },
     $transaction: jest.fn((cb) => cb(mockPrismaService)),
   };
 
   const mockJwtService = {
     signAsync: jest.fn().mockResolvedValue("mock_token"),
+  };
+
+  const mockMailService = {
+    enqueue: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -48,6 +56,7 @@ describe("AdminService", () => {
         AdminService,
         { provide: PrismaService, useValue: mockPrismaService },
         { provide: JwtService, useValue: mockJwtService },
+        { provide: MailService, useValue: mockMailService },
       ],
     }).compile();
 
@@ -287,13 +296,44 @@ describe("AdminService", () => {
       );
     });
 
-    it("should reset password to default value", async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: "id" });
+    it("returns ok without exposing password and sends email", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "id",
+        email: "user@example.com",
+      });
       mockPrismaService.user.update.mockResolvedValue({ id: "id" });
 
       const result = await service.resetGlobalUserPassword("id");
-      expect(result.message).toContain("Senha redefinida com sucesso");
-      expect(argon2.hash).toHaveBeenCalledWith("EventHub@2026");
+
+      expect(result).toEqual({ ok: true, email: "user@example.com" });
+      expect(JSON.stringify(result)).not.toMatch(/senha|password/i);
+      expect(argon2.hash).toHaveBeenCalled();
+      expect(mockMailService.enqueue).toHaveBeenCalledWith(
+        expect.objectContaining({ to: "user@example.com" }),
+      );
+      expect(mockPrismaService.user.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ mustChangePassword: true }),
+        }),
+      );
+      expect(mockPrismaService.refreshToken.updateMany).toHaveBeenCalled();
+    });
+
+    it("generates a different temporary password each call", async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: "id",
+        email: "u@e.com",
+      });
+      const hashes: string[] = [];
+      (argon2.hash as jest.Mock).mockImplementation(async (pwd: string) => {
+        hashes.push(pwd);
+        return "hashed";
+      });
+      await service.resetGlobalUserPassword("id");
+      await service.resetGlobalUserPassword("id");
+      expect(hashes).toHaveLength(2);
+      expect(hashes[0]).not.toBe(hashes[1]);
+      expect(hashes[0]).toMatch(/^EH-/);
     });
   });
 });

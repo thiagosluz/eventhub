@@ -8,12 +8,15 @@ import { JwtService } from "@nestjs/jwt";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { AdminUpdateUserDto } from "./dto/update-user.dto";
 import * as argon2 from "argon2";
+import { randomBytes } from "crypto";
+import { MailService } from "../mail/mail.service";
 
 @Injectable()
 export class AdminService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private mailService: MailService,
   ) {}
 
   async listTenants(page = 1, limit = 10) {
@@ -284,9 +287,8 @@ export class AdminService {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException("Usuário não encontrado.");
 
-    // Senha padrão temporária para suporte
-    const defaultPassword = "EventHub@2026";
-    const hashedPassword = await argon2.hash(defaultPassword);
+    const temporaryPassword = generateTemporaryPassword();
+    const hashedPassword = await argon2.hash(temporaryPassword);
 
     await this.prisma.user.update({
       where: { id },
@@ -296,6 +298,23 @@ export class AdminService {
       },
     });
 
-    return { message: "Senha redefinida com sucesso para: " + defaultPassword };
+    await this.prisma.refreshToken.updateMany({
+      where: { userId: id, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+
+    await this.mailService.enqueue({
+      to: user.email,
+      subject: "Senha temporária - EventHub",
+      text: `Sua senha foi redefinida por um administrador. Senha temporária: ${temporaryPassword}. Ao entrar, você será solicitado a cadastrar uma nova senha.`,
+      html: `<p>Sua senha foi redefinida por um administrador.</p><p>Senha temporária: <strong>${temporaryPassword}</strong></p><p>Ao entrar, você será solicitado a cadastrar uma nova senha.</p>`,
+    });
+
+    return { ok: true, email: user.email };
   }
+}
+
+function generateTemporaryPassword(): string {
+  const base = randomBytes(9).toString("base64url");
+  return `EH-${base}`;
 }
