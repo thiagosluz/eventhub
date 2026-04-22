@@ -46,7 +46,7 @@ function redirectToLogin(req: NextRequest, reason?: string): NextResponse {
   return response;
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const area = PROTECTED_AREAS.find((a) => a.match(pathname));
   if (!area) return NextResponse.next();

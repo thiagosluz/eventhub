@@ -28,7 +28,7 @@ function base64UrlDecode(input: string): string {
 
 /**
  * Decodes a JWT payload WITHOUT verifying the signature.
- * Intended for lightweight middleware checks (role routing, expiration).
+ * Intended for lightweight proxy checks (role routing, expiration).
  * Never trust this for authorization of sensitive actions — the backend
  * re-verifies every call with the real secret.
  */

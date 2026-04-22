@@ -7,7 +7,7 @@ vi.mock("next/server", () => {
       public url?: URL,
       public cookies = new Map<string, string>(),
     ) {}
-    // Emulate NextResponse cookie API used by middleware.
+    // Emulate NextResponse cookie API used by proxy.
     static next() {
       return new FakeResponse("next");
     }
@@ -28,7 +28,7 @@ vi.mock("next/server", () => {
   };
 });
 
-import { middleware } from "./middleware";
+import { proxy } from "./proxy";
 
 function makeToken(payload: Record<string, unknown>): string {
   const b64 = (o: object) =>
@@ -56,21 +56,21 @@ function mockReq(pathname: string, tokenPayload?: Record<string, unknown>) {
         return v ? { value: v } : undefined;
       },
     },
-  } as unknown as Parameters<typeof middleware>[0];
+  } as unknown as Parameters<typeof proxy>[0];
 }
 
-describe("middleware", () => {
+describe("proxy", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("lets through unprotected paths", () => {
-    const res = middleware(mockReq("/events"));
+    const res = proxy(mockReq("/events"));
     expect((res as { type: string }).type).toBe("next");
   });
 
   it("redirects unauthenticated requests for /dashboard", () => {
-    const res = middleware(mockReq("/dashboard")) as unknown as {
+    const res = proxy(mockReq("/dashboard")) as unknown as {
       type: string;
       url: URL;
     };
@@ -81,7 +81,7 @@ describe("middleware", () => {
   });
 
   it("redirects expired tokens for /admin", () => {
-    const res = middleware(
+    const res = proxy(
       mockReq("/admin/users", { role: "SUPER_ADMIN", exp: 1 }),
     ) as unknown as { type: string; url: URL };
     expect(res.type).toBe("redirect");
@@ -90,7 +90,7 @@ describe("middleware", () => {
 
   it("redirects to / when role is not allowed", () => {
     const future = Math.floor(Date.now() / 1000) + 3600;
-    const res = middleware(
+    const res = proxy(
       mockReq("/admin/users", { role: "PARTICIPANT", exp: future }),
     ) as unknown as { type: string; url: URL };
     expect(res.type).toBe("redirect");
@@ -100,7 +100,7 @@ describe("middleware", () => {
 
   it("lets a SUPER_ADMIN into /admin", () => {
     const future = Math.floor(Date.now() / 1000) + 3600;
-    const res = middleware(
+    const res = proxy(
       mockReq("/admin/users", { role: "SUPER_ADMIN", exp: future }),
     ) as unknown as { type: string };
     expect(res.type).toBe("next");
@@ -108,7 +108,7 @@ describe("middleware", () => {
 
   it("lets an ORGANIZER into /dashboard", () => {
     const future = Math.floor(Date.now() / 1000) + 3600;
-    const res = middleware(
+    const res = proxy(
       mockReq("/dashboard/events", { role: "ORGANIZER", exp: future }),
     ) as unknown as { type: string };
     expect(res.type).toBe("next");

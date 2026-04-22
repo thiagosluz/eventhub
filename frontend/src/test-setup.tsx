@@ -99,6 +99,14 @@ vi.mock('@heroicons/react/24/outline', () => ({
   UserPlusIcon: MockIcon('UserPlusIcon'),
   ChatBubbleBottomCenterTextIcon: MockIcon('ChatBubbleBottomCenterTextIcon'),
   PaperAirplaneIcon: MockIcon('PaperAirplaneIcon'),
+  KeyIcon: MockIcon('KeyIcon'),
+  LockClosedIcon: MockIcon('LockClosedIcon'),
+  CheckBadgeIcon: MockIcon('CheckBadgeIcon'),
+  ArrowUpTrayIcon: MockIcon('ArrowUpTrayIcon'),
+  CloudArrowUpIcon: MockIcon('CloudArrowUpIcon'),
+  DocumentTextIcon: MockIcon('DocumentTextIcon'),
+  ArrowLeftIcon: MockIcon('ArrowLeftIcon'),
+  ChevronRightIcon: MockIcon('ChevronRightIcon'),
 }));
 
 vi.mock('@heroicons/react/24/solid', () => ({

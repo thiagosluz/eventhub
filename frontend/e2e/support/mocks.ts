@@ -1,7 +1,7 @@
 import { Page, BrowserContext } from '@playwright/test';
 
 /**
- * Build a decodable (unsigned) JWT that passes the Next.js middleware check.
+ * Build a decodable (unsigned) JWT that passes the Next.js proxy check.
  * The backend is always mocked by Playwright, so signature validity never matters.
  */
 export function makeFakeJwt(payload: Record<string, unknown> = {}): string {
@@ -27,9 +27,9 @@ export type InjectAuthUser = {
 
 /**
  * Inject a decodable JWT + user payload into localStorage and the browser cookie
- * jar so the Next.js middleware accepts protected routes during E2E.
+ * jar so the Next.js proxy accepts protected routes during E2E.
  * The cookie is added at the context level (not via document.cookie) to make it
- * available on the very first navigation — which is when the middleware runs.
+ * available on the very first navigation — which is when the proxy runs.
  */
 export async function injectAuth(page: Page, overrides: InjectAuthUser = {}) {
   const user = {

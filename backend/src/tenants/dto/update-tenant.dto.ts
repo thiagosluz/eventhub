@@ -1,12 +1,24 @@
-import { IsOptional, IsString, IsUrl, IsObject } from "class-validator";
+import { Transform } from "class-transformer";
+import {
+  IsObject,
+  IsOptional,
+  IsString,
+  IsUrl,
+  MaxLength,
+} from "class-validator";
+import { emptyStringToUndefined } from "../../common/transformers/empty-to-undefined";
 
 export class UpdateTenantDto {
   @IsString()
   @IsOptional()
+  @MaxLength(120)
+  @Transform(emptyStringToUndefined)
   name?: string;
 
-  @IsUrl()
+  @IsString()
   @IsOptional()
+  @MaxLength(500)
+  @Transform(emptyStringToUndefined)
   logoUrl?: string;
 
   @IsObject()
@@ -14,30 +26,42 @@ export class UpdateTenantDto {
   themeConfig?: {
     primaryColor?: string;
     secondaryColor?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
 
   @IsString()
   @IsOptional()
+  @MaxLength(2000)
+  @Transform(emptyStringToUndefined)
   bio?: string;
 
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   @IsOptional()
+  @MaxLength(300)
+  @Transform(emptyStringToUndefined)
   websiteUrl?: string;
 
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   @IsOptional()
+  @MaxLength(300)
+  @Transform(emptyStringToUndefined)
   instagramUrl?: string;
 
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   @IsOptional()
+  @MaxLength(300)
+  @Transform(emptyStringToUndefined)
   linkedinUrl?: string;
 
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   @IsOptional()
+  @MaxLength(300)
+  @Transform(emptyStringToUndefined)
   twitterUrl?: string;
 
-  @IsUrl()
+  @IsString()
   @IsOptional()
+  @MaxLength(500)
+  @Transform(emptyStringToUndefined)
   coverUrl?: string;
 }

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { eventsService } from "@/services/events.service";
-import { submissionsService } from "@/services/submissions.service";
-import { Event } from "@/types/event";
-import { 
-  CloudArrowUpIcon, 
-  DocumentTextIcon, 
+import { useParams } from "next/navigation";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import {
+  CloudArrowUpIcon,
+  DocumentTextIcon,
   CheckCircleIcon,
   ArrowLeftIcon,
   InformationCircleIcon,
@@ -16,7 +16,15 @@ import {
   EnvelopeIcon,
   ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
-import Link from "next/link";
+
+import { eventsService } from "@/services/events.service";
+import { submissionsService } from "@/services/submissions.service";
+import { Event } from "@/types/event";
+import { Button, Input, Select, Textarea } from "@/components/ui";
+import {
+  submissionSchema,
+  type SubmissionInput,
+} from "@/lib/validation/submissions";
 
 function useCountdown(targetDate: string | undefined) {
   const [timeLeft, setTimeLeft] = useState("");
@@ -28,10 +36,15 @@ function useCountdown(targetDate: string | undefined) {
     const update = () => {
       const now = Date.now();
       const diff = target - now;
-      if (diff <= 0) { setTimeLeft("Encerrado"); return; }
+      if (diff <= 0) {
+        setTimeLeft("Encerrado");
+        return;
+      }
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const hours = Math.floor(
+        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      );
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
@@ -49,19 +62,30 @@ function useCountdown(targetDate: string | undefined) {
 export default function SubmitWorkPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const router = useRouter();
-  
+
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  
-  const [title, setTitle] = useState("");
-  const [abstract, setAbstract] = useState("");
-  const [modalityId, setModalityId] = useState("");
-  const [thematicAreaId, setThematicAreaId] = useState("");
-  const [file, setFile] = useState<File | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<SubmissionInput>({
+    resolver: zodResolver(submissionSchema),
+    defaultValues: {
+      title: "",
+      abstract: "",
+      modalityId: "",
+      thematicAreaId: "",
+      file: null,
+    },
+  });
+
+  const selectedFile = watch("file");
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -81,38 +105,48 @@ export default function SubmitWorkPage() {
 
   const now = new Date();
   const submissionsDisabled = event && !event.submissionsEnabled;
-  const beforeStart = event?.submissionStartDate && now < new Date(event.submissionStartDate);
-  const afterEnd = event?.submissionEndDate && now > new Date(event.submissionEndDate);
+  const beforeStart =
+    event?.submissionStartDate && now < new Date(event.submissionStartDate);
+  const afterEnd =
+    event?.submissionEndDate && now > new Date(event.submissionEndDate);
   const isBlocked = submissionsDisabled || beforeStart || afterEnd;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!event || !file || isBlocked) return;
-
-    setSubmitting(true);
-    setError(null);
+  const onSubmit = async (values: SubmissionInput) => {
+    if (!event || isBlocked) return;
+    setSubmitError(null);
 
     try {
       await submissionsService.createSubmission({
         eventId: event.id,
-        title,
-        abstract,
-        modalityId: modalityId || undefined,
-        thematicAreaId: thematicAreaId || undefined,
-        file
+        title: values.title,
+        abstract: values.abstract,
+        modalityId: values.modalityId || undefined,
+        thematicAreaId: values.thematicAreaId || undefined,
+        file: values.file as File,
       });
       setSubmitted(true);
-    } catch (err: any) {
-      setError(err.message || "Falha ao enviar submissão. Tente novamente.");
-    } finally {
-      setSubmitting(false);
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Falha ao enviar submissão. Tente novamente.";
+      setSubmitError(message);
     }
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>;
-  if (!event) return <div className="p-12 text-center text-destructive">Evento não encontrado.</div>;
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  if (!event)
+    return (
+      <div className="p-12 text-center text-destructive">
+        Evento não encontrado.
+      </div>
+    );
 
-  // Blocked states
   if (submissionsDisabled) {
     return (
       <div className="max-w-2xl mx-auto py-24 px-6 text-center space-y-8 animate-in zoom-in-95 duration-500">
@@ -120,10 +154,19 @@ export default function SubmitWorkPage() {
           <LockClosedIcon className="w-16 h-16 text-muted-foreground" />
         </div>
         <div className="space-y-4">
-          <h1 className="text-4xl font-black tracking-tight text-foreground">Submissões Desativadas</h1>
-          <p className="text-muted-foreground text-lg font-medium">O módulo de submissões não está ativo para este evento.</p>
+          <h1 className="text-4xl font-black tracking-tight text-foreground">
+            Submissões Desativadas
+          </h1>
+          <p className="text-muted-foreground text-lg font-medium">
+            O módulo de submissões não está ativo para este evento.
+          </p>
         </div>
-        <Link href={`/events/${slug}`} className="premium-button-outline px-8 py-4">Voltar para o Evento</Link>
+        <Link
+          href={`/events/${slug}`}
+          className="premium-button-outline px-8 py-4"
+        >
+          Voltar para o Evento
+        </Link>
       </div>
     );
   }
@@ -135,15 +178,31 @@ export default function SubmitWorkPage() {
           <ClockIcon className="w-16 h-16 text-amber-500" />
         </div>
         <div className="space-y-4">
-          <h1 className="text-4xl font-black tracking-tight text-foreground">Submissões Ainda Não Iniciaram</h1>
+          <h1 className="text-4xl font-black tracking-tight text-foreground">
+            Submissões Ainda Não Iniciaram
+          </h1>
           <p className="text-muted-foreground text-lg font-medium">
             As submissões abrem em{" "}
             <span className="font-black text-foreground">
-              {new Date(event.submissionStartDate!).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+              {new Date(event.submissionStartDate!).toLocaleDateString(
+                "pt-BR",
+                {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                },
+              )}
             </span>
           </p>
         </div>
-        <Link href={`/events/${slug}`} className="premium-button-outline px-8 py-4">Voltar para o Evento</Link>
+        <Link
+          href={`/events/${slug}`}
+          className="premium-button-outline px-8 py-4"
+        >
+          Voltar para o Evento
+        </Link>
       </div>
     );
   }
@@ -155,10 +214,19 @@ export default function SubmitWorkPage() {
           <LockClosedIcon className="w-16 h-16 text-destructive" />
         </div>
         <div className="space-y-4">
-          <h1 className="text-4xl font-black tracking-tight text-foreground">Prazo Encerrado</h1>
-          <p className="text-muted-foreground text-lg font-medium">O período para submissão de trabalhos já se encerrou.</p>
+          <h1 className="text-4xl font-black tracking-tight text-foreground">
+            Prazo Encerrado
+          </h1>
+          <p className="text-muted-foreground text-lg font-medium">
+            O período para submissão de trabalhos já se encerrou.
+          </p>
         </div>
-        <Link href={`/events/${slug}`} className="premium-button-outline px-8 py-4">Voltar para o Evento</Link>
+        <Link
+          href={`/events/${slug}`}
+          className="premium-button-outline px-8 py-4"
+        >
+          Voltar para o Evento
+        </Link>
       </div>
     );
   }
@@ -170,12 +238,24 @@ export default function SubmitWorkPage() {
           <CheckCircleIcon className="w-16 h-16 text-primary" />
         </div>
         <div className="space-y-4">
-          <h1 className="text-4xl font-black tracking-tight text-foreground">Submissão Enviada!</h1>
-          <p className="text-muted-foreground text-lg font-medium">Seu trabalho foi enviado com sucesso e entrará em fase de revisão em breve.</p>
+          <h1 className="text-4xl font-black tracking-tight text-foreground">
+            Submissão Enviada!
+          </h1>
+          <p className="text-muted-foreground text-lg font-medium">
+            Seu trabalho foi enviado com sucesso e entrará em fase de revisão
+            em breve.
+          </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-          <Link href={`/events/${slug}`} className="premium-button-outline px-8 py-4">Voltar para o Evento</Link>
-          <Link href="/tickets" className="premium-button px-8 py-4">Ver Meus Ingressos</Link>
+          <Link
+            href={`/events/${slug}`}
+            className="premium-button-outline px-8 py-4"
+          >
+            Voltar para o Evento
+          </Link>
+          <Link href="/tickets" className="premium-button px-8 py-4">
+            Ver Meus Ingressos
+          </Link>
         </div>
       </div>
     );
@@ -184,171 +264,243 @@ export default function SubmitWorkPage() {
   const modalities = event.submissionModalities || [];
   const areas = event.thematicAreas || [];
   const rules = event.submissionRules || [];
+  const fileForPreview =
+    selectedFile instanceof File ? selectedFile : null;
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-6 space-y-12">
       <div className="space-y-4">
-        <Link href={`/events/${slug}`} className="inline-flex items-center gap-2 text-sm font-black text-muted-foreground hover:text-primary transition-colors uppercase tracking-widest">
+        <Link
+          href={`/events/${slug}`}
+          className="inline-flex items-center gap-2 text-sm font-black text-muted-foreground hover:text-primary transition-colors uppercase tracking-widest"
+        >
           <ArrowLeftIcon className="w-4 h-4" />
           Voltar para {event.name}
         </Link>
-        <h1 className="text-4xl font-black tracking-tight text-foreground">Submissão de Trabalho</h1>
-        <p className="text-muted-foreground font-medium">Preencha os dados abaixo para submeter seu trabalho científico ao evento.</p>
+        <h1 className="text-4xl font-black tracking-tight text-foreground">
+          Submissão de Trabalho
+        </h1>
+        <p className="text-muted-foreground font-medium">
+          Preencha os dados abaixo para submeter seu trabalho científico ao
+          evento.
+        </p>
       </div>
 
-      {/* Deadline countdown */}
       {event.submissionEndDate && countdown && countdown !== "Encerrado" && (
         <div className="flex items-center gap-4 p-5 bg-amber-500/10 border border-amber-500/20 rounded-2xl">
           <ClockIcon className="w-6 h-6 text-amber-600 shrink-0" />
           <div>
-            <p className="text-sm font-black text-amber-700">Prazo para submissão</p>
-            <p className="text-2xl font-black text-amber-600 font-mono tabular-nums">{countdown}</p>
+            <p className="text-sm font-black text-amber-700">
+              Prazo para submissão
+            </p>
+            <p className="text-2xl font-black text-amber-600 font-mono tabular-nums">
+              {countdown}
+            </p>
           </div>
         </div>
       )}
 
-      {/* Scientific committee info */}
       {(event.scientificCommitteeHead || event.scientificCommitteeEmail) && (
         <div className="flex items-start gap-4 p-5 bg-primary/5 border border-primary/20 rounded-2xl">
           <InformationCircleIcon className="w-6 h-6 text-primary shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <p className="text-sm font-black text-foreground">Comissão Científica</p>
-            {event.scientificCommitteeHead && <p className="text-sm text-muted-foreground">Responsável: <span className="font-bold text-foreground">{event.scientificCommitteeHead}</span></p>}
+            <p className="text-sm font-black text-foreground">
+              Comissão Científica
+            </p>
+            {event.scientificCommitteeHead && (
+              <p className="text-sm text-muted-foreground">
+                Responsável:{" "}
+                <span className="font-bold text-foreground">
+                  {event.scientificCommitteeHead}
+                </span>
+              </p>
+            )}
             {event.scientificCommitteeEmail && (
-              <a href={`mailto:${event.scientificCommitteeEmail}`} className="text-sm text-primary font-bold hover:underline flex items-center gap-1.5">
-                <EnvelopeIcon className="w-4 h-4" /> {event.scientificCommitteeEmail}
+              <a
+                href={`mailto:${event.scientificCommitteeEmail}`}
+                className="text-sm text-primary font-bold hover:underline flex items-center gap-1.5"
+              >
+                <EnvelopeIcon className="w-4 h-4" />{" "}
+                {event.scientificCommitteeEmail}
               </a>
             )}
           </div>
         </div>
       )}
 
-      {/* Rules & Templates download */}
-      {(rules.length > 0 || modalities.some(m => m.templateUrl)) && (
+      {(rules.length > 0 || modalities.some((m) => m.templateUrl)) && (
         <div className="premium-card p-6 bg-card border-border space-y-4">
-          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Documentos Importantes</p>
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+            Documentos Importantes
+          </p>
           <div className="flex flex-wrap gap-3">
-            {rules.map(rule => (
-              <a key={rule.id} href={rule.fileUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border text-sm font-bold text-foreground hover:bg-muted hover:border-primary/50 transition-all">
-                <ArrowDownTrayIcon className="w-4 h-4 text-primary" /> {rule.title}
+            {rules.map((rule) => (
+              <a
+                key={rule.id}
+                href={rule.fileUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border text-sm font-bold text-foreground hover:bg-muted hover:border-primary/50 transition-all"
+              >
+                <ArrowDownTrayIcon className="w-4 h-4 text-primary" />{" "}
+                {rule.title}
               </a>
             ))}
-            {modalities.filter(m => m.templateUrl).map(mod => (
-              <a key={mod.id} href={mod.templateUrl!} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border text-sm font-bold text-foreground hover:bg-muted hover:border-primary/50 transition-all">
-                <ArrowDownTrayIcon className="w-4 h-4 text-primary" /> Template: {mod.name}
-              </a>
-            ))}
+            {modalities
+              .filter((m) => m.templateUrl)
+              .map((mod) => (
+                <a
+                  key={mod.id}
+                  href={mod.templateUrl!}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border text-sm font-bold text-foreground hover:bg-muted hover:border-primary/50 transition-all"
+                >
+                  <ArrowDownTrayIcon className="w-4 h-4 text-primary" />{" "}
+                  Template: {mod.name}
+                </a>
+              ))}
           </div>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-10">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-10" noValidate>
         <div className="premium-card p-8 md:p-12 bg-card border-border space-y-8">
-          {/* Title Field */}
-          <div className="space-y-3">
-            <label htmlFor="submission-title" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Título do Trabalho</label>
-            <input 
-              id="submission-title"
-              required
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Ex: Análise de Performance em Sistemas Distribuídos"
-              className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/50 transition-all font-bold"
-            />
-          </div>
+          <Input
+            id="submission-title"
+            label="Título do Trabalho"
+            required
+            placeholder="Ex: Análise de Performance em Sistemas Distribuídos"
+            error={errors.title?.message}
+            {...register("title")}
+          />
 
-          {/* Modality Select */}
           {modalities.length > 0 && (
-            <div className="space-y-3">
-              <label htmlFor="modality" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Modalidade</label>
-              <select id="modality" value={modalityId} onChange={e => setModalityId(e.target.value)} className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground focus:ring-2 focus:ring-primary/50 transition-all font-bold">
-                <option value="">Selecione uma modalidade</option>
-                {modalities.map(m => (
-                  <option key={m.id} value={m.id}>{m.name}{m.description ? ` — ${m.description}` : ""}</option>
-                ))}
-              </select>
-            </div>
+            <Select
+              id="modality"
+              label="Modalidade"
+              placeholder="Selecione uma modalidade"
+              error={errors.modalityId?.message}
+              {...register("modalityId")}
+            >
+              {modalities.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                  {m.description ? ` — ${m.description}` : ""}
+                </option>
+              ))}
+            </Select>
           )}
 
-          {/* Thematic Area Select */}
           {areas.length > 0 && (
-            <div className="space-y-3">
-              <label htmlFor="thematic-area" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Área Temática</label>
-              <select id="thematic-area" value={thematicAreaId} onChange={e => setThematicAreaId(e.target.value)} className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground focus:ring-2 focus:ring-primary/50 transition-all font-bold">
-                <option value="">Selecione uma área temática</option>
-                {areas.map(a => (
-                  <option key={a.id} value={a.id}>{a.name}</option>
-                ))}
-              </select>
-            </div>
+            <Select
+              id="thematic-area"
+              label="Área Temática"
+              placeholder="Selecione uma área temática"
+              error={errors.thematicAreaId?.message}
+              {...register("thematicAreaId")}
+            >
+              {areas.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name}
+                </option>
+              ))}
+            </Select>
           )}
 
-          {/* Abstract Field */}
-          <div className="space-y-3">
-            <label htmlFor="abstract" className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Resumo / Abstract</label>
-            <textarea 
-              id="abstract"
-              rows={6}
-              value={abstract}
-              onChange={(e) => setAbstract(e.target.value)}
-              placeholder="Descreva brevemente seu trabalho..."
-              className="w-full bg-muted border-none rounded-2xl px-6 py-5 text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/50 transition-all font-bold"
-            />
-          </div>
+          <Textarea
+            id="abstract"
+            label="Resumo / Abstract"
+            rows={6}
+            required
+            placeholder="Descreva brevemente seu trabalho..."
+            error={errors.abstract?.message}
+            {...register("abstract")}
+          />
 
-          {/* File Upload */}
           <div className="space-y-3">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">Arquivo (PDF)</label>
-            <div className={`relative group border-2 border-dashed rounded-3xl p-12 text-center transition-all ${file ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}>
-              <input 
-                type="file"
-                accept="application/pdf"
-                onChange={(e) => setFile(e.target.files?.[0] || null)}
-                className="absolute inset-0 opacity-0 cursor-pointer z-10"
-                required
-              />
-              <div className="space-y-4 flex flex-col items-center">
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-colors ${file ? 'bg-primary text-white' : 'bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-white'}`}>
-                  {file ? <DocumentTextIcon className="w-8 h-8" /> : <CloudArrowUpIcon className="w-8 h-8" />}
+            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1">
+              Arquivo (PDF) <span className="text-red-500" aria-hidden>*</span>
+            </label>
+            <Controller
+              control={control}
+              name="file"
+              render={({ field }) => (
+                <div
+                  className={`relative group border-2 border-dashed rounded-3xl p-12 text-center transition-all ${
+                    fileForPreview
+                      ? "border-primary bg-primary/5"
+                      : errors.file
+                        ? "border-red-500/60"
+                        : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(e) =>
+                      field.onChange(e.target.files?.[0] || null)
+                    }
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                    aria-invalid={errors.file ? true : undefined}
+                    className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                  />
+                  <div className="space-y-4 flex flex-col items-center">
+                    <div
+                      className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-colors ${
+                        fileForPreview
+                          ? "bg-primary text-white"
+                          : "bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-white"
+                      }`}
+                    >
+                      {fileForPreview ? (
+                        <DocumentTextIcon className="w-8 h-8" />
+                      ) : (
+                        <CloudArrowUpIcon className="w-8 h-8" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-lg font-bold text-foreground">
+                        {fileForPreview
+                          ? fileForPreview.name
+                          : "Clique ou arraste seu PDF"}
+                      </p>
+                      <p className="text-sm text-muted-foreground font-medium">
+                        {fileForPreview
+                          ? `${(fileForPreview.size / 1024 / 1024).toFixed(2)} MB`
+                          : "Tamanho máximo: 10MB"}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-lg font-bold text-foreground">
-                    {file ? file.name : "Clique ou arraste seu PDF"}
-                  </p>
-                  <p className="text-sm text-muted-foreground font-medium">
-                    {file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : "Tamanho máximo: 10MB"}
-                  </p>
-                </div>
-              </div>
-            </div>
+              )}
+            />
+            {errors.file?.message && (
+              <p role="alert" className="text-xs font-medium text-red-500 px-1">
+                {errors.file.message}
+              </p>
+            )}
           </div>
         </div>
 
-        {error && (
+        {submitError && (
           <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-sm font-bold flex items-center gap-3">
-             <InformationCircleIcon className="w-5 h-5" />
-             {error}
+            <InformationCircleIcon className="w-5 h-5" />
+            {submitError}
           </div>
         )}
 
         <div className="flex justify-end pt-4">
-          <button 
-            type="submit" 
-            disabled={submitting || !file}
-            className="premium-button !px-12 !py-5 !text-lg !font-black disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+          <Button
+            type="submit"
+            size="lg"
+            isLoading={isSubmitting}
+            rightIcon={<CheckCircleIcon className="w-6 h-6" />}
           >
-            {submitting ? (
-              <>
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Enviando...
-              </>
-            ) : (
-              <>
-                Finalizar Submissão
-                <CheckCircleIcon className="w-6 h-6" />
-              </>
-            )}
-          </button>
+            Finalizar Submissão
+          </Button>
         </div>
       </form>
     </div>

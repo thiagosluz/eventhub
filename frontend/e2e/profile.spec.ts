@@ -27,9 +27,9 @@ test.describe('Perfil do Usuário', () => {
   });
 
   test('deve permitir alterar a senha', async ({ page }) => {
-    await page.getByLabel('Senha Atual').fill('senha-antiga');
-    await page.getByLabel('Nova Senha', { exact: true }).fill('senha-nova');
-    await page.getByLabel('Confirmar Nova Senha').fill('senha-nova');
+    await page.getByLabel(/Senha Atual/).fill('senha-antiga');
+    await page.getByLabel(/^Nova Senha/).fill('senha-nova');
+    await page.getByLabel(/Confirmar Nova Senha/).fill('senha-nova');
 
     await page.getByRole('button', { name: /Atualizar Senha/i }).click();
 

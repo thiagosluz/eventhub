@@ -60,6 +60,6 @@ test.describe('Dashboard - Perfil do Usuário', () => {
     await updateButton.click();
 
     // Verifica o toast de erro (vê se o texto aparece)
-    await expect(page.getByText('As senhas não coincidem.')).toBeVisible();
+    await expect(page.getByText(/As senhas não coincidem/i)).toBeVisible();
   });
 });

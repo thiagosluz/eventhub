@@ -1,23 +1,52 @@
-export class UpdateEventDto {
-  name?: string;
-  slug?: string;
-  description?: string;
-  location?: string;
-  startDate?: string;
-  endDate?: string;
-  seoTitle?: string;
-  seoDescription?: string;
-  themeConfig?: Record<string, unknown>;
-  bannerUrl?: string;
-  logoUrl?: string;
-  status?: "DRAFT" | "PUBLISHED" | "ARCHIVED";
+import { PartialType } from "@nestjs/mapped-types";
+import {
+  IsBoolean,
+  IsDateString,
+  IsEmail,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from "class-validator";
+import { CreateEventDto } from "./create-event.dto";
 
-  // Submission module config
+export class UpdateEventDto extends PartialType(CreateEventDto) {
+  @IsString()
+  @IsOptional()
+  @MaxLength(500)
+  bannerUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(500)
+  logoUrl?: string;
+
+  @IsBoolean()
+  @IsOptional()
   submissionsEnabled?: boolean;
+
+  @IsDateString()
+  @IsOptional()
   submissionStartDate?: string;
+
+  @IsDateString()
+  @IsOptional()
   submissionEndDate?: string;
+
+  @IsDateString()
+  @IsOptional()
   reviewStartDate?: string;
+
+  @IsDateString()
+  @IsOptional()
   reviewEndDate?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(200)
   scientificCommitteeHead?: string;
+
+  @IsEmail()
+  @IsOptional()
+  @MaxLength(200)
   scientificCommitteeEmail?: string;
 }
