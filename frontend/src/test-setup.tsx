@@ -61,6 +61,8 @@ vi.mock('@heroicons/react/24/outline', () => ({
   PlusIcon: MockIcon('PlusIcon'),
   UserIcon: MockIcon('UserIcon'),
   ChartBarIcon: MockIcon('ChartBarIcon'),
+  QueueListIcon: MockIcon('QueueListIcon'),
+  ArrowTopRightOnSquareIcon: MockIcon('ArrowTopRightOnSquareIcon'),
   XMarkIcon: MockIcon('XMarkIcon'),
   CheckCircleIcon: MockIcon('CheckCircleIcon'),
   ExclamationTriangleIcon: MockIcon('ExclamationTriangleIcon'),

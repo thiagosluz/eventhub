@@ -3,10 +3,7 @@ import { validate } from "class-validator";
 import { CreateSpeakerDto } from "./create-speaker.dto";
 import { UpdateSpeakerDto } from "./update-speaker.dto";
 
-async function errorsFor<T extends object>(
-  Dto: new () => T,
-  payload: unknown,
-) {
+async function errorsFor<T extends object>(Dto: new () => T, payload: unknown) {
   const instance = plainToInstance(Dto, payload);
   return validate(instance as object);
 }

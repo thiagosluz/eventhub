@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { 
-  HomeIcon, 
-  CalendarIcon, 
-  UsersIcon, 
-  CreditCardIcon, 
+import {
+  HomeIcon,
+  CalendarIcon,
+  UsersIcon,
+  CreditCardIcon,
   Cog6ToothIcon,
   AcademicCapIcon,
   PlusIcon,
   UserIcon,
-  ChartBarIcon
+  ChartBarIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { Tenant } from "@/types/event";
@@ -25,7 +25,7 @@ const navigation = [
   { name: "Revisões", href: "/dashboard/reviews", icon: AcademicCapIcon },
   { name: "Financeiro", href: "/dashboard/finance", icon: CreditCardIcon },
   { name: "Configurações", href: "/dashboard/settings", icon: Cog6ToothIcon },
-  
+
   // Speaker specific
   { name: "Minha Agenda", href: "/speaker/activities", icon: CalendarIcon },
   { name: "Feedbacks", href: "/speaker/feedbacks", icon: AcademicCapIcon },
@@ -40,9 +40,9 @@ export function Sidebar({ tenant }: { tenant?: Tenant | null }) {
     if (user?.role === "REVIEWER") {
       return ["Visão Geral", "Revisões"].includes(item.name);
     }
-    
+
     const isSpeakerItem = ["Minha Agenda", "Feedbacks", "Perfil de Palestrante"].includes(item.name);
-    
+
     if (user?.role === "SPEAKER") {
       return ["Visão Geral", ...["Minha Agenda", "Feedbacks", "Perfil de Palestrante"]].includes(item.name);
     }

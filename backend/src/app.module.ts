@@ -47,6 +47,8 @@ import { AdminModule } from "./admin/admin.module";
 import { HealthModule } from "./health/health.module";
 import { ResponseTimeInterceptor } from "./common/interceptors/response-time.interceptor";
 import { KanbanModule } from "./kanban/kanban.module";
+import { defaultJobOptions } from "./common/bullmq/default-job-options";
+import { AdminQueuesModule } from "./admin/queues/admin-queues.module";
 
 @Module({
   imports: [
@@ -74,11 +76,17 @@ import { KanbanModule } from "./kanban/kanban.module";
         host: process.env.REDIS_HOST ?? "localhost",
         port: Number(process.env.REDIS_PORT ?? 6379),
       },
+      defaultJobOptions,
     }),
     BullModule.registerQueue(
       { name: "assign-reviews" },
       { name: "activities" },
     ),
+    // Bull Board é desabilitado em testes: o `BullBoardModule.forFeature`
+    // tenta resolver queues BullMQ reais no `onModuleInit`, e a fábrica de
+    // testes (`createTestingModule`) produz proxies incompatíveis, quebrando
+    // todos os e2e com "non-BullMQ queue".
+    ...(process.env.NODE_ENV === "test" ? [] : [AdminQueuesModule]),
     ThrottlerModule.forRoot([
       {
         name: "default",

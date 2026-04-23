@@ -3,10 +3,7 @@ import { validate } from "class-validator";
 import { CreateActivityDto } from "./create-activity.dto";
 import { UpdateActivityDto } from "./update-activity.dto";
 
-async function errorsFor<T extends object>(
-  Dto: new () => T,
-  payload: unknown,
-) {
+async function errorsFor<T extends object>(Dto: new () => T, payload: unknown) {
   const instance = plainToInstance(Dto, payload);
   return validate(instance as object);
 }

@@ -3,13 +3,12 @@ import { ActivitiesProcessor } from "./activities.processor";
 import { PrismaService } from "../prisma/prisma.service";
 import { EnrollmentStatus } from "@prisma/client";
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 describe("ActivitiesProcessor", () => {
   let processor: ActivitiesProcessor;
 
   const mockPrismaService = {
-    activity: {
-      findMany: jest.fn(),
-    },
     activityEnrollment: {
       findMany: jest.fn(),
       updateMany: jest.fn(),
@@ -36,32 +35,75 @@ describe("ActivitiesProcessor", () => {
   });
 
   describe("cleanupExpiredEnrollments", () => {
-    it("should cancel expired pending enrollments", async () => {
-      const activity = {
-        id: "a1",
-        title: "Act",
-        requiresConfirmation: true,
-        confirmationDays: 1,
-      };
-      mockPrismaService.activity.findMany.mockResolvedValue([activity]);
+    it("cancela apenas enrollments expirados com uma única query consolidada", async () => {
+      const now = Date.now();
+      const staleDate = new Date(now - 3 * DAY_MS);
+      const freshDate = new Date(now - 0.1 * DAY_MS);
 
-      const expiredEnrollment = { id: "e1", status: EnrollmentStatus.PENDING };
       mockPrismaService.activityEnrollment.findMany.mockResolvedValue([
-        expiredEnrollment,
+        {
+          id: "expired-1",
+          createdAt: staleDate,
+          activity: { id: "a1", title: "Palestra", confirmationDays: 1 },
+        },
+        {
+          id: "expired-2",
+          createdAt: staleDate,
+          activity: { id: "a1", title: "Palestra", confirmationDays: 1 },
+        },
+        {
+          id: "fresh-1",
+          createdAt: freshDate,
+          activity: { id: "a2", title: "Workshop", confirmationDays: 2 },
+        },
+      ]);
+
+      await (processor as any).cleanupExpiredEnrollments();
+
+      expect(
+        mockPrismaService.activityEnrollment.findMany,
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        mockPrismaService.activityEnrollment.findMany,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            status: EnrollmentStatus.PENDING,
+            activity: expect.objectContaining({
+              requiresConfirmation: true,
+              confirmationDays: { not: null },
+            }),
+          }),
+        }),
+      );
+
+      expect(
+        mockPrismaService.activityEnrollment.updateMany,
+      ).toHaveBeenCalledWith({
+        where: { id: { in: ["expired-1", "expired-2"] } },
+        data: { status: EnrollmentStatus.CANCELLED },
+      });
+    });
+
+    it("não chama updateMany quando não há enrollments expirados", async () => {
+      const now = Date.now();
+      mockPrismaService.activityEnrollment.findMany.mockResolvedValue([
+        {
+          id: "fresh-1",
+          createdAt: new Date(now - 0.1 * DAY_MS),
+          activity: { id: "a1", title: "Palestra", confirmationDays: 1 },
+        },
       ]);
 
       await (processor as any).cleanupExpiredEnrollments();
 
       expect(
         mockPrismaService.activityEnrollment.updateMany,
-      ).toHaveBeenCalledWith({
-        where: { id: { in: ["e1"] } },
-        data: { status: EnrollmentStatus.CANCELLED },
-      });
+      ).not.toHaveBeenCalled();
     });
 
-    it("should do nothing if no expired enrollments found", async () => {
-      mockPrismaService.activity.findMany.mockResolvedValue([]);
+    it("não chama updateMany quando o findMany retorna vazio", async () => {
+      mockPrismaService.activityEnrollment.findMany.mockResolvedValue([]);
       await (processor as any).cleanupExpiredEnrollments();
       expect(
         mockPrismaService.activityEnrollment.updateMany,

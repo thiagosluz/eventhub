@@ -3,13 +3,14 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import { 
-  Building2, 
-  ShieldAlert, 
-  LayoutDashboard, 
+import {
+  Building2,
+  ShieldAlert,
+  LayoutDashboard,
   LogOut,
   UserCheck,
-  Activity
+  Activity,
+  ListChecks,
 } from "lucide-react";
 import { useEffect } from "react";
 import { ThemeToggle } from "@/components/ui";
@@ -36,6 +37,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Inquilinos", href: "/admin/tenants", icon: Building2 },
     { name: "Auditoria Global", href: "/admin/audit", icon: ShieldAlert },
     { name: "Saúde do Sistema", href: "/admin/health", icon: Activity },
+    { name: "Filas (Bull Board)", href: "/admin/queues", icon: ListChecks },
   ];
 
   return (
