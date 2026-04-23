@@ -8,8 +8,21 @@
   --color-primary: hsl(var(--primary));
   --color-primary-dark: hsl(var(--primary) / 0.8);
   --color-accent: oklch(0.7 0.12 170);        /* Teal/Mint tint */
-  --color-destructive: oklch(0.6 0.2 25);    /* Professional Red */
+  --color-accent-foreground: oklch(0.18 0.03 170); /* Dark teal on light accent */
+
+  /* Semantic Feedback Colors */
+  --color-destructive: oklch(0.6 0.2 25);     /* Professional Red */
   --color-destructive-dark: oklch(0.45 0.15 25);
+  --color-destructive-foreground: oklch(0.99 0.005 250); /* Near white on red */
+
+  --color-success: oklch(0.62 0.15 155);      /* Emerald */
+  --color-success-foreground: oklch(0.99 0.005 250);
+
+  --color-warning: oklch(0.75 0.16 75);       /* Amber */
+  --color-warning-foreground: oklch(0.2 0.02 250);
+
+  --color-info: oklch(0.62 0.15 245);         /* Blue */
+  --color-info-foreground: oklch(0.99 0.005 250);
 
   /* Neutral/Light Palette */
   --color-background: oklch(0.99 0.005 250);   /* Gray 50 */
@@ -22,6 +35,11 @@
   --color-muted-foreground: oklch(0.5 0.02 250);/* Gray 500 */
 
   --color-border: oklch(0.9 0.01 250);         /* Gray 200 */
+
+  /* Elevation surfaces - use to layer content on top of --color-background */
+  --color-surface-1: oklch(1 0 0);             /* Same as card */
+  --color-surface-2: oklch(0.97 0.008 250);    /* Slightly elevated */
+  --color-surface-3: oklch(0.94 0.01 250);     /* More elevated */
   
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
@@ -43,6 +61,22 @@
   --color-muted-foreground: oklch(0.7 0.02 250);
 
   --color-border: oklch(0.32 0.02 250);
+
+  /* Semantic feedback colors adjust in dark mode to maintain contrast */
+  --color-destructive: oklch(0.65 0.2 25);
+  --color-destructive-foreground: oklch(0.99 0.005 250);
+  --color-success: oklch(0.68 0.15 155);
+  --color-success-foreground: oklch(0.14 0.02 250);
+  --color-warning: oklch(0.78 0.16 75);
+  --color-warning-foreground: oklch(0.14 0.02 250);
+  --color-info: oklch(0.68 0.15 245);
+  --color-info-foreground: oklch(0.14 0.02 250);
+  --color-accent-foreground: oklch(0.96 0.005 250);
+
+  /* Elevation surfaces (darker = less elevated) */
+  --color-surface-1: oklch(0.22 0.02 250);
+  --color-surface-2: oklch(0.26 0.02 250);
+  --color-surface-3: oklch(0.3 0.02 250);
 
   --shadow-premium: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
   --shadow-inner-glow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
@@ -70,8 +104,13 @@
 }
 
 @layer components {
+  /*
+   * premium-card: utilitário legado — equivalente ao primitivo <Card> do design system.
+   * Use <Card /> quando possível. Esta classe existe apenas para markup onde <Card>
+   * ainda não foi adotado, garantindo visual consistente.
+   */
   .premium-card {
-    @apply bg-card rounded-2xl border border-border transition-all duration-300;
+    @apply bg-card text-card-foreground rounded-2xl border border-border transition-all duration-300;
     box-shadow: var(--shadow-premium);
   }
 
@@ -92,6 +131,10 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.02);
   }
 
+  /*
+   * premium-button: utilitário legado — prefira o primitivo <Button variant="primary" />.
+   * Esta classe está aqui para pontos de markup sem React (ex.: email templates).
+   */
   .premium-button {
     @apply relative overflow-hidden rounded-lg px-8 py-3 font-semibold transition-all duration-300;
     @apply hover:brightness-110 active:scale-95 text-white flex items-center justify-center gap-2;

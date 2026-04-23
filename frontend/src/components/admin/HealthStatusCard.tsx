@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import { CheckCircle, XCircle, AlertTriangle, Loader2 } from 'lucide-react';
+import {
+  CheckCircleIcon,
+  XCircleIcon,
+  ExclamationTriangleIcon,
+  ArrowPathIcon,
+} from '@heroicons/react/24/outline';
 
 interface HealthStatusCardProps {
   title: string;
@@ -30,13 +35,13 @@ export const HealthStatusCard: React.FC<HealthStatusCardProps> = ({
   const getStatusIcon = () => {
     switch (status) {
       case 'ok':
-        return <CheckCircle className="w-5 h-5" />;
+        return <CheckCircleIcon className="w-5 h-5" />;
       case 'error':
-        return <XCircle className="w-5 h-5" />;
+        return <XCircleIcon className="w-5 h-5" />;
       case 'loading':
-        return <Loader2 className="w-5 h-5 animate-spin text-blue-500" />;
+        return <ArrowPathIcon className="w-5 h-5 animate-spin text-blue-500" />;
       default:
-        return <AlertTriangle className="w-5 h-5" />;
+        return <ExclamationTriangleIcon className="w-5 h-5" />;
     }
   };
 

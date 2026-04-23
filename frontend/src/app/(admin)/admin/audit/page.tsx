@@ -2,7 +2,15 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { api } from "@/lib/api";
-import { Search, Loader2, ShieldAlert, Filter, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import {
+  MagnifyingGlassIcon,
+  ArrowPathIcon,
+  ShieldExclamationIcon,
+  FunnelIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CalendarIcon,
+} from "@heroicons/react/24/outline";
 
 export default function GlobalAuditPage() {
   const [logs, setLogs] = useState<any[]>([]);
@@ -49,7 +57,7 @@ export default function GlobalAuditPage() {
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-bold text-gray-100 flex items-center gap-3">
-            <ShieldAlert className="w-8 h-8 text-red-500" />
+            <ShieldExclamationIcon className="w-8 h-8 text-red-500" />
             Auditoria Global
           </h1>
           <p className="text-gray-400 mt-2">Visibilidade total de eventos em todos os inquilinos (Tenants).</p>
@@ -61,7 +69,7 @@ export default function GlobalAuditPage() {
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-gray-500 uppercase tracking-wider ml-1">Inquilino (ID)</label>
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <FunnelIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input 
               type="text" 
               placeholder="Filtro por Tenant ID..."
@@ -74,7 +82,7 @@ export default function GlobalAuditPage() {
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-gray-500 uppercase tracking-wider ml-1">Usuário / E-mail</label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input 
               type="text" 
               placeholder="Buscar usuário..."
@@ -87,7 +95,7 @@ export default function GlobalAuditPage() {
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-gray-500 uppercase tracking-wider ml-1">Data Inicial</label>
           <div className="relative">
-            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input 
               type="date"
               value={filters.startDate}
@@ -110,7 +118,7 @@ export default function GlobalAuditPage() {
       <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-sm overflow-hidden">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-            <Loader2 className="w-8 h-8 animate-spin text-red-500 mb-4" />
+            <ArrowPathIcon className="w-8 h-8 animate-spin text-red-500 mb-4" />
             <p>Filtrando Eventos de Segurança...</p>
           </div>
         ) : (
@@ -188,7 +196,7 @@ export default function GlobalAuditPage() {
                     onClick={() => setPage(p => p - 1)}
                     className="p-2 border border-gray-800 rounded hover:bg-gray-800 disabled:opacity-30 transition-colors"
                   >
-                    <ChevronLeft className="w-4 h-4 text-gray-400" />
+                    <ChevronLeftIcon className="w-4 h-4 text-gray-400" />
                   </button>
                   <div className="flex items-center px-4 text-sm font-medium text-gray-300">
                     Página {page} de {totalPages}
@@ -198,7 +206,7 @@ export default function GlobalAuditPage() {
                     onClick={() => setPage(p => p + 1)}
                     className="p-2 border border-gray-800 rounded hover:bg-gray-800 disabled:opacity-30 transition-colors"
                   >
-                    <ChevronRight className="w-4 h-4 text-gray-400" />
+                    <ChevronRightIcon className="w-4 h-4 text-gray-400" />
                   </button>
                 </div>
               </div>

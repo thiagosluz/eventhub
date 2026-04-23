@@ -2,7 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Search, Loader2, CheckCircle2, XCircle, ShieldAlert, Ghost, Plus, User as UserIcon, X } from "lucide-react";
+import {
+  MagnifyingGlassIcon,
+  ArrowPathIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  ShieldExclamationIcon,
+  NoSymbolIcon,
+  PlusIcon,
+  UserIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { useAuth } from "@/context/AuthContext";
 import { ConfirmationModal } from "@/components/common/ConfirmationModal";
 import { CreateTenantModal } from "@/components/admin/CreateTenantModal";
@@ -119,7 +129,7 @@ export default function TenantsPage() {
           onClick={() => setIsCreateModalOpen(true)}
           className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 px-4 py-2 rounded-lg font-semibold transition-colors"
         >
-          <Plus className="w-5 h-5" />
+          <PlusIcon className="w-5 h-5" />
           Novo Inquilino
         </button>
       </div>
@@ -127,7 +137,7 @@ export default function TenantsPage() {
       <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-sm overflow-hidden">
         <div className="p-4 border-b border-gray-800 bg-gray-900/50 flex gap-4 items-center">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input 
               type="text" 
               placeholder="Buscar por nome do cliente..." 
@@ -140,7 +150,7 @@ export default function TenantsPage() {
         
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-            <Loader2 className="w-8 h-8 animate-spin text-yellow-500 mb-4" />
+            <ArrowPathIcon className="w-8 h-8 animate-spin text-yellow-500 mb-4" />
             <p>Carregando Base de Inquilinos...</p>
           </div>
         ) : (
@@ -166,12 +176,12 @@ export default function TenantsPage() {
                     <td className="px-6 py-4">
                       {t.isActive ? (
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <CheckCircleIcon className="w-3.5 h-3.5" />
                           Ativo
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-500 border border-red-500/20">
-                          <XCircle className="w-3.5 h-3.5" />
+                          <XCircleIcon className="w-3.5 h-3.5" />
                           Bloqueado
                         </span>
                       )}
@@ -188,7 +198,7 @@ export default function TenantsPage() {
                           className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10 rounded-lg transition-colors"
                           title="Impersonate (Acesso Fantasma)"
                         >
-                          <Ghost className="w-4 h-4" />
+                          <NoSymbolIcon className="w-4 h-4" />
                         </button>
                         <button 
                           onClick={() => toggleStatus(t.id, t.isActive)}
@@ -199,7 +209,7 @@ export default function TenantsPage() {
                           }`}
                           title={t.isActive ? "Desativar Inquilino" : "Reativar Inquilino"}
                         >
-                          <ShieldAlert className="w-4 h-4" />
+                          <ShieldExclamationIcon className="w-4 h-4" />
                         </button>
                       </div>
                     </td>
@@ -224,14 +234,14 @@ export default function TenantsPage() {
                 onClick={() => setIsModalOpen(false)}
                 className="p-2 text-gray-500 hover:text-gray-300 hover:bg-gray-800 rounded-lg transition-colors"
               >
-                <X className="w-5 h-5" />
+                <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
             
             <div className="p-6 max-h-[400px] overflow-y-auto space-y-4">
               {isLoadingUsers ? (
                 <div className="flex flex-col items-center py-10 text-gray-500">
-                  <Loader2 className="w-8 h-8 animate-spin text-cyan-500 mb-2" />
+                  <ArrowPathIcon className="w-8 h-8 animate-spin text-cyan-500 mb-2" />
                   <p>Buscando usuários do inquilino...</p>
                 </div>
               ) : tenantUsers.length === 0 ? (

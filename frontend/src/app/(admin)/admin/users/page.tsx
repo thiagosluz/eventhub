@@ -2,17 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { 
-  Search, 
-  Loader2, 
-  User as UserIcon, 
-  Mail, 
-  Building2, 
-  Shield, 
-  MoreHorizontal, 
-  Filter,
-  Users as UsersIcon
-} from "lucide-react";
+import {
+  MagnifyingGlassIcon,
+  ArrowPathIcon,
+  UserIcon,
+  EnvelopeIcon,
+  BuildingOffice2Icon,
+  ShieldCheckIcon,
+  EllipsisHorizontalIcon,
+  FunnelIcon,
+  UsersIcon,
+} from "@heroicons/react/24/outline";
 import { EditUserModal } from "@/components/admin/EditUserModal";
 
 export default function GlobalUsersPage() {
@@ -73,7 +73,7 @@ export default function GlobalUsersPage() {
       {/* Filtros e Busca */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-900/50 backdrop-blur-md p-4 rounded-2xl border border-white/5">
         <div className="relative md:col-span-2">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+          <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <input 
             type="text" 
             placeholder="Buscar por nome ou e-mail..." 
@@ -84,7 +84,7 @@ export default function GlobalUsersPage() {
         </div>
         
         <div className="relative">
-          <Shield className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+          <ShieldCheckIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <select 
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
@@ -100,7 +100,7 @@ export default function GlobalUsersPage() {
         </div>
 
         <div className="flex items-center justify-center gap-2 text-slate-400 font-bold text-sm">
-          <Filter className="w-4 h-4" />
+          <FunnelIcon className="w-4 h-4" />
           {total} registros
         </div>
       </div>
@@ -108,7 +108,7 @@ export default function GlobalUsersPage() {
       <div className="bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
         {isLoading && page === 1 ? (
           <div className="flex flex-col items-center justify-center h-80 text-slate-400">
-            <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mb-4" />
+            <ArrowPathIcon className="w-10 h-10 animate-spin text-indigo-500 mb-4" />
             <p className="font-bold tracking-widest uppercase text-xs">Sincronizando Diretório...</p>
           </div>
         ) : (
@@ -134,7 +134,7 @@ export default function GlobalUsersPage() {
                         <div>
                           <div className="font-bold text-white group-hover:text-indigo-400 transition-colors">{u.name}</div>
                           <div className="text-slate-500 text-xs flex items-center gap-1.5 font-medium">
-                            <Mail className="w-3 h-3" />
+                            <EnvelopeIcon className="w-3 h-3" />
                             {u.email}
                           </div>
                         </div>
@@ -142,7 +142,7 @@ export default function GlobalUsersPage() {
                     </td>
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-2 text-slate-300 font-semibold">
-                        <Building2 className="w-4 h-4 text-emerald-400" />
+                        <BuildingOffice2Icon className="w-4 h-4 text-emerald-400" />
                         {u.tenant?.name || <span className="text-[10px] uppercase text-slate-500 tracking-tighter italic">Sem Organização</span>}
                       </div>
                     </td>
@@ -165,7 +165,7 @@ export default function GlobalUsersPage() {
                         onClick={() => openEditModal(u)}
                         className="p-2 text-slate-500 hover:text-white hover:bg-white/10 rounded-xl transition-all active:scale-90"
                       >
-                        <MoreHorizontal className="w-5 h-5" />
+                        <EllipsisHorizontalIcon className="w-5 h-5" />
                       </button>
                     </td>
                   </tr>

@@ -30,6 +30,7 @@ describe("Button", () => {
   it("applies variant classes", () => {
     render(<Button variant="destructive">Remover</Button>);
     const btn = screen.getByRole("button");
-    expect(btn.className).toContain("bg-red-600");
+    expect(btn.className).toContain("bg-destructive");
+    expect(btn.className).toContain("text-destructive-foreground");
   });
 });

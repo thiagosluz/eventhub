@@ -4,14 +4,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import {
-  Building2,
-  ShieldAlert,
-  LayoutDashboard,
-  LogOut,
-  UserCheck,
-  Activity,
-  ListChecks,
-} from "lucide-react";
+  BuildingOffice2Icon,
+  ShieldExclamationIcon,
+  Squares2X2Icon,
+  ArrowRightOnRectangleIcon,
+  ShieldCheckIcon,
+  BoltIcon,
+  QueueListIcon,
+} from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 import { ThemeToggle } from "@/components/ui";
 
@@ -33,11 +33,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   const navItems = [
-    { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { name: "Inquilinos", href: "/admin/tenants", icon: Building2 },
-    { name: "Auditoria Global", href: "/admin/audit", icon: ShieldAlert },
-    { name: "Saúde do Sistema", href: "/admin/health", icon: Activity },
-    { name: "Filas (Bull Board)", href: "/admin/queues", icon: ListChecks },
+    { name: "Dashboard", href: "/admin/dashboard", icon: Squares2X2Icon },
+    { name: "Inquilinos", href: "/admin/tenants", icon: BuildingOffice2Icon },
+    { name: "Auditoria Global", href: "/admin/audit", icon: ShieldExclamationIcon },
+    { name: "Saúde do Sistema", href: "/admin/health", icon: BoltIcon },
+    { name: "Filas (Bull Board)", href: "/admin/queues", icon: QueueListIcon },
   ];
 
   return (
@@ -46,7 +46,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside className="w-64 bg-gray-900 border-r border-gray-800 flex flex-col">
         <div className="h-16 flex items-center px-6 border-b border-gray-800">
           <Link href="/admin/dashboard" className="flex items-center gap-2 font-bold text-xl text-yellow-500">
-            <ShieldAlert className="w-6 h-6" />
+            <ShieldExclamationIcon className="w-6 h-6" />
             <span>EventHub<span className="text-white text-xs align-top ml-1">MASTER</span></span>
           </Link>
         </div>
@@ -77,7 +77,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="p-4 border-t border-gray-800">
           <div className="flex items-center gap-3 px-3 py-2 mb-3 bg-gray-950 rounded-lg border border-gray-800">
             <div className="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-500">
-              <UserCheck className="w-4 h-4" />
+              <ShieldCheckIcon className="w-4 h-4" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-100 truncate">{user?.name}</p>
@@ -88,7 +88,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             onClick={logout}
             className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
           >
-            <LogOut className="w-4 h-4" />
+            <ArrowRightOnRectangleIcon className="w-4 h-4" />
             Sair do Sistema
           </button>
         </div>
@@ -98,7 +98,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <main className="flex-1 flex flex-col min-w-0 pb-10 overflow-y-auto">
         <header className="h-16 flex-shrink-0 flex items-center justify-between px-8 border-b border-gray-800 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-10">
           <div className="flex items-center gap-2 text-red-500 bg-red-500/10 px-3 py-1.5 rounded-full text-xs font-bold border border-red-500/20">
-            <ShieldAlert className="w-3.5 h-3.5" />
+            <ShieldExclamationIcon className="w-3.5 h-3.5" />
             ZONA DE RISCO DE DADOS
           </div>
           <div className="flex items-center gap-3">

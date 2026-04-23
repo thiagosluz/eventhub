@@ -3,7 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { HealthStatusCard } from '@/components/admin/HealthStatusCard';
 import { api } from '@/lib/api';
-import { Activity, Clock, ShieldCheck, RefreshCcw } from 'lucide-react';
+import {
+  BoltIcon,
+  ClockIcon,
+  ShieldCheckIcon,
+  ArrowPathIcon,
+} from '@heroicons/react/24/outline';
 
 interface HealthData {
   status: string;
@@ -47,7 +52,7 @@ export default function AdminHealthPage() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-emerald-500 mb-2">
-            <ShieldCheck className="w-5 h-5" />
+            <ShieldCheckIcon className="w-5 h-5" />
             <span className="text-xs font-bold uppercase tracking-widest">System Integrity</span>
           </div>
           <h1 className="text-4xl font-bold text-white tracking-tight">Saúde da Infraestrutura</h1>
@@ -56,14 +61,14 @@ export default function AdminHealthPage() {
         
         <div className="flex items-center gap-4 text-xs font-medium">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-900 border border-gray-800 text-gray-400">
-            <Clock className="w-3.5 h-3.5" />
+            <ClockIcon className="w-3.5 h-3.5" />
             Última atualização: {lastUpdate.toLocaleTimeString()}
           </div>
           <button 
             onClick={() => { setLoading(true); fetchHealth(); }}
             className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500/20 transition-colors"
           >
-            <RefreshCcw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+            <ArrowPathIcon className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             Atualizar Agora
           </button>
         </div>
@@ -73,7 +78,7 @@ export default function AdminHealthPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="md:col-span-1 bg-gray-900 border border-gray-800 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
           <div className="flex items-center gap-3 text-gray-400 mb-4">
-            <Activity className="w-5 h-5 text-blue-500" />
+            <BoltIcon className="w-5 h-5 text-blue-500" />
             <span className="font-medium text-sm">Latência da API</span>
           </div>
           <div>

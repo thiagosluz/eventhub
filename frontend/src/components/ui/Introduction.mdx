@@ -10,12 +10,83 @@ variáveis OKLCH e suporte nativo a dark mode (`.dark` em `<html>`).
 ## Convenções
 
 - **Cores**: via tokens semânticos (`bg-background`, `text-foreground`,
-  `bg-card`, `text-primary`…). Evite cores hardcoded.
+  `bg-card`, `text-primary`…). Evite cores hardcoded (`text-red-500`, `bg-gray-900`).
+- **Ícones**: use exclusivamente `@heroicons/react/24/outline` (outline) ou `/solid`.
+  `lucide-react` foi removido — não reintroduza.
 - **Espaçamento**: prefira múltiplos de 4 (Tailwind).
 - **Radii**: use `rounded-xl` / `rounded-2xl` para superfícies premium.
 - **Acessibilidade**: todo componente interativo expõe `aria-*` e foco
   visível; ícones decorativos usam `aria-hidden`.
 - **Composição**: componentes aceitam `className` para overrides pontuais.
+
+## Tokens semânticos
+
+Os tokens vivem em `src/app/globals.css`, dentro de `@theme` (light) e `.dark`
+(overrides). Use as classes utilitárias do Tailwind que mapeiam para eles
+(`bg-*`, `text-*`, `border-*`) — nunca dependa do valor bruto.
+
+### Brand
+
+| Token                     | Uso sugerido                         | Light                  | Dark                 |
+| ------------------------- | ------------------------------------ | ---------------------- | -------------------- |
+| `--color-primary`         | Ações primárias, links, foco         | Emerald 600 (dinâmico) | Emerald (dinâmico)   |
+| `--color-accent`          | Destaques secundários, chips         | Teal/Mint              | Teal/Mint            |
+| `--color-accent-foreground` | Texto sobre `accent`               | Teal escuro            | Neutro claro         |
+
+### Feedback semântico
+
+| Token                         | Uso sugerido                              |
+| ----------------------------- | ----------------------------------------- |
+| `--color-destructive`         | Ações destrutivas, erros críticos         |
+| `--color-destructive-foreground` | Texto sobre superfície destrutiva      |
+| `--color-success`             | Confirmação positiva, estado "ok"         |
+| `--color-success-foreground`  | Texto sobre superfície de sucesso         |
+| `--color-warning`             | Avisos, atenção                           |
+| `--color-warning-foreground`  | Texto sobre superfície de aviso           |
+| `--color-info`                | Informação neutra, dicas                  |
+| `--color-info-foreground`     | Texto sobre superfície de informação      |
+
+### Superfícies e neutros
+
+| Token                       | Uso sugerido                                |
+| --------------------------- | ------------------------------------------- |
+| `--color-background`        | Fundo global da página                       |
+| `--color-foreground`        | Texto principal sobre `background`           |
+| `--color-card`              | Fundo de Cards                               |
+| `--color-card-foreground`   | Texto sobre Card                             |
+| `--color-muted`             | Fundos sutis (chips, toolbars, placeholders) |
+| `--color-muted-foreground`  | Texto secundário                             |
+| `--color-border`            | Bordas (inputs, cards, divisores)            |
+| `--color-surface-1`         | Mesmo nível de Card                          |
+| `--color-surface-2`         | Superfície levemente elevada (toolbar)       |
+| `--color-surface-3`         | Superfície mais elevada (header/modal)       |
+
+## Card vs. `.premium-card`
+
+`<Card />` em `@/components/ui/Card` é a **única fonte de verdade** para
+superfícies elevadas. Sempre que possível, use o primitivo React:
+
+```tsx
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui";
+
+<Card>
+  <CardHeader>
+    <CardTitle>Meu evento</CardTitle>
+  </CardHeader>
+  <CardContent>…</CardContent>
+</Card>
+```
+
+A classe utilitária `.premium-card` (em `globals.css`) existe apenas como
+alias legado para markup onde `<Card />` ainda não foi adotado. Ela aplica
+os mesmos tokens (`bg-card`, `border-border`, `shadow-premium`) e deve ser
+migrada progressivamente para `<Card />`.
+
+> **Regra**: novo código deve usar `<Card />`. Não introduza novas instâncias
+> de `.premium-card` — prefira o primitivo.
+
+O mesmo vale para `.premium-button` / `.premium-button-outline`: são aliases
+legados de `<Button variant="primary" />` e `<Button variant="outline" />`.
 
 ## Alternando o tema no Storybook
 
