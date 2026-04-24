@@ -1,25 +1,97 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, OnModuleInit } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { Prisma } from "@prisma/client";
 
+interface CachedConfig {
+  dailyXpLimit: number;
+  levelFormulaBase: number;
+  levelFormulaExponent: number;
+  spikeThreshold: number;
+  spikeWindowMinutes: number;
+}
+
+interface CachedAction {
+  actionKey: string;
+  xpAmount: number;
+  isActive: boolean;
+}
+
 @Injectable()
-export class GamificationService {
-  private readonly DAILY_XP_LIMIT = 1500;
+export class GamificationService implements OnModuleInit {
+  private configCache: CachedConfig | null = null;
+  private actionsCache: Map<string, CachedAction> = new Map();
 
   constructor(private readonly prisma: PrismaService) {}
 
-  /**
-   * Calculates level based on XP using the formula: Level = floor((XP / 500)^0.6) + 1
-   */
-  calculateLevel(xp: number): number {
-    if (xp <= 0) return 1;
-    return Math.floor(Math.pow(xp / 500, 0.6)) + 1;
+  async onModuleInit() {
+    await this.loadConfig();
+  }
+
+  async loadConfig() {
+    const config = await this.prisma.gamificationConfig.findFirst();
+    if (config) {
+      this.configCache = {
+        dailyXpLimit: config.dailyXpLimit,
+        levelFormulaBase: config.levelFormulaBase,
+        levelFormulaExponent: config.levelFormulaExponent,
+        spikeThreshold: config.spikeThreshold,
+        spikeWindowMinutes: config.spikeWindowMinutes,
+      };
+    } else {
+      this.configCache = {
+        dailyXpLimit: 1500,
+        levelFormulaBase: 500,
+        levelFormulaExponent: 0.6,
+        spikeThreshold: 1000,
+        spikeWindowMinutes: 5,
+      };
+    }
+
+    const actions = await this.prisma.xpActionConfig.findMany();
+    this.actionsCache.clear();
+    for (const a of actions) {
+      this.actionsCache.set(a.actionKey, {
+        actionKey: a.actionKey,
+        xpAmount: a.xpAmount,
+        isActive: a.isActive,
+      });
+    }
+  }
+
+  invalidateCache() {
+    this.configCache = null;
+    this.actionsCache.clear();
+  }
+
+  private async ensureConfig(): Promise<CachedConfig> {
+    if (!this.configCache) {
+      await this.loadConfig();
+    }
+    return this.configCache!;
   }
 
   /**
-   * Awards XP to a user, enforcing daily limits and calculating level-ups.
-   * Now supporting a uniqueKey to prevent duplicate awards for the same action.
+   * Returns the XP amount for a given action key from the cache.
+   * Falls back to 0 if the action is not found or is disabled.
    */
+  async getXpForAction(actionKey: string): Promise<number> {
+    await this.ensureConfig();
+    const action = this.actionsCache.get(actionKey);
+    if (!action || !action.isActive) return 0;
+    return action.xpAmount;
+  }
+
+  /**
+   * Calculates level based on XP using configurable formula:
+   * Level = floor((XP / base)^exponent) + 1
+   */
+  calculateLevel(xp: number, base?: number, exponent?: number): number {
+    const b = base ?? this.configCache?.levelFormulaBase ?? 500;
+    const e = exponent ?? this.configCache?.levelFormulaExponent ?? 0.6;
+    if (xp <= 0) return 1;
+    return Math.floor(Math.pow(xp / b, e)) + 1;
+  }
+
   /**
    * Awards XP to a user, enforcing daily limits and calculating level-ups.
    * Supports eventId for scoped auditing and automatic spike alerts.
@@ -31,6 +103,8 @@ export class GamificationService {
     uniqueKey?: string,
     eventId?: string,
   ) {
+    const config = await this.ensureConfig();
+
     return await this.prisma
       .$transaction(async (tx: Prisma.TransactionClient) => {
         // 0. LOCK the user row to serialize all awardXp calls for this user
@@ -66,10 +140,10 @@ export class GamificationService {
 
         const currentDailyTotal = logsToday._sum.amount || 0;
 
-        // 3. Enforce daily limit
+        // 3. Enforce daily limit (from config)
         let finalAmount = amount;
-        if (currentDailyTotal + amount > this.DAILY_XP_LIMIT) {
-          finalAmount = Math.max(0, this.DAILY_XP_LIMIT - currentDailyTotal);
+        if (currentDailyTotal + amount > config.dailyXpLimit) {
+          finalAmount = Math.max(0, config.dailyXpLimit - currentDailyTotal);
         }
 
         if (finalAmount <= 0) {
@@ -112,27 +186,28 @@ export class GamificationService {
           },
         });
 
-        // 6. Check for Spike Alerts (1000 XP in 5 minutes)
+        // 6. Check for Spike Alerts (configurable threshold and window)
         if (eventId) {
-          const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+          const windowMs = config.spikeWindowMinutes * 60 * 1000;
+          const windowAgo = new Date(Date.now() - windowMs);
           const recentGains = await tx.xpGainLog.aggregate({
             where: {
               userId,
               eventId,
-              createdAt: { gte: fiveMinutesAgo },
+              createdAt: { gte: windowAgo },
             },
             _sum: { amount: true },
           });
 
           const totalRecent = recentGains._sum.amount || 0;
-          if (totalRecent >= 1000) {
+          if (totalRecent >= config.spikeThreshold) {
             await tx.gamificationAlert.create({
               data: {
                 eventId,
                 userId,
                 type: "XP_SPIKE",
-                message: `Usuário ganhou ${totalRecent} XP nos últimos 5 minutos.`,
-                metadata: { totalXp: totalRecent, windowMinutes: 5 },
+                message: `Usuário ganhou ${totalRecent} XP nos últimos ${config.spikeWindowMinutes} minutos.`,
+                metadata: { totalXp: totalRecent, windowMinutes: config.spikeWindowMinutes },
               },
             });
           }
@@ -151,6 +226,37 @@ export class GamificationService {
         }
         throw err;
       });
+  }
+
+  /**
+   * Simulates a level curve for given parameters.
+   * Returns an array of { level, xpRequired } up to maxLevel.
+   */
+  simulateLevelCurve(
+    base: number,
+    exponent: number,
+    maxLevel = 20,
+  ): { level: number; xpRequired: number }[] {
+    const curve: { level: number; xpRequired: number }[] = [];
+    for (let lvl = 1; lvl <= maxLevel; lvl++) {
+      if (lvl === 1) {
+        curve.push({ level: 1, xpRequired: 0 });
+        continue;
+      }
+      // Inverse formula: XP = base * (level - 1)^(1/exponent)
+      const xp = Math.ceil(base * Math.pow(lvl - 1, 1 / exponent));
+      curve.push({ level: lvl, xpRequired: xp });
+    }
+    return curve;
+  }
+
+  async getConfig() {
+    return this.ensureConfig();
+  }
+
+  async getActions() {
+    await this.ensureConfig();
+    return Array.from(this.actionsCache.values());
   }
 
   async getEventStats(eventId: string) {

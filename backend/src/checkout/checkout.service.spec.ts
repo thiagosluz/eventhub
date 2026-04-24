@@ -5,6 +5,7 @@ import { ActivitiesService } from "../activities/activities.service";
 import { FreeTicketStrategy } from "./free-ticket.strategy";
 import { MailService } from "../mail/mail.service";
 import { BadgesService } from "../badges/badges.service";
+import { GamificationService } from "../gamification/gamification.service";
 import { NotFoundException, ConflictException } from "@nestjs/common";
 
 describe("CheckoutService", () => {
@@ -54,6 +55,11 @@ describe("CheckoutService", () => {
     checkAndAwardBadge: jest.fn(),
   };
 
+  const mockGamificationService = {
+    getXpForAction: jest.fn().mockResolvedValue(100),
+    awardXp: jest.fn().mockResolvedValue({ xpGained: 100, isLevelUp: false }),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -63,6 +69,7 @@ describe("CheckoutService", () => {
         { provide: FreeTicketStrategy, useValue: mockFreeTicketStrategy },
         { provide: MailService, useValue: mockMailService },
         { provide: BadgesService, useValue: mockBadgesService },
+        { provide: GamificationService, useValue: mockGamificationService },
       ],
     }).compile();
 

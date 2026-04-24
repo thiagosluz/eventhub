@@ -8,6 +8,7 @@ import * as argon2 from "argon2";
 import { createHash, randomUUID } from "crypto";
 import { PrismaService } from "../prisma/prisma.service";
 import { MailService } from "../mail/mail.service";
+import { GamificationService } from "../gamification/gamification.service";
 
 interface RegisterOrganizerInput {
   tenantName: string;
@@ -49,6 +50,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
+    private readonly gamificationService: GamificationService,
   ) {}
 
   async registerOrganizer(
@@ -131,6 +133,16 @@ export class AuthService {
     if (!user || !(await argon2.verify(user.password, input.password))) {
       throw new UnauthorizedException("Credenciais inválidas.");
     }
+
+    // Award Daily Login XP
+    const dateStr = new Date().toISOString().split("T")[0];
+    const xpAmount = await this.gamificationService.getXpForAction("DAILY_LOGIN");
+    await this.gamificationService.awardXp(
+      user.id,
+      xpAmount,
+      "DAILY_LOGIN",
+      `DAILY_LOGIN_${user.id}_${dateStr}`
+    );
 
     return this.createSession(user as unknown as SessionUser, meta);
   }

@@ -8,6 +8,7 @@ import { Queue } from "bullmq";
 import { PrismaService } from "../prisma/prisma.service";
 import { MinioService } from "../storage/minio.service";
 import { MailService } from "../mail/mail.service";
+import { GamificationService } from "../gamification/gamification.service";
 
 interface CreateSubmissionParams {
   authorId: string;
@@ -26,6 +27,7 @@ export class SubmissionsService {
     private readonly minio: MinioService,
     private readonly mail: MailService,
     @InjectQueue("assign-reviews") private readonly assignReviewsQueue: Queue,
+    private readonly gamificationService: GamificationService,
   ) {}
 
   async createSubmission(params: CreateSubmissionParams) {
@@ -116,6 +118,15 @@ export class SubmissionsService {
       eventId,
       tenantId: event.tenantId,
     });
+
+    const xpAmount = await this.gamificationService.getXpForAction("SUBMISSION_CREATED");
+    await this.gamificationService.awardXp(
+      authorId,
+      xpAmount,
+      "SUBMISSION_CREATED",
+      `SUBMISSION_CREATED_${submission.id}`,
+      eventId
+    );
 
     return submission;
   }

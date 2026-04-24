@@ -36,6 +36,7 @@ describe("CheckinService", () => {
       findUnique: jest.fn(),
       delete: jest.fn(),
       findMany: jest.fn(),
+      count: jest.fn(),
     },
     event: {
       findFirst: jest.fn(),
@@ -59,6 +60,7 @@ describe("CheckinService", () => {
 
   const mockGamificationService = {
     awardXp: jest.fn().mockResolvedValue({ xpGained: 100, isLevelUp: false }),
+    getXpForAction: jest.fn().mockResolvedValue(200),
   };
 
   beforeEach(async () => {

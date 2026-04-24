@@ -13,7 +13,7 @@ export class PublicActivitiesController {
   @Post(":activityId/feedbacks")
   async submitFeedback(
     @Param("activityId") activityId: string,
-    @Body() body: { rating: number; comment?: string },
+    @Body() body: { rating: number; comment?: string; userId?: string },
   ) {
     return this.activitiesService.submitPublicFeedback(activityId, body);
   }

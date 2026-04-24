@@ -134,9 +134,10 @@ export class UsersService {
     let isLevelUp = false;
 
     if (isNowComplete && !wasAlreadyAwarded) {
+      const xpAmount = await this.gamificationService.getXpForAction("PROFILE_COMPLETED");
       const xpResult = await this.gamificationService.awardXp(
         userId,
-        150,
+        xpAmount,
         "PROFILE_COMPLETED",
         "PROFILE_COMPLETED",
       );

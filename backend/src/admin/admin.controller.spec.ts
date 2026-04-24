@@ -17,6 +17,10 @@ describe("AdminController", () => {
     listGlobalUsers: jest.fn(),
     updateGlobalUser: jest.fn(),
     resetGlobalUserPassword: jest.fn(),
+    getGamificationConfig: jest.fn(),
+    updateGamificationConfig: jest.fn(),
+    updateXpAction: jest.fn(),
+    simulateLevelCurve: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -136,5 +140,39 @@ describe("AdminController", () => {
   it("should reset global user password", async () => {
     await controller.resetGlobalUserPassword("u1");
     expect(service.resetGlobalUserPassword).toHaveBeenCalledWith("u1");
+  });
+
+  describe("Gamification Config", () => {
+    it("should get gamification config", async () => {
+      await controller.getGamificationConfig();
+      expect(service.getGamificationConfig).toHaveBeenCalled();
+    });
+
+    it("should update gamification config", async () => {
+      const dto = { dailyXpLimit: 2000 };
+      const req = { user: { sub: "admin1" } };
+      await controller.updateGamificationConfig(dto, req);
+      expect(service.updateGamificationConfig).toHaveBeenCalledWith(
+        dto,
+        "admin1",
+      );
+    });
+
+    it("should update xp action", async () => {
+      const dto = { xpAmount: 300 };
+      const req = { user: { sub: "admin1" } };
+      await controller.updateXpAction("action-1", dto, req);
+      expect(service.updateXpAction).toHaveBeenCalledWith(
+        "action-1",
+        dto,
+        "admin1",
+      );
+    });
+
+    it("should simulate level curve", async () => {
+      const dto = { base: 500, exponent: 0.6 } as any;
+      await controller.simulateLevelCurve(dto);
+      expect(service.simulateLevelCurve).toHaveBeenCalledWith(dto);
+    });
   });
 });

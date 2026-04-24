@@ -5,6 +5,7 @@ import { MinioService } from "../storage/minio.service";
 import { MailService } from "../mail/mail.service";
 import { getQueueToken } from "@nestjs/bullmq";
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
+import { GamificationService } from "../gamification/gamification.service";
 
 describe("SubmissionsService", () => {
   let service: SubmissionsService;
@@ -48,6 +49,11 @@ describe("SubmissionsService", () => {
     add: jest.fn(),
   };
 
+  const mockGamificationService = {
+    getXpForAction: jest.fn().mockResolvedValue(200),
+    awardXp: jest.fn().mockResolvedValue({ xpGained: 200, isLevelUp: false }),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -56,6 +62,7 @@ describe("SubmissionsService", () => {
         { provide: MinioService, useValue: mockMinioService },
         { provide: MailService, useValue: mockMailService },
         { provide: getQueueToken("assign-reviews"), useValue: mockQueue },
+        { provide: GamificationService, useValue: mockGamificationService },
       ],
     }).compile();
 

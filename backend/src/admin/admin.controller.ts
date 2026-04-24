@@ -14,6 +14,11 @@ import { SuperAdminGuard } from "../common/guards/super-admin.guard";
 import { AdminService } from "./admin.service";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { AdminUpdateUserDto } from "./dto/update-user.dto";
+import {
+  UpdateGamificationConfigDto,
+  UpdateXpActionDto,
+  SimulateLevelDto,
+} from "./dto/gamification.dto";
 
 @Controller("admin")
 @UseGuards(JwtAuthGuard, SuperAdminGuard)
@@ -96,5 +101,34 @@ export class AdminController {
   @Post("users/:id/reset-password")
   resetGlobalUserPassword(@Param("id") id: string) {
     return this.adminService.resetGlobalUserPassword(id);
+  }
+
+  // ─── Gamification Config ───────────────────────────────────
+
+  @Get("gamification/config")
+  getGamificationConfig() {
+    return this.adminService.getGamificationConfig();
+  }
+
+  @Patch("gamification/config")
+  updateGamificationConfig(
+    @Body() dto: UpdateGamificationConfigDto,
+    @Req() req: any,
+  ) {
+    return this.adminService.updateGamificationConfig(dto, req.user.sub);
+  }
+
+  @Patch("gamification/actions/:id")
+  updateXpAction(
+    @Param("id") id: string,
+    @Body() dto: UpdateXpActionDto,
+    @Req() req: any,
+  ) {
+    return this.adminService.updateXpAction(id, dto, req.user.sub);
+  }
+
+  @Post("gamification/simulate")
+  simulateLevelCurve(@Body() dto: SimulateLevelDto) {
+    return this.adminService.simulateLevelCurve(dto);
   }
 }

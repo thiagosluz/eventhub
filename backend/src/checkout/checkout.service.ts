@@ -23,6 +23,7 @@ interface CheckoutInput {
 
 import { MailService } from "../mail/mail.service";
 import { BadgesService } from "../badges/badges.service";
+import { GamificationService } from "../gamification/gamification.service";
 
 @Injectable()
 export class CheckoutService {
@@ -32,6 +33,7 @@ export class CheckoutService {
     private readonly freeTicketStrategy: FreeTicketStrategy,
     private readonly mailService: MailService,
     private readonly badgesService: BadgesService,
+    private readonly gamificationService: GamificationService,
   ) {}
 
   async processCheckout(input: CheckoutInput): Promise<{
@@ -78,6 +80,16 @@ export class CheckoutService {
     // Trigger Badge Check for Early Bird and Event Count
     await this.badgesService.checkAndAwardBadge(userId, eventId, "EARLY_BIRD");
     await this.badgesService.checkAndAwardBadge(userId, eventId, "EVENT_COUNT");
+
+    // Award Gamification XP for Registration
+    const xpAmount = await this.gamificationService.getXpForAction("EVENT_REGISTRATION");
+    await this.gamificationService.awardXp(
+      userId,
+      xpAmount,
+      "EVENT_REGISTRATION",
+      `EVENT_REGISTRATION_${eventId}`,
+      eventId
+    );
 
     // Auto-enroll in activities that don't require manual enrollment
     const autoEnrollActivities = await this.prisma.activity.findMany({

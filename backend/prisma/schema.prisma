@@ -69,6 +69,7 @@ model User {
   xpLogs               XpGainLog[]
   issuedCertificates   IssuedCertificate[]
   refreshTokens        RefreshToken[]
+  gamificationConfigs  GamificationConfig[] @relation("GamificationConfigUpdatedBy")
 }
 
 model RefreshToken {
@@ -789,4 +790,28 @@ enum InvitationStatus {
   ACCEPTED
   REJECTED
   EXPIRED
+}
+
+model GamificationConfig {
+  id                   String   @id @default(cuid())
+  dailyXpLimit         Int      @default(1500)
+  levelFormulaBase     Int      @default(500)
+  levelFormulaExponent Float    @default(0.6)
+  spikeThreshold       Int      @default(1000)
+  spikeWindowMinutes   Int      @default(5)
+  updatedAt            DateTime @updatedAt
+  updatedById          String?
+  updatedBy            User?    @relation("GamificationConfigUpdatedBy", fields: [updatedById], references: [id])
+}
+
+model XpActionConfig {
+  id          String   @id @default(cuid())
+  actionKey   String   @unique
+  label       String
+  description String?
+  xpAmount    Int
+  isActive    Boolean  @default(true)
+  icon        String?
+  category    String   @default("engagement")
+  updatedAt   DateTime @updatedAt
 }

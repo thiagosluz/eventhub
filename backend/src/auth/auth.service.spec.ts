@@ -4,6 +4,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { JwtService } from "@nestjs/jwt";
 import { UnauthorizedException, NotFoundException } from "@nestjs/common";
 import { MailService } from "../mail/mail.service";
+import { GamificationService } from "../gamification/gamification.service";
 import * as argon2 from "argon2";
 
 jest.mock("argon2");
@@ -37,6 +38,11 @@ describe("AuthService", () => {
     enqueue: jest.fn(),
   };
 
+  const mockGamificationService = {
+    getXpForAction: jest.fn().mockResolvedValue(25),
+    awardXp: jest.fn().mockResolvedValue({ xpGained: 25, isLevelUp: false }),
+  };
+
   beforeEach(async () => {
     jest.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
@@ -45,6 +51,7 @@ describe("AuthService", () => {
         { provide: PrismaService, useValue: mockPrismaService },
         { provide: JwtService, useValue: mockJwtService },
         { provide: MailService, useValue: mockMailService },
+        { provide: GamificationService, useValue: mockGamificationService },
       ],
     }).compile();
 

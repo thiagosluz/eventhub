@@ -5,6 +5,7 @@ import { JwtService } from "@nestjs/jwt";
 import { NotFoundException, ConflictException } from "@nestjs/common";
 import * as argon2 from "argon2";
 import { MailService } from "../mail/mail.service";
+import { GamificationService } from "../gamification/gamification.service";
 
 jest.mock("argon2", () => ({
   hash: jest.fn().mockResolvedValue("hashed_password"),
@@ -50,6 +51,11 @@ describe("AdminService", () => {
     enqueue: jest.fn(),
   };
 
+  const mockGamificationService = {
+    invalidateCache: jest.fn(),
+    simulateLevelCurve: jest.fn().mockReturnValue([]),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -57,6 +63,7 @@ describe("AdminService", () => {
         { provide: PrismaService, useValue: mockPrismaService },
         { provide: JwtService, useValue: mockJwtService },
         { provide: MailService, useValue: mockMailService },
+        { provide: GamificationService, useValue: mockGamificationService },
       ],
     }).compile();
 

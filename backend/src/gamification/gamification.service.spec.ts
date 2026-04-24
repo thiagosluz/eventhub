@@ -26,6 +26,23 @@ describe("GamificationService", () => {
 
     mockPrismaService = {
       $transaction: jest.fn((cb) => cb(mockTx)),
+      gamificationConfig: {
+        findFirst: jest.fn().mockResolvedValue({
+          id: "cfg-1",
+          dailyXpLimit: 1500,
+          levelFormulaBase: 500,
+          levelFormulaExponent: 0.6,
+          spikeThreshold: 1000,
+          spikeWindowMinutes: 5,
+        }),
+      },
+      xpActionConfig: {
+        findMany: jest.fn().mockResolvedValue([
+          { actionKey: "EVENT_CHECKIN", xpAmount: 200, isActive: true },
+          { actionKey: "ACTIVITY_CHECKIN", xpAmount: 50, isActive: true },
+          { actionKey: "PROFILE_COMPLETED", xpAmount: 150, isActive: true },
+        ]),
+      },
       xpGainLog: { aggregate: jest.fn(), groupBy: jest.fn() },
       userBadge: { count: jest.fn() },
       gamificationAlert: {
@@ -45,6 +62,8 @@ describe("GamificationService", () => {
     }).compile();
 
     service = module.get<GamificationService>(GamificationService);
+    // Pre-load config cache
+    await service.onModuleInit();
   });
 
   describe("calculateLevel", () => {
@@ -53,10 +72,64 @@ describe("GamificationService", () => {
       expect(service.calculateLevel(-100)).toBe(1);
     });
 
-    it("should calculate levels correctly based on formula", () => {
+    it("should calculate levels correctly based on default formula", () => {
       expect(service.calculateLevel(500)).toBe(2);
       expect(service.calculateLevel(1000)).toBe(2);
       expect(service.calculateLevel(2500)).toBe(3);
+    });
+
+    it("should accept custom base and exponent parameters", () => {
+      // With base=300, exponent=0.8: Level = floor((500/300)^0.8) + 1
+      const level = service.calculateLevel(500, 300, 0.8);
+      expect(level).toBeGreaterThanOrEqual(2);
+    });
+  });
+
+  describe("getXpForAction", () => {
+    it("should return configured XP for an active action", async () => {
+      const xp = await service.getXpForAction("EVENT_CHECKIN");
+      expect(xp).toBe(200);
+    });
+
+    it("should return 0 for an unknown action", async () => {
+      const xp = await service.getXpForAction("UNKNOWN_ACTION");
+      expect(xp).toBe(0);
+    });
+
+    it("should return 0 for a disabled action", async () => {
+      mockPrismaService.xpActionConfig.findMany.mockResolvedValue([
+        { actionKey: "EVENT_CHECKIN", xpAmount: 200, isActive: false },
+      ]);
+      service.invalidateCache();
+      const xp = await service.getXpForAction("EVENT_CHECKIN");
+      expect(xp).toBe(0);
+    });
+  });
+
+  describe("invalidateCache", () => {
+    it("should clear cache and reload on next access", async () => {
+      service.invalidateCache();
+      // Next call should trigger reload
+      const xp = await service.getXpForAction("EVENT_CHECKIN");
+      expect(mockPrismaService.gamificationConfig.findFirst).toHaveBeenCalledTimes(2); // once in init, once after invalidate
+      expect(xp).toBe(200);
+    });
+  });
+
+  describe("simulateLevelCurve", () => {
+    it("should return correct curve for given parameters", () => {
+      const curve = service.simulateLevelCurve(500, 0.6, 5);
+      expect(curve).toHaveLength(5);
+      expect(curve[0]).toEqual({ level: 1, xpRequired: 0 });
+      expect(curve[1].level).toBe(2);
+      expect(curve[1].xpRequired).toBeGreaterThan(0);
+    });
+
+    it("should produce increasing XP requirements", () => {
+      const curve = service.simulateLevelCurve(500, 0.6, 10);
+      for (let i = 2; i < curve.length; i++) {
+        expect(curve[i].xpRequired).toBeGreaterThan(curve[i - 1].xpRequired);
+      }
     });
   });
 
@@ -131,7 +204,7 @@ describe("GamificationService", () => {
       expect(result.reason).toBe("ALREADY_AWARDED");
     });
 
-    it("should create a spike alert if user gains 1000+ XP in 5 minutes", async () => {
+    it("should create a spike alert if user gains threshold+ XP in window", async () => {
       mockTx.xpGainLog.aggregate
         .mockResolvedValueOnce({ _sum: { amount: 0 } }) // Daily check
         .mockResolvedValueOnce({ _sum: { amount: 1200 } }); // Spike check

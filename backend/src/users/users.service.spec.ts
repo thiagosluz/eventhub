@@ -47,6 +47,7 @@ describe("UsersService", () => {
 
   const mockGamificationService = {
     awardXp: jest.fn().mockResolvedValue({ xpGained: 100, isLevelUp: false }),
+    getXpForAction: jest.fn().mockResolvedValue(150),
   };
 
   beforeEach(async () => {

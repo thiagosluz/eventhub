@@ -4,6 +4,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { getQueueToken } from "@nestjs/bullmq";
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
 import { KanbanAutomationService } from "../kanban/kanban-automation.service";
+import { GamificationService } from "../gamification/gamification.service";
 
 describe("ActivitiesService", () => {
   let service: ActivitiesService;
@@ -57,6 +58,11 @@ describe("ActivitiesService", () => {
     handleActivityUpsert: jest.fn().mockResolvedValue(undefined),
   };
 
+  const mockGamificationService = {
+    getXpForAction: jest.fn().mockResolvedValue(75),
+    awardXp: jest.fn().mockResolvedValue({ xpGained: 75, isLevelUp: false }),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -67,6 +73,7 @@ describe("ActivitiesService", () => {
           provide: KanbanAutomationService,
           useValue: mockKanbanAutomationService,
         },
+        { provide: GamificationService, useValue: mockGamificationService },
       ],
     }).compile();
 

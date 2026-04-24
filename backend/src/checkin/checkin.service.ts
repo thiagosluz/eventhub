@@ -155,18 +155,34 @@ export class CheckinService {
       "ACTIVITY_HOURS",
     );
 
-    // Award XP
-    const xpAmount = activityId ? 50 : 200;
+    // Award XP (dynamic from config)
+    const actionKey = activityId ? "ACTIVITY_CHECKIN" : "EVENT_CHECKIN";
+    const xpAmount = await this.gamificationService.getXpForAction(actionKey);
     const uniqueKey = activityId
       ? `ACTIVITY_CHECKIN_${activityId}`
       : `EVENT_CHECKIN_${event.id}`;
     const xpResult = await this.gamificationService.awardXp(
       user.id,
       xpAmount,
-      activityId ? "ACTIVITY_CHECKIN" : "EVENT_CHECKIN",
+      actionKey,
       uniqueKey,
       event.id,
     );
+
+    // FIRST_EVENT Check
+    const attendancesCount = await this.prisma.attendance.count({
+      where: { ticket: { registration: { userId: user.id } } },
+    });
+    if (attendancesCount === 1) { // includes the one just created
+      const firstEventXp = await this.gamificationService.getXpForAction("FIRST_EVENT");
+      await this.gamificationService.awardXp(
+        user.id,
+        firstEventXp,
+        "FIRST_EVENT",
+        `FIRST_EVENT_${user.id}`,
+        event.id
+      );
+    }
 
     return {
       alreadyCheckedIn: false,
@@ -378,6 +394,15 @@ export class CheckinService {
         history.registration.userId,
         history.eventId,
         "RAFFLE_WINNER",
+      );
+
+      const xpAmount = await this.gamificationService.getXpForAction("RAFFLE_WINNER");
+      await this.gamificationService.awardXp(
+        history.registration.userId,
+        xpAmount,
+        "RAFFLE_WINNER",
+        `RAFFLE_WINNER_${history.id}`,
+        history.eventId,
       );
     }
 

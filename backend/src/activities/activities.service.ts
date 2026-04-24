@@ -9,6 +9,7 @@ import { Queue } from "bullmq";
 import { PrismaService } from "../prisma/prisma.service";
 import { EnrollmentStatus } from "@prisma/client";
 import { KanbanAutomationService } from "../kanban/kanban-automation.service";
+import { GamificationService } from "../gamification/gamification.service";
 
 @Injectable()
 export class ActivitiesService implements OnModuleInit {
@@ -16,6 +17,7 @@ export class ActivitiesService implements OnModuleInit {
     private readonly prisma: PrismaService,
     @InjectQueue("activities") private readonly activitiesQueue: Queue,
     private readonly kanbanAutomation: KanbanAutomationService,
+    private readonly gamificationService: GamificationService,
   ) {}
 
   async onModuleInit() {
@@ -645,7 +647,7 @@ export class ActivitiesService implements OnModuleInit {
 
   async submitPublicFeedback(
     activityId: string,
-    data: { rating: number; comment?: string },
+    data: { rating: number; comment?: string; userId?: string },
   ) {
     const activity = await this.prisma.activity.findUnique({
       where: { id: activityId },
@@ -659,12 +661,25 @@ export class ActivitiesService implements OnModuleInit {
       throw new Error("Nota deve estar entre 1 e 5");
     }
 
-    return this.prisma.activityFeedback.create({
+    const feedback = await this.prisma.activityFeedback.create({
       data: {
         activityId,
         rating: data.rating,
         comment: data.comment,
       },
     });
+
+    if (data.userId) {
+      const xpAmount = await this.gamificationService.getXpForAction("FEEDBACK_SUBMITTED");
+      await this.gamificationService.awardXp(
+        data.userId,
+        xpAmount,
+        "FEEDBACK_SUBMITTED",
+        `FEEDBACK_${activityId}_${data.userId}`,
+        activity.eventId
+      );
+    }
+
+    return feedback;
   }
 }

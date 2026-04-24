@@ -12,6 +12,7 @@ import {
   BoltIcon,
   QueueListIcon,
   UsersIcon,
+  TrophyIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 import { ThemeToggle } from "@/components/ui";
@@ -39,6 +40,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Usuários", href: "/admin/users", icon: UsersIcon },
     { name: "Auditoria Global", href: "/admin/audit", icon: ShieldExclamationIcon },
     { name: "Saúde do Sistema", href: "/admin/health", icon: BoltIcon },
+    { name: "Gamificação", href: "/admin/gamification", icon: TrophyIcon },
     { name: "Filas (Bull Board)", href: "/admin/queues", icon: QueueListIcon },
   ];
 

@@ -7,9 +7,15 @@ import { PrismaService } from "../prisma/prisma.service";
 import { JwtService } from "@nestjs/jwt";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { AdminUpdateUserDto } from "./dto/update-user.dto";
+import {
+  UpdateGamificationConfigDto,
+  UpdateXpActionDto,
+  SimulateLevelDto,
+} from "./dto/gamification.dto";
 import * as argon2 from "argon2";
 import { randomBytes } from "crypto";
 import { MailService } from "../mail/mail.service";
+import { GamificationService } from "../gamification/gamification.service";
 
 @Injectable()
 export class AdminService {
@@ -17,6 +23,7 @@ export class AdminService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private mailService: MailService,
+    private gamificationService: GamificationService,
   ) {}
 
   async listTenants(page = 1, limit = 10) {
@@ -311,6 +318,97 @@ export class AdminService {
     });
 
     return { ok: true, email: user.email };
+  }
+
+  // ─── Gamification Config ───────────────────────────────────
+
+  async getGamificationConfig() {
+    const config = await this.prisma.gamificationConfig.findFirst();
+    const actions = await this.prisma.xpActionConfig.findMany({
+      orderBy: { actionKey: "asc" },
+    });
+    return { config, actions };
+  }
+
+  async updateGamificationConfig(
+    dto: UpdateGamificationConfigDto,
+    userId: string,
+  ) {
+    let config = await this.prisma.gamificationConfig.findFirst();
+
+    if (!config) {
+      config = await this.prisma.gamificationConfig.create({
+        data: { ...dto, updatedById: userId },
+      });
+    } else {
+      const previousValues = {
+        dailyXpLimit: config.dailyXpLimit,
+        levelFormulaBase: config.levelFormulaBase,
+        levelFormulaExponent: config.levelFormulaExponent,
+        spikeThreshold: config.spikeThreshold,
+        spikeWindowMinutes: config.spikeWindowMinutes,
+      };
+
+      config = await this.prisma.gamificationConfig.update({
+        where: { id: config.id },
+        data: { ...dto, updatedById: userId },
+      });
+
+      await this.prisma.auditLog.create({
+        data: {
+          userId,
+          action: "UPDATE",
+          resource: "GAMIFICATION_CONFIG",
+          resourceId: config.id,
+          payload: { previous: previousValues, current: { ...dto } },
+        },
+      });
+    }
+
+    this.gamificationService.invalidateCache();
+    return config;
+  }
+
+  async updateXpAction(id: string, dto: UpdateXpActionDto, userId: string) {
+    const action = await this.prisma.xpActionConfig.findUnique({
+      where: { id },
+    });
+    if (!action) throw new NotFoundException("Ação não encontrada.");
+
+    const previousValues = {
+      xpAmount: action.xpAmount,
+      isActive: action.isActive,
+    };
+
+    const updated = await this.prisma.xpActionConfig.update({
+      where: { id },
+      data: dto,
+    });
+
+    await this.prisma.auditLog.create({
+      data: {
+        userId,
+        action: "UPDATE",
+        resource: "XP_ACTION_CONFIG",
+        resourceId: id,
+        payload: {
+          actionKey: action.actionKey,
+          previous: previousValues,
+          current: { xpAmount: updated.xpAmount, isActive: updated.isActive },
+        },
+      },
+    });
+
+    this.gamificationService.invalidateCache();
+    return updated;
+  }
+
+  simulateLevelCurve(dto: SimulateLevelDto) {
+    return this.gamificationService.simulateLevelCurve(
+      dto.base,
+      dto.exponent,
+      dto.maxLevel || 20,
+    );
   }
 }
 
