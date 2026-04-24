@@ -40,6 +40,10 @@ const DEV_LOGIN_PRESETS = [
 
 export default function LoginPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [requires2fa, setRequires2fa] = useState(false);
+  const [tempToken, setTempToken] = useState<string | null>(null);
+  const [twoFactorCode, setTwoFactorCode] = useState("");
+  const [isRecoveryMode, setIsRecoveryMode] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect");
@@ -62,6 +66,39 @@ export default function LoginPage() {
     setSubmitError(null);
     try {
       const response = await authService.login(values);
+      
+      if (response.requires2fa && response.tempToken) {
+        setRequires2fa(true);
+        setTempToken(response.tempToken);
+        return;
+      }
+      
+      if (response.access_token && response.refresh_token && response.user) {
+        login(response as import('@/types/auth').AuthResponse);
+        if (redirectTo && redirectTo.startsWith("/")) {
+          router.push(redirectTo);
+        }
+      }
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Falha ao entrar. Verifique suas credenciais.";
+      setSubmitError(message);
+    }
+  };
+
+  const onTwoFactorSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitError(null);
+    const isValidLength = isRecoveryMode ? twoFactorCode.length >= 8 : twoFactorCode.length === 6;
+    if (!tempToken || !isValidLength) {
+      setSubmitError(isRecoveryMode ? "Digite o código de backup completo." : "Digite o código de 6 dígitos.");
+      return;
+    }
+
+    try {
+      const response = await authService.authenticate2fa(twoFactorCode, tempToken);
       login(response);
       if (redirectTo && redirectTo.startsWith("/")) {
         router.push(redirectTo);
@@ -70,7 +107,7 @@ export default function LoginPage() {
       const message =
         err instanceof Error
           ? err.message
-          : "Falha ao entrar. Verifique suas credenciais.";
+          : "Código inválido.";
       setSubmitError(message);
     }
   };
@@ -160,51 +197,118 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-            <Input
-              id="email"
-              type="email"
-              label="E-mail"
-              placeholder="seu@email.com"
-              autoComplete="email"
-              required
-              error={errors.email?.message}
-              {...register("email")}
-            />
-
-            <div className="space-y-1.5">
-              <div className="flex justify-between items-center">
-                <label className="text-sm font-semibold text-foreground" htmlFor="password">
-                  Senha <span className="text-red-500" aria-hidden="true">*</span>
-                </label>
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-xs font-bold text-primary hover:underline"
-                >
-                  Esqueceu a senha?
-                </Link>
+          {requires2fa ? (
+            <form onSubmit={onTwoFactorSubmit} className="space-y-6 animate-in slide-in-from-right duration-500">
+              <div className="space-y-2 text-center">
+                <h3 className="text-xl font-bold text-foreground">
+                  {isRecoveryMode ? "Código de Recuperação" : "Autenticação em Duas Etapas"}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {isRecoveryMode 
+                    ? "Digite um dos seus códigos de backup de 10 caracteres." 
+                    : "Abra o Google Authenticator ou Authy e digite o código gerado."}
+                </p>
               </div>
               <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                autoComplete="current-password"
+                id="twoFactorCode"
+                type="text"
+                label={isRecoveryMode ? "Código de Backup" : "Código de Autenticação"}
+                placeholder={isRecoveryMode ? "A1B2C3D4E5" : "123456"}
+                autoComplete="one-time-code"
                 required
-                error={errors.password?.message}
-                {...register("password")}
+                maxLength={isRecoveryMode ? 10 : 6}
+                value={twoFactorCode}
+                onChange={(e) => setTwoFactorCode(isRecoveryMode ? e.target.value.toUpperCase() : e.target.value.replace(/\D/g, ''))}
+                className="text-center text-2xl tracking-widest h-14"
               />
-            </div>
 
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              fullWidth
-              isLoading={isSubmitting}
-            >
-              {isSubmitting ? "Entrando..." : "Entrar na Conta"}
-            </Button>
-          </form>
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                fullWidth
+                disabled={isRecoveryMode ? twoFactorCode.length < 8 : twoFactorCode.length !== 6}
+              >
+                Verificar Código
+              </Button>
+              
+              <div className="flex flex-col gap-2">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  fullWidth
+                  onClick={() => {
+                    setIsRecoveryMode(!isRecoveryMode);
+                    setTwoFactorCode("");
+                  }}
+                >
+                  {isRecoveryMode ? "Usar App de Autenticação" : "Usar código de recuperação"}
+                </Button>
+                
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  fullWidth
+                  onClick={() => {
+                    setRequires2fa(false);
+                    setTempToken(null);
+                    setTwoFactorCode("");
+                    setIsRecoveryMode(false);
+                  }}
+                >
+                  Voltar
+                </Button>
+              </div>
+            </form>
+          ) : (
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+              <Input
+                id="email"
+                type="email"
+                label="E-mail"
+                placeholder="seu@email.com"
+                autoComplete="email"
+                required
+                error={errors.email?.message}
+                {...register("email")}
+              />
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center">
+                  <label className="text-sm font-semibold text-foreground" htmlFor="password">
+                    Senha <span className="text-red-500" aria-hidden="true">*</span>
+                  </label>
+                  <Link
+                    href="/auth/forgot-password"
+                    className="text-xs font-bold text-primary hover:underline"
+                  >
+                    Esqueceu a senha?
+                  </Link>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  required
+                  error={errors.password?.message}
+                  {...register("password")}
+                />
+              </div>
+
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                fullWidth
+                isLoading={isSubmitting}
+              >
+                {isSubmitting ? "Entrando..." : "Entrar na Conta"}
+              </Button>
+            </form>
+          )}
         </div>
 
         <p className="text-center text-sm font-medium text-muted-foreground">

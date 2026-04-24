@@ -1,42 +1,45 @@
-# Documentation Audit & Update Plan
+# 🎼 PLANO DE ORQUESTRAÇÃO: Códigos de Recuperação 2FA
 
-This plan was created by the `project-planner` agent to satisfy Phase 1 of the Orchestration Mode.
+Implementação de códigos de recuperação de uso único para o sistema de Autenticação de Dois Fatores (2FA), garantindo que o Super Admin possa recuperar o acesso à sua conta caso perca o dispositivo com o aplicativo de autenticação.
 
-## Goal
-Perform a comprehensive audit and update of the system's documentation (including the `README.md` and the `docs/` folder) to reflect recent architectural and functional changes made in the codebase.
+## 🛠️ Proposed Changes
 
-## Recent Code Changes Identified
-1. **UI Components & Storybook**: Introduction of reusable UI components (`Modal`, `Drawer`, `ConfirmDialog`, `Select`, `Textarea`, `Checkbox`) and Storybook stories. Migration from Lucide to Heroicons, and documentation of semantic color tokens (`Introduction.mdx`).
-2. **BullMQ Monitoring**: Implementation of a secure BullMQ monitoring dashboard (`/admin/queues`) with admin-only authentication middleware (`bull-board-auth.middleware.ts`).
-3. **Gamification Logic**: Addition of gamification level logic and its respective unit tests (`level.ts`).
-4. **Validation Schemas & DTOs**: Addition of form validation schemas (Zod) in the frontend and normalization of empty strings in backend DTOs.
-5. **Architectural Rename**: `middleware.ts` was renamed to `proxy.ts`.
+### 1. `database-architect` & `backend-specialist`
+
+#### [MODIFY] `backend/prisma/schema.prisma`
+- Adicionar o campo `twoFactorRecoveryCodes String[] @default([])` ao model `User`.
+
+#### [MODIFY] `backend/src/auth/auth.service.ts`
+- **Geração**: Criar uma função para gerar 10 códigos alfanuméricos aleatórios (ex: 8-10 caracteres).
+- **Hashing**: Armazenar os códigos com hash (argon2) no banco de dados.
+- **Login**: Alterar o método `authenticate2fa` para aceitar tanto o código TOTP quanto um código de recuperação.
+- **Consumo**: Se um código de recuperação for usado, ele deve ser removido da lista do usuário.
 
 ---
 
-## Implementation Details (Phase 2)
+### 2. `frontend-specialist`
 
-### DOCUMENTATION (`documentation-writer`)
-1. **`README.md`**
-   - Update to mention Storybook UI components and Heroicons.
-   - Mention the BullMQ Monitoring Dashboard.
-   
-2. **`docs/arquitetura.md`**
-   - Update the architecture documentation to reflect the `proxy.ts` rename.
-   - Document the use of Zod validation schemas for frontend.
-   - Document the use of Heroicons instead of Lucide.
+#### [MODIFY] `frontend/src/app/(admin)/admin/profile/page.tsx`
+- **Exibição**: Após o sucesso da ativação do 2FA, mostrar um modal ou seção com os códigos de recuperação.
+- **Download**: Adicionar botão para baixar os códigos em um arquivo `.txt` ou copiar para o clipboard.
+- **Gestão**: Adicionar opção para "Gerar novos códigos de backup" (invalidando os anteriores).
 
-3. **`docs/modulos-funcionalidades.md`**
-   - Add a section on Gamification.
-   - Add a section on the BullMQ Administrative Dashboard and its security layer.
-   - Document the Super Admin functionalities (if not fully documented yet).
+#### [MODIFY] `frontend/src/app/(public)/auth/login/page.tsx`
+- **Interface**: Adicionar um link "Usar código de recuperação" na tela de desafio 2FA.
+- **Input**: Permitir a entrada de um código de recuperação no mesmo campo ou em um campo dedicado.
 
-4. **`docs/testes.md`**
-   - Mention Storybook as part of the frontend testing/documentation strategy.
-   - Mention the Zod validation schemas testing.
+---
 
-### TESTING & VERIFICATION (`test-engineer`)
-5. Validate the integrity of the documentation and ensure no broken links using the documentation review checklist.
-6. Run `python .agent/skills/lint-and-validate/scripts/lint_runner.py .` to ensure the project still passes all linters.
-7. Run `python .agent/skills/vulnerability-scanner/scripts/security_scan.py .` to ensure no new vulnerabilities were introduced.
+### 3. `test-engineer`
+- **Unit Tests**: Validar que códigos de recuperação são invalidados após o primeiro uso.
+- **Security Check**: Garantir que os códigos originais nunca sejam armazenados em texto puro.
 
+---
+
+## 🧪 Verification Plan
+
+1. **Ativação**: Habilitar 2FA e salvar os códigos.
+2. **Login Normal**: Entrar usando o PIN do Google Authenticator (Sucesso).
+3. **Login Recuperação**: Entrar usando um dos códigos de backup salvos (Sucesso).
+4. **Reuso**: Tentar usar o mesmo código de backup novamente (Erro).
+5. **Novo Geramento**: Gerar novos códigos no perfil e tentar usar um código antigo (Erro).

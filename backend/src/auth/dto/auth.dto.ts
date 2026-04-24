@@ -106,3 +106,17 @@ export class ChangeForcedPasswordDto {
   @MaxLength(128)
   newPassword!: string;
 }
+
+export class ChangePasswordDto {
+  @ApiProperty({ example: "currentpassword123" })
+  @IsString()
+  @IsNotEmpty()
+  currentPassword!: string;
+
+  @ApiProperty({ example: "newpassword123", minLength: 8 })
+  @IsString()
+  @MinLength(8)
+  @MaxLength(128)
+  newPassword!: string;
+}
+

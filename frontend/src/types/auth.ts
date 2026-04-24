@@ -23,12 +23,21 @@ export interface User {
   tenantId?: string;
   isSpeaker?: boolean;
   mustChangePassword?: boolean;
+  isTwoFactorEnabled?: boolean;
 }
 
 export interface AuthResponse {
   access_token: string;
   refresh_token: string;
   user: User;
+}
+
+export interface LoginResponse {
+  requires2fa?: boolean;
+  tempToken?: string;
+  access_token?: string;
+  refresh_token?: string;
+  user?: User;
 }
 
 export interface LoginDto {

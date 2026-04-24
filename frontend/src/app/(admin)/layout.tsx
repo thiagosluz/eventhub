@@ -13,6 +13,7 @@ import {
   QueueListIcon,
   UsersIcon,
   TrophyIcon,
+  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 import { ThemeToggle } from "@/components/ui";
@@ -42,6 +43,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Saúde do Sistema", href: "/admin/health", icon: BoltIcon },
     { name: "Gamificação", href: "/admin/gamification", icon: TrophyIcon },
     { name: "Filas (Bull Board)", href: "/admin/queues", icon: QueueListIcon },
+    { name: "Meu Perfil (2FA)", href: "/admin/profile", icon: UserCircleIcon },
   ];
 
   return (
