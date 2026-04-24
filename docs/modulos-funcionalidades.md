@@ -23,11 +23,12 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 15. [Gestão de Equipe (Staff)](#15-gestão-de-equipe-staff)
 16. [Gestão de Usuários](#16-gestão-de-usuários)
 17. [Tenants (Multi-Tenancy)](#17-tenants-multi-tenancy)
-22. [Super Administração e Auditoria](#22-super-administração-e-auditoria)
-18. [Storage (MinIO)](#18-storage-minio)
-19. [E-mail](#19-e-mail)
-20. [Área do Monitor](#20-área-do-monitor)
-21. [Perfil Público](#21-perfil-público)
+18. [Super Administração e Auditoria](#18-super-administração-e-auditoria)
+19. [Painel de Filas (BullMQ)](#19-painel-de-filas-bullmq)
+20. [Storage (MinIO)](#20-storage-minio)
+21. [E-mail](#21-e-mail)
+22. [Área do Monitor](#22-área-do-monitor)
+23. [Perfil Público](#23-perfil-público)
 
 ---
 
@@ -331,7 +332,9 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 
 ---
 
-## 22. Super Administração e Auditoria
+---
+
+## 18. Super Administração e Auditoria
 
 ### Funcionalidades
 - **Gestão Global de Tenants**: Visualizar, ativar e desativar qualquer inquilino na plataforma.
@@ -345,7 +348,16 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 
 ---
 
-## 18. Storage (MinIO)
+## 19. Painel de Filas (BullMQ)
+
+### Funcionalidades
+- **Monitoramento em Tempo Real**: Painel administrativo acessível via `/admin/queues` para monitorar o status de todas as filas assíncronas do sistema (e-mails, processamento de atividades).
+- **Segurança Restrita**: Acesso protegido pelo `BullBoardAuthMiddleware`, que verifica o token JWT de forma segura e garante que apenas usuários com papel de `SUPER_ADMIN` ou equivalente acessem a interface do painel.
+- **Operações Administrativas**: Capacidade de limpar filas, reenfileirar trabalhos falhos (retry) e analisar logs de execução de forma estruturada.
+
+---
+
+## 20. Storage (MinIO)
 
 ### Funcionalidades
 - Upload de arquivos para MinIO (S3-compatible).
@@ -358,7 +370,7 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 
 ---
 
-## 19. E-mail
+## 21. E-mail
 
 ### Funcionalidades
 - Enfileiramento de e-mails via **BullMQ** (fila `mail-queue`).
@@ -373,7 +385,7 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 
 ---
 
-## 20. Área do Monitor
+## 22. Área do Monitor
 
 ### Funcionalidades
 - Rota dedicada: `/monitor`.
@@ -385,7 +397,7 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 
 ---
 
-## 21. Perfil Público
+## 23. Perfil Público
 
 ### Funcionalidades
 - Rota: `/u/:username`.

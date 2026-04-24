@@ -163,6 +163,26 @@ npm run test:coverage # Com cobertura
 - **Config**: `vitest.config.ts`
 - **Setup**: `src/test-setup.ts`
 
+### Testes de Validação (Zod)
+Os schemas de validação construídos com Zod (ex: `/lib/validation/checkout.ts`, `user.ts`) possuem cobertura unitária focada em verificar a robustez dos formulários, rejeitando formatos inválidos e validando o comportamento de campos obrigatórios/opcionais.
+
+---
+
+## Frontend — Desenvolvimento Visual (Storybook)
+
+Além dos testes automatizados, o EventHub utiliza **Storybook** para o desenvolvimento e testes visuais isolados de componentes de UI.
+
+### Execução
+```bash
+cd frontend
+npm run storybook
+```
+
+### Casos de Uso
+- **Isolamento**: Componentes complexos (ex: `Modal`, `Drawer`, `ConfirmDialog`, `Select`) são desenvolvidos independentes das páginas completas.
+- **Documentação Viva**: Documenta tokens semânticos (ex: cores, espaçamentos) e variações de estado (Disabled, Checked, Loading).
+- **Testes Visuais Manuais**: Permite visualizar e interagir com o componente fora do fluxo principal.
+
 ---
 
 ## Frontend — Testes E2E (Playwright)

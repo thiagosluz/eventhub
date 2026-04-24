@@ -11,7 +11,7 @@ O EventHub é uma plataforma web composta por dois projetos independentes:
 | Componente | Tecnologia | Porta Padrão | Descrição |
 |------------|------------|:------------:|-----------|
 | **Backend (API)** | NestJS + Prisma + PostgreSQL | 3000 | API REST com autenticação JWT, RBAC e Swagger |
-| **Frontend (Web)** | Next.js 16 + React 19 + Tailwind CSS 4 | 3001 | Interface web com SSR e client-side rendering |
+| **Frontend (Web)** | Next.js 16 + React 19 + Tailwind CSS 4 + Heroicons | 3001 | Interface web com SSR e client-side rendering |
 | **Banco de Dados** | PostgreSQL 16 (Docker) | 5432 | Banco relacional com Prisma ORM |
 | **Cache / Filas** | Redis 7 (Docker) | 6379 | Filas assíncronas via BullMQ |
 | **Object Storage** | MinIO (Docker) | 9000 / 9001 | Armazenamento de arquivos (S3-compatible) |
@@ -162,6 +162,7 @@ backend/
 │   ├── badges/               # Conquistas (manual, automática, códigos)
 │   ├── analytics/            # Relatórios e métricas de eventos
 │   ├── dashboard/            # Métricas do painel administrativo
+│   ├── admin/                # Administração Global, Auditoria e Painel de Filas (BullMQ)
 │   ├── speakers/             # Gestão de palestrantes
 │   ├── sponsors/             # Gestão de patrocinadores
 │   ├── staff/                # Monitores e equipe do evento
@@ -240,7 +241,9 @@ frontend/
 │   ├── services/                   # 18 service files (chamadas à API)
 │   ├── types/                      # TypeScript types (auth, event, certificate)
 │   ├── lib/
-│   │   └── api.ts                   # Cliente API (fetch + refresh automático)
+│   │   ├── api.ts                   # Cliente API (fetch + refresh automático)
+│   │   └── validation/              # Schemas de validação com Zod
+│   ├── proxy.ts                    # Proxy reverso e tratamento de rotas de API
 │   └── utils/                       # Utilitários
 ├── e2e/                            # Testes E2E com Playwright
 ├── public/                         # Assets estáticos
@@ -272,6 +275,7 @@ frontend/
 | **Service Layer** | 18 services encapsulam chamadas à API |
 | **API Client Singleton** | Classe `ApiClient` com refresh automático de tokens |
 | **Server/Client Components** | `"use client"` para interatividade, SSR para SEO |
+| **Validation Schemas** | Zod para validação robusta de formulários e tipagem estrita |
 
 ---
 

@@ -7,8 +7,8 @@
 ## 🏗️ Estrutura do Projeto
 
 O EventHub é dividido em dois grandes pilares:
-- **`backend/`**: Servidor robusto em NestJS, utilizando Prisma e PostgreSQL.
-- **`frontend/`**: Aplicação interativa em Next.js com React e Tailwind CSS v4.
+- **`backend/`**: Servidor robusto em NestJS, utilizando Prisma, PostgreSQL e BullMQ (com painel administrativo de filas).
+- **`frontend/`**: Aplicação interativa em Next.js com React, Tailwind CSS v4, Heroicons e componentes documentados no Storybook.
 - **`docs/`**: Central de documentação técnica detalhada.
 
 ---
