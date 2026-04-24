@@ -278,15 +278,15 @@ export default function TenantsPage() {
       {/* Modal de Impersonate */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900/50">
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center bg-white/80 dark:bg-gray-900/50">
               <div>
-                <h2 className="text-xl font-bold text-gray-100">Acesso Fantasma</h2>
-                <p className="text-sm text-gray-400">{selectedTenant?.name}</p>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Acesso Fantasma</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{selectedTenant?.name}</p>
               </div>
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="p-2 text-gray-500 hover:text-gray-300 hover:bg-gray-800 rounded-lg transition-colors"
+                className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 hover:bg-gray-800 rounded-lg transition-colors"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
@@ -305,14 +305,14 @@ export default function TenantsPage() {
                   {tenantUsers.map(u => (
                     <div 
                       key={u.id}
-                      className="group flex items-center justify-between p-3 rounded-xl border border-gray-800 bg-gray-950/50 hover:border-cyan-500/50 hover:bg-cyan-500/5 transition-all"
+                      className="group flex items-center justify-between p-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/50 hover:border-cyan-500/50 hover:bg-cyan-500/5 transition-all"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400">
+                        <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400">
                           <UserIcon className="w-5 h-5" />
                         </div>
                         <div>
-                          <div className="font-medium text-gray-100 group-hover:text-cyan-400 transition-colors">{u.name}</div>
+                          <div className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-cyan-400 transition-colors">{u.name}</div>
                           <div className="text-xs text-gray-500">{u.email} • <span className="uppercase">{u.role}</span></div>
                         </div>
                       </div>

@@ -154,6 +154,16 @@ function simulateLocally(base: number, exponent: number, maxLevel = 20) {
   return curve;
 }
 
+function getSuggestedReward(level: number): string {
+  if (level === 2) return "Desbloqueio de Avatar Customizado";
+  if (level === 5) return "Badge Bronze + Multiplicador 5%";
+  if (level === 10) return "Badge Prata + Acesso VIP Sorteios";
+  if (level === 15) return "Badge Ouro + Destaque no Leaderboard";
+  if (level === 20) return "Certificado de Engajamento VIP";
+  if (level > 20 && level % 5 === 0) return "Título Honorífico Secreto";
+  return "-";
+}
+
 function estimateDays(
   eventXp: number,
   activityXp: number,
@@ -230,7 +240,7 @@ export default function GamificationConfigPage() {
   }, [formConfig, formActions, actions]);
 
   const simulatedCurve = useMemo(() => {
-    return simulateLocally(simBase, simExponent, 20);
+    return simulateLocally(simBase, simExponent, 50);
   }, [simBase, simExponent]);
 
   const applyPreset = (preset: Preset) => {
@@ -284,11 +294,11 @@ export default function GamificationConfigPage() {
     return (
       <div className="p-8 max-w-7xl mx-auto">
         <div className="animate-pulse space-y-6">
-          <div className="h-10 bg-gray-800 rounded w-1/3" />
+          <div className="h-10 bg-gray-200 dark:bg-gray-800 rounded w-1/3" />
           <div className="grid grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => <div key={i} className="h-32 bg-gray-800 rounded-xl" />)}
+            {[1, 2, 3].map((i) => <div key={i} className="h-32 bg-gray-200 dark:bg-gray-800 rounded-xl" />)}
           </div>
-          <div className="h-64 bg-gray-800 rounded-xl" />
+          <div className="h-64 bg-gray-200 dark:bg-gray-800 rounded-xl" />
         </div>
       </div>
     );
@@ -299,11 +309,11 @@ export default function GamificationConfigPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-100 flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-3">
             <TrophyIcon className="w-8 h-8 text-yellow-500" />
             Balanceamento de Gamificação
           </h1>
-          <p className="text-gray-400 mt-1">
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
             Configure pontuações, limites e a curva de progressão da plataforma.
           </p>
         </div>
@@ -313,7 +323,7 @@ export default function GamificationConfigPage() {
               ? "border-blue-500/30 bg-blue-500/10 text-blue-400"
               : PRESETS.find((p) => p.name === activePreset)
                 ? `${PRESETS.find((p) => p.name === activePreset)!.borderColor} ${PRESETS.find((p) => p.name === activePreset)!.bgColor} ${PRESETS.find((p) => p.name === activePreset)!.color}`
-                : "border-gray-700 bg-gray-800 text-gray-400"
+                : "border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
           }`}>
             {activePreset === "Personalizado" ? "⚙️" : PRESETS.find((p) => p.name === activePreset)?.emoji} {activePreset}
           </span>
@@ -341,7 +351,7 @@ export default function GamificationConfigPage() {
 
       {/* Section 1: Presets & Global Parameters */}
       <section className="space-y-6">
-        <h2 className="text-lg font-semibold text-gray-100 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
           <AdjustmentsHorizontalIcon className="w-5 h-5 text-yellow-500" />
           Presets & Parâmetros Globais
         </h2>
@@ -355,12 +365,12 @@ export default function GamificationConfigPage() {
               className={`p-4 rounded-xl border-2 transition-all text-left hover:scale-[1.02] ${
                 activePreset === preset.name
                   ? `${preset.borderColor} ${preset.bgColor}`
-                  : "border-gray-800 bg-gray-900 hover:border-gray-700"
+                  : "border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-gray-700"
               }`}
             >
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-xl">{preset.emoji}</span>
-                <span className={`font-bold ${activePreset === preset.name ? preset.color : "text-gray-100"}`}>
+                <span className={`font-bold ${activePreset === preset.name ? preset.color : "text-gray-900 dark:text-gray-100"}`}>
                   {preset.name}
                 </span>
               </div>
@@ -375,13 +385,13 @@ export default function GamificationConfigPage() {
 
         {/* Global Config Fields */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-            <label className="text-xs text-gray-400 font-medium">Limite Diário de XP</label>
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4">
+            <label className="text-xs text-gray-600 dark:text-gray-400 font-medium">Limite Diário de XP</label>
             <input
               type="number"
               value={formConfig.dailyXpLimit}
               onChange={(e) => setFormConfig({ ...formConfig, dailyXpLimit: Number(e.target.value) })}
-              className="mt-2 w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
+              className="mt-2 w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-gray-900 dark:text-gray-100 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
               min={100}
               max={10000}
             />
@@ -396,33 +406,33 @@ export default function GamificationConfigPage() {
             />
           </div>
 
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-            <label className="text-xs text-gray-400 font-medium">Spike Alert (XP)</label>
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4">
+            <label className="text-xs text-gray-600 dark:text-gray-400 font-medium">Spike Alert (XP)</label>
             <input
               type="number"
               value={formConfig.spikeThreshold}
               onChange={(e) => setFormConfig({ ...formConfig, spikeThreshold: Number(e.target.value) })}
-              className="mt-2 w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
+              className="mt-2 w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-gray-900 dark:text-gray-100 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
               min={100}
               max={10000}
             />
           </div>
 
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-            <label className="text-xs text-gray-400 font-medium">Janela do Spike (min)</label>
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4">
+            <label className="text-xs text-gray-600 dark:text-gray-400 font-medium">Janela do Spike (min)</label>
             <input
               type="number"
               value={formConfig.spikeWindowMinutes}
               onChange={(e) => setFormConfig({ ...formConfig, spikeWindowMinutes: Number(e.target.value) })}
-              className="mt-2 w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
+              className="mt-2 w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-gray-900 dark:text-gray-100 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
               min={1}
               max={60}
             />
           </div>
 
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex flex-col justify-center items-center">
-            <p className="text-xs text-gray-400 font-medium mb-1">Última Atualização</p>
-            <p className="text-sm text-gray-300">
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 flex flex-col justify-center items-center">
+            <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Última Atualização</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
               {config?.updatedAt
                 ? new Date(config.updatedAt).toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
                 : "—"}
@@ -433,7 +443,7 @@ export default function GamificationConfigPage() {
 
       {/* Section 2: XP Action Cards */}
       <section className="space-y-6">
-        <h2 className="text-lg font-semibold text-gray-100 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
           <BoltIcon className="w-5 h-5 text-yellow-500" />
           Ações Gamificadas
         </h2>
@@ -447,15 +457,15 @@ export default function GamificationConfigPage() {
             return (
               <div
                 key={action.id}
-                className={`bg-gray-900 border rounded-xl p-5 transition-all ${
-                  form.isActive ? "border-gray-800" : "border-red-500/30 opacity-60"
+                className={`bg-white dark:bg-gray-900 border rounded-xl p-5 transition-all ${
+                  form.isActive ? "border-gray-200 dark:border-gray-800" : "border-red-500/30 opacity-60"
                 }`}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">{action.icon || "⚡"}</span>
                     <div>
-                      <p className="font-semibold text-gray-100">{action.label}</p>
+                      <p className="font-semibold text-gray-900 dark:text-gray-100">{action.label}</p>
                       <p className="text-xs text-gray-500">{action.actionKey}</p>
                     </div>
                   </div>
@@ -492,15 +502,15 @@ export default function GamificationConfigPage() {
                         [action.id]: { ...form, xpAmount: Math.max(0, Number(e.target.value)) },
                       })
                     }
-                    className="w-24 bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-gray-100 font-bold text-center focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
+                    className="w-24 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-1.5 text-gray-900 dark:text-gray-100 font-bold text-center focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
                     min={0}
                     max={5000}
                   />
-                  <span className="text-sm text-gray-400">XP</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">XP</span>
                 </div>
 
                 {/* Proportion bar */}
-                <div className="w-full bg-gray-800 rounded-full h-1.5">
+                <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-1.5">
                   <div
                     className="bg-yellow-500 h-1.5 rounded-full transition-all duration-300"
                     style={{ width: `${proportion}%` }}
@@ -514,17 +524,17 @@ export default function GamificationConfigPage() {
 
       {/* Section 3: Level Curve Simulator */}
       <section className="space-y-6">
-        <h2 className="text-lg font-semibold text-gray-100 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
           <ChartBarIcon className="w-5 h-5 text-yellow-500" />
           Simulador de Curva de Nível
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Chart */}
-          <div className="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl p-6">
+          <div className="lg:col-span-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
             <div className="flex items-center gap-6 mb-6">
               <div className="flex-1">
-                <label className="text-xs text-gray-400 mb-1 block">
+                <label className="text-xs text-gray-600 dark:text-gray-400 mb-1 block">
                   Base: <span className="text-yellow-400 font-bold">{simBase}</span>
                 </label>
                 <input
@@ -541,7 +551,7 @@ export default function GamificationConfigPage() {
                 />
               </div>
               <div className="flex-1">
-                <label className="text-xs text-gray-400 mb-1 block">
+                <label className="text-xs text-gray-600 dark:text-gray-400 mb-1 block">
                   Expoente: <span className="text-yellow-400 font-bold">{simExponent.toFixed(2)}</span>
                 </label>
                 <input
@@ -596,23 +606,27 @@ export default function GamificationConfigPage() {
           {/* Reference Table + Scenario */}
           <div className="space-y-4">
             {/* Level Table */}
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 max-h-[280px] overflow-y-auto">
-              <h3 className="text-sm font-semibold text-gray-300 mb-3">Tabela de Referência</h3>
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 max-h-[280px] overflow-y-auto">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Tabela de Referência</h3>
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-gray-500 text-xs">
                     <th className="text-left pb-2">Nível</th>
                     <th className="text-right pb-2">XP Necessário</th>
+                    <th className="text-right pb-2 hidden sm:table-cell">Vantagem Sugerida</th>
                   </tr>
                 </thead>
                 <tbody>
                   {simulatedCurve.map((point) => (
-                    <tr key={point.level} className="border-t border-gray-800">
-                      <td className="py-1.5 text-gray-300 font-medium">
+                    <tr key={point.level} className="border-t border-gray-200 dark:border-gray-800">
+                      <td className="py-1.5 text-gray-700 dark:text-gray-300 font-medium">
                         {point.level <= 3 ? "⭐" : point.level <= 10 ? "🌟" : "💎"} Nível {point.level}
                       </td>
-                      <td className="py-1.5 text-right text-gray-400">
+                      <td className="py-1.5 text-right text-gray-600 dark:text-gray-400">
                         {point.xpRequired.toLocaleString("pt-BR")}
+                      </td>
+                      <td className="py-1.5 text-right text-emerald-400/80 text-xs hidden sm:table-cell">
+                        {getSuggestedReward(point.level)}
                       </td>
                     </tr>
                   ))}
@@ -621,13 +635,13 @@ export default function GamificationConfigPage() {
             </div>
 
             {/* Practical Scenario */}
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-              <h3 className="text-sm font-semibold text-gray-300 mb-3">📊 Cenário Prático</h3>
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">📊 Cenário Prático</h3>
               <p className="text-xs text-gray-500 mb-3">
                 Participante médio: 1 check-in evento + 3 atividades/dia
               </p>
               <div className="space-y-2">
-                {[5, 10, 15].map((lvl) => {
+                {[5, 10, 20, 30, 40, 50].map((lvl) => {
                   const target = simulatedCurve.find((p) => p.level === lvl);
                   if (!target) return null;
                   const days = estimateDays(
@@ -639,7 +653,7 @@ export default function GamificationConfigPage() {
                   );
                   return (
                     <div key={lvl} className="flex justify-between items-center">
-                      <span className="text-sm text-gray-300">Nível {lvl}</span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">Nível {lvl}</span>
                       <span className="text-sm font-bold text-yellow-400">
                         ~{days === Infinity ? "∞" : days} {days === 1 ? "dia" : "dias"}
                       </span>
@@ -648,6 +662,23 @@ export default function GamificationConfigPage() {
                 })}
               </div>
             </div>
+            
+            {/* Avatar Tiers (Estética) */}
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">🎨 Tiers de Avatar (Estética)</h3>
+              <p className="text-xs text-gray-500 mb-3">
+                O avatar do usuário reage visualmente (ganhando bordas e efeitos) baseado exclusivamente no Nível alcançado:
+              </p>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between items-center"><span className="text-gray-700 dark:text-gray-300">Nível 1 a 9</span><span className="font-bold text-gray-600 dark:text-gray-400">Básico</span></div>
+                <div className="flex justify-between items-center"><span className="text-gray-700 dark:text-gray-300">Nível 10 a 19</span><span className="font-bold text-amber-700">Bronze</span></div>
+                <div className="flex justify-between items-center"><span className="text-gray-700 dark:text-gray-300">Nível 20 a 29</span><span className="font-bold text-gray-700 dark:text-gray-300">Silver</span></div>
+                <div className="flex justify-between items-center"><span className="text-gray-700 dark:text-gray-300">Nível 30 a 39</span><span className="font-bold text-yellow-400">Gold</span></div>
+                <div className="flex justify-between items-center"><span className="text-gray-700 dark:text-gray-300">Nível 40 a 49</span><span className="font-bold text-cyan-200">Platinum</span></div>
+                <div className="flex justify-between items-center"><span className="text-gray-700 dark:text-gray-300">Nível 50+</span><span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 animate-pulse">Legendary</span></div>
+              </div>
+            </div>
+            
           </div>
         </div>
       </section>

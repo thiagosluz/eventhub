@@ -45,12 +45,12 @@ export default function AdminQueuesPage() {
 
   if (user.role !== "SUPER_ADMIN") {
     return (
-      <div className="m-8 rounded-2xl border border-gray-800 bg-gray-900 p-8 text-center">
+      <div className="m-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-8 text-center">
         <ShieldExclamationIcon className="w-12 h-12 mx-auto text-rose-500 mb-4" />
-        <h2 className="text-lg font-black uppercase tracking-wider text-gray-100">
+        <h2 className="text-lg font-black uppercase tracking-wider text-gray-900 dark:text-gray-100">
           Acesso restrito
         </h2>
-        <p className="text-sm text-gray-400 mt-2">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
           Apenas usuários <strong>Super Admin</strong> podem acessar o Bull
           Board.
         </p>
@@ -60,8 +60,8 @@ export default function AdminQueuesPage() {
 
   if (!token) {
     return (
-      <div className="m-8 rounded-2xl border border-gray-800 bg-gray-900 p-8 text-center">
-        <p className="text-sm text-gray-400">Carregando credenciais...</p>
+      <div className="m-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-8 text-center">
+        <p className="text-sm text-gray-600 dark:text-gray-400">Carregando credenciais...</p>
       </div>
     );
   }
@@ -79,10 +79,10 @@ export default function AdminQueuesPage() {
             <QueueListIcon className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-black tracking-tight text-gray-100">
+            <h1 className="text-2xl font-black tracking-tight text-gray-900 dark:text-gray-100">
               Filas (Bull Board)
             </h1>
-            <p className="text-sm text-gray-400 mt-1">
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Monitoramento das filas BullMQ: jobs ativos, aguardando,
               concluídos, falhas e retries.
             </p>
@@ -100,7 +100,7 @@ export default function AdminQueuesPage() {
         </a>
       </div>
 
-      <div className="rounded-2xl border border-gray-800 bg-gray-900 overflow-hidden">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
         {iframeError ? (
           <div className="p-10 text-center space-y-3">
             <ShieldExclamationIcon className="w-10 h-10 mx-auto text-gray-500" />

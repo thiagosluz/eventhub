@@ -28,7 +28,7 @@ export const HealthStatusCard: React.FC<HealthStatusCardProps> = ({
       case 'error':
         return 'border-rose-500/20 bg-rose-500/5 text-rose-500';
       default:
-        return 'border-gray-800 bg-gray-900/50 text-gray-400';
+        return 'border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/50 text-gray-600 dark:text-gray-400';
     }
   };
 
@@ -48,23 +48,23 @@ export const HealthStatusCard: React.FC<HealthStatusCardProps> = ({
   return (
     <div className={`p-6 rounded-2xl border ${getStatusStyles()} transition-all duration-300 hover:scale-[1.02] shadow-xl backdrop-blur-sm`}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-medium text-lg text-gray-100">{title}</h3>
-        <div className="p-2 rounded-lg bg-black/20">
+        <h3 className="font-medium text-lg text-gray-900 dark:text-gray-100">{title}</h3>
+        <div className="p-2 rounded-lg bg-gray-200/50 dark:bg-black/20">
             {getStatusIcon()}
         </div>
       </div>
       
       <div className="space-y-1">
-        <p className="text-2xl font-bold tracking-tight text-white capitalize">
+        <p className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white capitalize">
           {status === 'loading' ? 'Checking...' : status === 'ok' ? 'Online' : 'Offline'}
         </p>
-        <p className={`text-sm ${status === 'error' ? 'text-rose-400' : 'text-gray-400'}`}>
+        <p className={`text-sm ${status === 'error' ? 'text-rose-600 dark:text-rose-400' : 'text-gray-600 dark:text-gray-400'}`}>
           {message || (status === 'ok' ? 'System operating normally' : 'Connecting...')}
         </p>
       </div>
 
       {details && status === 'error' && (
-        <div className="mt-4 p-3 rounded-lg bg-black/40 border border-white/5 font-mono text-[10px] text-rose-300/80 overflow-auto max-h-24">
+        <div className="mt-4 p-3 rounded-lg bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/5 font-mono text-[10px] text-rose-600 dark:text-rose-300/80 overflow-auto max-h-24">
           {JSON.stringify(details, null, 2)}
         </div>
       )}

@@ -79,7 +79,10 @@ export class TenantsService {
       where: { slug, isActive: true },
       include: {
         users: {
-          where: { publicProfile: true },
+          where: { 
+            publicProfile: true,
+            role: { in: ['ORGANIZER', 'SUPER_ADMIN'] }
+          },
           select: {
             id: true,
             name: true,

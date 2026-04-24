@@ -55,12 +55,12 @@ export default function AdminHealthPage() {
             <ShieldCheckIcon className="w-5 h-5" />
             <span className="text-xs font-bold uppercase tracking-widest">System Integrity</span>
           </div>
-          <h1 className="text-4xl font-bold text-white tracking-tight">Saúde da Infraestrutura</h1>
-          <p className="text-gray-400 mt-2">Monitoramento global de serviços críticos e performance.</p>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight">Saúde da Infraestrutura</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Monitoramento global de serviços críticos e performance.</p>
         </div>
         
         <div className="flex items-center gap-4 text-xs font-medium">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-900 border border-gray-800 text-gray-400">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400">
             <ClockIcon className="w-3.5 h-3.5" />
             Última atualização: {lastUpdate.toLocaleTimeString()}
           </div>
@@ -76,17 +76,17 @@ export default function AdminHealthPage() {
 
       {/* Latency Section */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="md:col-span-1 bg-gray-900 border border-gray-800 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
-          <div className="flex items-center gap-3 text-gray-400 mb-4">
+        <div className="md:col-span-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+          <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400 mb-4">
             <BoltIcon className="w-5 h-5 text-blue-500" />
             <span className="font-medium text-sm">Latência da API</span>
           </div>
           <div>
             <div className="flex items-baseline gap-1">
-              <span className="text-4xl font-bold text-white">{latency ?? '--'}</span>
+              <span className="text-4xl font-bold text-gray-900 dark:text-white">{latency ?? '--'}</span>
               <span className="text-gray-500 font-medium">ms</span>
             </div>
-            <p className="text-xs text-gray-400 mt-2">Tempo total de ida e volta (RTT)</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">Tempo total de ida e volta (RTT)</p>
           </div>
         </div>
 
@@ -113,14 +113,14 @@ export default function AdminHealthPage() {
       </div>
 
       {/* System JSON Raw (Optional/Debug) */}
-      <div className="bg-gray-900/50 border border-gray-800 rounded-2xl p-6 backdrop-blur-sm">
+      <div className="bg-white/80 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 backdrop-blur-sm">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Status Detalhado (JSON)</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Status Detalhado (JSON)</h3>
           <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-wider border border-emerald-500/20">
             Cluster Health: {data?.status?.toUpperCase() || '--'}
           </span>
         </div>
-        <pre className="text-xs font-mono text-gray-500 bg-black/30 p-4 rounded-xl overflow-auto max-h-[300px] border border-white/5 scrollbar-thin scrollbar-thumb-gray-800">
+        <pre className="text-xs font-mono text-gray-800 dark:text-gray-500 bg-gray-100 dark:bg-black/30 p-4 rounded-xl overflow-auto max-h-[300px] border border-gray-200 dark:border-white/5 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-800">
           {JSON.stringify(data, null, 2)}
         </pre>
       </div>

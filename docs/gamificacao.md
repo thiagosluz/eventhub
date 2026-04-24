@@ -60,6 +60,20 @@ Implementações sincronizadas:
 | 7     | 9.906  | 30    | 136.868 |
 | 8     | 12.808 |       |         |
 
+### Tiers de Avatar (Estética do Perfil)
+
+O nível do participante impacta diretamente o aspecto visual do seu avatar (`AvatarWithBorder.tsx`), servindo como um identificador rápido do seu engajamento na plataforma:
+
+| Nível Mínimo | Tier de Avatar | Efeito Visual |
+| ------------ | -------------- | ------------- |
+| 1 a 9        | **Básico**     | Fundo simples, sem borda especial |
+| 10 a 19      | **Bronze**     | Borda de Bronze com sombreamento leve |
+| 20 a 29      | **Silver**     | Borda de Prata |
+| 30 a 39      | **Gold**       | Borda de Ouro com forte brilho (Shadow) |
+| 40 a 49      | **Platinum**   | Borda Platinada com efeito de *Pulse* (Pulsar) |
+| 50+          | **Legendary**  | Borda Animada com gradiente giratório e brilho intenso |
+
+*Nota: Atualmente as recompensas atreladas a cada tier são puramente estéticas (status).*
 #### Simular XP e nível em uma conta (dev)
 
 O script [`backend/src/scripts/simulate-xp.ts`](../backend/src/scripts/simulate-xp.ts)
