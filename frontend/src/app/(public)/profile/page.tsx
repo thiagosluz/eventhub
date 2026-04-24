@@ -255,17 +255,15 @@ function ProfileContent() {
     <div className="max-w-7xl mx-auto px-4 pt-24 pb-12 md:pt-32 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       
       {/* Gamified Top Banner */}
-      <div className={`relative overflow-hidden rounded-[2rem] bg-slate-950 p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center gap-8 justify-between border border-white/5`}>
-        {/* Dynamic theme background blob */}
-        <div className={`absolute top-[-20%] right-[-10%] w-[50%] h-[150%] blur-[100px] pointer-events-none rounded-full opacity-30 ${
-          profile?.profileTheme === 'indigo' ? 'bg-indigo-500' :
-          profile?.profileTheme === 'rose' ? 'bg-rose-500' :
-          profile?.profileTheme === 'emerald' ? 'bg-emerald-500' :
-          profile?.profileTheme === 'amber' ? 'bg-amber-500' :
-          profile?.profileTheme === 'fuchsia' ? 'bg-fuchsia-500' :
-          profile?.profileTheme === 'sky' ? 'bg-sky-500' :
-          'bg-primary'
-        }`} />
+      <div className="relative overflow-hidden rounded-[2rem] premium-card p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center gap-8 justify-between border-border bg-card">
+        {/* Dynamic theme background blob baseada em tokens */}
+        <div
+          className="absolute top-[-20%] right-[-10%] w-[50%] h-[150%] blur-[100px] pointer-events-none rounded-full opacity-35"
+          style={{
+            background:
+              "radial-gradient(circle, color-mix(in oklab, var(--color-primary) 70%, var(--color-accent) 30%) 0%, transparent 70%)",
+          }}
+        />
         
         <div className="flex items-center gap-6 relative z-10 w-full md:w-auto">
           <AvatarWithBorder 
@@ -278,30 +276,30 @@ function ProfileContent() {
           />
           <div>
             <div className="flex items-center gap-3">
-               <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">{profile?.name}</h1>
+               <h1 className="text-3xl md:text-4xl font-black text-foreground tracking-tight">{profile?.name}</h1>
                {profile?.publicProfile && <GlobeAltIcon className="w-5 h-5 text-emerald-400" title="Perfil Público Ativo" />}
             </div>
-            <p className="text-slate-400 font-medium">@{profile?.username || profile?.email}</p>
+            <p className="text-muted-foreground font-medium">@{profile?.username || profile?.email}</p>
             <LevelProgressBar xp={profile?.xp || 0} className="mt-3" />
           </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full md:w-auto relative z-10">
-           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10 min-w-[100px]">
+           <div className="text-center bg-muted/40 rounded-2xl p-4 border border-border min-w-[100px]">
              <div className="text-2xl font-black text-primary mb-0.5">{tickets.length}</div>
-             <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><TicketIcon className="w-3 h-3"/> Eventos</div>
+             <div className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold flex items-center justify-center gap-1"><TicketIcon className="w-3 h-3"/> Eventos</div>
            </div>
-           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10 min-w-[100px]">
+           <div className="text-center bg-muted/40 rounded-2xl p-4 border border-border min-w-[100px]">
              <div className="text-2xl font-black text-amber-400 mb-0.5">{profile?.coins || 0}</div>
-             <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><SparklesIcon className="w-3 h-3"/> EH Coins</div>
+             <div className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold flex items-center justify-center gap-1"><SparklesIcon className="w-3 h-3"/> EH Coins</div>
            </div>
-           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10 min-w-[100px]">
+           <div className="text-center bg-muted/40 rounded-2xl p-4 border border-border min-w-[100px]">
              <div className="text-2xl font-black text-emerald-400 mb-0.5">{certificates.length}</div>
-             <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><CheckBadgeIcon className="w-3 h-3"/> Certs</div>
+             <div className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold flex items-center justify-center gap-1"><CheckBadgeIcon className="w-3 h-3"/> Certs</div>
            </div>
-           <div className="text-center bg-white/5 rounded-2xl p-4 backdrop-blur-md border border-white/10 min-w-[100px]">
+           <div className="text-center bg-muted/40 rounded-2xl p-4 border border-border min-w-[100px]">
              <div className="text-2xl font-black text-sky-400 mb-0.5">{calculateHours()}h</div>
-             <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-1"><ClockIcon className="w-3 h-3"/> Horas</div>
+             <div className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold flex items-center justify-center gap-1"><ClockIcon className="w-3 h-3"/> Horas</div>
            </div>
         </div>
       </div>
@@ -361,29 +359,34 @@ function ProfileContent() {
                
                {/* Credencial Digital (Badge) */}
                {activeTickets.length > 0 && (
-                 <div className="premium-card p-1 md:p-8 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 border-none relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-black/10 mix-blend-overlay"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                 <div className="premium-card p-6 md:p-8 bg-card border-border relative overflow-hidden group">
+                    <div
+                      className="absolute inset-0 opacity-25 pointer-events-none"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%)",
+                      }}
+                    />
                     
                     <div className="relative z-10 p-6 md:p-0 flex flex-col md:flex-row items-center gap-8">
-                       <div className="w-32 h-48 bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl shadow-2xl flex flex-col items-center justify-between p-4 transform group-hover:rotate-y-12 group-hover:rotate-x-12 transition-transform duration-500 perspective-1000">
-                          <div className="w-12 h-12 rounded-full border-2 border-white/50 overflow-hidden relative">
+                      <div className="w-32 h-48 bg-card/85 backdrop-blur-xl border border-border rounded-2xl shadow-2xl flex flex-col items-center justify-between p-4 transform group-hover:rotate-y-12 group-hover:rotate-x-12 transition-transform duration-500 perspective-1000">
+                         <div className="w-12 h-12 rounded-full border-2 border-border overflow-hidden relative">
                              {profile?.avatarUrl ? <Image src={profile.avatarUrl} alt="Avatar" fill sizes="48px" className="object-cover" /> : <div className="w-full h-full bg-primary flex items-center justify-center text-white font-black">{profile?.name.substring(0,2)}</div>}
                           </div>
                           <div className="text-center w-full">
-                            <h4 className="text-white text-xs font-black uppercase tracking-tight line-clamp-1">{profile?.name}</h4>
-                            <p className="text-white/60 text-[8px] uppercase tracking-widest">{profile?.role === 'ORGANIZER' ? 'Staff' : 'Participante'}</p>
+                            <h4 className="text-foreground text-xs font-black uppercase tracking-tight line-clamp-1">{profile?.name}</h4>
+                            <p className="text-muted-foreground text-[8px] uppercase tracking-widest">{profile?.role === 'ORGANIZER' ? 'Staff' : 'Participante'}</p>
                           </div>
-                          <div className="w-full text-center border-t border-white/20 pt-2">
-                             <div className="text-[10px] font-black text-white line-clamp-2">{activeTickets[activeTicketIndex]?.event?.name || 'Evento EventHub'}</div>
+                          <div className="w-full text-center border-t border-border pt-2">
+                             <div className="text-[10px] font-black text-foreground line-clamp-2">{activeTickets[activeTicketIndex]?.event?.name || 'Evento EventHub'}</div>
                           </div>
                        </div>
                        
                        <div className="flex-1 text-center md:text-left space-y-4">
                           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div>
-                              <h3 className="text-2xl md:text-3xl font-black text-white drop-shadow-md">Sua Credencial Digital</h3>
-                              <p className="text-white/80 font-medium">Compartilhe com sua rede que você estará presente no evento <strong className="text-white">{activeTickets[activeTicketIndex]?.event?.name}</strong>!</p>
+                              <h3 className="text-2xl md:text-3xl font-black text-foreground">Sua Credencial Digital</h3>
+                              <p className="text-foreground/85 font-medium">Compartilhe com sua rede que você estará presente no evento <strong className="text-foreground">{activeTickets[activeTicketIndex]?.event?.name}</strong>!</p>
                             </div>
                             
                             {activeTickets.length > 1 && (
@@ -414,7 +417,7 @@ function ProfileContent() {
                             )}
                           </div>
                           <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                            <button onClick={handleShareBadge} className="inline-flex items-center gap-2 bg-white text-purple-600 px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-white/90 transition-colors shadow-xl">
+                            <button onClick={handleShareBadge} className="premium-button inline-flex items-center gap-2 !py-3 !px-6 !text-xs">
                               <ShareIcon className="w-4 h-4" /> Compartilhar
                             </button>
                             <button 
@@ -422,7 +425,7 @@ function ProfileContent() {
                                 setActiveTab('tickets');
                                 setViewingActivitiesEvent({ id: activeTickets[activeTicketIndex].eventId, name: activeTickets[activeTicketIndex].event?.name || "" });
                               }} 
-                              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white border border-white/20 px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-white/20 transition-colors shadow-xl"
+                              className="inline-flex items-center gap-2 bg-card/85 backdrop-blur-md text-foreground border border-border px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-card transition-colors shadow-xl"
                             >
                               <CalendarIcon className="w-4 h-4" /> Escolher Atividades
                             </button>

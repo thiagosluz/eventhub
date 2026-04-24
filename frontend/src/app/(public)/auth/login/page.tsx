@@ -10,6 +10,34 @@ import { useAuth } from "@/context/AuthContext";
 import { Button, Input } from "@/components/ui";
 import { loginSchema, type LoginInput } from "@/lib/validation/auth";
 
+const DEV_LOGIN_PRESETS = [
+  {
+    label: "Super Admin",
+    email: "superadmin@eventhub.com.br",
+    password: "123456",
+  },
+  {
+    label: "Admin",
+    email: "admin@eventhub.com.br",
+    password: "123456",
+  },
+  {
+    label: "Organizador",
+    email: "organizador@eventhub.com.br",
+    password: "123456",
+  },
+  {
+    label: "Participante",
+    email: "participante@eventhub.com.br",
+    password: "123456",
+  },
+  {
+    label: "Revisor",
+    email: "revisor@eventhub.com.br",
+    password: "123456",
+  },
+] as const;
+
 export default function LoginPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const router = useRouter();
@@ -21,12 +49,14 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     mode: "onBlur",
     defaultValues: { email: "", password: "" },
   });
+  const isQuickLoginEnabled = process.env.NODE_ENV !== "production";
 
   const onSubmit = async (values: LoginInput) => {
     setSubmitError(null);
@@ -86,6 +116,33 @@ export default function LoginPage() {
         </div>
 
         <div className="premium-card p-8 space-y-6 bg-card border-border shadow-2xl">
+          {isQuickLoginEnabled && (
+            <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 space-y-3">
+              <p className="text-[10px] font-black uppercase tracking-widest text-primary">
+                Acesso rápido (teste)
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {DEV_LOGIN_PRESETS.map((preset) => (
+                  <button
+                    key={preset.email}
+                    type="button"
+                    onClick={() => {
+                      setValue("email", preset.email, { shouldDirty: true });
+                      setValue("password", preset.password, { shouldDirty: true });
+                      setSubmitError(null);
+                    }}
+                    className="px-3 py-1.5 rounded-lg border border-border bg-card text-xs font-bold text-foreground hover:border-primary/40 hover:text-primary transition-colors"
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+              <p className="text-[11px] text-muted-foreground font-medium">
+                Preenche automaticamente as credenciais do seed para agilizar testes.
+              </p>
+            </div>
+          )}
+
           {inlineReason && (
             <div
               role="status"

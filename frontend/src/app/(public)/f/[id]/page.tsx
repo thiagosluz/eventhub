@@ -213,9 +213,6 @@ export default function PublicFeedbackPage({ params }: { params: Promise<{ id: s
         )}
       </div>
 
-      <p className="mt-12 text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-30">
-        Powered by EventHub
-      </p>
     </div>
   );
 }

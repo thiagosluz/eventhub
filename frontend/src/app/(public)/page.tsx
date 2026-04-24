@@ -87,7 +87,7 @@ export default function Home() {
             Junte-se a milhares de organizadores que já utilizam o EventHub para criar experiências memoráveis.
           </p>
           <div className="flex justify-center gap-4">
-            <Link href="/auth/register" className="bg-white text-primary px-10 py-4 rounded-xl font-black shadow-2xl hover:bg-gray-50 transition-colors">
+            <Link href="/auth/register" className="premium-button !px-10 !py-4">
               Criar Minha Conta Grátis
             </Link>
           </div>
