@@ -1,13 +1,22 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("next/server", () => {
+  class FakeHeaders {
+    private store = new Map<string, string>();
+    set(k: string, v: string) {
+      this.store.set(k.toLowerCase(), v);
+    }
+    get(k: string) {
+      return this.store.get(k.toLowerCase()) ?? null;
+    }
+  }
   class FakeResponse {
+    headers = new FakeHeaders();
     constructor(
       public type: "next" | "redirect",
       public url?: URL,
       public cookies = new Map<string, string>(),
     ) {}
-    // Emulate NextResponse cookie API used by proxy.
     static next() {
       return new FakeResponse("next");
     }
@@ -88,10 +97,20 @@ describe("proxy", () => {
     expect(res.url.searchParams.get("reason")).toBe("expired");
   });
 
-  it("redirects to / when role is not allowed", () => {
+  it("redirects forbidden role to its own role home", () => {
     const future = Math.floor(Date.now() / 1000) + 3600;
     const res = proxy(
       mockReq("/admin/users", { role: "PARTICIPANT", exp: future }),
+    ) as unknown as { type: string; url: URL };
+    expect(res.type).toBe("redirect");
+    expect(res.url.pathname).toBe("/profile");
+    expect(res.url.searchParams.get("reason")).toBe("forbidden");
+  });
+
+  it("redirects to / when token has no role at all", () => {
+    const future = Math.floor(Date.now() / 1000) + 3600;
+    const res = proxy(
+      mockReq("/monitor/events", { exp: future }),
     ) as unknown as { type: string; url: URL };
     expect(res.type).toBe("redirect");
     expect(res.url.pathname).toBe("/");
@@ -112,5 +131,52 @@ describe("proxy", () => {
       mockReq("/dashboard/events", { role: "ORGANIZER", exp: future }),
     ) as unknown as { type: string };
     expect(res.type).toBe("next");
+  });
+
+  it("lets a SPEAKER into /speaker", () => {
+    const future = Math.floor(Date.now() / 1000) + 3600;
+    const res = proxy(
+      mockReq("/speaker/activities", { role: "SPEAKER", exp: future }),
+    ) as unknown as { type: string };
+    expect(res.type).toBe("next");
+  });
+
+  it("lets a PARTICIPANT into /monitor (monitors são PARTICIPANTs promovidos por evento)", () => {
+    const future = Math.floor(Date.now() / 1000) + 3600;
+    const res = proxy(
+      mockReq("/monitor/events", { role: "PARTICIPANT", exp: future }),
+    ) as unknown as { type: string };
+    expect(res.type).toBe("next");
+  });
+
+  it.each(["SPEAKER", "REVIEWER", "ORGANIZER", "SUPER_ADMIN"])(
+    "lets a %s into /monitor (autorização real por evento é no backend)",
+    (role) => {
+      const future = Math.floor(Date.now() / 1000) + 3600;
+      const res = proxy(
+        mockReq("/monitor/events", { role, exp: future }),
+      ) as unknown as { type: string };
+      expect(res.type).toBe("next");
+    },
+  );
+
+  it("blocks SUPER_ADMIN from /dashboard redirecting to admin home", () => {
+    const future = Math.floor(Date.now() / 1000) + 3600;
+    const res = proxy(
+      mockReq("/dashboard", { role: "SUPER_ADMIN", exp: future }),
+    ) as unknown as { type: string; url: URL };
+    expect(res.type).toBe("redirect");
+    expect(res.url.pathname).toBe("/admin/dashboard");
+    expect(res.url.searchParams.get("reason")).toBe("forbidden");
+  });
+
+  it("blocks PARTICIPANT from /dashboard redirecting to /profile", () => {
+    const future = Math.floor(Date.now() / 1000) + 3600;
+    const res = proxy(
+      mockReq("/dashboard", { role: "PARTICIPANT", exp: future }),
+    ) as unknown as { type: string; url: URL };
+    expect(res.type).toBe("redirect");
+    expect(res.url.pathname).toBe("/profile");
+    expect(res.url.searchParams.get("reason")).toBe("forbidden");
   });
 });

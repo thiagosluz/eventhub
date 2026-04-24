@@ -1,8 +1,23 @@
+/**
+ * Papéis emitidos pelo backend (backend/prisma/schema.prisma -> UserRole).
+ * "MONITOR" NÃO é um papel: monitores são PARTICIPANTs promovidos por evento
+ * (checado via membership/permission no backend, não via role global).
+ * "ADMIN" é legado (nunca é emitido); mantido aqui apenas por compatibilidade
+ * histórica de tipos até próxima limpeza.
+ */
+export type UserRole =
+  | "ORGANIZER"
+  | "REVIEWER"
+  | "PARTICIPANT"
+  | "SPEAKER"
+  | "SUPER_ADMIN"
+  | "ADMIN";
+
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'ORGANIZER' | 'PARTICIPANT' | 'ADMIN' | 'REVIEWER' | 'SPEAKER' | 'SUPER_ADMIN';
+  role: UserRole;
   avatarUrl?: string;
   bio?: string;
   tenantId?: string;

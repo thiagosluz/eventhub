@@ -47,19 +47,6 @@ vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: any) => <>{children}</>,
 }));
 
-vi.mock('@heroicons/react/24/outline', () => ({
-  ArrowLeftIcon: () => <div />,
-  UsersIcon: () => <div />,
-  TicketIcon: () => <div />,
-  CalendarIcon: () => <div />,
-  ChevronRightIcon: () => <div />,
-  ArrowDownTrayIcon: () => <div />,
-  MagnifyingGlassIcon: () => <div />,
-  FunnelIcon: () => <div />,
-  CheckCircleIcon: () => <div />,
-  UserGroupIcon: () => <div />,
-}));
-
 vi.mock('next/navigation', () => ({
   useParams: () => ({ id: 'ev-123' }),
   useRouter: () => ({ back: vi.fn() }),

@@ -14,6 +14,7 @@ vi.mock('@heroicons/react/24/outline', () => ({
   ArrowPathIcon: () => <div />, ArrowDownTrayIcon: () => <div />, MagnifyingGlassIcon: () => <div />,
   CalendarIcon: () => <div />, FunnelIcon: () => <div />, ExclamationTriangleIcon: () => <div />,
   ChartBarIcon: () => <div />, ListBulletIcon: () => <div />,
+  InformationCircleIcon: () => <div />, CheckCircleIcon: () => <div />, XMarkIcon: () => <div />,
 }));
 
 vi.mock('@heroicons/react/24/solid', () => ({

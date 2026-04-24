@@ -46,9 +46,10 @@ describe('ParticipantDetailDrawer Component', () => {
   it('deve renderizar os detalhes básicos do participante quando aberto', () => {
     render(<ParticipantDetailDrawer {...defaultProps} />);
 
-    expect(screen.getByText('Detalhes do Participante')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /detalhes do participante/i })).toBeInTheDocument();
     expect(screen.getByText('Ana Participante')).toBeInTheDocument();
-    expect(screen.getByText('ana@example.com')).toBeInTheDocument();
+    // E-mail aparece no header (subtitle) e no body (total: 2 ocorrências)
+    expect(screen.getAllByText('ana@example.com').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Conferência Tech 2024')).toBeInTheDocument();
     expect(screen.getByText('VIP')).toBeInTheDocument();
   });

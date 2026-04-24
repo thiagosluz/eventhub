@@ -97,7 +97,7 @@ describe('AuthContext', () => {
     expect(mockPush).toHaveBeenCalledWith('/dashboard');
   });
 
-  it('deve realizar login e redirecionar para home para PARTICIPANT', async () => {
+  it('deve realizar login e redirecionar para /profile para PARTICIPANT', async () => {
     const { result } = renderHook(() => useAuth(), { wrapper });
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
@@ -111,7 +111,37 @@ describe('AuthContext', () => {
       result.current.login(authData as any);
     });
 
-    expect(mockPush).toHaveBeenCalledWith('/');
+    expect(mockPush).toHaveBeenCalledWith('/profile');
+  });
+
+  it('deve realizar login e redirecionar para /speaker para SPEAKER', async () => {
+    const { result } = renderHook(() => useAuth(), { wrapper });
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    act(() => {
+      result.current.login({
+        user: { id: '1', name: 'Jane', email: 'jane@test.com', role: 'SPEAKER' },
+        access_token: 'tk',
+        refresh_token: 'rf',
+      } as any);
+    });
+
+    expect(mockPush).toHaveBeenCalledWith('/speaker');
+  });
+
+  it('deve realizar login e redirecionar para /admin/dashboard para SUPER_ADMIN', async () => {
+    const { result } = renderHook(() => useAuth(), { wrapper });
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    act(() => {
+      result.current.login({
+        user: { id: '1', name: 'Sa', email: 'sa@test.com', role: 'SUPER_ADMIN' },
+        access_token: 'tk',
+        refresh_token: 'rf',
+      } as any);
+    });
+
+    expect(mockPush).toHaveBeenCalledWith('/admin/dashboard');
   });
 
   it('deve redirecionar para troca de senha se mustChangePassword for verdade no login', async () => {

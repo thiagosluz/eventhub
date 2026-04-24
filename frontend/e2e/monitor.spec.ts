@@ -4,11 +4,13 @@ import { setupDefaultMocks, injectAuth } from './support/mocks';
 test.describe('Fluxo de Monitoramento e Check-in', () => {
   test.beforeEach(async ({ page }) => {
     await setupDefaultMocks(page);
+    // "Monitor" não é um papel global: qualquer PARTICIPANT pode ser promovido
+    // a monitor de um evento específico. Por isso autenticamos como PARTICIPANT.
     await injectAuth(page, {
       id: 'user-monitor',
       email: 'monitor@eventhub.com.br',
       name: 'Monitor Member',
-      role: 'MONITOR',
+      role: 'PARTICIPANT',
     });
   });
 

@@ -171,24 +171,43 @@ Este documento descreve em detalhes cada módulo funcional do sistema, explicand
 
 ## 9. Gamificação
 
+> Documento dedicado (fonte da verdade): [gamificacao.md](gamificacao.md).
+> Guia de teste: [gamificacao-testes.md](gamificacao-testes.md).
+
 ### Sistema de XP
-- XP é concedido por ações específicas:
-  - **Check-in no evento**: +200 XP
-  - **Check-in em atividade**: +50 XP
-  - Outros (extensível): perfil completo, etc.
-- **Limite diário**: 1.500 XP por usuário/dia.
-- **Prevenção de farming**: `uniqueKey` garante que cada ação dá XP uma única vez.
-- **Transação atômica**: `SELECT ... FOR UPDATE` serializa atualizações de XP.
-- **Detecção de spike**: Se um usuário ganhar ≥1.000 XP em 5 minutos, um `GamificationAlert` é criado.
+- XP é concedido somente pelos seguintes gatilhos:
+  - **Check-in no evento**: +200 XP (`reason: EVENT_CHECKIN`).
+  - **Check-in em atividade**: +50 XP (`reason: ACTIVITY_CHECKIN`).
+  - **Perfil completo (1x)**: +150 XP (`reason: PROFILE_COMPLETED`, sem `eventId`).
+- **Limite diário**: 1.500 XP por usuário/dia (`DAILY_XP_LIMIT`).
+- **Idempotência**: cada gatilho usa um `uniqueKey` determinístico
+  (`EVENT_CHECKIN_{eventId}`, `ACTIVITY_CHECKIN_{activityId}`,
+  `PROFILE_COMPLETED`); a unique constraint `@@unique([userId, uniqueKey])`
+  em `XpGainLog` é a rede de segurança.
+- **Transação atômica**: `SELECT ... FOR UPDATE` serializa atualizações
+  de XP do mesmo usuário.
+- **Detecção de spike**: ganhos pontuais > 500 XP em um evento criam
+  `GamificationAlert` para o organizador resolver.
 
 ### Sistema de Níveis
-- Fórmula: `Level = floor((XP / 500)^0.6) + 1`
-- Level-up é detectado automaticamente e retornado na resposta.
+- Fórmula direta: `Level = floor((XP / 500)^0.6) + 1`.
+- Inversa (XP mínimo para atingir um nível): `XP = ceil(500 * (Level - 1)^(1/0.6))`.
+- Level-up é detectado automaticamente e retornado na resposta de
+  `awardXp` para o frontend disparar toast e confetes.
+- O frontend expõe helpers em `frontend/src/lib/gamification/level.ts`
+  (`calculateLevel`, `xpForLevel`, `levelProgress`) para exibir progresso
+  fiel à fórmula — não use `xp % 1000` em UIs novas.
 
 ### Painel do Organizador
 - Estatísticas: XP total distribuído, badges concedidas, alertas ativos, total de participantes.
 - Ranking de XP por evento (top 100).
 - Alertas de XP spike com resolução manual.
+- Rotas vivas sob `/analytics/events/:id/gamification/...` (ver
+  [api-referencia.md](api-referencia.md)).
+
+### Histórico do participante
+- Endpoint `GET /users/me/xp-history` devolve os ganhos paginados do
+  usuário com `reason`, `amount`, `eventId`/`eventName` quando aplicável.
 
 ---
 

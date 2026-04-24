@@ -191,12 +191,29 @@ Este documento lista todos os endpoints da API REST do EventHub, agrupados por m
 
 ## 🎮 Gamification — XP e Níveis
 
+Documentação detalhada do sistema de progressão, com fórmula de nível,
+tabela de thresholds, fluxos de concessão e defesas anti-abuso:
+[docs/gamificacao.md](gamificacao.md). Guia de testes manuais e
+automatizados: [docs/gamificacao-testes.md](gamificacao-testes.md).
+
+As rotas administrativas são expostas pelo módulo Analytics:
+
 | Método | Endpoint | Descrição | Auth | Role |
 |--------|----------|-----------|:----:|------|
-| `GET` | `/gamification/event/:eventId/stats` | Estatísticas de gamificação | ✅ | ORGANIZER |
-| `GET` | `/gamification/event/:eventId/ranking` | Ranking de XP do evento | ✅ | ORGANIZER |
-| `GET` | `/gamification/event/:eventId/alerts` | Alertas de XP spike | ✅ | ORGANIZER |
-| `PATCH` | `/gamification/alerts/:alertId/resolve` | Resolver alerta | ✅ | ORGANIZER |
+| `GET` | `/analytics/events/:id/gamification/stats` | Estatísticas de gamificação do evento | ✅ | ORGANIZER |
+| `GET` | `/analytics/events/:id/gamification/ranking` | Ranking de XP do evento | ✅ | ORGANIZER |
+| `GET` | `/analytics/events/:id/gamification/alerts` | Alertas de XP spike | ✅ | ORGANIZER |
+| `PATCH` | `/analytics/gamification/alerts/:id/resolve` | Resolver alerta | ✅ | ORGANIZER |
+| `GET` | `/analytics/events/:id/gamification/badges-history` | Histórico de badges concedidos | ✅ | ORGANIZER |
+| `DELETE` | `/analytics/gamification/badges/:userBadgeId/revoke` | Revogar badge concedido | ✅ | ORGANIZER |
+
+Endpoints voltados ao próprio usuário (qualquer role autenticada):
+
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|:----:|
+| `GET` | `/users/me` | Perfil com `xp` e `level` | ✅ |
+| `GET` | `/users/me/xp-history` | Histórico paginado de XP (query `page`, `limit`, default 20, máx 100) | ✅ |
+| `GET` | `/users/p/:username` | Perfil público com `xp` e `level` | ❌ |
 
 ---
 

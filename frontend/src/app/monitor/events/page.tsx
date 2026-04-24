@@ -44,6 +44,7 @@ export default function MonitorEventsPage() {
                     src={event.bannerUrl} 
                     alt={event.name} 
                     fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                   />
                 ) : (

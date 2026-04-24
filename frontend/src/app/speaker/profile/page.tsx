@@ -1,54 +1,69 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/context/AuthContext";
 import { speakersService, Speaker } from "@/services/speakers.service";
-import { 
-  UserIcon, 
+import {
+  UserIcon,
   CheckIcon,
   GlobeAltIcon,
-  CameraIcon
+  CameraIcon,
 } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
+import { Button, Input, Textarea } from "@/components/ui";
+import { speakerSchema, type SpeakerInput } from "@/lib/validation/speakers";
 
 export default function SpeakerProfilePage() {
-  const { user, updateUser } = useAuth();
+  const { updateUser } = useAuth();
   const [profile, setProfile] = useState<Speaker | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    bio: "",
-    email: "",
-    linkedinUrl: "",
-    websiteUrl: "",
-    avatarUrl: ""
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<SpeakerInput>({
+    resolver: zodResolver(speakerSchema),
+    mode: "onBlur",
+    defaultValues: {
+      name: "",
+      email: "",
+      bio: "",
+      avatarUrl: "",
+      linkedinUrl: "",
+      websiteUrl: "",
+    },
   });
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
+  const avatarUrl = watch("avatarUrl");
 
-  const loadProfile = async () => {
-    try {
-      const data = await speakersService.getMe();
-      setProfile(data);
-      setFormData({
-        name: data.name || "",
-        bio: data.bio || "",
-        email: data.email || "",
-        linkedinUrl: data.linkedinUrl || "",
-        websiteUrl: data.websiteUrl || "",
-        avatarUrl: data.avatarUrl || ""
-      });
-    } catch (error) {
-      console.error("Error loading profile:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const data = await speakersService.getMe();
+        setProfile(data);
+        reset({
+          name: data.name || "",
+          email: data.email || "",
+          bio: data.bio || "",
+          avatarUrl: data.avatarUrl || "",
+          linkedinUrl: data.linkedinUrl || "",
+          websiteUrl: data.websiteUrl || "",
+        });
+      } catch (error) {
+        console.error("Error loading profile:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadProfile();
+  }, [reset]);
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -57,29 +72,24 @@ export default function SpeakerProfilePage() {
     setIsUploading(true);
     try {
       const { url } = await speakersService.uploadAvatar(file);
-      setFormData(prev => ({ ...prev, avatarUrl: url }));
+      setValue("avatarUrl", url, { shouldDirty: true });
       toast.success("Foto carregada com sucesso!");
-    } catch (error) {
+    } catch {
       toast.error("Erro ao subir imagem.");
     } finally {
       setIsUploading(false);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (values: SpeakerInput) => {
     if (!profile) return;
-
-    setIsSaving(true);
     try {
-      const updated = await speakersService.updateSpeaker(profile.id, formData);
+      const updated = await speakersService.updateSpeaker(profile.id, values);
       setProfile(updated);
-      updateUser({ avatarUrl: updated.avatarUrl }); // Sincroniza com auth context se necessário
+      updateUser({ avatarUrl: updated.avatarUrl });
       toast.success("Perfil atualizado com sucesso!");
-    } catch (error) {
+    } catch {
       toast.error("Erro ao salvar alterações.");
-    } finally {
-      setIsSaving(false);
     }
   };
 
@@ -94,14 +104,18 @@ export default function SpeakerProfilePage() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" noValidate>
         <div className="premium-card bg-card border-border p-8 md:p-12 space-y-8">
-          {/* Avatar Upload */}
           <div className="flex flex-col md:flex-row items-center gap-8 pb-8 border-b border-border/50">
             <div className="relative group">
               <div className="w-32 h-32 rounded-[2rem] bg-muted overflow-hidden border-4 border-border shadow-xl">
-                {formData.avatarUrl ? (
-                  <img src={formData.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                {avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={avatarUrl}
+                    alt="Avatar"
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                     <UserIcon className="w-12 h-12" />
@@ -109,7 +123,13 @@ export default function SpeakerProfilePage() {
                 )}
               </div>
               <label className="absolute inset-0 flex items-center justify-center bg-black/40 text-white rounded-[2rem] opacity-0 group-hover:opacity-100 cursor-pointer transition-all backdrop-blur-sm">
-                <input type="file" className="hidden" onChange={handleAvatarUpload} accept="image/*" disabled={isUploading} />
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleAvatarUpload}
+                  accept="image/*"
+                  disabled={isUploading}
+                />
                 <CameraIcon className="w-8 h-8" />
               </label>
               {isUploading && (
@@ -118,93 +138,77 @@ export default function SpeakerProfilePage() {
                 </div>
               )}
             </div>
-            
+
             <div className="text-center md:text-left">
               <h3 className="text-lg font-black text-foreground">Sua Foto de Perfil</h3>
               <p className="text-sm text-muted-foreground max-w-xs mt-1">
-                Use uma foto profissional de alta resolução. Formatos aceitos: JPG, PNG ou WebP.
+                Use uma foto profissional de alta resolução. Formatos aceitos: JPG,
+                PNG ou WebP.
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Nome Completo</label>
-              <input 
-                type="text" 
-                value={formData.name}
-                onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                className="premium-input w-full" 
-                placeholder="Ex: Dr. Jane Doe"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">E-mail Profissional</label>
-              <input 
-                type="email" 
-                value={formData.email}
-                onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="premium-input w-full" 
-                placeholder="seu@email.com"
-              />
-            </div>
+            <Input
+              id="speaker-name"
+              label="Nome Completo"
+              required
+              placeholder="Ex: Dr. Jane Doe"
+              error={errors.name?.message}
+              {...register("name")}
+            />
+            <Input
+              id="speaker-email"
+              type="email"
+              label="E-mail Profissional"
+              placeholder="seu@email.com"
+              error={errors.email?.message}
+              {...register("email")}
+            />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Biografia Curta</label>
-            <textarea 
-              value={formData.bio}
-              onChange={e => setFormData(prev => ({ ...prev, bio: e.target.value }))}
-              className="premium-input w-full min-h-[150px] py-4" 
-              placeholder="Fale um pouco sobre sua trajetória, especialidades e conquistas..."
-            />
-            <p className="text-[10px] text-muted-foreground text-right italic">Mínimo sugerido: 50 caracteres.</p>
-          </div>
+          <Textarea
+            id="speaker-bio"
+            label="Biografia Curta"
+            rows={6}
+            placeholder="Fale um pouco sobre sua trajetória, especialidades e conquistas..."
+            helperText="Mínimo sugerido: 50 caracteres."
+            error={errors.bio?.message}
+            {...register("bio")}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-            <div className="space-y-2">
-              <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">LinkedIn URL</label>
-              <div className="relative">
-                <input 
-                  type="url" 
-                  value={formData.linkedinUrl}
-                  onChange={e => setFormData(prev => ({ ...prev, linkedinUrl: e.target.value }))}
-                  className="premium-input w-full pl-11" 
-                  placeholder="https://linkedin.com/in/usuario"
-                />
-                <GlobeAltIcon className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Website Oficial</label>
-              <div className="relative">
-                <input 
-                  type="url" 
-                  value={formData.websiteUrl}
-                  onChange={e => setFormData(prev => ({ ...prev, websiteUrl: e.target.value }))}
-                  className="premium-input w-full pl-11" 
-                  placeholder="https://seusite.com"
-                />
-                <GlobeAltIcon className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              </div>
-            </div>
+            <Input
+              id="speaker-linkedin"
+              type="url"
+              label="LinkedIn URL"
+              placeholder="https://linkedin.com/in/usuario"
+              leftAddon={<GlobeAltIcon className="w-4 h-4" />}
+              error={errors.linkedinUrl?.message}
+              {...register("linkedinUrl")}
+            />
+            <Input
+              id="speaker-website"
+              type="url"
+              label="Website Oficial"
+              placeholder="https://seusite.com"
+              leftAddon={<GlobeAltIcon className="w-4 h-4" />}
+              error={errors.websiteUrl?.message}
+              {...register("websiteUrl")}
+            />
           </div>
         </div>
 
         <div className="flex justify-end pt-4">
-          <button 
-            type="submit" 
-            disabled={isSaving}
-            className="premium-button !px-12 !py-4 flex items-center gap-3 shadow-xl shadow-primary/20 disabled:opacity-50"
+          <Button
+            type="submit"
+            size="lg"
+            isLoading={isSubmitting}
+            disabled={isUploading}
+            leftIcon={<CheckIcon className="w-5 h-5" />}
           >
-            {isSaving ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <CheckIcon className="w-5 h-5" />
-            )}
-            {isSaving ? "Salvando..." : "Salvar Alterações"}
-          </button>
+            Salvar Alterações
+          </Button>
         </div>
       </form>
     </div>

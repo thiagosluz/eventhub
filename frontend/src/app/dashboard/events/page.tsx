@@ -15,6 +15,7 @@ import Image from "next/image";
 import { EventActionsDropdown } from "@/components/events/EventActionsDropdown";
 import { DeleteConfirmationModal } from "@/components/dashboard/DeleteConfirmationModal";
 import { toast } from "react-hot-toast";
+import { Skeleton } from "@/components/ui";
 
 export default function EventsManagementPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -101,8 +102,8 @@ export default function EventsManagementPage() {
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-64 rounded-2xl bg-muted animate-pulse border border-border" />
+          {[1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-64 rounded-2xl border border-border" />
           ))}
         </div>
       ) : filteredEvents.length > 0 ? (
@@ -120,6 +121,7 @@ export default function EventsManagementPage() {
                     src={event.bannerUrl} 
                     alt={event.name} 
                     fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                   />
                 ) : (

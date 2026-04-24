@@ -4,6 +4,7 @@ import {
   Get,
   Patch,
   Post,
+  Query,
   Req,
   Param,
   UploadedFile,
@@ -97,6 +98,20 @@ export class UsersController {
   @Get("me/monitored-events")
   async getMyMonitoredEvents(@Req() req: AuthRequest) {
     return this.usersService.findMyMonitoredEvents(req.user!.sub);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "List XP history for the current user" })
+  @Get("me/xp-history")
+  async getMyXpHistory(
+    @Req() req: AuthRequest,
+    @Query("page") page?: string,
+    @Query("limit") limit?: string,
+  ) {
+    return this.usersService.findMyXpHistory(req.user!.sub, {
+      page: page ? parseInt(page, 10) : undefined,
+      limit: limit ? parseInt(limit, 10) : undefined,
+    });
   }
 
   @UseGuards(JwtAuthGuard)

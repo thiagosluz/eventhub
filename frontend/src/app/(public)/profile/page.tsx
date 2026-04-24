@@ -35,10 +35,12 @@ import {
 // Components for tabs
 import { CertificatesList } from "@/components/certificates/CertificatesList";
 import { SubmissionsList } from "@/components/submissions/SubmissionsList";
+import { Skeleton } from "@/components/ui";
 import { ActivityEnrollmentList } from "@/components/activities/ActivityEnrollmentList";
 import { BadgesShowcase } from "@/components/profile/BadgesShowcase";
 import { AvatarWithBorder } from "@/components/profile/AvatarWithBorder";
 import { showXpGain } from "@/utils/xp-toast";
+import { LevelProgressBar } from "@/components/profile/LevelProgressBar";
 import { ShareIcon, IdentificationIcon } from "@heroicons/react/24/solid";
 
 function QRCodeImage({ ticketId }: { ticketId: string }) {
@@ -62,12 +64,12 @@ function QRCodeImage({ ticketId }: { ticketId: string }) {
     fetchQR();
   }, [ticketId]);
 
-  if (loading) return <div className="w-48 h-48 bg-muted animate-pulse rounded-xl" />;
+  if (loading) return <Skeleton className="w-48 h-48 rounded-xl" />;
   if (!qrUrl) return <div className="w-48 h-48 bg-destructive/10 flex items-center justify-center text-destructive rounded-xl text-[10px] font-bold">Erro ao carregar QR</div>;
 
   return (
     <div className="relative w-48 h-48 rounded-xl shadow-inner bg-white p-2">
-      <Image src={qrUrl} alt="Ticket QR Code" fill className="object-contain p-2" />
+      <Image src={qrUrl} alt="Ticket QR Code" fill sizes="192px" className="object-contain p-2" />
     </div>
   );
 }
@@ -240,10 +242,10 @@ function ProfileContent() {
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 pt-24 pb-12 md:pt-32 space-y-8">
-        <div className="h-64 rounded-3xl bg-muted animate-pulse" />
+        <Skeleton className="h-64 rounded-3xl" />
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-1 h-96 rounded-3xl bg-muted animate-pulse" />
-          <div className="md:col-span-3 h-96 rounded-3xl bg-muted animate-pulse" />
+          <Skeleton className="md:col-span-1 h-96 rounded-3xl" />
+          <Skeleton className="md:col-span-3 h-96 rounded-3xl" />
         </div>
       </div>
     );
@@ -280,15 +282,7 @@ function ProfileContent() {
                {profile?.publicProfile && <GlobeAltIcon className="w-5 h-5 text-emerald-400" title="Perfil Público Ativo" />}
             </div>
             <p className="text-slate-400 font-medium">@{profile?.username || profile?.email}</p>
-            <div className="mt-3 flex items-center gap-4">
-               <div className="flex-1 h-2 bg-slate-800 rounded-full max-w-[200px] overflow-hidden border border-white/5">
-                  <div 
-                    className="h-full bg-gradient-to-r from-primary to-blue-400 transition-all duration-1000" 
-                    style={{ width: `${Math.min(((profile?.xp || 0) % 1000) / 10, 100)}%` }} 
-                  />
-               </div>
-               <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{profile?.xp || 0} XP</span>
-            </div>
+            <LevelProgressBar xp={profile?.xp || 0} className="mt-3" />
           </div>
         </div>
 
@@ -374,7 +368,7 @@ function ProfileContent() {
                     <div className="relative z-10 p-6 md:p-0 flex flex-col md:flex-row items-center gap-8">
                        <div className="w-32 h-48 bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl shadow-2xl flex flex-col items-center justify-between p-4 transform group-hover:rotate-y-12 group-hover:rotate-x-12 transition-transform duration-500 perspective-1000">
                           <div className="w-12 h-12 rounded-full border-2 border-white/50 overflow-hidden relative">
-                             {profile?.avatarUrl ? <Image src={profile.avatarUrl} alt="Avatar" fill className="object-cover" /> : <div className="w-full h-full bg-primary flex items-center justify-center text-white font-black">{profile?.name.substring(0,2)}</div>}
+                             {profile?.avatarUrl ? <Image src={profile.avatarUrl} alt="Avatar" fill sizes="48px" className="object-cover" /> : <div className="w-full h-full bg-primary flex items-center justify-center text-white font-black">{profile?.name.substring(0,2)}</div>}
                           </div>
                           <div className="text-center w-full">
                             <h4 className="text-white text-xs font-black uppercase tracking-tight line-clamp-1">{profile?.name}</h4>
@@ -647,7 +641,7 @@ function ProfileContent() {
                          <div key={ticket.id} className="premium-card overflow-hidden bg-card border-border flex flex-col md:flex-row group hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500">
                            <div className="w-full md:w-32 aspect-video md:aspect-auto relative overflow-hidden bg-muted flex-shrink-0">
                              {ticket.event?.bannerUrl ? (
-                               <Image src={ticket.event.bannerUrl} alt={ticket.event.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                               <Image src={ticket.event.bannerUrl} alt={ticket.event.name} fill sizes="(min-width: 768px) 128px, 100vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                              ) : (
                                <div className="w-full h-full flex items-center justify-center bg-primary/10 text-primary"><TicketIcon className="w-8 h-8 opacity-20" /></div>
                              )}

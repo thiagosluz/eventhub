@@ -21,6 +21,7 @@ import { eventsService } from "@/services/events.service";
 import { Event } from "@/types/event";
 import confetti from "canvas-confetti";
 import { DeleteConfirmationModal } from "@/components/dashboard/DeleteConfirmationModal";
+import { DataTable, type DataTableColumn } from "@/components/ui";
 
 export default function RaffleToolPage() {
   const params = useParams();
@@ -341,78 +342,103 @@ export default function RaffleToolPage() {
           </button>
         </div>
 
-        <div className="bg-white rounded-3xl border border-border shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm whitespace-nowrap">
-              <thead className="bg-slate-50">
-                <tr>
-                  <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground">Data/Hora</th>
-                  <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground">Participante</th>
-                  <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground">Regra / Escopo</th>
-                  <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground">Prêmio</th>
-                  <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground text-center">Status</th>
-                  <th className="px-6 py-4 font-black uppercase tracking-widest text-[10px] text-muted-foreground text-right">Ação</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {history.length > 0 ? history.map(h => (
-                  <tr key={h.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="px-6 py-4 font-medium text-muted-foreground">
-                      {new Date(h.drawnAt).toLocaleString('pt-BR')}
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="font-bold text-foreground">{h.registration?.user?.name}</p>
-                      <p className="text-xs text-muted-foreground">{h.registration?.user?.email}</p>
-                    </td>
-                    <td className="px-6 py-4 text-xs font-medium text-muted-foreground">
-                      {h.rule === "ALL_REGISTERED" ? "Todos os Inscritos" : "Soment. Check-in"}
-                      <br />
-                      <span className="italic">{h.activity?.title || "Geral"}</span>
-                    </td>
-                    <td className="px-6 py-4 font-medium text-foreground">
-                      {h.prizeName || "-"}
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <button
-                        onClick={async () => {
-                          await operationsService.markPrizeReceived(h.id, !h.hasReceived);
-                          fetchHistory();
-                        }}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-colors ${h.hasReceived ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-amber-100 text-amber-700 hover:bg-amber-200'}`}
-                      >
-                        {h.hasReceived ? <CheckCircleIcon className="w-4 h-4" /> : <SparklesIcon className="w-4 h-4" />}
-                        {h.hasReceived ? "Entregue" : "Pendente"}
-                      </button>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={async () => {
-                          await operationsService.setRaffleDisplayVisibility(h.id, !h.isHiddenOnDisplay);
-                          fetchHistory();
-                        }}
-                        className={`text-muted-foreground hover:text-primary transition-colors p-2 mr-2 ${h.isHiddenOnDisplay ? 'text-amber-500' : ''}`}
-                        title={h.isHiddenOnDisplay ? "Mostrar no Telão" : "Ocultar do Telão"}
-                      >
-                        {h.isHiddenOnDisplay ? <EyeSlashIcon className="w-5 h-5 inline" /> : <EyeIcon className="w-5 h-5 inline" />}
-                      </button>
-                      <button
-                        onClick={() => setHistoryToDelete(h.id)}
-                        className="text-muted-foreground hover:text-rose-500 transition-colors p-2"
-                        title="Excluir"
-                      >
-                        <TrashIcon className="w-5 h-5 inline" />
-                      </button>
-                    </td>
-                  </tr>
-                )) : (
-                  <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground font-medium">Nenhum sorteio realizado ainda.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <DataTable
+          ariaLabel="Histórico de sorteios"
+          data={history}
+          columns={[
+            {
+              key: "drawnAt",
+              header: "Data/Hora",
+              cell: (h) => (
+                <span className="font-medium text-muted-foreground">
+                  {new Date(h.drawnAt).toLocaleString("pt-BR")}
+                </span>
+              ),
+            },
+            {
+              key: "participant",
+              header: "Participante",
+              cell: (h) => (
+                <div>
+                  <p className="font-bold text-foreground">{h.registration?.user?.name}</p>
+                  <p className="text-xs text-muted-foreground">{h.registration?.user?.email}</p>
+                </div>
+              ),
+            },
+            {
+              key: "rule",
+              header: "Regra / Escopo",
+              cell: (h) => (
+                <div className="text-xs font-medium text-muted-foreground">
+                  {h.rule === "ALL_REGISTERED" ? "Todos os Inscritos" : "Somente Check-in"}
+                  <br />
+                  <span className="italic">{h.activity?.title || "Geral"}</span>
+                </div>
+              ),
+            },
+            {
+              key: "prize",
+              header: "Prêmio",
+              cell: (h) => (
+                <span className="font-medium text-foreground">{h.prizeName || "-"}</span>
+              ),
+            },
+            {
+              key: "status",
+              header: "Status",
+              align: "center",
+              cell: (h) => (
+                <button
+                  onClick={async () => {
+                    await operationsService.markPrizeReceived(h.id, !h.hasReceived);
+                    fetchHistory();
+                  }}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-colors ${h.hasReceived ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200" : "bg-amber-100 text-amber-700 hover:bg-amber-200"}`}
+                >
+                  {h.hasReceived ? (
+                    <CheckCircleIcon className="w-4 h-4" />
+                  ) : (
+                    <SparklesIcon className="w-4 h-4" />
+                  )}
+                  {h.hasReceived ? "Entregue" : "Pendente"}
+                </button>
+              ),
+            },
+            {
+              key: "actions",
+              header: "Ação",
+              align: "right",
+              cell: (h) => (
+                <div className="flex items-center justify-end gap-1">
+                  <button
+                    onClick={async () => {
+                      await operationsService.setRaffleDisplayVisibility(h.id, !h.isHiddenOnDisplay);
+                      fetchHistory();
+                    }}
+                    className={`text-muted-foreground hover:text-primary transition-colors p-2 ${h.isHiddenOnDisplay ? "text-amber-500" : ""}`}
+                    title={h.isHiddenOnDisplay ? "Mostrar no Telão" : "Ocultar do Telão"}
+                  >
+                    {h.isHiddenOnDisplay ? (
+                      <EyeSlashIcon className="w-5 h-5" />
+                    ) : (
+                      <EyeIcon className="w-5 h-5" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setHistoryToDelete(h.id)}
+                    className="text-muted-foreground hover:text-rose-500 transition-colors p-2"
+                    title="Excluir"
+                  >
+                    <TrashIcon className="w-5 h-5" />
+                  </button>
+                </div>
+              ),
+            },
+          ] as DataTableColumn<(typeof history)[number]>[]}
+          rowKey={(h) => h.id}
+          emptyTitle="Nenhum sorteio realizado ainda"
+          emptyIcon={<TrophyIcon className="w-6 h-6" />}
+        />
       </div>
 
       <DeleteConfirmationModal

@@ -21,6 +21,8 @@ vi.mock("@heroicons/react/24/outline", () => ({
   ClipboardDocumentIcon: (props: any) => <div {...props} />,
   CheckIcon: (props: any) => <div {...props} />,
   ExclamationTriangleIcon: (props: any) => <div {...props} />,
+  InformationCircleIcon: (props: any) => <div {...props} />,
+  CheckCircleIcon: (props: any) => <div {...props} />,
 }));
 
 vi.mock("qrcode.react", () => ({

@@ -15,6 +15,7 @@ import {
   LockClosedIcon
 } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
+import { Skeleton } from "@/components/ui";
 
 export default function ReviewerDashboardPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -95,8 +96,8 @@ export default function ReviewerDashboardPage() {
 
       {isLoading ? (
         <div className="space-y-4">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-24 rounded-2xl bg-muted animate-pulse" />
+          {[1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-24 rounded-2xl" />
           ))}
         </div>
       ) : reviews.length > 0 ? (

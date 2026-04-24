@@ -4,16 +4,37 @@ import { useEffect, useState, useCallback } from "react";
 import { api } from "@/lib/api";
 import {
   MagnifyingGlassIcon,
-  ArrowPathIcon,
   ShieldExclamationIcon,
   FunnelIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   CalendarIcon,
 } from "@heroicons/react/24/outline";
+import { DataTable, type DataTableColumn } from "@/components/ui";
+
+interface AuditLog {
+  id: string;
+  createdAt: string;
+  action: string;
+  resource: string;
+  resourceId?: string | null;
+  ip?: string | null;
+  userId?: string | null;
+  tenantId?: string | null;
+  user?: { name?: string; email?: string } | null;
+  tenant?: { name?: string } | null;
+  event?: { name?: string } | null;
+}
+
+interface PaginatedAuditLogs {
+  data: AuditLog[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+const PAGE_SIZE = 20;
 
 export default function GlobalAuditPage() {
-  const [logs, setLogs] = useState<any[]>([]);
+  const [logs, setLogs] = useState<AuditLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -21,22 +42,22 @@ export default function GlobalAuditPage() {
     tenantId: "",
     userId: "",
     startDate: "",
-    endDate: ""
+    endDate: "",
   });
 
   const fetchLogs = useCallback(async () => {
     try {
       setIsLoading(true);
-      const query = new URLSearchParams({
-        page: page.toString(),
-        limit: "20",
-        ...(filters.tenantId && { tenantId: filters.tenantId }),
-        ...(filters.userId && { userId: filters.userId }),
-        ...(filters.startDate && { startDate: filters.startDate }),
-        ...(filters.endDate && { endDate: filters.endDate }),
-      }).toString();
-
-      const res = await api.get<{ data: any[], total: number }>(`/admin/audit-logs?${query}`);
+      const res = await api.get<PaginatedAuditLogs>("/admin/audit-logs", {
+        params: {
+          page,
+          limit: PAGE_SIZE,
+          tenantId: filters.tenantId || undefined,
+          userId: filters.userId || undefined,
+          startDate: filters.startDate || undefined,
+          endDate: filters.endDate || undefined,
+        },
+      });
       setLogs(res.data || []);
       setTotal(res.total || 0);
     } catch (error) {
@@ -50,171 +71,183 @@ export default function GlobalAuditPage() {
     fetchLogs();
   }, [fetchLogs]);
 
-  const totalPages = Math.ceil(total / 20);
+  useEffect(() => {
+    setPage(1);
+  }, [filters]);
+
+  const columns: DataTableColumn<AuditLog>[] = [
+    {
+      key: "createdAt",
+      header: "Data/Hora",
+      cell: (log) => (
+        <div className="whitespace-nowrap">
+          <div className="text-foreground text-sm">
+            {new Date(log.createdAt).toLocaleDateString("pt-BR")}
+          </div>
+          <div className="text-xs text-muted-foreground">
+            {new Date(log.createdAt).toLocaleTimeString("pt-BR")}
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "user",
+      header: "Usuário",
+      cell: (log) => (
+        <div>
+          <div className="font-bold text-foreground">{log.user?.name || "Sistema"}</div>
+          <div className="text-muted-foreground text-xs truncate max-w-[180px]">
+            {log.user?.email || log.userId || "—"}
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "tenant",
+      header: "Tenant",
+      cell: (log) => (
+        <div>
+          <div className="font-semibold text-foreground">
+            {log.tenant?.name || "Global / Master"}
+          </div>
+          <div className="text-[10px] text-muted-foreground font-mono">
+            {log.tenantId || "N/A"}
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "action",
+      header: "Ação",
+      cell: (log) => (
+        <span
+          className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold border ${
+            log.action.includes("DELETE")
+              ? "bg-destructive/10 text-destructive border-destructive/20"
+              : log.action.includes("UPDATE") || log.action.includes("PATCH")
+                ? "bg-blue-500/10 text-blue-500 border-blue-500/20"
+                : log.action.includes("POST") || log.action.includes("CREATE")
+                  ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                  : "bg-muted text-muted-foreground border-border"
+          }`}
+        >
+          {log.action}
+        </span>
+      ),
+    },
+    {
+      key: "resource",
+      header: "Recurso / Contexto",
+      cell: (log) => (
+        <div>
+          <div className="text-foreground">{log.resource}</div>
+          <div className="text-muted-foreground text-xs font-mono">
+            {log.event?.name
+              ? `Evento: ${log.event.name}`
+              : `ID: ${log.resourceId || "N/A"}`}
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "ip",
+      header: "IP",
+      cell: (log) => (
+        <span className="font-mono text-xs text-muted-foreground">
+          {log.ip || "Interno"}
+        </span>
+      ),
+    },
+  ];
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-6">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold text-gray-100 flex items-center gap-3">
-            <ShieldExclamationIcon className="w-8 h-8 text-red-500" />
+          <h1 className="text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
+            <ShieldExclamationIcon className="w-8 h-8 text-destructive" />
             Auditoria Global
           </h1>
-          <p className="text-gray-400 mt-2">Visibilidade total de eventos em todos os inquilinos (Tenants).</p>
+          <p className="text-muted-foreground font-medium mt-2">
+            Visibilidade total de eventos em todos os inquilinos (Tenants).
+          </p>
         </div>
       </div>
 
-      {/* Barra de Filtros */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-gray-900/50 p-4 rounded-xl border border-gray-800">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-card p-4 rounded-xl border border-border">
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-gray-500 uppercase tracking-wider ml-1">Inquilino (ID)</label>
+          <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1">
+            Inquilino (ID)
+          </label>
           <div className="relative">
-            <FunnelIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-            <input 
-              type="text" 
+            <FunnelIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              type="text"
               placeholder="Filtro por Tenant ID..."
               value={filters.tenantId}
-              onChange={(e) => setFilters(f => ({ ...f, tenantId: e.target.value }))}
-              className="w-full bg-gray-950 border border-gray-800 text-gray-100 placeholder-gray-600 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-red-500/50"
+              onChange={(e) => setFilters((f) => ({ ...f, tenantId: e.target.value }))}
+              className="w-full bg-background border border-border text-foreground placeholder-muted-foreground rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-primary"
             />
           </div>
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-gray-500 uppercase tracking-wider ml-1">Usuário / E-mail</label>
+          <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1">
+            Usuário (ID)
+          </label>
           <div className="relative">
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-            <input 
-              type="text" 
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              type="text"
               placeholder="Buscar usuário..."
               value={filters.userId}
-              onChange={(e) => setFilters(f => ({ ...f, userId: e.target.value }))}
-              className="w-full bg-gray-950 border border-gray-800 text-gray-100 placeholder-gray-600 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-red-500/50"
+              onChange={(e) => setFilters((f) => ({ ...f, userId: e.target.value }))}
+              className="w-full bg-background border border-border text-foreground placeholder-muted-foreground rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-primary"
             />
           </div>
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-gray-500 uppercase tracking-wider ml-1">Data Inicial</label>
+          <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1">
+            Data Inicial
+          </label>
           <div className="relative">
-            <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-            <input 
+            <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
               type="date"
               value={filters.startDate}
-              onChange={(e) => setFilters(f => ({ ...f, startDate: e.target.value }))}
-              className="w-full bg-gray-950 border border-gray-800 text-gray-100 py-2 pl-10 pr-4 rounded-lg text-sm focus:outline-none focus:border-red-500/50"
+              onChange={(e) => setFilters((f) => ({ ...f, startDate: e.target.value }))}
+              className="w-full bg-background border border-border text-foreground py-2 pl-10 pr-4 rounded-lg text-sm focus:outline-none focus:border-primary"
             />
           </div>
         </div>
         <div className="space-y-1.5 flex flex-col justify-end">
-           <label className="text-xs font-medium text-gray-500 uppercase tracking-wider ml-1">Data Final</label>
-           <input 
-              type="date" 
-              value={filters.endDate}
-              onChange={(e) => setFilters(f => ({ ...f, endDate: e.target.value }))}
-              className="w-full bg-gray-950 border border-gray-800 text-gray-100 py-2 px-4 rounded-lg text-sm focus:outline-none focus:border-red-500/50"
-            />
+          <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1">
+            Data Final
+          </label>
+          <input
+            type="date"
+            value={filters.endDate}
+            onChange={(e) => setFilters((f) => ({ ...f, endDate: e.target.value }))}
+            className="w-full bg-background border border-border text-foreground py-2 px-4 rounded-lg text-sm focus:outline-none focus:border-primary"
+          />
         </div>
       </div>
 
-      <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-sm overflow-hidden">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-            <ArrowPathIcon className="w-8 h-8 animate-spin text-red-500 mb-4" />
-            <p>Filtrando Eventos de Segurança...</p>
-          </div>
-        ) : (
-          <>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm text-gray-300">
-                <thead className="bg-gray-950 text-gray-400 font-medium uppercase text-xs border-b border-gray-800">
-                  <tr>
-                    <th className="px-6 py-4">Data/Hora</th>
-                    <th className="px-6 py-4">Usuário</th>
-                    <th className="px-6 py-4">Tenant / Inquilino</th>
-                    <th className="px-6 py-4">Ação</th>
-                    <th className="px-6 py-4">Recurso / Contexto</th>
-                    <th className="px-6 py-4">IP</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-800">
-                  {logs.map(log => (
-                    <tr key={log.id} className="hover:bg-gray-800/50 transition-colors">
-                      <td className="px-6 py-4 text-gray-400 whitespace-nowrap">
-                        <div className="text-gray-100">{new Date(log.createdAt).toLocaleDateString()}</div>
-                        <div className="text-xs text-gray-500">{new Date(log.createdAt).toLocaleTimeString()}</div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="font-medium text-gray-100">{log.user?.name || 'Sistema'}</div>
-                        <div className="text-gray-500 text-xs truncate max-w-[150px]">
-                          {log.user?.email || log.userId}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="font-medium text-gray-300">{log.tenant?.name || 'Global / Master'}</div>
-                        <div className="text-[10px] text-gray-600 font-mono">{log.tenantId || 'N/A'}</div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold border ${
-                          log.action.includes('DELETE') ? 'bg-red-500/10 text-red-500 border-red-500/20' :
-                          log.action.includes('UPDATE') || log.action.includes('PATCH') ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
-                          log.action.includes('POST') || log.action.includes('CREATE') ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' :
-                          'bg-gray-800 text-gray-300 border-gray-700'
-                        }`}>
-                          {log.action}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-gray-200">{log.resource}</div>
-                        <div className="text-gray-500 text-xs font-mono">
-                          {log.event?.name ? `Evento: ${log.event.name}` : `ID: ${log.resourceId || 'N/A'}`}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 font-mono text-xs text-gray-400">
-                        {log.ip || 'Interno'}
-                      </td>
-                    </tr>
-                  ))}
-                  {logs.length === 0 && (
-                    <tr>
-                      <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
-                        Nenhum registro de auditoria encontrado para estes filtros.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="p-4 border-t border-gray-800 flex justify-between items-center bg-gray-950/20">
-                <div className="text-xs text-gray-500">
-                  Mostrando {(page - 1) * 20 + 1} - {Math.min(page * 20, total)} de {total} registros
-                </div>
-                <div className="flex gap-2">
-                  <button 
-                    disabled={page === 1}
-                    onClick={() => setPage(p => p - 1)}
-                    className="p-2 border border-gray-800 rounded hover:bg-gray-800 disabled:opacity-30 transition-colors"
-                  >
-                    <ChevronLeftIcon className="w-4 h-4 text-gray-400" />
-                  </button>
-                  <div className="flex items-center px-4 text-sm font-medium text-gray-300">
-                    Página {page} de {totalPages}
-                  </div>
-                  <button 
-                    disabled={page === totalPages}
-                    onClick={() => setPage(p => p + 1)}
-                    className="p-2 border border-gray-800 rounded hover:bg-gray-800 disabled:opacity-30 transition-colors"
-                  >
-                    <ChevronRightIcon className="w-4 h-4 text-gray-400" />
-                  </button>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      <DataTable<AuditLog>
+        ariaLabel="Logs de auditoria global"
+        data={logs}
+        columns={columns}
+        rowKey={(log) => log.id}
+        isLoading={isLoading}
+        emptyTitle="Nenhum registro"
+        emptyDescription="Não há logs de auditoria para os filtros aplicados."
+        emptyIcon={<ShieldExclamationIcon className="w-6 h-6" />}
+        pagination={{
+          page,
+          pageSize: PAGE_SIZE,
+          total,
+          onPageChange: setPage,
+        }}
+      />
     </div>
   );
 }
-

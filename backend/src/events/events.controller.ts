@@ -165,10 +165,11 @@ export class EventsController {
       throw new Error("Tenant missing");
     }
 
-    const participants = await this.eventsService.listParticipants(tenantId, {
+    const result = await this.eventsService.listParticipants(tenantId, {
       eventId,
       search,
     });
+    const participants = Array.isArray(result) ? result : result.data;
 
     const header = "Nome,Email,Evento,Ticket,Data de Inscrição\n";
     const rows = participants
@@ -208,12 +209,19 @@ export class EventsController {
     @Req() req: AuthRequest,
     @Query("eventId") eventId?: string,
     @Query("search") search?: string,
+    @Query("page") page?: string,
+    @Query("limit") limit?: string,
   ) {
     const tenantId = req.user?.tenantId;
     if (!tenantId) {
       throw new Error("Tenant missing");
     }
-    return this.eventsService.listParticipants(tenantId, { eventId, search });
+    return this.eventsService.listParticipants(tenantId, {
+      eventId,
+      search,
+      page: page ? parseInt(page) : undefined,
+      limit: limit ? parseInt(limit) : undefined,
+    });
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

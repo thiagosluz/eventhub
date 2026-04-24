@@ -184,7 +184,7 @@ export default function PublicProfilePage() {
                 <div key={reg.id} className="premium-card p-6 bg-card border-border flex items-center gap-6 group hover:border-primary/30 transition-all">
                    <div className="w-20 h-20 relative rounded-2xl overflow-hidden bg-muted flex-shrink-0">
                      {reg.event.bannerUrl ? (
-                       <Image src={reg.event.bannerUrl} alt={reg.event.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                       <Image src={reg.event.bannerUrl} alt={reg.event.name} fill sizes="80px" className="object-cover group-hover:scale-110 transition-transform duration-500" />
                      ) : (
                        <div className="w-full h-full flex items-center justify-center bg-primary/10 text-primary">
                          <CalendarIcon className="w-8 h-8" />

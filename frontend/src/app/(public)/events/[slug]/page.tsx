@@ -145,6 +145,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             alt={event.name} 
             fill
             priority
+            sizes="100vw"
             className="object-cover"
           />
         ) : (

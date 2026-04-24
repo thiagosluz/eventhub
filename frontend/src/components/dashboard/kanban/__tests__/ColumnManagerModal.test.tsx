@@ -1,6 +1,17 @@
 import { render, screen, fireEvent } from '@/test-utils';
 import { ColumnManagerModal } from '../ColumnManagerModal';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import type { KanbanColumn, KanbanTask } from '@/types/kanban';
+
+function makeTask(id: string, columnId: string): KanbanTask {
+  return {
+    id,
+    title: `Task ${id}`,
+    priority: 'LOW',
+    status: 'TODO',
+    columnId,
+  };
+}
 
 vi.mock('@/services/kanban.service', () => ({
   kanbanService: {
@@ -16,10 +27,22 @@ vi.mock('react-hot-toast', () => ({
 }));
 
 describe('ColumnManagerModal Component', () => {
-  const columns = [
-    { id: 'c1', name: 'Backlog', order: 0, color: 'slate', tasks: [{ id: 't1' }, { id: 't2' }] },
+  const columns: KanbanColumn[] = [
+    {
+      id: 'c1',
+      name: 'Backlog',
+      order: 0,
+      color: 'slate',
+      tasks: [makeTask('t1', 'c1'), makeTask('t2', 'c1')],
+    },
     { id: 'c2', name: 'Em Andamento', order: 1, color: 'blue', tasks: [] },
-    { id: 'c3', name: 'Concluído', order: 2, color: 'emerald', tasks: [{ id: 't3' }] },
+    {
+      id: 'c3',
+      name: 'Concluído',
+      order: 2,
+      color: 'emerald',
+      tasks: [makeTask('t3', 'c3')],
+    },
   ];
 
   const defaultProps = {

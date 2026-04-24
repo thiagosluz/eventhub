@@ -33,6 +33,22 @@ export interface EventMonitored {
   };
 }
 
+export interface XpHistoryEntry {
+  id: string;
+  amount: number;
+  reason: string;
+  createdAt: string;
+  eventId: string | null;
+  eventName: string | null;
+}
+
+export interface PaginatedXpHistory {
+  data: XpHistoryEntry[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 export interface SpeakerProfile {
   id: string;
   userId: string;
@@ -76,6 +92,15 @@ export const usersService = {
 
   getMonitoredEvents: async (): Promise<EventMonitored[]> => {
     return api.get<EventMonitored[]>("/users/me/monitored-events");
+  },
+
+  getMyXpHistory: async (
+    params: { page?: number; limit?: number } = {},
+  ): Promise<PaginatedXpHistory> => {
+    const { page = 1, limit = 20 } = params;
+    return api.get<PaginatedXpHistory>("/users/me/xp-history", {
+      params: { page, limit },
+    });
   },
 
   checkUsernameAvailability: async (username: string): Promise<{ available: boolean }> => {

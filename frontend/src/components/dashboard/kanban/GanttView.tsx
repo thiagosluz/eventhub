@@ -25,6 +25,7 @@ import {
   Squares2X2Icon
 } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
+import { EmptyState } from "@/components/ui";
 
 export function GanttView({ board }: any) {
   const [viewMode, setViewMode] = useState<"timeline" | "month">("timeline");
@@ -143,7 +144,13 @@ function TimelineView({ tasks }: { tasks: any[] }) {
   });
 
   if (tasks.length === 0) {
-    return <EmptyState />;
+    return (
+      <EmptyState
+        icon={<ClockIcon className="w-6 h-6" />}
+        title="Nenhuma tarefa com prazo"
+        description="Defina prazos nos cards para visualizá-los aqui."
+      />
+    );
   }
 
   return (
@@ -209,7 +216,13 @@ function MonthView({ tasks, currentDate }: { tasks: any[], currentDate: Date }) 
   const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
   if (tasks.length === 0) {
-    return <EmptyState />;
+    return (
+      <EmptyState
+        icon={<CalendarIcon className="w-6 h-6" />}
+        title="Nenhuma tarefa com prazo"
+        description="Defina prazos nos cards para visualizá-los aqui."
+      />
+    );
   }
 
   return (
@@ -269,14 +282,3 @@ function MonthView({ tasks, currentDate }: { tasks: any[], currentDate: Date }) 
   );
 }
 
-function EmptyState() {
-  return (
-    <div className="h-full flex flex-col items-center justify-center py-20 text-center space-y-4 opacity-30">
-      <ClockIcon className="w-16 h-16" />
-      <div>
-        <p className="text-sm font-black uppercase">Nenhuma tarefa com prazo</p>
-        <p className="text-xs">Defina prazos nos cards para visualizá-los aqui.</p>
-      </div>
-    </div>
-  );
-}

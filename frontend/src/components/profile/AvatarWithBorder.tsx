@@ -39,6 +39,13 @@ export function AvatarWithBorder({
     xl: "w-40 h-40 md:w-48 md:h-48 text-4xl",
   };
 
+  const imageSizes: Record<"sm" | "md" | "lg" | "xl", string> = {
+    sm: "48px",
+    md: "96px",
+    lg: "(min-width: 768px) 144px, 128px",
+    xl: "(min-width: 768px) 192px, 160px",
+  };
+
   const borderStyles = {
     basic: "border-slate-800 bg-slate-900",
     bronze: "border-[#CD7F32] shadow-[0_0_15px_rgba(205,127,50,0.3)] bg-gradient-to-br from-slate-900 to-[#3e2712]",
@@ -69,7 +76,7 @@ export function AvatarWithBorder({
         
         <div className={`relative w-full h-full rounded-full overflow-hidden bg-slate-900 flex items-center justify-center ${tier === 'legendary' ? 'z-10 bg-slate-900 border-2 border-slate-950' : ''}`}>
           {avatarUrl ? (
-            <Image src={avatarUrl} alt={name} fill className="object-cover" />
+            <Image src={avatarUrl} alt={name} fill sizes={imageSizes[size]} className="object-cover" />
           ) : (
             <span className="font-black text-white/20 uppercase">{name.substring(0, 2)}</span>
           )}

@@ -82,8 +82,8 @@ describe('ActivityForm Component', () => {
     render(<ActivityForm {...defaultProps} initialData={initialData as any} />);
 
     await waitFor(() => {
-      expect(screen.getByLabelText(/Palestrante/i)).toHaveValue('speaker-1');
-      expect(screen.getByLabelText(/Papel/i)).toHaveValue('role-1');
+      expect(screen.getAllByLabelText('Palestrante')[0]).toHaveValue('speaker-1');
+      expect(screen.getByLabelText('Papel')).toHaveValue('role-1');
     });
   });
 
@@ -176,8 +176,8 @@ describe('ActivityForm Component', () => {
     await user.selectOptions(screen.getByLabelText(/Tipo de Atividade/i), 'type-1');
 
     // Preenche datas
-    fireEvent.change(screen.getByLabelText('Data/Hora Início'), { target: { value: '2024-06-01T09:00' } });
-    fireEvent.change(screen.getByLabelText('Data/Hora Término'), { target: { value: '2024-06-01T10:00' } });
+    fireEvent.change(screen.getByLabelText(/Data\/Hora Início/i), { target: { value: '2024-06-01T09:00' } });
+    fireEvent.change(screen.getByLabelText(/Data\/Hora Término/i), { target: { value: '2024-06-01T10:00' } });
 
     // Submete pelo botão de submit
     const submitBtn = screen.getByRole('button', { name: /Criar Atividade/i });
@@ -212,7 +212,7 @@ describe('ActivityForm Component', () => {
     await user.click(addButton);
     await user.click(addButton);
 
-    const speakerSelects = screen.getAllByLabelText(/Palestrante/i);
+    const speakerSelects = screen.getAllByLabelText('Palestrante');
     await user.selectOptions(speakerSelects[0], 'speaker-1');
     // Deixa o segundo vazio
 
@@ -307,8 +307,8 @@ describe('ActivityForm Component', () => {
 
   it('deve renderizar estado de carregamento no botão', () => {
     render(<ActivityForm {...defaultProps} isLoading={true} />);
-    const submitButton = screen.getByRole('button', { name: '' });
+    const submitButton = screen.getByRole('button', { name: /Criar Atividade/i });
     expect(submitButton).toBeDisabled();
-    expect(submitButton.querySelector('.animate-spin')).toBeInTheDocument();
+    expect(submitButton).toHaveAttribute('aria-busy', 'true');
   });
 });

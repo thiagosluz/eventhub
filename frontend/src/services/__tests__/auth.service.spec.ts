@@ -31,12 +31,12 @@ describe('authService', () => {
   });
 
   it('should call registerOrganizer correctly', async () => {
-    const registerData = { 
-      email: 'organizer@example.com', 
+    const registerData = {
+      email: 'organizer@example.com',
       password: 'password123',
       name: 'Organizer Name',
       tenantName: 'My Tenant',
-      slug: 'my-tenant'
+      tenantSlug: 'my-tenant',
     };
     vi.mocked(api.post).mockResolvedValue(mockResponse);
 

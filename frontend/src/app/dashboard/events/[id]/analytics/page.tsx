@@ -40,6 +40,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { analyticsService, EventAnalytics, Participant, Checkin, EventFeedback, EventSpeaker } from "@/services/analytics.service";
 import Link from "next/link";
+import { DataTable, type DataTableColumn } from "@/components/ui";
 
 const COLORS = ['#EC4899', '#8B5CF6', '#3B82F6', '#10B981', '#F59E0B'];
 
@@ -447,49 +448,75 @@ export default function EventAnalyticsPage() {
               </button>
             </div>
 
-            <div className="premium-card overflow-hidden bg-card border-border">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead className="bg-muted/50 border-b border-border">
-                    <tr>
-                      <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Participante</th>
-                      <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Tipo</th>
-                      <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Status</th>
-                      <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Atividades</th>
-                      <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Data</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border">
-                    {filteredParticipants.map((p) => (
-                      <tr key={p.id} className="hover:bg-muted/30 transition-colors">
-                        <td className="px-6 py-4">
-                          <div className="flex flex-col">
-                            <span className="font-bold text-foreground">{p.name}</span>
-                            <span className="text-xs text-muted-foreground">{p.email}</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className={`text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-widest ${p.ticketType === 'PAID' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-blue-500/10 text-blue-500 border border-blue-500/20'}`}>
-                            {p.ticketType}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className={`text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-widest ${p.ticketStatus === 'COMPLETED' ? 'bg-emerald-500/10 text-emerald-500' : p.ticketStatus === 'PENDING' ? 'bg-amber-500/10 text-amber-500' : 'bg-red-500/10 text-red-500'}`}>
-                            {p.ticketStatus}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="text-sm font-bold text-foreground">{p.enrollmentsCount} inscr.</span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="text-xs font-medium text-muted-foreground">{new Date(p.registrationDate).toLocaleDateString()}</span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <DataTable<Participant>
+              ariaLabel="Participantes do evento"
+              data={filteredParticipants}
+              columns={[
+                {
+                  key: "name",
+                  header: "Participante",
+                  cell: (p) => (
+                    <div className="flex flex-col">
+                      <span className="font-bold text-foreground">{p.name}</span>
+                      <span className="text-xs text-muted-foreground">{p.email}</span>
+                    </div>
+                  ),
+                },
+                {
+                  key: "ticketType",
+                  header: "Tipo",
+                  cell: (p) => (
+                    <span
+                      className={`text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-widest ${
+                        p.ticketType === "PAID"
+                          ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
+                          : "bg-blue-500/10 text-blue-500 border border-blue-500/20"
+                      }`}
+                    >
+                      {p.ticketType}
+                    </span>
+                  ),
+                },
+                {
+                  key: "ticketStatus",
+                  header: "Status",
+                  cell: (p) => (
+                    <span
+                      className={`text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-widest ${
+                        p.ticketStatus === "COMPLETED"
+                          ? "bg-emerald-500/10 text-emerald-500"
+                          : p.ticketStatus === "PENDING"
+                            ? "bg-amber-500/10 text-amber-500"
+                            : "bg-destructive/10 text-destructive"
+                      }`}
+                    >
+                      {p.ticketStatus}
+                    </span>
+                  ),
+                },
+                {
+                  key: "enrollments",
+                  header: "Atividades",
+                  cell: (p) => (
+                    <span className="text-sm font-bold text-foreground">
+                      {p.enrollmentsCount} inscr.
+                    </span>
+                  ),
+                },
+                {
+                  key: "registrationDate",
+                  header: "Data",
+                  cell: (p) => (
+                    <span className="text-xs font-medium text-muted-foreground">
+                      {new Date(p.registrationDate).toLocaleDateString("pt-BR")}
+                    </span>
+                  ),
+                },
+              ] as DataTableColumn<Participant>[]}
+              rowKey={(p) => p.id}
+              emptyTitle="Nenhum participante encontrado"
+              emptyIcon={<UsersIcon className="w-6 h-6" />}
+            />
           </motion.div>
         )}
 
@@ -537,54 +564,64 @@ export default function EventAnalyticsPage() {
               </button>
             </div>
 
-            <div className="premium-card overflow-hidden bg-card border-border">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead className="bg-muted/50 border-b border-border">
-                    <tr>
-                      <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Participante</th>
-                      <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Tipo Ticket</th>
-                      <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Atividade</th>
-                      <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Horário</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border">
-                    {filteredCheckins.map((c) => (
-                      <tr key={c.id} className="hover:bg-muted/30 transition-colors">
-                        <td className="px-6 py-4">
-                          <div className="flex flex-col">
-                            <span className="font-bold text-foreground">{c.name}</span>
-                            <span className="text-xs text-muted-foreground">{c.email}</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="text-xs font-black text-muted-foreground">{c.ticketType}</span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className={`text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-widest ${c.activityName === 'Check-in Geral' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
-                            {c.activityName}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="text-xs font-bold text-foreground">
-                            {new Date(c.checkedAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                          </span>
-                          <span className="text-[10px] block text-muted-foreground">
-                            {new Date(c.checkedAt).toLocaleDateString('pt-BR')}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              {filteredCheckins.length === 0 && (
-                <div className="p-10 text-center space-y-2">
-                  <UsersIcon className="w-10 h-10 text-muted/20 mx-auto" />
-                  <p className="text-muted-foreground font-bold">Nenhum check-in encontrado.</p>
-                </div>
-              )}
-            </div>
+            <DataTable<Checkin>
+              ariaLabel="Check-ins do evento"
+              data={filteredCheckins}
+              columns={[
+                {
+                  key: "name",
+                  header: "Participante",
+                  cell: (c) => (
+                    <div className="flex flex-col">
+                      <span className="font-bold text-foreground">{c.name}</span>
+                      <span className="text-xs text-muted-foreground">{c.email}</span>
+                    </div>
+                  ),
+                },
+                {
+                  key: "ticketType",
+                  header: "Tipo Ticket",
+                  cell: (c) => (
+                    <span className="text-xs font-black text-muted-foreground">{c.ticketType}</span>
+                  ),
+                },
+                {
+                  key: "activity",
+                  header: "Atividade",
+                  cell: (c) => (
+                    <span
+                      className={`text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-widest ${
+                        c.activityName === "Check-in Geral"
+                          ? "bg-primary/10 text-primary"
+                          : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {c.activityName}
+                    </span>
+                  ),
+                },
+                {
+                  key: "checkedAt",
+                  header: "Horário",
+                  cell: (c) => (
+                    <div className="flex flex-col">
+                      <span className="text-xs font-bold text-foreground">
+                        {new Date(c.checkedAt).toLocaleTimeString("pt-BR", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {new Date(c.checkedAt).toLocaleDateString("pt-BR")}
+                      </span>
+                    </div>
+                  ),
+                },
+              ] as DataTableColumn<Checkin>[]}
+              rowKey={(c) => c.id}
+              emptyTitle="Nenhum check-in encontrado"
+              emptyIcon={<UsersIcon className="w-6 h-6" />}
+            />
           </motion.div>
         )}
 

@@ -5,14 +5,6 @@ import { speakersService } from "@/services/speakers.service";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-hot-toast";
 
-// Mock do @heroicons/react
-vi.mock("@heroicons/react/24/outline", () => ({
-  GlobeAltIcon: (props: any) => <div {...props} />,
-  UserIcon: (props: any) => <div {...props} />,
-  CheckIcon: (props: any) => <div {...props} />,
-  CameraIcon: (props: any) => <div {...props} />,
-}));
-
 // Mocks
 vi.mock("@/context/AuthContext", () => ({
   useAuth: vi.fn(),

@@ -198,7 +198,7 @@ export default function PublicFeedbackPage({ params }: { params: Promise<{ id: s
                 <div key={idx} className="flex items-center gap-2 bg-muted/40 px-3 py-1.5 rounded-full border border-border/50">
                   {speaker.avatarUrl ? (
                     <div className="w-6 h-6 rounded-full relative overflow-hidden border border-border">
-                      <Image src={speaker.avatarUrl} alt={speaker.name} fill className="object-cover" />
+                      <Image src={speaker.avatarUrl} alt={speaker.name} fill sizes="24px" className="object-cover" />
                     </div>
                   ) : (
                     <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">

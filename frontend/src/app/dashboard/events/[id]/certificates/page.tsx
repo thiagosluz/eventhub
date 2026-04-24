@@ -20,6 +20,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { DeleteConfirmationModal } from "@/components/dashboard/DeleteConfirmationModal";
+import { Skeleton } from "@/components/ui";
 
 export default function EventCertificatesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: eventId } = use(params);
@@ -178,19 +179,21 @@ export default function EventCertificatesPage({ params }: { params: Promise<{ id
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2].map(i => (
-            <div key={i} className="h-64 rounded-3xl bg-muted animate-pulse border border-border" />
+          {[1, 2].map((i) => (
+            <Skeleton key={i} className="h-64 rounded-3xl border border-border" />
           ))}
         </div>
       ) : templates.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {templates.map((template) => (
+          {templates.map((template, index) => (
             <div key={template.id} className="premium-card bg-card border-border overflow-hidden flex flex-col group">
               <div className="aspect-[4/3] relative overflow-hidden bg-muted border-b border-border">
                 <Image 
                   src={template.backgroundUrl} 
                   alt={template.name} 
                   fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  priority={index < 3}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">

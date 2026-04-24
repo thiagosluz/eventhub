@@ -64,7 +64,7 @@ src/checkin/checkin.service.spec.ts  → Testa checkin.service.ts
 | **Submissions** | `submissions.service.spec.ts`, `submissions.controller.spec.ts`, `submission-config.service.spec.ts`, `submission-config.controller.spec.ts` | Envio, revisão, configuração |
 | **Reviewer Management** | `reviewer-management.service.spec.ts`, `reviewer-management.controller.spec.ts` | Convites, designação |
 | **Badges** | `badges.service.spec.ts`, `badges.controller.spec.ts` | Triggers, resgate, automação |
-| **Gamification** | `gamification.service.spec.ts` | XP, níveis, daily limit, spike detection |
+| **Gamification** | `gamification.service.spec.ts` | XP, níveis, daily limit, spike detection (ver [gamificacao-testes.md](gamificacao-testes.md)) |
 | **Analytics** | `analytics.service.spec.ts`, `analytics.controller.spec.ts` | Agregações, gráficos, participantes |
 | **Dashboard** | `dashboard.service.spec.ts`, `dashboard.controller.spec.ts` | Métricas do tenant |
 | **Users** | `users.service.spec.ts`, `users.controller.spec.ts`, `public-users.controller.spec.ts` | Perfil, avatar, perfil público |
@@ -109,6 +109,7 @@ npm run test:e2e
 | `analytics.e2e-spec.ts` | Analytics | Relatórios e participantes |
 | `forms.e2e-spec.ts` | Forms | Visualização e edição |
 | `security.e2e-spec.ts` | Security | Bloqueio cross-tenant |
+| `gamification-shielding.e2e-spec.ts` | Gamification | Concorrência + `uniqueKey` + teto diário sob carga |
 
 ---
 

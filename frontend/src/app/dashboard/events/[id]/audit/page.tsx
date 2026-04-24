@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, useMemo, use } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { 
+import {
   ArrowLeftIcon,
   ShieldCheckIcon,
   MagnifyingGlassIcon,
@@ -12,11 +12,12 @@ import {
   TagIcon,
   InformationCircleIcon,
   XMarkIcon,
-  ArrowDownTrayIcon
+  ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 import { auditService, AuditLog } from "@/services/audit.service";
 import toast from "react-hot-toast";
+import { DataTable, type DataTableColumn } from "@/components/ui";
 
 export default function EventAuditPage() {
   const { id } = useParams();
@@ -88,14 +89,89 @@ export default function EventAuditPage() {
     return Array.from(actions);
   }, [logs]);
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-muted-foreground font-bold animate-pulse">Carregando registros de auditoria...</p>
-      </div>
-    );
-  }
+  const columns: DataTableColumn<AuditLog>[] = [
+    {
+      key: "user",
+      header: "Monitor / Organizador",
+      cell: (log) => (
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-xs">
+            {log.user.name.charAt(0)}
+          </div>
+          <div className="flex flex-col">
+            <span className="font-bold text-foreground text-sm">{log.user.name}</span>
+            <span className="text-[10px] uppercase font-black tracking-widest text-muted-foreground">
+              {log.user.role}
+            </span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "action",
+      header: "Ação",
+      cell: (log) => (
+        <span
+          className={`text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-widest ${
+            log.action.includes("CREATE")
+              ? "bg-emerald-500/10 text-emerald-500"
+              : log.action.includes("DELETE")
+                ? "bg-destructive/10 text-destructive"
+                : log.action.includes("UPDATE") || log.action.includes("PATCH")
+                  ? "bg-orange-500/10 text-orange-500"
+                  : "bg-blue-500/10 text-blue-500"
+          }`}
+        >
+          {log.action.replace(/_/g, " ")}
+        </span>
+      ),
+    },
+    {
+      key: "resource",
+      header: "Recurso",
+      cell: (log) => (
+        <div className="flex items-center gap-1.5 font-bold text-sm text-foreground">
+          <TagIcon className="w-3.5 h-3.5 text-muted-foreground" />
+          {log.resource}
+          <span className="text-[10px] text-muted-foreground font-mono ml-2">
+            #{log.resourceId?.slice(-6)}
+          </span>
+        </div>
+      ),
+    },
+    {
+      key: "createdAt",
+      header: "Data / Hora",
+      cell: (log) => (
+        <div className="flex flex-col">
+          <span className="text-xs font-bold text-foreground">
+            {new Date(log.createdAt).toLocaleDateString("pt-BR")}
+          </span>
+          <span className="text-[10px] text-muted-foreground font-medium">
+            {new Date(log.createdAt).toLocaleTimeString("pt-BR", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            })}
+          </span>
+        </div>
+      ),
+    },
+    {
+      key: "actions",
+      header: "",
+      align: "right",
+      cell: (log) => (
+        <button
+          onClick={() => setSelectedLog(log)}
+          className="p-2 rounded-lg hover:bg-orange-500/10 text-muted-foreground hover:text-orange-600 transition-colors"
+          aria-label="Ver detalhes do log"
+        >
+          <InformationCircleIcon className="w-5 h-5" />
+        </button>
+      ),
+    },
+  ];
 
   return (
     <div className="space-y-10 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -188,82 +264,16 @@ export default function EventAuditPage() {
         </button>
       </div>
 
-      {/* Logs Table */}
-      <div className="premium-card overflow-hidden bg-card border-border">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-muted/50 border-b border-border">
-              <tr>
-                <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Monitor / Organizador</th>
-                <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Ação</th>
-                <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Recurso</th>
-                <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest">Data / Hora</th>
-                <th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {filteredLogs.map((log) => (
-                <tr key={log.id} className="hover:bg-muted/30 transition-colors group">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-xs">
-                        {log.user.name.charAt(0)}
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="font-bold text-foreground text-sm">{log.user.name}</span>
-                        <span className="text-[10px] uppercase font-black tracking-widest text-muted-foreground">
-                          {log.user.role}
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-widest ${
-                      log.action.includes('CREATE') ? 'bg-emerald-500/10 text-emerald-500' :
-                      log.action.includes('DELETE') ? 'bg-red-500/10 text-red-500' :
-                      log.action.includes('UPDATE') || log.action.includes('PATCH') ? 'bg-orange-500/10 text-orange-500' :
-                      'bg-blue-500/10 text-blue-500'
-                    }`}>
-                      {log.action.replace(/_/g, ' ')}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-1.5 font-bold text-sm text-foreground">
-                      <TagIcon className="w-3.5 h-3.5 text-muted-foreground" />
-                      {log.resource}
-                      <span className="text-[10px] text-muted-foreground font-mono ml-2">#{log.resourceId?.slice(-6)}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col">
-                      <span className="text-xs font-bold text-foreground">
-                        {new Date(log.createdAt).toLocaleDateString('pt-BR')}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground font-medium">
-                        {new Date(log.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button 
-                      onClick={() => setSelectedLog(log)}
-                      className="p-2 rounded-lg hover:bg-orange-500/10 text-muted-foreground hover:text-orange-600 transition-colors"
-                    >
-                      <InformationCircleIcon className="w-5 h-5" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {filteredLogs.length === 0 && (
-          <div className="p-20 text-center space-y-3">
-            <ShieldCheckIcon className="w-12 h-12 text-muted/20 mx-auto" />
-            <p className="text-muted-foreground font-bold">Nenhum log encontrado para os critérios de busca.</p>
-          </div>
-        )}
-      </div>
+      <DataTable<AuditLog>
+        ariaLabel="Logs de auditoria do evento"
+        data={filteredLogs}
+        columns={columns}
+        rowKey={(log) => log.id}
+        isLoading={loading}
+        emptyTitle="Nenhum log encontrado"
+        emptyDescription="Ajuste os filtros ou busca para encontrar registros."
+        emptyIcon={<ShieldCheckIcon className="w-6 h-6" />}
+      />
 
       {/* Log Detail Modal */}
       <AnimatePresence>

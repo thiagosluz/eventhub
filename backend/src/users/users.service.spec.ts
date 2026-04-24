@@ -29,6 +29,8 @@ describe("UsersService", () => {
     },
     xpGainLog: {
       findFirst: jest.fn(),
+      findMany: jest.fn(),
+      count: jest.fn(),
     },
     eventMonitor: {
       findMany: jest.fn(),
@@ -289,6 +291,84 @@ describe("UsersService", () => {
       ]);
       const result = await service.findMyMonitoredEvents("u1");
       expect(result).toHaveLength(1);
+    });
+  });
+
+  describe("findMyXpHistory", () => {
+    it("retorna logs paginados com nome do evento", async () => {
+      mockPrismaService.xpGainLog.findMany.mockResolvedValue([
+        {
+          id: "log1",
+          amount: 200,
+          reason: "EVENT_CHECKIN",
+          createdAt: new Date("2025-01-10T12:00:00Z"),
+          eventId: "ev-1",
+          event: { name: "Conf Tech" },
+        },
+        {
+          id: "log2",
+          amount: 150,
+          reason: "PROFILE_COMPLETED",
+          createdAt: new Date("2025-01-09T08:00:00Z"),
+          eventId: null,
+          event: null,
+        },
+      ]);
+      mockPrismaService.xpGainLog.count.mockResolvedValue(2);
+
+      const result = await service.findMyXpHistory("u1", {
+        page: 1,
+        limit: 20,
+      });
+
+      expect(result.total).toBe(2);
+      expect(result.page).toBe(1);
+      expect(result.limit).toBe(20);
+      expect(result.data[0]).toMatchObject({
+        id: "log1",
+        amount: 200,
+        reason: "EVENT_CHECKIN",
+        eventId: "ev-1",
+        eventName: "Conf Tech",
+      });
+      expect(result.data[1]).toMatchObject({
+        id: "log2",
+        eventId: null,
+        eventName: null,
+      });
+      expect(mockPrismaService.xpGainLog.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { userId: "u1" },
+          orderBy: { createdAt: "desc" },
+          skip: 0,
+          take: 20,
+        }),
+      );
+    });
+
+    it("aplica defaults e limita em 100", async () => {
+      mockPrismaService.xpGainLog.findMany.mockResolvedValue([]);
+      mockPrismaService.xpGainLog.count.mockResolvedValue(0);
+
+      const result = await service.findMyXpHistory("u1", {
+        page: 2,
+        limit: 500,
+      });
+
+      expect(result.limit).toBe(100);
+      expect(mockPrismaService.xpGainLog.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ skip: 100, take: 100 }),
+      );
+    });
+
+    it("defaults para page=1 e limit=20 quando ausentes", async () => {
+      mockPrismaService.xpGainLog.findMany.mockResolvedValue([]);
+      mockPrismaService.xpGainLog.count.mockResolvedValue(0);
+
+      const result = await service.findMyXpHistory("u1");
+
+      expect(result.page).toBe(1);
+      expect(result.limit).toBe(20);
     });
   });
 

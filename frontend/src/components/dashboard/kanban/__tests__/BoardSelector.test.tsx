@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@/test-utils';
 import { BoardSelector } from '../BoardSelector';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import type { KanbanBoard } from '@/types/kanban';
 
 vi.mock('@/services/kanban.service', () => ({
   kanbanService: {
@@ -15,9 +16,9 @@ vi.mock('react-hot-toast', () => ({
 }));
 
 describe('BoardSelector Component', () => {
-  const boards = [
-    { id: 'b1', name: 'Marketing', _count: { columns: 3 } },
-    { id: 'b2', name: 'Financeiro', _count: { columns: 2 } },
+  const boards: KanbanBoard[] = [
+    { id: 'b1', name: 'Marketing', eventId: 'e1', columns: [], _count: { columns: 3 } },
+    { id: 'b2', name: 'Financeiro', eventId: 'e1', columns: [], _count: { columns: 2 } },
   ];
 
   const defaultProps = {
@@ -51,7 +52,9 @@ describe('BoardSelector Component', () => {
   });
 
   it('não deve renderizar botão excluir quando há apenas 1 board', () => {
-    const singleBoard = [{ id: 'b1', name: 'Único', _count: { columns: 1 } }];
+    const singleBoard: KanbanBoard[] = [
+      { id: 'b1', name: 'Único', eventId: 'e1', columns: [], _count: { columns: 1 } },
+    ];
     const { container } = render(<BoardSelector {...defaultProps} boards={singleBoard} />);
     const trashButtons = container.querySelectorAll('[title="Excluir"]');
     expect(trashButtons.length).toBe(0);

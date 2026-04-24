@@ -12,27 +12,48 @@ import {
   PlusIcon,
   UserIcon,
   XMarkIcon,
+  BuildingOffice2Icon,
 } from "@heroicons/react/24/outline";
 import { useAuth } from "@/context/AuthContext";
 import { ConfirmationModal } from "@/components/common/ConfirmationModal";
 import { CreateTenantModal } from "@/components/admin/CreateTenantModal";
+import { DataTable, type DataTableColumn } from "@/components/ui";
+
+interface Tenant {
+  id: string;
+  name: string;
+  slug: string;
+  isActive: boolean;
+  createdAt: string;
+  _count?: { events?: number; users?: number };
+}
+
+interface PaginatedTenants {
+  data: Tenant[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+const PAGE_SIZE = 20;
 
 export default function TenantsPage() {
   const { login } = useAuth();
-  const [tenants, setTenants] = useState<any[]>([]);
+  const [tenants, setTenants] = useState<Tenant[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  
-  // Impersonation Modal State
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTenant, setSelectedTenant] = useState<any>(null);
-  const [tenantUsers, setTenantUsers] = useState<any[]>([]);
+  const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
+  const [tenantUsers, setTenantUsers] = useState<
+    { id: string; name: string; email: string; role: string }[]
+  >([]);
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
-  
-  // Create Tenant Modal State
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  // New Confirmation Modal State
   const [confirmModal, setConfirmModal] = useState<{
     isOpen: boolean;
     title: string;
@@ -51,8 +72,11 @@ export default function TenantsPage() {
   const fetchTenants = async () => {
     try {
       setIsLoading(true);
-      const res = await api.get<any>("/admin/tenants");
-      setTenants(res?.data?.data || res?.data || []);
+      const res = await api.get<PaginatedTenants>("/admin/tenants", {
+        params: { page, limit: PAGE_SIZE },
+      });
+      setTenants(res.data || []);
+      setTotal(res.total || 0);
     } catch (error) {
       console.error("Failed to fetch tenants", error);
     } finally {
@@ -62,7 +86,8 @@ export default function TenantsPage() {
 
   useEffect(() => {
     fetchTenants();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   const toggleStatus = (id: string, currentStatus: boolean) => {
     setConfirmModal({
@@ -83,12 +108,14 @@ export default function TenantsPage() {
     });
   };
 
-  const openImpersonateModal = async (tenant: any) => {
+  const openImpersonateModal = async (tenant: Tenant) => {
     setSelectedTenant(tenant);
     setIsModalOpen(true);
     try {
       setIsLoadingUsers(true);
-      const res = await api.get<any[]>(`/admin/tenants/${tenant.id}/users`);
+      const res = await api.get<{ id: string; name: string; email: string; role: string }[]>(
+        `/admin/tenants/${tenant.id}/users`,
+      );
       setTenantUsers(res || []);
     } catch (error) {
       console.error("Failed to fetch users", error);
@@ -116,110 +143,137 @@ export default function TenantsPage() {
     });
   };
 
-  const filtered = tenants.filter(t => t.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filtered = tenants.filter((t) =>
+    t.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const columns: DataTableColumn<Tenant>[] = [
+    {
+      key: "name",
+      header: "Nome / Slug",
+      cell: (t) => (
+        <div>
+          <div className="font-bold text-foreground">{t.name}</div>
+          <div className="text-muted-foreground text-xs">{t.slug}</div>
+        </div>
+      ),
+    },
+    {
+      key: "status",
+      header: "Status",
+      cell: (t) =>
+        t.isActive ? (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+            <CheckCircleIcon className="w-3.5 h-3.5" />
+            Ativo
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-destructive/10 text-destructive border border-destructive/20">
+            <XCircleIcon className="w-3.5 h-3.5" />
+            Bloqueado
+          </span>
+        ),
+    },
+    {
+      key: "events",
+      header: "Eventos",
+      align: "center",
+      cell: (t) => <span className="font-semibold">{t._count?.events || 0}</span>,
+    },
+    {
+      key: "users",
+      header: "Usuários",
+      align: "center",
+      cell: (t) => <span className="font-semibold">{t._count?.users || 0}</span>,
+    },
+    {
+      key: "createdAt",
+      header: "Criado em",
+      cell: (t) => (
+        <span className="text-muted-foreground text-xs whitespace-nowrap">
+          {new Date(t.createdAt).toLocaleDateString("pt-BR")}
+        </span>
+      ),
+    },
+    {
+      key: "actions",
+      header: "Ações de risco",
+      align: "right",
+      cell: (t) => (
+        <div className="flex items-center justify-end gap-2">
+          <button
+            onClick={() => openImpersonateModal(t)}
+            className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+            title="Impersonate (Acesso Fantasma)"
+          >
+            <NoSymbolIcon className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => toggleStatus(t.id, t.isActive)}
+            className={`p-2 rounded-lg transition-colors ${
+              t.isActive
+                ? "text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                : "text-muted-foreground hover:text-emerald-500 hover:bg-emerald-500/10"
+            }`}
+            title={t.isActive ? "Desativar Inquilino" : "Reativar Inquilino"}
+          >
+            <ShieldExclamationIcon className="w-4 h-4" />
+          </button>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-6">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold text-gray-100 mb-2">Inquilinos</h1>
-          <p className="text-gray-400">Gerencie todos os clientes da plataforma.</p>
+          <h1 className="text-3xl font-black tracking-tight text-foreground mb-2">
+            Inquilinos
+          </h1>
+          <p className="text-muted-foreground font-medium">
+            Gerencie todos os clientes da plataforma.
+          </p>
         </div>
-        <button 
+        <button
           onClick={() => setIsCreateModalOpen(true)}
-          className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 px-4 py-2 rounded-lg font-semibold transition-colors"
+          className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-semibold hover:brightness-110 transition"
         >
           <PlusIcon className="w-5 h-5" />
           Novo Inquilino
         </button>
       </div>
 
-      <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-gray-800 bg-gray-900/50 flex gap-4 items-center">
+      <div className="bg-card border border-border rounded-xl overflow-hidden">
+        <div className="p-4 border-b border-border flex gap-4 items-center">
           <div className="relative flex-1 max-w-md">
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-            <input 
-              type="text" 
-              placeholder="Buscar por nome do cliente..." 
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Buscar por nome do cliente..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-gray-950 border border-gray-800 text-gray-100 placeholder-gray-500 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-yellow-500/50 focus:ring-1 focus:ring-yellow-500/50"
+              className="w-full bg-background border border-border text-foreground placeholder-muted-foreground rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
         </div>
-        
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-            <ArrowPathIcon className="w-8 h-8 animate-spin text-yellow-500 mb-4" />
-            <p>Carregando Base de Inquilinos...</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-gray-300">
-              <thead className="bg-gray-950 text-gray-400 font-medium uppercase text-xs border-b border-gray-800">
-                <tr>
-                  <th className="px-6 py-4">Nome / Slug</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4 text-center">Eventos</th>
-                  <th className="px-6 py-4 text-center">Usuários</th>
-                  <th className="px-6 py-4">Criado em</th>
-                  <th className="px-6 py-4 text-right">Ações de Risco</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-800">
-                {filtered.map(t => (
-                  <tr key={t.id} className="hover:bg-gray-800/50 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="font-medium text-gray-100">{t.name}</div>
-                      <div className="text-gray-500 text-xs">{t.slug}</div>
-                    </td>
-                    <td className="px-6 py-4">
-                      {t.isActive ? (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-                          <CheckCircleIcon className="w-3.5 h-3.5" />
-                          Ativo
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-500 border border-red-500/20">
-                          <XCircleIcon className="w-3.5 h-3.5" />
-                          Bloqueado
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-center font-medium">{t._count?.events || 0}</td>
-                    <td className="px-6 py-4 text-center font-medium">{t._count?.users || 0}</td>
-                    <td className="px-6 py-4 text-gray-400 whitespace-nowrap">
-                      {new Date(t.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                         <button 
-                          onClick={() => openImpersonateModal(t)}
-                          className="p-2 text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10 rounded-lg transition-colors"
-                          title="Impersonate (Acesso Fantasma)"
-                        >
-                          <NoSymbolIcon className="w-4 h-4" />
-                        </button>
-                        <button 
-                          onClick={() => toggleStatus(t.id, t.isActive)}
-                          className={`p-2 rounded-lg transition-colors ${
-                            t.isActive 
-                              ? "text-gray-400 hover:text-red-400 hover:bg-red-400/10" 
-                              : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-400/10"
-                          }`}
-                          title={t.isActive ? "Desativar Inquilino" : "Reativar Inquilino"}
-                        >
-                          <ShieldExclamationIcon className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
+
+      <DataTable<Tenant>
+        ariaLabel="Inquilinos"
+        data={filtered}
+        columns={columns}
+        rowKey={(t) => t.id}
+        isLoading={isLoading}
+        emptyTitle="Nenhum inquilino encontrado"
+        emptyIcon={<BuildingOffice2Icon className="w-6 h-6" />}
+        pagination={{
+          page,
+          pageSize: PAGE_SIZE,
+          total,
+          onPageChange: setPage,
+        }}
+      />
 
       {/* Modal de Impersonate */}
       {isModalOpen && (

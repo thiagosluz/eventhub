@@ -5,15 +5,6 @@ import { submissionsService } from '@/services/submissions.service';
 import { Submission } from '@/types/event';
 
 // Mock do service
-vi.mock('@heroicons/react/24/outline', () => ({
-  ClipboardDocumentCheckIcon: () => <div data-testid="ClipboardDocumentCheckIcon" />,
-  ClockIcon: () => <div data-testid="ClockIcon" />,
-  CheckCircleIcon: () => <div data-testid="CheckCircleIcon" />,
-  XCircleIcon: () => <div data-testid="XCircleIcon" />,
-  ChevronRightIcon: () => <div data-testid="ChevronRightIcon" />,
-  DocumentIcon: () => <div data-testid="DocumentIcon" />,
-}));
-
 vi.mock('@/services/submissions.service', () => ({
   submissionsService: {
     listMySubmissions: vi.fn(),
@@ -48,7 +39,7 @@ describe('SubmissionsList', () => {
   it('deve renderizar placeholders durante o carregamento', () => {
     vi.mocked(submissionsService.listMySubmissions).mockReturnValue(new Promise(() => {}));
     const { container } = render(<SubmissionsList />);
-    expect(container.querySelectorAll('.animate-pulse').length).toBeGreaterThan(0);
+    expect(container.querySelectorAll('[role="status"][aria-busy="true"]').length).toBeGreaterThan(0);
   });
 
   it('deve renderizar estado vazio quando não há submissões', async () => {

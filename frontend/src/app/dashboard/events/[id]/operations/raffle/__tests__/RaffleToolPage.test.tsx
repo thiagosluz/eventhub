@@ -41,6 +41,8 @@ vi.mock('@heroicons/react/24/outline', () => ({
   ArrowLeftIcon: () => <div />,
   CheckIcon: () => <div />,
   XMarkIcon: () => <div />,
+  InformationCircleIcon: () => <div />,
+  CheckCircleIcon: () => <div />,
 }));
 
 vi.mock('@heroicons/react/24/solid', () => ({

@@ -127,7 +127,9 @@ describe('SpeakerForm Component', () => {
 
   it('deve desabilitar botões durante o carregamento', () => {
     render(<SpeakerForm {...defaultProps} isLoading={true} />);
-    
-    expect(screen.getByRole('button', { name: /Salvando\.\.\./i })).toBeDisabled();
+
+    const submitButton = screen.getByRole('button', { name: /Criar Palestrante/i });
+    expect(submitButton).toBeDisabled();
+    expect(submitButton).toHaveAttribute('aria-busy', 'true');
   });
 });

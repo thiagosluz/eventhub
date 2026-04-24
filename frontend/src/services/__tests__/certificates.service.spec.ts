@@ -63,7 +63,7 @@ describe('certificatesService', () => {
 
   it('issueCertificate should call fetch correctly', async () => {
     vi.mocked(fetch).mockResolvedValue(mockResponse({ issuedId: '1' }) as any);
-    await certificatesService.issueCertificate('temp-1', 'reg-1');
+    await certificatesService.issueCertificate('temp-1', { registrationId: 'reg-1' });
     expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/certificates/issue`, expect.objectContaining({ method: 'POST' }));
   });
 
@@ -108,7 +108,9 @@ describe('certificatesService', () => {
 
   it('should throw error if issueCertificate failed', async () => {
     vi.mocked(fetch).mockResolvedValue(mockResponse({}, 500, false) as any);
-    await expect(certificatesService.issueCertificate('t', 'r')).rejects.toThrow("Falha ao emitir certificado.");
+    await expect(
+      certificatesService.issueCertificate('t', { registrationId: 'r' }),
+    ).rejects.toThrow("Falha ao emitir certificado.");
   });
 
   it('should throw error if issueBulkTemplate failed', async () => {

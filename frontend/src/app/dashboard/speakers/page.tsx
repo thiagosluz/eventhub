@@ -9,6 +9,7 @@ import { usersService } from "@/services/users.service";
 import { User } from "@/types/auth";
 import { toast } from "react-hot-toast";
 import { ConfirmationModal } from "@/components/common/ConfirmationModal";
+import { Skeleton } from "@/components/ui";
 
 export default function SpeakersPage() {
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
@@ -120,7 +121,7 @@ export default function SpeakersPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-48 rounded-3xl bg-muted animate-pulse" />
+            <Skeleton key={i} className="h-48 rounded-3xl" />
           ))}
         </div>
       ) : speakers.length === 0 ? (

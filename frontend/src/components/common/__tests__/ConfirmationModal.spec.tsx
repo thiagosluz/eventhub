@@ -39,9 +39,9 @@ describe('ConfirmationModal', () => {
 
   it('shows loading state when isLoading is true', () => {
     render(<ConfirmationModal {...defaultProps} isLoading={true} />);
-    const confirmButton = screen.queryByText('Confirmar');
-    expect(confirmButton).not.toBeInTheDocument();
-    // The spinner div should be there
+    const confirmButton = screen.getByRole('button', { name: /confirmar/i });
+    expect(confirmButton).toBeDisabled();
+    expect(confirmButton).toHaveAttribute('aria-busy', 'true');
     expect(document.querySelector('.animate-spin')).toBeInTheDocument();
   });
 });

@@ -15,7 +15,7 @@ describe('KanbanLogic Utils', () => {
               id: 'c1',
               name: 'To Do',
               order: 0,
-              boardId: 'b1',
+              color: 'slate',
               tasks: [
                 { id: 't1', title: 'Task 1', priority: 'LOW', status: 'TODO', columnId: 'c1' } as KanbanTask,
               ]
@@ -31,7 +31,7 @@ describe('KanbanLogic Utils', () => {
               id: 'c2',
               name: 'To Do',
               order: 0,
-              boardId: 'b2',
+              color: 'slate',
               tasks: [
                 { id: 't1', title: 'Task 1', priority: 'LOW', status: 'TODO', columnId: 'c2' } as KanbanTask,
                 { id: 't2', title: 'Task 2', priority: 'HIGH', status: 'TODO', columnId: 'c2' } as KanbanTask,
@@ -56,8 +56,8 @@ describe('KanbanLogic Utils', () => {
           name: 'B1',
           eventId: 'e1',
           columns: [
-            { id: 'c1', name: 'Col A', order: 1, boardId: 'b1', tasks: [] },
-            { id: 'c2', name: 'Col B', order: 0, boardId: 'b1', tasks: [] },
+            { id: 'c1', name: 'Col A', order: 1, color: 'slate', tasks: [] },
+            { id: 'c2', name: 'Col B', order: 0, color: 'slate', tasks: [] },
           ]
         }
       ];

@@ -246,10 +246,11 @@ Registro de cada ganho de XP.
 | userId | `String` | Quem ganhou |
 | eventId | `String?` | Em qual evento |
 | amount | `Int` | Quantidade de XP |
-| reason | `String` | Motivo (e.g., `CHECKIN`, `PROFILE_COMPLETED`) |
-| uniqueKey | `String?` | Chave única para evitar duplicatas |
+| reason | `String` | Motivo (`EVENT_CHECKIN`, `ACTIVITY_CHECKIN`, `PROFILE_COMPLETED`, ...) |
+| uniqueKey | `String?` | Chave única para evitar duplicatas (`EVENT_CHECKIN_{eventId}`, `ACTIVITY_CHECKIN_{activityId}`, `PROFILE_COMPLETED`) |
 
-**Constraints**: `@@unique([userId, uniqueKey])` — previne XP farming.
+**Constraints**: `@@unique([userId, uniqueKey])` — previne XP farming. Ver
+[gamificacao.md](gamificacao.md) e [gamificacao-testes.md](gamificacao-testes.md).
 
 #### GamificationAlert
 Alertas de comportamento suspeito.

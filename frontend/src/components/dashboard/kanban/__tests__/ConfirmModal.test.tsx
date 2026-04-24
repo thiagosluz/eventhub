@@ -40,9 +40,9 @@ describe('ConfirmModal Component', () => {
     expect(defaultProps.onCancel).toHaveBeenCalledTimes(1);
   });
 
-  it('deve renderizar com variante danger por padrão', () => {
-    const { container } = render(<ConfirmModal {...defaultProps} />);
-    const dangerIcon = container.querySelector('.bg-rose-500\\/10');
-    expect(dangerIcon).toBeInTheDocument();
+  it('deve renderizar com variante danger por padrão (botão destrutivo)', () => {
+    render(<ConfirmModal {...defaultProps} />);
+    const confirmBtn = screen.getByRole('button', { name: /^confirmar$/i });
+    expect(confirmBtn.className).toMatch(/bg-destructive/);
   });
 });

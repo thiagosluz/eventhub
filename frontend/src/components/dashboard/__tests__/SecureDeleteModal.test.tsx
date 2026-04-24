@@ -18,7 +18,7 @@ describe('SecureDeleteModal Component', () => {
   it('deve renderizar o modal com o título do evento e instruções de segurança', () => {
     render(<SecureDeleteModal {...defaultProps} />);
 
-    expect(screen.getByText('Excluir Evento?')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /excluir evento\?/i })).toBeInTheDocument();
     expect(screen.getByText(/"Meu Evento Incrível"/i)).toBeInTheDocument();
     expect(screen.getByText(/Digite/i)).toBeInTheDocument();
     expect(screen.getByText('EXCLUIR', { selector: 'span' })).toBeInTheDocument();
@@ -26,33 +26,29 @@ describe('SecureDeleteModal Component', () => {
 
   it('deve manter o botão de confirmação desabilitado por padrão', () => {
     render(<SecureDeleteModal {...defaultProps} />);
-    
-    const confirmButton = screen.getByText('Confirmar Exclusão Definitiva').closest('button');
+
+    const confirmButton = screen.getByRole('button', { name: /confirmar exclusão definitiva/i });
     expect(confirmButton).toBeDisabled();
-    expect(confirmButton).toHaveClass('bg-muted');
   });
 
   it('deve habilitar o botão de confirmação apenas quando a palavra EXCLUIR for digitada', () => {
     render(<SecureDeleteModal {...defaultProps} />);
-    
-    const input = screen.getByPlaceholderText('Digite a palavra de segurança');
-    const confirmButton = screen.getByText('Confirmar Exclusão Definitiva').closest('button');
 
-    // Digita algo errado
+    const input = screen.getByPlaceholderText('EXCLUIR');
+    const confirmButton = screen.getByRole('button', { name: /confirmar exclusão definitiva/i });
+
     fireEvent.change(input, { target: { value: 'NAO' } });
     expect(confirmButton).toBeDisabled();
 
-    // Digita corretamente
     fireEvent.change(input, { target: { value: 'EXCLUIR' } });
     expect(confirmButton).not.toBeDisabled();
-    expect(confirmButton).toHaveClass('bg-destructive');
   });
 
   it('deve chamar onConfirm quando o botão estiver habilitado e for clicado', () => {
     render(<SecureDeleteModal {...defaultProps} />);
-    
-    const input = screen.getByPlaceholderText('Digite a palavra de segurança');
-    const confirmButton = screen.getByText('Confirmar Exclusão Definitiva').closest('button')!;
+
+    const input = screen.getByPlaceholderText('EXCLUIR');
+    const confirmButton = screen.getByRole('button', { name: /confirmar exclusão definitiva/i });
 
     fireEvent.change(input, { target: { value: 'EXCLUIR' } });
     fireEvent.click(confirmButton);
@@ -62,35 +58,23 @@ describe('SecureDeleteModal Component', () => {
 
   it('deve mostrar estado de carregamento e desabilitar o botão mesmo com a palavra correta', () => {
     render(<SecureDeleteModal {...defaultProps} isLoading={true} />);
-    
-    const input = screen.getByPlaceholderText('Digite a palavra de segurança');
+
+    const input = screen.getByPlaceholderText('EXCLUIR');
     fireEvent.change(input, { target: { value: 'EXCLUIR' } });
 
-    // O botão de confirmação é o que contém o spinner quando isLoading é true
-    const confirmButton = screen.getAllByRole('button').find(b => b.querySelector('.animate-spin'));
+    const confirmButton = screen.getByRole('button', { name: /confirmar exclusão definitiva/i });
     expect(confirmButton).toBeDisabled();
-    expect(confirmButton?.querySelector('.animate-spin')).toBeInTheDocument();
+    expect(confirmButton).toHaveAttribute('aria-busy', 'true');
   });
 
   it('deve chamar onClose ao clicar no botão Cancelar ou no X', () => {
     render(<SecureDeleteModal {...defaultProps} />);
-    
-    fireEvent.click(screen.getByText('Cancelar'));
+
+    fireEvent.click(screen.getByRole('button', { name: /^cancelar$/i }));
     expect(defaultProps.onClose).toHaveBeenCalled();
-    
-    // O XMarkIcon está dentro de um botão. No nosso mock ele é um span.
-    // O modal tem o backdrop (div que chama onClose) e os botões.
-    // O botão X é o primeiro no DOM dentro do modal.
-    const buttons = screen.getAllByRole('button');
-    const xButton = buttons.find(b => b.querySelector('[data-testid="icon-XMarkIcon"]'));
-    
-    if (xButton) {
-      fireEvent.click(xButton);
-    } else {
-      // Fallback se o data-testid não estiver funcionando como esperado
-      fireEvent.click(buttons[0]);
-    }
-    
+
+    const xButton = screen.getByRole('button', { name: /fechar/i });
+    fireEvent.click(xButton);
     expect(defaultProps.onClose).toHaveBeenCalledTimes(2);
   });
 });

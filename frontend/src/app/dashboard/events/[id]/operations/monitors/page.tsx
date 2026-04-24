@@ -2,18 +2,15 @@
 
 import { useEffect, useState, use } from "react";
 import { staffService, Monitor, PotentialMonitor } from "@/services/staff.service";
-import { 
-  UsersIcon, 
-  PlusIcon, 
+import {
+  UsersIcon,
   UserPlusIcon,
-  UserMinusIcon,
-  ArrowPathIcon,
   XMarkIcon,
   MagnifyingGlassIcon,
-  IdentificationIcon
 } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 import { ConfirmationModal } from "@/components/common/ConfirmationModal";
+import { DataTable, type DataTableColumn } from "@/components/ui";
 
 export default function EventMonitorsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: eventId } = use(params);
@@ -175,58 +172,17 @@ export default function EventMonitorsPage({ params }: { params: Promise<{ id: st
         </div>
       )}
 
-      {isLoading ? (
-        <div className="flex flex-col items-center justify-center p-24 bg-card/50 rounded-3xl border border-border">
-          <ArrowPathIcon className="w-12 h-12 text-indigo-500/20 animate-spin" />
-        </div>
-      ) : (
-        <div className="premium-card bg-card border-border overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-border bg-muted/30">
-                  <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Monitor</th>
-                  <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Contato</th>
-                  <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Ação</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {monitors.map((m) => (
-                  <tr key={m.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-6 py-5">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 font-black uppercase italic">
-                          {m.user.name.slice(0, 2)}
-                        </div>
-                        <span className="font-bold text-sm">{m.user.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-5">
-                      <div className="text-xs font-medium text-muted-foreground uppercase">{m.user.email}</div>
-                    </td>
-                    <td className="px-6 py-5 text-right w-40">
-                      <button 
-                        onClick={() => handleRemove(m.userId)}
-                        className="text-destructive font-black text-[10px] uppercase tracking-widest hover:underline px-4"
-                      >
-                        Remover
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-                {monitors.length === 0 && (
-                  <tr>
-                    <td colSpan={3} className="px-6 py-12 text-center text-muted-foreground font-medium italic">
-                      Nenhum monitor escalado para este evento.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-      <ConfirmationModal 
+      <DataTable<Monitor>
+        ariaLabel="Monitores do evento"
+        data={monitors}
+        columns={monitorColumns(handleRemove)}
+        rowKey={(m) => m.id}
+        isLoading={isLoading}
+        emptyTitle="Nenhum monitor escalado"
+        emptyDescription="Escale monitores para ajudar na operação ao vivo."
+        emptyIcon={<UsersIcon className="w-6 h-6" />}
+      />
+      <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={confirmRemove}
@@ -237,4 +193,43 @@ export default function EventMonitorsPage({ params }: { params: Promise<{ id: st
       />
     </div>
   );
+}
+
+function monitorColumns(onRemove: (userId: string) => void): DataTableColumn<Monitor>[] {
+  return [
+    {
+      key: "monitor",
+      header: "Monitor",
+      cell: (m) => (
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 font-black uppercase italic">
+            {m.user.name.slice(0, 2)}
+          </div>
+          <span className="font-bold text-sm">{m.user.name}</span>
+        </div>
+      ),
+    },
+    {
+      key: "contact",
+      header: "Contato",
+      cell: (m) => (
+        <span className="text-xs font-medium text-muted-foreground uppercase">
+          {m.user.email}
+        </span>
+      ),
+    },
+    {
+      key: "actions",
+      header: "Ação",
+      align: "right",
+      cell: (m) => (
+        <button
+          onClick={() => onRemove(m.userId)}
+          className="text-destructive font-black text-[10px] uppercase tracking-widest hover:underline px-4"
+        >
+          Remover
+        </button>
+      ),
+    },
+  ];
 }

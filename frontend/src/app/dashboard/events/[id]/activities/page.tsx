@@ -261,6 +261,7 @@ export default function ActivitiesPage({ params }: { params: Promise<{ id: strin
                                   src={as.speaker.avatarUrl}
                                   alt={as.speaker.name || 'Speaker'}
                                   fill
+                                  sizes="24px"
                                   className="object-cover"
                                 />
                               ) : (

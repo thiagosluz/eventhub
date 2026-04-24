@@ -11,6 +11,7 @@ import {
   ShieldCheckIcon,
   BoltIcon,
   QueueListIcon,
+  UsersIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 import { ThemeToggle } from "@/components/ui";
@@ -35,6 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navItems = [
     { name: "Dashboard", href: "/admin/dashboard", icon: Squares2X2Icon },
     { name: "Inquilinos", href: "/admin/tenants", icon: BuildingOffice2Icon },
+    { name: "Usuários", href: "/admin/users", icon: UsersIcon },
     { name: "Auditoria Global", href: "/admin/audit", icon: ShieldExclamationIcon },
     { name: "Saúde do Sistema", href: "/admin/health", icon: BoltIcon },
     { name: "Filas (Bull Board)", href: "/admin/queues", icon: QueueListIcon },

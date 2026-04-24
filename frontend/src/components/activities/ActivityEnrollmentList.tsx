@@ -18,6 +18,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 import { ConfirmationModal } from "@/components/common/ConfirmationModal";
+import { Skeleton } from "@/components/ui";
 
 interface ActivityEnrollmentListProps {
   eventId: string;
@@ -90,8 +91,8 @@ export function ActivityEnrollmentList({ eventId }: ActivityEnrollmentListProps)
   if (loading) {
     return (
       <div className="space-y-4">
-        {[1, 2, 3].map(i => (
-          <div key={i} className="h-32 bg-muted animate-pulse rounded-3xl" />
+        {[1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-32 rounded-3xl" />
         ))}
       </div>
     );

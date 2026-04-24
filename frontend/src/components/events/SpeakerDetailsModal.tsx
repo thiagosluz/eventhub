@@ -48,6 +48,7 @@ export function SpeakerDetailsModal({ speaker, isOpen, onClose }: SpeakerDetails
                     src={speaker.avatarUrl}
                     alt={speaker.name}
                     fill
+                    sizes="(min-width: 768px) 192px, 100vw"
                     className="object-cover"
                   />
                 ) : (

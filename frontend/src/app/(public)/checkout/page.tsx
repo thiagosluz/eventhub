@@ -396,6 +396,7 @@ function CheckoutContent() {
                         src={event.bannerUrl}
                         alt={event.name}
                         fill
+                        sizes="80px"
                         className="object-cover"
                       />
                     ) : (

@@ -539,7 +539,12 @@ export async function setupDefaultMocks(page: Page | BrowserContext) {
 
     // GET /participants (list)
     if (url.includes('/participants') && method === 'GET') {
-      return fulfill([
+      const parsedUrl = new URL(url);
+      const search = parsedUrl.searchParams.get('search')?.toLowerCase() || '';
+      const page = parsedUrl.searchParams.get('page');
+      const limit = parsedUrl.searchParams.get('limit');
+
+      const allParticipants = [
         {
           id: 'p-1',
           userId: 'u-1',
@@ -558,7 +563,29 @@ export async function setupDefaultMocks(page: Page | BrowserContext) {
           checkedIn: false,
           createdAt: new Date().toISOString()
         }
-      ]);
+      ];
+
+      const filtered = search
+        ? allParticipants.filter((p) =>
+            p.user.name.toLowerCase().includes(search) ||
+            p.user.email.toLowerCase().includes(search),
+          )
+        : allParticipants;
+
+      // Retrocompatível: sem page/limit retorna array (usado pelo export CSV).
+      if (!page && !limit) {
+        return fulfill(filtered);
+      }
+
+      const currentPage = Math.max(1, Number(page) || 1);
+      const perPage = Math.min(100, Math.max(1, Number(limit) || 20));
+      const skip = (currentPage - 1) * perPage;
+      return fulfill({
+        data: filtered.slice(skip, skip + perPage),
+        total: filtered.length,
+        page: currentPage,
+        limit: perPage,
+      });
     }
 
     // POST /checkin

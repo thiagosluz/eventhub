@@ -10,6 +10,7 @@ import {
   DocumentTextIcon,
   FunnelIcon
 } from "@heroicons/react/24/outline";
+import { Skeleton } from "@/components/ui";
 
 type CategoryFilter = 'all' | 'PARTICIPANT' | 'SPEAKER' | 'REVIEWER' | 'MONITOR';
 
@@ -47,12 +48,14 @@ export function CertificatesList() {
   if (isLoading) {
     return (
       <div className="space-y-8">
-        <div className="flex gap-2 animate-pulse">
-           {[1, 2, 3, 4].map(i => <div key={i} className="h-8 w-24 bg-muted rounded-full" />)}
+        <div className="flex gap-2">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-8 w-24 rounded-full" />
+          ))}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-48 rounded-3xl bg-muted animate-pulse" />
+          {[1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-48 rounded-3xl" />
           ))}
         </div>
       </div>

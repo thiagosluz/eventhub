@@ -23,6 +23,7 @@ export function SpeakerCard({ speaker, onClick }: SpeakerCardProps) {
             src={speaker.avatarUrl}
             alt={speaker.name}
             fill
+            sizes="(min-width: 768px) 144px, 128px"
             className="object-cover group-hover:scale-110 transition-transform duration-500"
           />
         ) : (

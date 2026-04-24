@@ -23,6 +23,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { dashboardService, DashboardStats } from "@/services/dashboard.service";
 import { useAuth } from "@/context/AuthContext";
+import { DataTable, type DataTableColumn } from "@/components/ui";
+
+type EventSalesRow = DashboardStats["eventSales"][number];
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -218,49 +221,53 @@ export default function DashboardPage() {
             <h2 className="text-xl font-black text-foreground uppercase tracking-tight">Vendas por Evento</h2>
             <Link href="/dashboard/events" className="text-xs font-black text-primary hover:underline uppercase tracking-widest">Ver todos</Link>
           </div>
-          <div className="premium-card bg-card border-border overflow-hidden">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-muted/50 border-b border-border">
-                  <th className="px-6 py-4 text-[10px] font-black text-muted-foreground uppercase tracking-widest">Evento</th>
-                  <th className="px-6 py-4 text-[10px] font-black text-muted-foreground uppercase tracking-widest text-center">Inscrições</th>
-                  <th className="px-6 py-4 text-[10px] font-black text-muted-foreground uppercase tracking-widest text-right">Receita</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {stats?.eventSales.map((event, i) => (
-                  <tr key={i} className="hover:bg-muted/20 transition-colors group">
-                    <td className="px-6 py-5">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black uppercase text-xs">
-                          {event.name.charAt(0)}
-                        </div>
-                        <span className="font-bold text-foreground">{event.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-5">
-                      <div className="flex flex-col items-center gap-1">
-                        <span className="text-xs font-black text-foreground">{event.sales}</span>
-                        <div className="w-full bg-muted rounded-full h-1 max-w-[60px]">
-                          <div className="bg-primary h-1 rounded-full w-full" />
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-5 text-right font-black text-sm text-foreground">
-                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(event.revenue)}
-                    </td>
-                  </tr>
-                ))}
-                {!stats?.eventSales.length && (
-                  <tr>
-                    <td colSpan={3} className="px-6 py-12 text-center text-muted-foreground font-medium italic">
-                      Nenhum dado de venda disponível.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+          <DataTable<EventSalesRow>
+            ariaLabel="Vendas por evento"
+            data={stats?.eventSales ?? []}
+            columns={[
+              {
+                key: "name",
+                header: "Evento",
+                cell: (event) => (
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black uppercase text-xs">
+                      {event.name.charAt(0)}
+                    </div>
+                    <span className="font-bold text-foreground">{event.name}</span>
+                  </div>
+                ),
+              },
+              {
+                key: "sales",
+                header: "Inscrições",
+                align: "center",
+                cell: (event) => (
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-xs font-black text-foreground">{event.sales}</span>
+                    <div className="w-full bg-muted rounded-full h-1 max-w-[60px]">
+                      <div className="bg-primary h-1 rounded-full w-full" />
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                key: "revenue",
+                header: "Receita",
+                align: "right",
+                cell: (event) => (
+                  <span className="font-black text-sm text-foreground">
+                    {new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(event.revenue)}
+                  </span>
+                ),
+              },
+            ] as DataTableColumn<EventSalesRow>[]}
+            rowKey={(_event, i) => i}
+            isLoading={!stats}
+            emptyTitle="Nenhum dado de venda disponível"
+          />
         </div>
 
         <div className="space-y-6">

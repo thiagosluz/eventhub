@@ -273,6 +273,49 @@ export class UsersService {
     });
   }
 
+  /**
+   * Retorna o histórico paginado de ganhos de XP do usuário, anotando o nome
+   * do evento quando o ganho foi rastreado por evento (check-ins). Campo
+   * `eventName` vem como `null` para ganhos globais (ex.: PROFILE_COMPLETED).
+   */
+  async findMyXpHistory(
+    userId: string,
+    opts: { page?: number; limit?: number } = {},
+  ) {
+    const page = Math.max(1, Number(opts.page) || 1);
+    const limit = Math.min(100, Math.max(1, Number(opts.limit) || 20));
+    const skip = (page - 1) * limit;
+
+    const [rows, total] = await Promise.all([
+      this.prisma.xpGainLog.findMany({
+        where: { userId },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: limit,
+        select: {
+          id: true,
+          amount: true,
+          reason: true,
+          createdAt: true,
+          eventId: true,
+          event: { select: { name: true } },
+        },
+      }),
+      this.prisma.xpGainLog.count({ where: { userId } }),
+    ]);
+
+    const data = rows.map((row) => ({
+      id: row.id,
+      amount: row.amount,
+      reason: row.reason,
+      createdAt: row.createdAt,
+      eventId: row.eventId,
+      eventName: row.event?.name ?? null,
+    }));
+
+    return { data, total, page, limit };
+  }
+
   async findByUsername(username: string) {
     const user = await this.prisma.user.findUnique({
       where: { username, publicProfile: true },

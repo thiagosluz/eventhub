@@ -30,3 +30,21 @@ export { EmptyState } from "./EmptyState";
 export type { EmptyStateProps } from "./EmptyState";
 
 export { ThemeToggle } from "./ThemeToggle";
+
+export { Modal, ModalHeader, ModalBody, ModalFooter, useDialogBehavior } from "./Modal";
+export type { ModalProps, ModalSize, ModalHeaderProps, ModalBodyProps, ModalFooterProps } from "./Modal";
+
+export { Drawer, DrawerHeader, DrawerBody, DrawerFooter } from "./Drawer";
+export type { DrawerProps, DrawerSide, DrawerSize, DrawerHeaderProps, DrawerBodyProps, DrawerFooterProps } from "./Drawer";
+
+export { ConfirmDialog } from "./ConfirmDialog";
+export type { ConfirmDialogProps, ConfirmDialogTone } from "./ConfirmDialog";
+
+export { DataTable } from "./DataTable";
+export type {
+  DataTableColumn,
+  DataTablePagination,
+  DataTableProps,
+  SortDirection,
+  SortState,
+} from "./DataTable";

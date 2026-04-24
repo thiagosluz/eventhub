@@ -96,6 +96,35 @@ describe("GamificationService", () => {
       expect(result.reason).toBe("DAILY_LIMIT_REACHED");
     });
 
+    it("credita parcialmente quando a cota diária seria ultrapassada", async () => {
+      mockTx.xpGainLog.aggregate.mockResolvedValue({ _sum: { amount: 1400 } });
+      mockTx.user.findUnique.mockResolvedValue({ xp: 0, level: 1 });
+      mockTx.user.update.mockResolvedValue({});
+      mockTx.xpGainLog.create.mockResolvedValue({});
+
+      const result = await service.awardXp(userId, 200, reason);
+
+      expect(result.xpGained).toBe(100);
+      expect(mockTx.xpGainLog.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ amount: 100, reason }),
+        }),
+      );
+      expect(mockTx.user.update).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ xp: 100 }) }),
+      );
+    });
+
+    it("bloqueia após atingir o teto diário acumulado", async () => {
+      mockTx.xpGainLog.aggregate.mockResolvedValue({ _sum: { amount: 1500 } });
+      const result = await service.awardXp(userId, 50, reason);
+
+      expect(result.xpGained).toBe(0);
+      expect(result.reason).toBe("DAILY_LIMIT_REACHED");
+      expect(mockTx.xpGainLog.create).not.toHaveBeenCalled();
+      expect(mockTx.user.update).not.toHaveBeenCalled();
+    });
+
     it("should handle P2002 error as ALREADY_AWARDED", async () => {
       mockPrismaService.$transaction.mockRejectedValue({ code: "P2002" });
       const result = await service.awardXp(userId, amount, reason);

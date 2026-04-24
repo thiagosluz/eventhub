@@ -1,35 +1,39 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { decodeJwt, isJwtExpired } from "@/lib/auth/jwt";
+import { AREA_ROLES, ROLE_HOME, type AreaKey } from "@/lib/auth/roles";
 
 const AUTH_COOKIE = "eventhub_token";
 
-type AllowedRoles = readonly string[];
-
 interface ProtectedArea {
+  key: AreaKey;
   match: (pathname: string) => boolean;
-  allow: AllowedRoles;
+  allow: readonly string[];
   fallback: string;
 }
 
 const PROTECTED_AREAS: ProtectedArea[] = [
   {
+    key: "admin",
     match: (p) => p.startsWith("/admin"),
-    allow: ["SUPER_ADMIN"],
+    allow: AREA_ROLES.admin,
     fallback: "/auth/login",
   },
   {
+    key: "dashboard",
     match: (p) => p.startsWith("/dashboard"),
-    allow: ["ORGANIZER", "REVIEWER", "SUPER_ADMIN"],
+    allow: AREA_ROLES.dashboard,
     fallback: "/auth/login",
   },
   {
+    key: "speaker",
     match: (p) => p.startsWith("/speaker"),
-    allow: ["SPEAKER", "SUPER_ADMIN"],
+    allow: AREA_ROLES.speaker,
     fallback: "/auth/login",
   },
   {
+    key: "monitor",
     match: (p) => p.startsWith("/monitor"),
-    allow: ["MONITOR", "ORGANIZER", "SUPER_ADMIN"],
+    allow: AREA_ROLES.monitor,
     fallback: "/auth/login",
   },
 ];
@@ -61,9 +65,19 @@ export function proxy(req: NextRequest) {
   const role = payload.role;
   if (!role || !area.allow.includes(role)) {
     const url = req.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = role && ROLE_HOME[role as keyof typeof ROLE_HOME]
+      ? ROLE_HOME[role as keyof typeof ROLE_HOME]
+      : "/";
+    url.search = "";
     url.searchParams.set("reason", "forbidden");
-    return NextResponse.redirect(url);
+
+    const response = NextResponse.redirect(url);
+    if (process.env.NODE_ENV !== "production") {
+      response.headers.set("x-eh-forbidden-role", String(role ?? "<none>"));
+      response.headers.set("x-eh-forbidden-area", area.key);
+      response.headers.set("x-eh-forbidden-allow", area.allow.join(","));
+    }
+    return response;
   }
 
   return NextResponse.next();

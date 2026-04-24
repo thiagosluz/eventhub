@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { User, AuthResponse } from "../types/auth";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { homeFor } from "@/lib/auth/roles";
 
 interface AuthContextType {
   user: User | null;
@@ -66,12 +67,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (authData.user.mustChangePassword) {
       router.push("/dashboard/force-password-change");
-    } else if (authData.user.role === 'SUPER_ADMIN') {
-      router.push("/admin/dashboard");
-    } else if (authData.user.role === 'ORGANIZER' || authData.user.role === 'REVIEWER') {
-      router.push("/dashboard");
     } else {
-      router.push("/");
+      router.push(homeFor(authData.user.role));
     }
   };
 

@@ -228,33 +228,59 @@ export class EventsService {
   }
 
   async listParticipants(tenantId: string, filters: any) {
-    const { eventId, search, status } = filters;
+    const { eventId, search, status, page, limit } = filters ?? {};
 
-    return this.prisma.registration.findMany({
-      where: {
-        event: {
-          tenantId,
-          ...(eventId ? { id: eventId } : {}),
+    const where: any = {
+      event: {
+        tenantId,
+        ...(eventId ? { id: eventId } : {}),
+      },
+      ...(status ? { status } : {}),
+      ...(search
+        ? {
+            user: {
+              OR: [
+                { name: { contains: search, mode: "insensitive" } },
+                { email: { contains: search, mode: "insensitive" } },
+              ],
+            },
+          }
+        : {}),
+    };
+
+    // Retrocompatível: sem `page`/`limit` retornamos a lista inteira (usado pelo export CSV).
+    if (!page && !limit) {
+      return this.prisma.registration.findMany({
+        where,
+        include: {
+          user: { select: { id: true, name: true, email: true } },
+          event: { select: { name: true } },
+          tickets: { select: { type: true, status: true } },
         },
-        ...(status ? { status } : {}),
-        ...(search
-          ? {
-              user: {
-                OR: [
-                  { name: { contains: search, mode: "insensitive" } },
-                  { email: { contains: search, mode: "insensitive" } },
-                ],
-              },
-            }
-          : {}),
-      },
-      include: {
-        user: { select: { id: true, name: true, email: true } },
-        event: { select: { name: true } },
-        tickets: { select: { type: true, status: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    });
+        orderBy: { createdAt: "desc" },
+      });
+    }
+
+    const currentPage = Math.max(1, Number(page) || 1);
+    const perPage = Math.min(100, Math.max(1, Number(limit) || 20));
+    const skip = (currentPage - 1) * perPage;
+
+    const [data, total] = await Promise.all([
+      this.prisma.registration.findMany({
+        where,
+        include: {
+          user: { select: { id: true, name: true, email: true } },
+          event: { select: { name: true } },
+          tickets: { select: { type: true, status: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: perPage,
+      }),
+      this.prisma.registration.count({ where }),
+    ]);
+
+    return { data, total, page: currentPage, limit: perPage };
   }
 
   async findMyTickets(userId: string) {

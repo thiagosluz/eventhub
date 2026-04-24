@@ -1,94 +1,95 @@
 "use client";
 
-import { useState } from "react";
-import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import { activityTypesService, speakerRolesService } from "@/services/management.service";
 import { toast } from "react-hot-toast";
+import { Modal, Input, Button } from "@/components/ui";
+import {
+  quickCategorySchema,
+  type QuickCategoryInput,
+} from "@/lib/validation/activities";
 
 interface QuickCategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreated: (item: { id: string, name: string }) => void;
-  type: 'ACTIVITY_TYPE' | 'SPEAKER_ROLE';
+  onCreated: (item: { id: string; name: string }) => void;
+  type: "ACTIVITY_TYPE" | "SPEAKER_ROLE";
 }
 
 export function QuickCategoryModal({ isOpen, onClose, onCreated, type }: QuickCategoryModalProps) {
-  const [name, setName] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<QuickCategoryInput>({
+    resolver: zodResolver(quickCategorySchema),
+    defaultValues: { name: "" },
+  });
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (!isOpen) reset({ name: "" });
+  }, [isOpen, reset]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) return;
-
-    setIsSubmitting(true);
+  const onSubmit = async (values: QuickCategoryInput) => {
     try {
-      let created;
-      if (type === 'ACTIVITY_TYPE') {
-        created = await activityTypesService.create(name);
-        toast.success("Tipo de atividade criado!");
-      } else {
-        created = await speakerRolesService.create(name);
-        toast.success("Papel de palestrante criado!");
-      }
+      const created =
+        type === "ACTIVITY_TYPE"
+          ? await activityTypesService.create(values.name)
+          : await speakerRolesService.create(values.name);
+      toast.success(
+        type === "ACTIVITY_TYPE"
+          ? "Tipo de atividade criado!"
+          : "Papel de palestrante criado!",
+      );
       onCreated(created);
-      setName("");
+      reset({ name: "" });
       onClose();
-    } catch (error: any) {
-      if (error.response?.status === 409) {
+    } catch (error) {
+      const status = (error as { response?: { status?: number } })?.response
+        ?.status;
+      if (status === 409) {
         toast.error("Este item já existe.");
       } else {
         toast.error("Erro ao criar item.");
       }
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
+  const title =
+    type === "ACTIVITY_TYPE" ? "Novo Tipo de Atividade" : "Novo Papel de Palestrante";
+
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-      <div className="bg-card w-full max-w-sm rounded-3xl shadow-2xl border border-border p-6 animate-in zoom-in-95 duration-300">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-black tracking-tight">
-            {type === 'ACTIVITY_TYPE' ? 'Novo Tipo de Atividade' : 'Novo Papel de Palestrante'}
-          </h3>
-          <button onClick={onClose} className="p-2 hover:bg-muted rounded-xl transition-colors">
-            <XMarkIcon className="w-5 h-5 text-muted-foreground" />
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="quick-name" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground px-1">
-              Nome do {type === 'ACTIVITY_TYPE' ? 'Tipo' : 'Papel'}
-            </label>
-            <input
-              id="quick-name"
-              autoFocus
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full h-11 px-4 rounded-xl border border-border bg-muted/30 focus:border-primary outline-none font-bold text-sm"
-              placeholder="Ex: Workshop, Painelista..."
-            />
-          </div>
-
-          <button
+    <Modal open={isOpen} onClose={onClose} size="sm">
+      <Modal.Header>{title}</Modal.Header>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <Modal.Body>
+          <Input
+            id="quick-name"
+            autoFocus
+            label={`Nome do ${type === "ACTIVITY_TYPE" ? "Tipo" : "Papel"}`}
+            placeholder="Ex: Workshop, Painelista..."
+            error={errors.name?.message}
+            {...register("name")}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button type="button" variant="ghost" onClick={onClose}>
+            Cancelar
+          </Button>
+          <Button
             type="submit"
-            disabled={isSubmitting || !name.trim()}
-            className="w-full premium-button flex items-center justify-center gap-2 py-3 !text-[10px]"
+            variant="primary"
+            isLoading={isSubmitting}
+            leftIcon={<PlusIcon className="w-4 h-4" />}
           >
-            {isSubmitting ? (
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <>
-                <PlusIcon className="w-4 h-4" />
-                Criar e Utilizar
-              </>
-            )}
-          </button>
-        </form>
-      </div>
-    </div>
+            Criar e Utilizar
+          </Button>
+        </Modal.Footer>
+      </form>
+    </Modal>
   );
 }

@@ -12,6 +12,7 @@ import {
   DocumentIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui";
 
 export function SubmissionsList() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
@@ -63,8 +64,8 @@ export function SubmissionsList() {
   if (loading) {
     return (
       <div className="space-y-4">
-        {[1, 2, 3].map(i => (
-          <div key={i} className="h-32 rounded-3xl bg-muted animate-pulse" />
+        {[1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-32 rounded-3xl" />
         ))}
       </div>
     );
