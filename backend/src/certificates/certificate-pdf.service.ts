@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import PDFDocument from "pdfkit";
 import { PrismaService } from "../prisma/prisma.service";
 import { MinioService } from "../storage/minio.service";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 import QRCode from "qrcode";
 
 // Removido LayoutPlaceholder (Legado)
@@ -203,7 +203,7 @@ export class CertificatePdfService {
     // 3. Render and Store
     const layout = (template.layoutConfig as LayoutConfig) ?? {};
     const textBlocks = layout.textBlocks ?? [];
-    const validationHash = uuidv4();
+    const validationHash = randomUUID();
     const validationUrl = `${process.env.FRONTEND_URL || "http://localhost:3001"}/certificates/validate/${validationHash}`;
     const qrCodeBuffer = await QRCode.toBuffer(validationUrl);
 
