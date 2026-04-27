@@ -119,13 +119,14 @@ export class SubmissionsService {
       tenantId: event.tenantId,
     });
 
-    const xpAmount = await this.gamificationService.getXpForAction("SUBMISSION_CREATED");
+    const xpAmount =
+      await this.gamificationService.getXpForAction("SUBMISSION_CREATED");
     await this.gamificationService.awardXp(
       authorId,
       xpAmount,
       "SUBMISSION_CREATED",
       `SUBMISSION_CREATED_${submission.id}`,
-      eventId
+      eventId,
     );
 
     return submission;

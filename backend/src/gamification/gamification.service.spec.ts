@@ -111,7 +111,9 @@ describe("GamificationService", () => {
       service.invalidateCache();
       // Next call should trigger reload
       const xp = await service.getXpForAction("EVENT_CHECKIN");
-      expect(mockPrismaService.gamificationConfig.findFirst).toHaveBeenCalledTimes(2); // once in init, once after invalidate
+      expect(
+        mockPrismaService.gamificationConfig.findFirst,
+      ).toHaveBeenCalledTimes(2); // once in init, once after invalidate
       expect(xp).toBe(200);
     });
   });

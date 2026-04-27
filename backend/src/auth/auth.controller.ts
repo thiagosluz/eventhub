@@ -12,19 +12,19 @@ import { ApiOperation, ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { Throttle } from "@nestjs/throttler";
 import { JwtAuthGuard } from "./jwt-auth.guard";
 import {
-   ChangeForcedPasswordDto,
-   ChangePasswordDto,
-   ForgotPasswordDto,
-   LoginDto,
-   RefreshTokenDto,
-   RegisterOrganizerDto,
-   RegisterParticipantDto,
-   ResetPasswordDto,
- } from "./dto/auth.dto";
+  ChangeForcedPasswordDto,
+  ChangePasswordDto,
+  ForgotPasswordDto,
+  LoginDto,
+  RefreshTokenDto,
+  RegisterOrganizerDto,
+  RegisterParticipantDto,
+  ResetPasswordDto,
+} from "./dto/auth.dto";
 import type { Request as ExpressRequest } from "express";
 
 type SessionRequest = ExpressRequest & {
-  user?: { sub: string, role?: string, email?: string };
+  user?: { sub: string; role?: string; email?: string };
 };
 
 @ApiTags("auth")
@@ -99,35 +99,40 @@ export class AuthController {
     @Request() req: SessionRequest,
   ) {
     return this.authService.changeForcedPassword(
-       req.user!.sub,
-       body.newPassword,
-     );
-   }
- 
-   @Post("change-password")
-   @UseGuards(JwtAuthGuard)
-   @ApiBearerAuth()
-   @ApiOperation({ summary: "Change current user password" })
-   changePassword(
-     @Body() body: ChangePasswordDto,
-     @Request() req: SessionRequest,
-   ) {
-     return this.authService.changePassword(
-       req.user!.sub,
-       body.currentPassword,
-       body.newPassword,
-     );
-   }
+      req.user!.sub,
+      body.newPassword,
+    );
+  }
+
+  @Post("change-password")
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Change current user password" })
+  changePassword(
+    @Body() body: ChangePasswordDto,
+    @Request() req: SessionRequest,
+  ) {
+    return this.authService.changePassword(
+      req.user!.sub,
+      body.currentPassword,
+      body.newPassword,
+    );
+  }
 
   @Post("2fa/generate")
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: "Gera o secret e o QR Code do 2FA" })
   generateTwoFactorSecret(@Request() req: SessionRequest) {
-    if (req.user?.role !== 'SUPER_ADMIN') {
-      throw new UnauthorizedException("Apenas o superadmin pode habilitar 2FA no momento.");
+    if (req.user?.role !== "SUPER_ADMIN") {
+      throw new UnauthorizedException(
+        "Apenas o superadmin pode habilitar 2FA no momento.",
+      );
     }
-    return this.authService.setupTwoFactorAuthentication(req.user!.sub, req.user!.email || 'admin@eventhub');
+    return this.authService.setupTwoFactorAuthentication(
+      req.user!.sub,
+      req.user!.email || "admin@eventhub",
+    );
   }
 
   @Post("2fa/turn-on")
@@ -138,7 +143,10 @@ export class AuthController {
     @Body() body: { code: string },
     @Request() req: SessionRequest,
   ) {
-    return this.authService.turnOnTwoFactorAuthentication(req.user!.sub, body.code);
+    return this.authService.turnOnTwoFactorAuthentication(
+      req.user!.sub,
+      body.code,
+    );
   }
 
   @Post("2fa/turn-off")
@@ -165,12 +173,18 @@ export class AuthController {
 
   @Post("2fa/authenticate")
   @Throttle({ default: { limit: 10, ttl: 60_000 } })
-  @ApiOperation({ summary: "Finaliza o login utilizando o código do 2FA e o tempToken" })
+  @ApiOperation({
+    summary: "Finaliza o login utilizando o código do 2FA e o tempToken",
+  })
   async authenticate2fa(
-    @Body() body: { code: string, tempToken: string },
+    @Body() body: { code: string; tempToken: string },
     @Req() req: SessionRequest,
   ) {
-    return this.authService.verifyTempTokenAndLogin(body.tempToken, body.code, getRequestMeta(req));
+    return this.authService.verifyTempTokenAndLogin(
+      body.tempToken,
+      body.code,
+      getRequestMeta(req),
+    );
   }
 }
 

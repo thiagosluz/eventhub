@@ -1,4 +1,12 @@
-import { IsOptional, IsInt, IsNumber, Min, Max, IsBoolean, IsString } from "class-validator";
+import {
+  IsOptional,
+  IsInt,
+  IsNumber,
+  Min,
+  Max,
+  IsBoolean,
+  IsString,
+} from "class-validator";
 
 export class UpdateGamificationConfigDto {
   @IsOptional()

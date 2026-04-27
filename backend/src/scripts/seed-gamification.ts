@@ -64,8 +64,7 @@ async function seedGamification() {
     {
       actionKey: "FEEDBACK_SUBMITTED",
       label: "Avaliação de Atividade",
-      description:
-        "XP ganho ao avaliar uma atividade (máximo 1 por atividade)",
+      description: "XP ganho ao avaliar uma atividade (máximo 1 por atividade)",
       xpAmount: 75,
       icon: "⭐",
       category: "engagement",
@@ -81,8 +80,7 @@ async function seedGamification() {
     {
       actionKey: "FIRST_EVENT",
       label: "Primeiro Evento",
-      description:
-        "XP bônus ao fazer o primeiro check-in em qualquer evento",
+      description: "XP bônus ao fazer o primeiro check-in em qualquer evento",
       xpAmount: 300,
       icon: "🌟",
       category: "milestone",
@@ -98,8 +96,7 @@ async function seedGamification() {
     {
       actionKey: "SUBMISSION_CREATED",
       label: "Submissão Enviada",
-      description:
-        "XP ganho ao enviar uma submissão científica para um evento",
+      description: "XP ganho ao enviar uma submissão científica para um evento",
       xpAmount: 200,
       icon: "📄",
       category: "academic",

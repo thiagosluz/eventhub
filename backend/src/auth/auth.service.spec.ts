@@ -84,10 +84,10 @@ describe("AuthService", () => {
       mockJwtService.signAsync.mockResolvedValue("tok");
       mockPrismaService.refreshToken.create.mockResolvedValue({ id: "rt1" });
 
-      const result = await service.login({
+      const result = (await service.login({
         email: "t@e.com",
         password: "p",
-      });
+      })) as any;
       expect(result.access_token).toBe("tok");
       expect(mockPrismaService.refreshToken.create).toHaveBeenCalled();
       const createArgs = mockPrismaService.refreshToken.create.mock.calls[0][0];

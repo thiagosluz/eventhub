@@ -12,6 +12,7 @@ import { AssignReviewsProcessor } from "./../src/submissions/submissions.process
 import { MailProcessor } from "./../src/mail/mail.processor";
 import { KanbanAlertsProcessor } from "./../src/kanban/kanban.processor";
 import { getQueueToken } from "@nestjs/bullmq";
+import { GamificationService } from "./../src/gamification/gamification.service";
 
 describe("CheckoutController (e2e)", () => {
   let app: INestApplication;
@@ -83,6 +84,13 @@ describe("CheckoutController (e2e)", () => {
       .useValue(mockBadgesService)
       .overrideProvider(MailService)
       .useValue(mockMailService)
+      .overrideProvider(GamificationService)
+      .useValue({
+        awardXp: jest
+          .fn()
+          .mockResolvedValue({ xpGained: 100, isLevelUp: false }),
+        getXpForAction: jest.fn().mockReturnValue(100),
+      })
       .compile();
 
     app = moduleFixture.createNestApplication();

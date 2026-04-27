@@ -28,34 +28,51 @@ export class GamificationService implements OnModuleInit {
   }
 
   async loadConfig() {
-    const config = await this.prisma.gamificationConfig.findFirst();
-    if (config) {
-      this.configCache = {
-        dailyXpLimit: config.dailyXpLimit,
-        levelFormulaBase: config.levelFormulaBase,
-        levelFormulaExponent: config.levelFormulaExponent,
-        spikeThreshold: config.spikeThreshold,
-        spikeWindowMinutes: config.spikeWindowMinutes,
-      };
-    } else {
-      this.configCache = {
-        dailyXpLimit: 1500,
-        levelFormulaBase: 500,
-        levelFormulaExponent: 0.6,
-        spikeThreshold: 1000,
-        spikeWindowMinutes: 5,
-      };
-    }
+    try {
+      const prisma = this.prisma as any;
 
-    const actions = await this.prisma.xpActionConfig.findMany();
-    this.actionsCache.clear();
-    for (const a of actions) {
-      this.actionsCache.set(a.actionKey, {
-        actionKey: a.actionKey,
-        xpAmount: a.xpAmount,
-        isActive: a.isActive,
-      });
+      if (prisma.gamificationConfig) {
+        const config = await prisma.gamificationConfig.findFirst();
+        if (config) {
+          this.configCache = {
+            dailyXpLimit: config.dailyXpLimit,
+            levelFormulaBase: config.levelFormulaBase,
+            levelFormulaExponent: config.levelFormulaExponent,
+            spikeThreshold: config.spikeThreshold,
+            spikeWindowMinutes: config.spikeWindowMinutes,
+          };
+        } else {
+          this.setDefaultConfig();
+        }
+      } else {
+        this.setDefaultConfig();
+      }
+
+      if (prisma.xpActionConfig) {
+        const actions = await prisma.xpActionConfig.findMany();
+        this.actionsCache.clear();
+        for (const a of actions) {
+          this.actionsCache.set(a.actionKey, {
+            actionKey: a.actionKey,
+            xpAmount: a.xpAmount,
+            isActive: a.isActive,
+          });
+        }
+      }
+    } catch (_error) {
+      this.setDefaultConfig();
+      this.actionsCache.clear();
     }
+  }
+
+  private setDefaultConfig() {
+    this.configCache = {
+      dailyXpLimit: 1500,
+      levelFormulaBase: 500,
+      levelFormulaExponent: 0.6,
+      spikeThreshold: 1000,
+      spikeWindowMinutes: 5,
+    };
   }
 
   invalidateCache() {
@@ -207,7 +224,10 @@ export class GamificationService implements OnModuleInit {
                 userId,
                 type: "XP_SPIKE",
                 message: `Usuário ganhou ${totalRecent} XP nos últimos ${config.spikeWindowMinutes} minutos.`,
-                metadata: { totalXp: totalRecent, windowMinutes: config.spikeWindowMinutes },
+                metadata: {
+                  totalXp: totalRecent,
+                  windowMinutes: config.spikeWindowMinutes,
+                },
               },
             });
           }

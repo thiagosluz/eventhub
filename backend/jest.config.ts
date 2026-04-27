@@ -25,6 +25,6 @@ export default {
   },
   setupFiles: ['<rootDir>/../test/setup.ts'],
   transformIgnorePatterns: [
-    '/node_modules/(?!(uuid)/)',
+    'node_modules/(?!(uuid|@scure|otplib|@otplib|@noble)/)',
   ],
 };

@@ -21,6 +21,6 @@
   ],
   "coverageDirectory": "coverage-e2e",
   "transformIgnorePatterns": [
-    "/node_modules/(?!(uuid)/)"
+    "node_modules/(?!(uuid|@scure|otplib|@otplib|@noble)/)"
   ]
 }

@@ -173,14 +173,16 @@ export class CheckinService {
     const attendancesCount = await this.prisma.attendance.count({
       where: { ticket: { registration: { userId: user.id } } },
     });
-    if (attendancesCount === 1) { // includes the one just created
-      const firstEventXp = await this.gamificationService.getXpForAction("FIRST_EVENT");
+    if (attendancesCount === 1) {
+      // includes the one just created
+      const firstEventXp =
+        await this.gamificationService.getXpForAction("FIRST_EVENT");
       await this.gamificationService.awardXp(
         user.id,
         firstEventXp,
         "FIRST_EVENT",
         `FIRST_EVENT_${user.id}`,
-        event.id
+        event.id,
       );
     }
 
@@ -396,7 +398,8 @@ export class CheckinService {
         "RAFFLE_WINNER",
       );
 
-      const xpAmount = await this.gamificationService.getXpForAction("RAFFLE_WINNER");
+      const xpAmount =
+        await this.gamificationService.getXpForAction("RAFFLE_WINNER");
       await this.gamificationService.awardXp(
         history.registration.userId,
         xpAmount,

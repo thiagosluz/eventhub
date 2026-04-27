@@ -82,13 +82,14 @@ export class CheckoutService {
     await this.badgesService.checkAndAwardBadge(userId, eventId, "EVENT_COUNT");
 
     // Award Gamification XP for Registration
-    const xpAmount = await this.gamificationService.getXpForAction("EVENT_REGISTRATION");
+    const xpAmount =
+      await this.gamificationService.getXpForAction("EVENT_REGISTRATION");
     await this.gamificationService.awardXp(
       userId,
       xpAmount,
       "EVENT_REGISTRATION",
       `EVENT_REGISTRATION_${eventId}`,
-      eventId
+      eventId,
     );
 
     // Auto-enroll in activities that don't require manual enrollment

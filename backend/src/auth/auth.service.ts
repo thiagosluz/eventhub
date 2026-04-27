@@ -137,33 +137,38 @@ export class AuthService {
       throw new UnauthorizedException("Credenciais inválidas.");
     }
 
-    if (user.role === 'SUPER_ADMIN' && user.isTwoFactorEnabled) {
+    if (user.role === "SUPER_ADMIN" && user.isTwoFactorEnabled) {
       const payload = { sub: user.id, isTwoFactorAuthentication: true };
-      const tempToken = this.jwtService.sign(payload, { expiresIn: '5m' });
+      const tempToken = this.jwtService.sign(payload, { expiresIn: "5m" });
       return { requires2fa: true, tempToken };
     }
 
     // Award Daily Login XP
     const dateStr = new Date().toISOString().split("T")[0];
-    const xpAmount = await this.gamificationService.getXpForAction("DAILY_LOGIN");
+    const xpAmount =
+      await this.gamificationService.getXpForAction("DAILY_LOGIN");
     await this.gamificationService.awardXp(
       user.id,
       xpAmount,
       "DAILY_LOGIN",
-      `DAILY_LOGIN_${user.id}_${dateStr}`
+      `DAILY_LOGIN_${user.id}_${dateStr}`,
     );
 
     return this.createSession(user as unknown as SessionUser, meta);
   }
 
-  async verifyTempTokenAndLogin(tempToken: string, code: string, meta: SessionMeta = {}) {
+  async verifyTempTokenAndLogin(
+    tempToken: string,
+    code: string,
+    meta: SessionMeta = {},
+  ) {
     try {
       const decoded = this.jwtService.verify(tempToken);
       if (!decoded.isTwoFactorAuthentication || !decoded.sub) {
         throw new UnauthorizedException("Token temporário inválido.");
       }
       return this.authenticate2fa(decoded.sub, code, meta);
-    } catch (error) {
+    } catch {
       throw new UnauthorizedException("Token temporário expirado ou inválido.");
     }
   }
@@ -178,7 +183,9 @@ export class AuthService {
     });
 
     if (!user || !user.isTwoFactorEnabled || !user.twoFactorSecret) {
-      throw new UnauthorizedException("2FA não está ativado ou inválido para esta conta.");
+      throw new UnauthorizedException(
+        "2FA não está ativado ou inválido para esta conta.",
+      );
     }
 
     let isCodeValid = false;
@@ -192,7 +199,7 @@ export class AuthService {
           secret: user.twoFactorSecret,
         });
         isCodeValid = result.valid;
-      } catch (err) {
+      } catch {
         isCodeValid = false;
       }
     }
@@ -217,19 +224,22 @@ export class AuthService {
         where: { id: userId },
         data: {
           twoFactorRecoveryCodes: {
-            set: user.twoFactorRecoveryCodes.filter((c) => c !== usedRecoveryCode),
+            set: user.twoFactorRecoveryCodes.filter(
+              (c) => c !== usedRecoveryCode,
+            ),
           },
         },
       });
     }
 
     const dateStr = new Date().toISOString().split("T")[0];
-    const xpAmount = await this.gamificationService.getXpForAction("DAILY_LOGIN");
+    const xpAmount =
+      await this.gamificationService.getXpForAction("DAILY_LOGIN");
     await this.gamificationService.awardXp(
       user.id,
       xpAmount,
       "DAILY_LOGIN",
-      `DAILY_LOGIN_${user.id}_${dateStr}`
+      `DAILY_LOGIN_${user.id}_${dateStr}`,
     );
 
     return this.createSession(user as unknown as SessionUser, meta);
@@ -251,7 +261,7 @@ export class AuthService {
 
   async turnOnTwoFactorAuthentication(userId: string, code: string) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    
+
     if (!user || !user.twoFactorSecret) {
       throw new UnauthorizedException("Chave 2FA não configurada.");
     }
@@ -271,7 +281,7 @@ export class AuthService {
     });
 
     const { plain, hashed } = await this.generateRecoveryCodes();
-    
+
     await this.prisma.user.update({
       where: { id: userId },
       data: { twoFactorRecoveryCodes: { set: hashed } },
@@ -282,7 +292,7 @@ export class AuthService {
 
   async turnOffTwoFactorAuthentication(userId: string, code: string) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    
+
     if (!user || !user.twoFactorSecret || !user.isTwoFactorEnabled) {
       throw new UnauthorizedException("2FA não está ativado.");
     }
@@ -298,7 +308,11 @@ export class AuthService {
 
     await this.prisma.user.update({
       where: { id: userId },
-      data: { isTwoFactorEnabled: false, twoFactorSecret: null, twoFactorRecoveryCodes: { set: [] } },
+      data: {
+        isTwoFactorEnabled: false,
+        twoFactorSecret: null,
+        twoFactorRecoveryCodes: { set: [] },
+      },
     });
 
     return { ok: true };
@@ -318,12 +332,14 @@ export class AuthService {
     return { recoveryCodes: plain };
   }
 
-  private async generateRecoveryCodes(count = 10): Promise<{ plain: string[]; hashed: string[] }> {
-    const plainCodes = Array.from({ length: count }, () => 
-      randomBytes(5).toString('hex').toUpperCase()
+  private async generateRecoveryCodes(
+    count = 10,
+  ): Promise<{ plain: string[]; hashed: string[] }> {
+    const plainCodes = Array.from({ length: count }, () =>
+      randomBytes(5).toString("hex").toUpperCase(),
     );
     const hashedCodes = await Promise.all(
-      plainCodes.map(code => argon2.hash(code))
+      plainCodes.map((code) => argon2.hash(code)),
     );
     return { plain: plainCodes, hashed: hashedCodes };
   }
@@ -451,7 +467,11 @@ export class AuthService {
     });
   }
 
-  async changePassword(userId: string, currentPassword: string, newPassword: string) {
+  async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string,
+  ) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });
@@ -480,7 +500,6 @@ export class AuthService {
       data: { revokedAt: new Date() },
     });
   }
-
 
   private async createSession(user: SessionUser, meta: SessionMeta = {}) {
     const access_token = await this.generateToken(user, "15m");

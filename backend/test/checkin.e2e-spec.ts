@@ -35,6 +35,7 @@ describe("Checkin (e2e)", () => {
       findUnique: jest.fn(),
       delete: jest.fn(),
       findMany: jest.fn(),
+      count: jest.fn(),
     },
     event: {
       findFirst: jest.fn(),
@@ -76,6 +77,7 @@ describe("Checkin (e2e)", () => {
 
   const mockGamificationService = {
     awardXp: jest.fn().mockResolvedValue({ xpGained: 100, isLevelUp: false }),
+    getXpForAction: jest.fn().mockReturnValue(100),
   };
 
   beforeAll(async () => {

@@ -59,6 +59,7 @@ describe("Users (e2e)", () => {
 
   const mockGamificationService = {
     awardXp: jest.fn().mockResolvedValue({ xpGained: 100, isLevelUp: false }),
+    getXpForAction: jest.fn().mockReturnValue(100),
   };
 
   beforeAll(async () => {

@@ -670,13 +670,14 @@ export class ActivitiesService implements OnModuleInit {
     });
 
     if (data.userId) {
-      const xpAmount = await this.gamificationService.getXpForAction("FEEDBACK_SUBMITTED");
+      const xpAmount =
+        await this.gamificationService.getXpForAction("FEEDBACK_SUBMITTED");
       await this.gamificationService.awardXp(
         data.userId,
         xpAmount,
         "FEEDBACK_SUBMITTED",
         `FEEDBACK_${activityId}_${data.userId}`,
-        activity.eventId
+        activity.eventId,
       );
     }
 
